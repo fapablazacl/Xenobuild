@@ -1,0 +1,20 @@
+
+{
+    "name": "devwarecl/borc-core",
+    "description": "Build orchrestation system based on modularity and reusability",
+    "version": "1.0.0",
+    "type": "library/static",
+    "language": "c++/17",
+    "sources": [
+        {
+            "path": "include",
+            "public": true
+        },
+        "src"
+    ],
+    "dependencies": [
+        "boost/filesystem",
+        "boost/system",
+        "boost/process"
+    ]
+}

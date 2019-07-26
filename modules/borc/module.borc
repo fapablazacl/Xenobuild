@@ -1,0 +1,14 @@
+
+{
+    "name": "devwarecl/borc",
+    "description": "Build orchrestation system based on modularity and reusability",
+    "version": "1.0.0",
+    "type": "application/cli",
+    "language": "c++/17",
+    "sources": [
+        "src"
+    ],
+    "dependencies": [
+        "devwarecl/borc-core"
+    ]
+}

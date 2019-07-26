@@ -1,0 +1,19 @@
+{
+    "name": "libgit2",
+    "modules": [
+        {
+            "name": "libgit2",
+            "type": "library/inline",
+            "language": {
+                "name": "c++",
+                "dialects": ["11", "14", "17"]
+            },
+            "source": {
+                "url": "https://github.com/libgit2/libgit2.git",
+                "includePaths": [
+                    "include"
+                ]
+            }
+        }   
+    ]
+}

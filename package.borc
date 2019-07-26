@@ -1,0 +1,11 @@
+{
+    "name": "felide",
+    "description": "A modern IDE built on C++ & <3",
+    "modules": [
+        "modules/borc",
+        "modules/borc-core"
+    ],
+    "packageSearchPaths": [
+        "packages"
+    ]
+}
