@@ -19,10 +19,6 @@ add_executable(borc
     "src/borc/cli/ConfigureController.hpp"
     "src/borc/cli/ControllerFactory.cpp"
     "src/borc/cli/ControllerFactory.hpp"
-    "src/borc/cli/CliController.cpp"
-    "src/borc/cli/CliController.hpp"
-    "src/borc/cli/CliControllerImpl.cpp"
-    "src/borc/cli/CliControllerImpl.hpp"
 )
 
 target_link_libraries(borc borc-core ${Boost_LIBRARIES} pthread)
