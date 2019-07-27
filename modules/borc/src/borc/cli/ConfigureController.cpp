@@ -15,6 +15,7 @@
 namespace borc {
     ConfigureController::~ConfigureController() {}
 
+
     void ConfigureController::perform(int argc, char **argv) {
         // parse the command line
         boost::program_options::options_description desc("Allowed options for Configure subcommand");
@@ -43,7 +44,7 @@ namespace borc {
         const auto baseFolderPath = boost::filesystem::current_path();
         const auto packageFilePath = baseFolderPath / "package.borc";
 
-        if (boost::filesystem::is_directory(packageFilePath)) {
+        if (checkValidBorcFile(packageFilePath)) {
             throw std::runtime_error("There is no package build file on this folder.");
         }
 
@@ -59,7 +60,7 @@ namespace borc {
         for (const std::string &modulePartialPath : package.modules) {
             const boost::filesystem::path moduleFilePath = baseFolderPath / modulePartialPath / "module.borc";
 
-            if (boost::filesystem::is_directory(moduleFilePath)) {
+            if (checkValidBorcFile(moduleFilePath)) {
                 throw std::runtime_error("There is no module build file on this folder.");
             }
 
@@ -89,5 +90,10 @@ namespace borc {
             {"c++/17", "gcc"},
             {"c++/17", "clang"}
         };
+    }
+
+
+    bool ConfigureController::checkValidBorcFile(const boost::filesystem::path &filePath) const {
+        return !boost::filesystem::is_directory(filePath) && boost::filesystem::exists(filePath);
     }
 }
