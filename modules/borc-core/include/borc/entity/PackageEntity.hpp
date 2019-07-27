@@ -5,23 +5,23 @@
 #include <string>
 #include <vector>
 
-#include "Language.hpp"
-#include "Module.hpp"
+#include "LanguageEntity.hpp"
+#include "ModuleEntity.hpp"
 
 namespace borc {
-    struct Package {
+    struct PackageEntity {
         std::string name;
         std::string description;
-        Language language;
+        LanguageEntity language;
         std::vector<std::string> modules;
         std::vector<std::string> packageSearchPaths;
 
         constexpr static auto properties = std::make_tuple (
-            property(&Package::name, "name"),
-            property(&Package::description, "description"),
-            property(&Package::language, "language"),
-            property(&Package::modules, "modules"),
-            property(&Package::packageSearchPaths, "packageSearchPaths")
+            property(&PackageEntity::name, "name"),
+            property(&PackageEntity::description, "description"),
+            property(&PackageEntity::language, "language"),
+            property(&PackageEntity::modules, "modules"),
+            property(&PackageEntity::packageSearchPaths, "packageSearchPaths")
         );
 
         typedef void DefaultType;

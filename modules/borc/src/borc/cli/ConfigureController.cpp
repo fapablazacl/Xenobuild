@@ -8,9 +8,9 @@
 #include <nlohmann/json.hpp>
 #include <borc/services/FileServiceImpl.hpp>
 #include <borc/parsing/JSONDeserializer.hpp>
-#include <borc/entity/Package.hpp>
-#include <borc/entity/Language.hpp>
-#include <borc/entity/Module.hpp>
+#include <borc/entity/PackageEntity.hpp>
+#include <borc/entity/LanguageEntity.hpp>
+#include <borc/entity/ModuleEntity.hpp>
 
 namespace borc {
     ConfigureController::~ConfigureController() {}
@@ -52,10 +52,10 @@ namespace borc {
         auto packageJsonContent = service.load(packageFilePath.string());
         auto packageJson = nlohmann::json::parse(packageJsonContent);
 
-        Package package;
+        PackageEntity package;
         deserialize(package, packageJson);
 
-        std::vector<Module> modules;
+        std::vector<ModuleEntity> modules;
 
         for (const std::string &modulePartialPath : package.modules) {
             const boost::filesystem::path moduleFilePath = baseFolderPath / modulePartialPath / "module.borc";
@@ -67,7 +67,7 @@ namespace borc {
             auto moduleJsonContent = service.load(moduleFilePath.string());
             auto moduleJson = nlohmann::json::parse(moduleJsonContent);
 
-            Module module;
+            ModuleEntity module;
             deserialize(module, moduleJson);
 
             modules.push_back(module);
@@ -76,7 +76,7 @@ namespace borc {
         // we have all the information needed in order to process the issues.
         std::set<std::string> languages;
 
-        for (const Module &module : modules) {
+        for (const ModuleEntity &module : modules) {
             languages.insert(module.language);
         }
 

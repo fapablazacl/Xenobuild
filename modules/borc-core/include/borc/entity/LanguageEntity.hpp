@@ -1,6 +1,6 @@
 
-#ifndef __BORC_ENTITY_LANGUAGE_HPP__
-#define __BORC_ENTITY_LANGUAGE_HPP__
+#ifndef __BORC_ENTITY_LANGUAGEENTITY_HPP__
+#define __BORC_ENTITY_LANGUAGEENTITY_HPP__
 
 #include <string>
 #include <vector>
@@ -8,13 +8,13 @@
 #include <borc/utility/MetaProperty.hpp>
 
 namespace borc {
-    struct Language {
+    struct LanguageEntity {
         std::string name;
         std::vector<std::string> dialects;
 
         constexpr static auto properties = std::make_tuple (
-            property(&Language::name, "name"),
-            property(&Language::dialects, "dialects")
+            property(&LanguageEntity::name, "name"),
+            property(&LanguageEntity::dialects, "dialects")
         );
 
         typedef void DefaultType;
