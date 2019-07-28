@@ -24,7 +24,7 @@ namespace borc {
         };
 
     public:
-        explicit Artifact();
+        explicit Artifact(Package *package);
 
         ~Artifact();
 
@@ -51,6 +51,14 @@ namespace borc {
         std::vector<const Artifact*> getDependencies() const {
             return dependencies;
         }
+
+        void setName(const std::string &name);
+
+        void setPath(const boost::filesystem::path &path);
+
+        void setType(const Type type);
+
+        void setVersion(const Version &version);
 
         std::vector<boost::filesystem::path> computeSourceFiles() const;
 

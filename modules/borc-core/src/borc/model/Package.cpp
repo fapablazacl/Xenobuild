@@ -20,4 +20,13 @@ namespace borc {
 
         return result;
     }
+
+
+    Artifact* Package::createArtifact() {
+        auto artifact = new Artifact(this);
+
+        artifacts.emplace_back(artifact);
+
+        return artifact;
+    }
 }

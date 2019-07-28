@@ -18,7 +18,6 @@
 namespace borc {
     ConfigureController::~ConfigureController() {}
 
-
     void ConfigureController::perform(int argc, char **argv) {
         // parse the command line
         boost::program_options::options_description desc("Allowed options for Configure subcommand");
@@ -47,8 +46,8 @@ namespace borc {
         const auto baseFolderPath = boost::filesystem::current_path();
         const auto packageFilePath = baseFolderPath / "package.borc";
 
-        if (checkValidBorcFile(packageFilePath)) {
-            throw std::runtime_error("There is no package build file on this folder.");
+        if (! checkValidBorcFile(packageFilePath)) {
+            throw std::runtime_error("There is no package build file on the folder '" + packageFilePath.string() + "'");
         }
 
         auto service = FileServiceImpl{};
@@ -63,8 +62,8 @@ namespace borc {
         for (const std::string &modulePartialPath : packageEntity.modules) {
             const boost::filesystem::path moduleFilePath = baseFolderPath / modulePartialPath / "module.borc";
 
-            if (checkValidBorcFile(moduleFilePath)) {
-                throw std::runtime_error("There is no module build file on this folder.");
+            if (! checkValidBorcFile(moduleFilePath)) {
+                throw std::runtime_error("There is no module build file on this folder '" + moduleFilePath.string() + "'");
             }
 
             auto moduleJsonContent = service.load(moduleFilePath.string());
@@ -95,6 +94,40 @@ namespace borc {
         };
 
         // now we are ready to create the package and artifacts instances
+        auto package = std::make_unique<Package>(packageEntity.name);
+
+        // available artifact types for C/C++ projects
+        const std::map<std::string, Artifact::Type> artifactTypeMap = {
+            {"application/cli", Artifact::Type::ApplicationCli},
+            {"application/cli", Artifact::Type::ApplicationGui},
+            {"library/static", Artifact::Type::LibraryStatic},
+            {"library/dynamic", Artifact::Type::LibraryDynamic}
+        };
+
+        for (int i=0; i<moduleEntities.size(); i++) {
+            const ModuleEntity &moduleEntity = moduleEntities[i];
+
+            Artifact *artifact = package->createArtifact();
+
+            artifact->setName(moduleEntity.name);
+
+            if (auto artifactTypeIt = artifactTypeMap.find(moduleEntity.type); artifactTypeIt != artifactTypeMap.end()) {
+                artifact->setType(artifactTypeIt->second);
+            } else {
+                std::string msg;
+                msg += "Invalid artifact type";
+                msg += " '" + moduleEntity.type + "' ";
+                msg += "for the";
+                msg += " '" + moduleEntity.language + "' ";
+                msg += "programming language specified in the";
+                msg += " '" + moduleEntity.name + "' ";
+                msg += "artifact.";
+
+                throw std::runtime_error(msg.c_str());
+            }
+
+            artifact->setPath(boost::filesystem::path{packageEntity.modules[i]});
+        }
     }
 
 
