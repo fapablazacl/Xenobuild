@@ -24,11 +24,11 @@ namespace borc {
         this->version = version;
     }
 
-    std::vector<boost::filesystem::path> Artifact::computeSourceFiles() const {
-        return {};
+    void Artifact::setSourcePaths(const std::vector<boost::filesystem::path> &sourcePaths) {
+        this->sourcePaths = sourcePaths;
     }
 
-    std::vector<boost::filesystem::path> Artifact::computeIncludePaths() const {
-        return {};
+    void Artifact::setIncludePaths(const std::vector<boost::filesystem::path> &includePaths) {
+        this->includePaths = includePaths;
     }
 }

@@ -127,6 +127,20 @@ namespace borc {
             }
 
             artifact->setPath(boost::filesystem::path{packageEntity.modules[i]});
+
+            std::vector<boost::filesystem::path> includePaths;
+            std::vector<boost::filesystem::path> sourcePaths;
+
+            for (const ModuleSourceEntity &moduleSourceEntity : moduleEntity.sources) {
+                if (moduleSourceEntity.public_) {
+                    includePaths.push_back(moduleSourceEntity.path);
+                } else {
+                    sourcePaths.push_back(moduleSourceEntity.path);
+                }
+            }
+
+            artifact->setIncludePaths(includePaths);
+            artifact->setSourcePaths(sourcePaths);
         }
     }
 

@@ -52,6 +52,14 @@ namespace borc {
             return dependencies;
         }
 
+        std::vector<boost::filesystem::path> getSourceFiles() const {
+            return sourcePaths;
+        }
+
+        std::vector<boost::filesystem::path> getIncludePaths() const {
+            return includePaths;
+        }
+
         void setName(const std::string &name);
 
         void setPath(const boost::filesystem::path &path);
@@ -60,9 +68,9 @@ namespace borc {
 
         void setVersion(const Version &version);
 
-        std::vector<boost::filesystem::path> computeSourceFiles() const;
+        void setSourcePaths(const std::vector<boost::filesystem::path> &sourcePaths);
 
-        std::vector<boost::filesystem::path> computeIncludePaths() const;
+        void setIncludePaths(const std::vector<boost::filesystem::path> &includePaths);
 
     private:
         Package *package = nullptr;
@@ -71,6 +79,9 @@ namespace borc {
         Type type;
         Version version;
         std::vector<const Artifact*> dependencies;
+
+        std::vector<boost::filesystem::path> sourcePaths;
+        std::vector<boost::filesystem::path> includePaths;
     };
 }
 
