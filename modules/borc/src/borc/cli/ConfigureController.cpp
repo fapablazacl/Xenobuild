@@ -12,6 +12,9 @@
 #include <borc/entity/LanguageEntity.hpp>
 #include <borc/entity/ModuleEntity.hpp>
 
+#include <borc/model/Artifact.hpp>
+#include <borc/model/Package.hpp>
+
 namespace borc {
     ConfigureController::~ConfigureController() {}
 
@@ -52,12 +55,12 @@ namespace borc {
         auto packageJsonContent = service.load(packageFilePath.string());
         auto packageJson = nlohmann::json::parse(packageJsonContent);
 
-        PackageEntity package;
-        deserialize(package, packageJson);
+        PackageEntity packageEntity;
+        deserialize(packageEntity, packageJson);
 
-        std::vector<ModuleEntity> modules;
+        std::vector<ModuleEntity> moduleEntities;
 
-        for (const std::string &modulePartialPath : package.modules) {
+        for (const std::string &modulePartialPath : packageEntity.modules) {
             const boost::filesystem::path moduleFilePath = baseFolderPath / modulePartialPath / "module.borc";
 
             if (checkValidBorcFile(moduleFilePath)) {
@@ -67,17 +70,17 @@ namespace borc {
             auto moduleJsonContent = service.load(moduleFilePath.string());
             auto moduleJson = nlohmann::json::parse(moduleJsonContent);
 
-            ModuleEntity module;
-            deserialize(module, moduleJson);
+            ModuleEntity moduleEntity;
+            deserialize(moduleEntity, moduleJson);
 
-            modules.push_back(module);
+            moduleEntities.push_back(moduleEntity);
         }
 
-        // we have all the information needed in order to process the issues.
+        // we have all the information needed in order to process the packages.
         std::set<std::string> languages;
 
-        for (const ModuleEntity &module : modules) {
-            languages.insert(module.language);
+        for (const ModuleEntity &moduleEntity : moduleEntities) {
+            languages.insert(moduleEntity.language);
         }
 
         std::cout << "Detected programming languages:" << std::endl;
@@ -90,6 +93,8 @@ namespace borc {
             {"c++/17", "gcc"},
             {"c++/17", "clang"}
         };
+
+        // now we are ready to create the package and artifacts instances
     }
 
 
