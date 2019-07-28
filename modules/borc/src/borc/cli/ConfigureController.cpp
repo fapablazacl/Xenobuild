@@ -99,7 +99,7 @@ namespace borc {
         // available artifact types for C/C++ projects
         const std::map<std::string, Artifact::Type> artifactTypeMap = {
             {"application/cli", Artifact::Type::ApplicationCli},
-            {"application/cli", Artifact::Type::ApplicationGui},
+            {"application/gli", Artifact::Type::ApplicationGui},
             {"library/static", Artifact::Type::LibraryStatic},
             {"library/dynamic", Artifact::Type::LibraryDynamic}
         };
