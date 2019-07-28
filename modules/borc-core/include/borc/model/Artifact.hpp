@@ -7,11 +7,6 @@
 #include <boost/filesystem/path.hpp>
 
 namespace borc {
-    struct Language {
-        std::string name;
-        std::string dialect;
-    };
-
     struct Version {
         int major;
         int minor;
@@ -29,7 +24,7 @@ namespace borc {
         };
 
     public:
-        Artifact(const Package *package, const std::string &name, const boost::filesystem::path &path, const Type type);
+        explicit Artifact();
 
         ~Artifact();
 
@@ -53,13 +48,13 @@ namespace borc {
             return version;
         }
 
-        std::vector<boost::filesystem::path> computeSourceFiles() const;
-
-        std::vector<boost::filesystem::path> computeIncludePaths() const;
-
         std::vector<const Artifact*> getDependencies() const {
             return dependencies;
         }
+
+        std::vector<boost::filesystem::path> computeSourceFiles() const;
+
+        std::vector<boost::filesystem::path> computeIncludePaths() const;
 
     private:
         Package *package = nullptr;

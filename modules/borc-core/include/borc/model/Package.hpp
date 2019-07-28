@@ -6,17 +6,23 @@
 #include <vector>
 #include <memory>
 
+#include "Language.hpp"
+
 namespace borc {
     class Artifact;
     class Package {
     public:
-        Package();
+        Package(const std::string &name);
 
         ~Package();
 
         std::string getName() const {
             return name;
         }
+
+        std::vector<Artifact*> getArtifacts() const;
+
+        Artifact* createArtifact();
 
     private:
         std::string name;
