@@ -142,8 +142,15 @@ namespace borc {
             artifact->setIncludePaths(includePaths);
             artifact->setSourcePaths(sourcePaths);
         }
-    }
 
+        // Now we have parsed all the artifacts in the main package. 
+        // Let's parse all the additional packages. We need that when we solve all the dependencies to create references
+        std::vector<std::unique_ptr<Package>> packages;
+
+        for (const std::string &packageSearchPathStr : packageEntity.packageSearchPaths) {
+            // TODO: Add package parsing routine
+        }
+    }
 
     bool ConfigureController::checkValidBorcFile(const boost::filesystem::path &filePath) const {
         return !boost::filesystem::is_directory(filePath) && boost::filesystem::exists(filePath);
