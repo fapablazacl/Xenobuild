@@ -16,57 +16,34 @@
 #include <borc/model/Package.hpp>
 
 namespace borc {
-    ConfigureController::~ConfigureController() {}
 
-    void ConfigureController::perform(int argc, char **argv) {
-        // parse the command line
-        boost::program_options::options_description desc("Allowed options for Configure subcommand");
-        desc.add_options()
-            ("help", "produce help message")
-            ("build-type", boost::program_options::value<std::string>(), "set build type (debug, release, all)")
-            ("toolchain", boost::program_options::value<std::string>(), "set toolchain (gcc, vc, clang)")
-        ;
-
-        boost::program_options::variables_map vm;
-        boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
-        boost::program_options::notify(vm);    
-
-        if (vm.count("help")) {
-            std::cout << desc << "\n";
-            return;
-        }
-
-        if (vm.count("build-type")) {
-            std::cout << "Build type was set to " << vm["build-type"].as<std::string>() << ".\n";
-        } else {
-            std::cout << "Build type defaulted to 'all'.\n";
-        }
-
-        // perform the configure operation
-        const auto baseFolderPath = boost::filesystem::current_path();
-        const auto packageFilePath = baseFolderPath / "package.borc";
+    PackageEntity ConfigureController::makePackageEntity(const boost::filesystem::path &basePath, FileService &fileService) const {
+        const auto packageFilePath = basePath / "package.borc";
 
         if (! checkValidBorcFile(packageFilePath)) {
             throw std::runtime_error("There is no package build file on the folder '" + packageFilePath.string() + "'");
         }
 
-        auto service = FileServiceImpl{};
-        auto packageJsonContent = service.load(packageFilePath.string());
+        auto packageJsonContent = fileService.load(packageFilePath.string());
         auto packageJson = nlohmann::json::parse(packageJsonContent);
 
         PackageEntity packageEntity;
         deserialize(packageEntity, packageJson);
 
+        return packageEntity;
+    }
+
+    std::vector<ModuleEntity> ConfigureController::makeModuleEntities(const boost::filesystem::path &basePath, FileService &fileService, const PackageEntity &packageEntity) const {
         std::vector<ModuleEntity> moduleEntities;
 
         for (const std::string &modulePartialPath : packageEntity.modules) {
-            const boost::filesystem::path moduleFilePath = baseFolderPath / modulePartialPath / "module.borc";
+            const boost::filesystem::path moduleFilePath = basePath / modulePartialPath / "module.borc";
 
             if (! checkValidBorcFile(moduleFilePath)) {
                 throw std::runtime_error("There is no module build file on this folder '" + moduleFilePath.string() + "'");
             }
 
-            auto moduleJsonContent = service.load(moduleFilePath.string());
+            auto moduleJsonContent = fileService.load(moduleFilePath.string());
             auto moduleJson = nlohmann::json::parse(moduleJsonContent);
 
             ModuleEntity moduleEntity;
@@ -75,24 +52,10 @@ namespace borc {
             moduleEntities.push_back(moduleEntity);
         }
 
-        // we have all the information needed in order to process the packages.
-        std::set<std::string> languages;
+        return moduleEntities;
+    }
 
-        for (const ModuleEntity &moduleEntity : moduleEntities) {
-            languages.insert(moduleEntity.language);
-        }
-
-        std::cout << "Detected programming languages:" << std::endl;
-        for (const std::string &lang : languages) {
-            std::cout << "    " << lang << std::endl;
-        }
-
-        // with the programming languages, we can issue to the user what toolchains must be configured!
-        std::map<std::string, std::string> toolchains = {
-            {"c++/17", "gcc"},
-            {"c++/17", "clang"}
-        };
-
+    std::unique_ptr<Package> makePackage(const PackageEntity &packageEntity, const std::vector<ModuleEntity> &moduleEntities) {
         // now we are ready to create the package and artifacts instances
         auto package = std::make_unique<Package>(packageEntity.name);
 
@@ -142,6 +105,67 @@ namespace borc {
             artifact->setIncludePaths(includePaths);
             artifact->setSourcePaths(sourcePaths);
         }
+
+        return package;
+    }
+
+
+    ConfigureController::~ConfigureController() {}
+
+    void ConfigureController::perform(int argc, char **argv) {
+        // parse the command line
+        boost::program_options::options_description desc("Allowed options for Configure subcommand");
+        desc.add_options()
+            ("help", "produce help message")
+            ("build-type", boost::program_options::value<std::string>(), "set build type (debug, release, all)")
+            ("toolchain", boost::program_options::value<std::string>(), "set toolchain (gcc, vc, clang)")
+        ;
+
+        boost::program_options::variables_map vm;
+        boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
+        boost::program_options::notify(vm);    
+
+        if (vm.count("help")) {
+            std::cout << desc << "\n";
+            return;
+        }
+
+        if (vm.count("build-type")) {
+            std::cout << "Build type was set to " << vm["build-type"].as<std::string>() << ".\n";
+        } else {
+            std::cout << "Build type defaulted to 'all'.\n";
+        }
+
+        // perform the configure operation
+        FileServiceImpl service;
+        const boost::filesystem::path baseFolderPath = boost::filesystem::current_path();
+
+        const PackageEntity packageEntity = this->makePackageEntity(baseFolderPath, service);
+        const std::vector<ModuleEntity> moduleEntities = this->makeModuleEntities(baseFolderPath, service, packageEntity);
+        
+
+        // we have all the information needed in order to process the packages.
+        /*
+        std::set<std::string> languages;
+
+        for (const ModuleEntity &moduleEntity : moduleEntities) {
+            languages.insert(moduleEntity.language);
+        }
+
+        std::cout << "Detected programming languages:" << std::endl;
+        for (const std::string &lang : languages) {
+            std::cout << "    " << lang << std::endl;
+        }
+
+        // with the programming languages, we can issue to the user what toolchains must be configured!
+        std::map<std::string, std::string> toolchains = {
+            {"c++/17", "gcc"},
+            {"c++/17", "clang"}
+        };
+        */
+
+        // *** 
+        std::unique_ptr<Package> package = makePackage(packageEntity, moduleEntities);
 
         // Now we have parsed all the artifacts in the main package. 
         // Let's parse all the additional packages. We need that when we solve all the dependencies to create references

@@ -7,6 +7,11 @@
 #include <boost/filesystem/path.hpp>
 
 namespace borc {
+    struct PackageEntity;
+    struct ModuleEntity;
+
+    class FileService;
+
     class ConfigureController : public Controller {
     public:
         virtual ~ConfigureController();
@@ -15,6 +20,10 @@ namespace borc {
 
     private:
         bool checkValidBorcFile(const boost::filesystem::path &filePath) const;
+
+        PackageEntity makePackageEntity(const boost::filesystem::path &basePath, FileService &fileService) const;
+
+        std::vector<ModuleEntity> makeModuleEntities(const boost::filesystem::path &basePath, FileService &fileService, const PackageEntity &packageEntity) const;
     };
 }
 
