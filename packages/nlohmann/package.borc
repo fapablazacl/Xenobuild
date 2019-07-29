@@ -8,12 +8,13 @@
                 "name": "c++",
                 "dialects": ["11", "14", "17"]
             },
-            "source": {
-                "url": "https://github.com/nlohmann/json.git",
-                "includePaths": [
-                    "include"
-                ]
-            }
-        }   
+            "sources": [
+                {
+                    "url": "https://github.com/nlohmann/json.git",
+                    "path": "include",
+                    "public": true
+                }
+            ]
+        }
     ]
 }
