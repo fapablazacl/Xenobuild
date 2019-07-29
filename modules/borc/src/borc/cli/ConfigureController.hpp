@@ -10,6 +10,7 @@ namespace borc {
     struct PackageEntity;
     struct ModuleEntity;
 
+    class Package;
     class FileService;
 
     class ConfigureController : public Controller {
@@ -24,6 +25,8 @@ namespace borc {
         PackageEntity makePackageEntity(const boost::filesystem::path &basePath, FileService &fileService) const;
 
         std::vector<ModuleEntity> makeModuleEntities(const boost::filesystem::path &basePath, FileService &fileService, const PackageEntity &packageEntity) const;
+
+        std::unique_ptr<Package> makePackage(const PackageEntity &packageEntity, const std::vector<ModuleEntity> &moduleEntities) const;
     };
 }
 

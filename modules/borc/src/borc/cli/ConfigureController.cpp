@@ -16,101 +16,8 @@
 #include <borc/model/Package.hpp>
 
 namespace borc {
-
-    PackageEntity ConfigureController::makePackageEntity(const boost::filesystem::path &basePath, FileService &fileService) const {
-        const auto packageFilePath = basePath / "package.borc";
-
-        if (! checkValidBorcFile(packageFilePath)) {
-            throw std::runtime_error("There is no package build file on the folder '" + packageFilePath.string() + "'");
-        }
-
-        auto packageJsonContent = fileService.load(packageFilePath.string());
-        auto packageJson = nlohmann::json::parse(packageJsonContent);
-
-        PackageEntity packageEntity;
-        deserialize(packageEntity, packageJson);
-
-        return packageEntity;
-    }
-
-    std::vector<ModuleEntity> ConfigureController::makeModuleEntities(const boost::filesystem::path &basePath, FileService &fileService, const PackageEntity &packageEntity) const {
-        std::vector<ModuleEntity> moduleEntities;
-
-        for (const std::string &modulePartialPath : packageEntity.modules) {
-            const boost::filesystem::path moduleFilePath = basePath / modulePartialPath / "module.borc";
-
-            if (! checkValidBorcFile(moduleFilePath)) {
-                throw std::runtime_error("There is no module build file on this folder '" + moduleFilePath.string() + "'");
-            }
-
-            auto moduleJsonContent = fileService.load(moduleFilePath.string());
-            auto moduleJson = nlohmann::json::parse(moduleJsonContent);
-
-            ModuleEntity moduleEntity;
-            deserialize(moduleEntity, moduleJson);
-
-            moduleEntities.push_back(moduleEntity);
-        }
-
-        return moduleEntities;
-    }
-
-    std::unique_ptr<Package> makePackage(const PackageEntity &packageEntity, const std::vector<ModuleEntity> &moduleEntities) {
-        // now we are ready to create the package and artifacts instances
-        auto package = std::make_unique<Package>(packageEntity.name);
-
-        // available artifact types for C/C++ projects
-        const std::map<std::string, Artifact::Type> artifactTypeMap = {
-            {"application/cli", Artifact::Type::ApplicationCli},
-            {"application/gli", Artifact::Type::ApplicationGui},
-            {"library/static", Artifact::Type::LibraryStatic},
-            {"library/dynamic", Artifact::Type::LibraryDynamic}
-        };
-
-        for (int i=0; i<moduleEntities.size(); i++) {
-            const ModuleEntity &moduleEntity = moduleEntities[i];
-
-            Artifact *artifact = package->createArtifact();
-
-            artifact->setName(moduleEntity.name);
-
-            if (auto artifactTypeIt = artifactTypeMap.find(moduleEntity.type); artifactTypeIt != artifactTypeMap.end()) {
-                artifact->setType(artifactTypeIt->second);
-            } else {
-                std::string msg;
-                msg += "Invalid artifact type";
-                msg += " '" + moduleEntity.type + "' ";
-                msg += "for the";
-                msg += " '" + moduleEntity.language + "' ";
-                msg += "programming language specified in the";
-                msg += " '" + moduleEntity.name + "' ";
-                msg += "artifact.";
-
-                throw std::runtime_error(msg.c_str());
-            }
-
-            artifact->setPath(boost::filesystem::path{packageEntity.modules[i]});
-
-            std::vector<boost::filesystem::path> includePaths;
-            std::vector<boost::filesystem::path> sourcePaths;
-
-            for (const ModuleSourceEntity &moduleSourceEntity : moduleEntity.sources) {
-                if (moduleSourceEntity.public_) {
-                    includePaths.push_back(moduleSourceEntity.path);
-                } else {
-                    sourcePaths.push_back(moduleSourceEntity.path);
-                }
-            }
-
-            artifact->setIncludePaths(includePaths);
-            artifact->setSourcePaths(sourcePaths);
-        }
-
-        return package;
-    }
-
-
     ConfigureController::~ConfigureController() {}
+
 
     void ConfigureController::perform(int argc, char **argv) {
         // parse the command line
@@ -165,7 +72,7 @@ namespace borc {
         */
 
         // *** 
-        std::unique_ptr<Package> package = makePackage(packageEntity, moduleEntities);
+        std::unique_ptr<Package> package = this->makePackage(packageEntity, moduleEntities);
 
         // Now we have parsed all the artifacts in the main package. 
         // Let's parse all the additional packages. We need that when we solve all the dependencies to create references
@@ -176,7 +83,103 @@ namespace borc {
         }
     }
 
+
     bool ConfigureController::checkValidBorcFile(const boost::filesystem::path &filePath) const {
         return !boost::filesystem::is_directory(filePath) && boost::filesystem::exists(filePath);
+    }
+
+
+    PackageEntity ConfigureController::makePackageEntity(const boost::filesystem::path &basePath, FileService &fileService) const {
+        const auto packageFilePath = basePath / "package.borc";
+
+        if (! checkValidBorcFile(packageFilePath)) {
+            throw std::runtime_error("There is no package build file on the folder '" + packageFilePath.string() + "'");
+        }
+
+        auto packageJsonContent = fileService.load(packageFilePath.string());
+        auto packageJson = nlohmann::json::parse(packageJsonContent);
+
+        PackageEntity packageEntity;
+        deserialize(packageEntity, packageJson);
+
+        return packageEntity;
+    }
+
+
+    std::vector<ModuleEntity> ConfigureController::makeModuleEntities(const boost::filesystem::path &basePath, FileService &fileService, const PackageEntity &packageEntity) const {
+        std::vector<ModuleEntity> moduleEntities;
+
+        for (const std::string &modulePartialPath : packageEntity.modules) {
+            const boost::filesystem::path moduleFilePath = basePath / modulePartialPath / "module.borc";
+
+            if (! checkValidBorcFile(moduleFilePath)) {
+                throw std::runtime_error("There is no module build file on this folder '" + moduleFilePath.string() + "'");
+            }
+
+            auto moduleJsonContent = fileService.load(moduleFilePath.string());
+            auto moduleJson = nlohmann::json::parse(moduleJsonContent);
+
+            ModuleEntity moduleEntity;
+            deserialize(moduleEntity, moduleJson);
+
+            moduleEntities.push_back(moduleEntity);
+        }
+
+        return moduleEntities;
+    }
+
+
+    std::unique_ptr<Package> ConfigureController::makePackage(const PackageEntity &packageEntity, const std::vector<ModuleEntity> &moduleEntities) const {
+        // now we are ready to create the package and artifacts instances
+        auto package = std::make_unique<Package>(packageEntity.name);
+
+        // available artifact types for C/C++ projects
+        const std::map<std::string, Artifact::Type> artifactTypeMap = {
+            {"application/cli", Artifact::Type::ApplicationCli},
+            {"application/gli", Artifact::Type::ApplicationGui},
+            {"library/static", Artifact::Type::LibraryStatic},
+            {"library/dynamic", Artifact::Type::LibraryDynamic}
+        };
+
+        for (int i=0; i<moduleEntities.size(); i++) {
+            const ModuleEntity &moduleEntity = moduleEntities[i];
+
+            Artifact *artifact = package->createArtifact();
+
+            artifact->setName(moduleEntity.name);
+
+            if (auto artifactTypeIt = artifactTypeMap.find(moduleEntity.type); artifactTypeIt != artifactTypeMap.end()) {
+                artifact->setType(artifactTypeIt->second);
+            } else {
+                std::string msg;
+                msg += "Invalid artifact type";
+                msg += " '" + moduleEntity.type + "' ";
+                msg += "for the";
+                msg += " '" + moduleEntity.language + "' ";
+                msg += "programming language specified in the";
+                msg += " '" + moduleEntity.name + "' ";
+                msg += "artifact.";
+
+                throw std::runtime_error(msg.c_str());
+            }
+
+            artifact->setPath(boost::filesystem::path{packageEntity.modules[i]});
+
+            std::vector<boost::filesystem::path> includePaths;
+            std::vector<boost::filesystem::path> sourcePaths;
+
+            for (const ModuleSourceEntity &moduleSourceEntity : moduleEntity.sources) {
+                if (moduleSourceEntity.public_) {
+                    includePaths.push_back(moduleSourceEntity.path);
+                } else {
+                    sourcePaths.push_back(moduleSourceEntity.path);
+                }
+            }
+
+            artifact->setIncludePaths(includePaths);
+            artifact->setSourcePaths(sourcePaths);
+        }
+
+        return package;
     }
 }
