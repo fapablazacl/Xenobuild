@@ -1,11 +1,11 @@
 
 #include "ServiceFactoryVC.hpp"
 
-#include <borc/core/Command.hpp>
-#include <borc/core/Compiler.hpp>
-#include <borc/core/Linker.hpp>
-#include <borc/core/BuildService.hpp>
-#include <borc/core/RunService.hpp>
+#include <borc/toolchain/Command.hpp>
+#include <borc/toolchain/Compiler.hpp>
+#include <borc/toolchain/Linker.hpp>
+#include <borc/toolchain/BuildService.hpp>
+#include <borc/toolchain/RunService.hpp>
 
 namespace borc {
     ServiceFactoryVC::ServiceFactoryVC(const std::string &installationPath, const std::string &windowsKitPath) {

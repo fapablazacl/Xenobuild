@@ -49,4 +49,9 @@ add_library(borc-core
     "src/borc/toolchain/SystemCommand.cpp"
     "src/borc/toolchain/RunService.cpp"
     "src/borc/toolchain/ServiceFactory.cpp"
+
+    "src/borc/toolchain/ServiceFactoryGCC.hpp"
+    "src/borc/toolchain/ServiceFactoryGCC.cpp"
+    "src/borc/toolchain/ServiceFactoryVC.hpp"
+    "src/borc/toolchain/ServiceFactoryVC.cpp"
 )
