@@ -1,14 +1,16 @@
 
-#include "BuildGraphGenerator.hpp"
-#include "NodeRepository.hpp"
-#include "Node.hpp"
+#include <borc/dag/BuildGraphGenerator.hpp>
+#include <borc/dag/NodeRepository.hpp>
+#include <borc/dag/Node.hpp>
 
 #include <string>
+/*
 #include <borc/core/Compiler.hpp>
 #include <borc/core/Linker.hpp>
 #include <borc/core/Toolchain.hpp>
 #include <borc/core/Module.hpp>
 #include <borc/core/Source.hpp>
+*/
 
 namespace borc {
     BuildGraphGenerator::BuildGraphGenerator(NodeRepository *nodeRepository, const Toolchain *toolchain) {
@@ -17,6 +19,7 @@ namespace borc {
     }
 
     Node* BuildGraphGenerator::generateGraph(const Module *module) const {
+        /*
         const std::string moduleFilePath = module->getOutputFilePath().string();
         Node *moduleNode = nodeRepository->getNode(moduleFilePath);
 
@@ -31,9 +34,13 @@ namespace borc {
         }
 
         return moduleNode;
+        */
+
+        return nullptr;
     }
 
     Node* BuildGraphGenerator::generateGraph(const Source *source) const {
+        /*
         const auto compiler = this->toolchain->selectCompiler(source);
 
         if (!compiler) {
@@ -51,5 +58,8 @@ namespace borc {
         // TODO: Compute header dependency information
 
         return objectNode;
+        */
+
+       return nullptr;
     }
 }

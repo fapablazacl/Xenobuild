@@ -1,5 +1,5 @@
 
-#include "Node.hpp"
+#include <borc/dag/Node.hpp>
 #include <algorithm>
 
 namespace borc {

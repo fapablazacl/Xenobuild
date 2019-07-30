@@ -1,6 +1,6 @@
 
-#include "NodeRepository.hpp"
-#include "Node.hpp"
+#include <borc/dag/NodeRepository.hpp>
+#include <borc/dag/Node.hpp>
 
 namespace borc {
     NodeRepository::NodeRepository() {}
