@@ -18,12 +18,12 @@ namespace borc {
         this->toolchain = toolchain;
     }
 
-    Node* BuildGraphGenerator::generateGraph(const Module *module) const {
+    Node* BuildGraphGenerator::generateGraph(const Artifact *artifact) const {
         /*
-        const std::string moduleFilePath = module->getOutputFilePath().string();
+        const std::string moduleFilePath = artifact->getOutputFilePath().string();
         Node *moduleNode = nodeRepository->getNode(moduleFilePath);
 
-        for (const borc::Source *source: module->getSources()) {
+        for (const borc::Source *source: artifact->getSources()) {
             Node *objectNode = this->generateGraph(source);
 
             if (!objectNode) {

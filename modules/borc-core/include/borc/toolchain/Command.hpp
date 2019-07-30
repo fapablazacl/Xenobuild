@@ -3,7 +3,7 @@
 #define __BORC_MODEL_COMMAND_HPP__
 
 #include <string>
-#include "Predef.h"
+
 
 namespace borc {
 	class Command {

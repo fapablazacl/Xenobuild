@@ -19,7 +19,7 @@ namespace borc {
 	class Compiler;
 	class Linker;
 	class Source;
-	class Module;
+	class Artifact;
 
 	class Toolchain {
 	public:
@@ -29,7 +29,7 @@ namespace borc {
 
 		const Compiler* selectCompiler(const Source *source) const;
 
-		const Linker* selectLinker(const Module *module) const;
+		const Linker* selectLinker(const Artifact *artifact) const;
 
 	private:
 		std::vector<std::pair<SourceType, const Compiler*>> compilers;

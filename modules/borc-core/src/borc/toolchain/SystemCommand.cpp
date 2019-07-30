@@ -1,10 +1,9 @@
 
-#include "SystemCommand.hpp"
+#include <borc/toolchain/SystemCommand.hpp>
 
 #include <iostream>
 #include <stdexcept>
-
-#include "Common.hpp"
+#include <boost/algorithm/string/join.hpp>
 
 namespace borc {
 	SystemCommand::SystemCommand(const std::string &base)
@@ -14,7 +13,8 @@ namespace borc {
 		: _base(base), _options(options) {}
 
 	void SystemCommand::execute() {
-		const std::string systemCommand = _base + " " + join(_options, " ");
+		// const std::string systemCommand = _base + " " + join(_options, " ");
+		const std::string systemCommand = _base + " " + boost::algorithm::join(_options, " ");
 
 		std::cout << systemCommand << std::endl;
 

@@ -4,12 +4,11 @@
 
 #include <vector>
 #include <iostream>
-#include <boost/filesystem.hpp>
-#include "Predef.h"
+#include <boost/filesystem/path.hpp>
 
 namespace borc {
-	class Project;
-	class Module;
+	class Package;
+	class Artifact;
 	class Command;
 	class CommandFactory;
 
@@ -43,8 +42,8 @@ namespace borc {
 			const CompilerConfiguration &configuration
 		);
 
-		[[deprecated]]
-		std::string compile(const Project *project, const Module *module, const std::string &file, const CompileOptions &options) const;
+		// [[deprecated]]
+		std::string compile(const Package *package, const Artifact *artifact, const std::string &file, const CompileOptions &options) const;
 
 		Command* createCompileCommand(const Source *source, const CompileOptions &options) const;
 

@@ -1,7 +1,7 @@
 
-#include "CommandFactory.hpp"
+#include <borc/toolchain/CommandFactory.hpp>
 
-#include "SystemCommand.hpp"
+#include <borc/toolchain/SystemCommand.hpp>
 // #include "ProcessCommand.hpp"
 
 namespace borc {

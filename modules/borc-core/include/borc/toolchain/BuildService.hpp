@@ -4,14 +4,14 @@
 
 #include <string>
 #include <vector>
-#include "Predef.h"
+
 
 namespace borc {
 	class Compiler;
 	class Linker;
-	class Project;
+	class Package;
 
-	class BORC_API BuildService {
+	class BuildService {
 	private:
 		const Compiler *compiler;
 		const Linker *linker;
@@ -24,7 +24,7 @@ namespace borc {
 	public:
 		explicit BuildService(const Compiler *compiler, const Linker *linker);
 
-		void buildProject(const Project *project);
+		void buildProject(const Package *project);
 
 	private:
 		bool isFileCompilable(const std::string &file) const;

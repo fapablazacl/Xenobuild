@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include "Command.hpp"
-#include "Predef.h"
+
 
 namespace borc {
 	class ProcessCommand : public Command {

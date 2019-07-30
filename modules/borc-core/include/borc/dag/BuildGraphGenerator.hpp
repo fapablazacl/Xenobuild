@@ -4,7 +4,7 @@
 
 namespace borc {
 	class Toolchain;
-	class Module;
+	class Artifact;
 	class Source;
 	class Node;
 	class NodeRepository;
@@ -12,7 +12,7 @@ namespace borc {
 	public:
 		explicit BuildGraphGenerator(NodeRepository *nodeRepository, const Toolchain *toolchain);
 
-		Node* generateGraph(const Module *module) const;
+		Node* generateGraph(const Artifact *artifact) const;
 
 	private:
 		Node* generateGraph(const Source *source) const;

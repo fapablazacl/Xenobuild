@@ -2,9 +2,8 @@
 #ifndef __BORC_CORE_SERVICEFACTORYGCC_HPP__
 #define __BORC_CORE_SERVICEFACTORYGCC_HPP__
 
-#include <borc/core/CommandFactory.hpp>
-
-#include "ServiceFactory.hpp"
+#include <borc/toolchain/CommandFactory.hpp>
+#include <borc/toolchain/ServiceFactory.hpp>
 
 namespace borc {
 	class ServiceFactoryGCC : public ServiceFactory {

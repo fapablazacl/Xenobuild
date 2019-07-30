@@ -1,7 +1,7 @@
 
-#include "Toolchain.hpp"
+#include <borc/toolchain/Toolchain.hpp>
+#include <borc/model/Source.hpp>
 
-#include <borc/core/Source.hpp>
 #include <algorithm>
 
 namespace borc {
@@ -28,7 +28,7 @@ namespace borc {
 
     const Compiler* Toolchain::selectCompiler(const Source *source) const {
         for (auto &pair : compilers) {
-            if (pair.first.match(source->getFilePath())) {
+            if (pair.first.match(source->getPartialFilePath())) {
                 return pair.second;
             }
         }
@@ -36,7 +36,7 @@ namespace borc {
         return nullptr;
     }
 
-    const Linker* Toolchain::selectLinker(const Module *module) const {
+    const Linker* Toolchain::selectLinker(const Artifact *artifact) const {
         return linker;
     }
 }

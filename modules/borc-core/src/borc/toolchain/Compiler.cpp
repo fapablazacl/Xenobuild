@@ -1,12 +1,12 @@
 
-#include "Compiler.hpp"
-#include "Common.hpp"
-#include "Command.hpp"
-#include "CommandFactory.hpp"
+#include <borc/toolchain/Compiler.hpp>
 
-#include "Source.hpp"
-#include "Project.hpp"
-#include "Module.hpp"
+#include <boost/filesystem.hpp>
+#include <borc/toolchain/Command.hpp>
+#include <borc/toolchain/CommandFactory.hpp>
+#include <borc/model/Source.hpp>
+#include <borc/model/Artifact.hpp>
+#include <borc/model/Package.hpp>
 
 namespace borc {
 	Compiler::Compiler(CommandFactory *commandFactory, const std::string &commandPath, const CompilerSwitches &switches, const CompilerConfiguration &configuration) {
@@ -16,9 +16,11 @@ namespace borc {
 		this->configuration = configuration;
 	}
 
-	std::string Compiler::compile(const Project *project, const Module *module, const std::string &file, const CompileOptions &options) const {
-		const boost::filesystem::path sourceFilePath = boost::filesystem::canonical(module->getPath() / boost::filesystem::path(file));
-		const boost::filesystem::path objectFilePath = boost::filesystem::canonical(module->getOutputPath()) / boost::filesystem::path(file + ".obj");
+	std::string Compiler::compile(const Package *package, const Artifact *artifact, const std::string &file, const CompileOptions &options) const {
+		const auto sourceFilePath = boost::filesystem::canonical(artifact->getPath() / boost::filesystem::path(file));
+
+		// TODO: Use a valid Outputpath
+		const auto objectFilePath = boost::filesystem::canonical(artifact->getPath()) / boost::filesystem::path(file + ".obj");
 
 		std::cout << "    " << file << " ..." << std::endl;
 
@@ -55,14 +57,15 @@ namespace borc {
 
 	boost::filesystem::path Compiler::getObjectFilePath(const Source *source) const {
 		const auto objectBaseFilePath = source->getPartialFilePath().string() + ".obj";
-		const auto outputPath = source->getParentModule()->getOutputPath();
+		// const auto outputPath = source->getParentModule()->getOutputPath();
+		const auto outputPath = source->getArtifact()->getPath();
 		const auto objectFilePath = boost::filesystem::canonical(outputPath) / boost::filesystem::path(objectBaseFilePath);
 
 		return objectFilePath;
 	}
 
 	Command* Compiler::createCompileCommand(const Source *source, const CompileOptions &options) const {
-		const auto sourceFilePath = source->getFilePath();
+		const auto sourceFilePath = source->getPartialFilePath();
 		const auto objectFilePath = this->getObjectFilePath(source);
 
 		std::cout << "    " << source->getPartialFilePath() << " ..." << std::endl;

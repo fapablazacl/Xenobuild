@@ -4,12 +4,12 @@
 
 #include <string>
 #include <vector>
-#include "Predef.h"
+
 
 namespace borc {
 	class CommandFactory;
-	class Project;
-	class Module;
+	class Package;
+	class Artifact;
 
 	struct LinkerSwitches {
 		std::string buildSharedLibrary;
@@ -31,11 +31,11 @@ namespace borc {
 	public:
 		explicit Linker(CommandFactory *commandFactory, const std::string &commandPath, const LinkerSwitches &switches, const LinkerConfiguration &configuration);
 
-		std::string link(const Project *project, const Module *module, const std::vector<std::string> &objectFiles) const;
+		std::string link(const Package *package, const Artifact *artifact, const std::vector<std::string> &objectFiles) const;
 
 	private:
-		std::vector<std::string> collectLibraries(const Project *project, const Module *module) const;
-		std::vector<std::string> collectLibraryPaths(const Project *project, const Module *module) const;
+		std::vector<std::string> collectLibraries(const Package *package, const Artifact *artifact) const;
+		std::vector<std::string> collectLibraryPaths(const Package *package, const Artifact *artifact) const;
 		
 		std::vector<std::string> computeLibrariesOptions(const std::vector<std::string> &libraries) const;
 		std::vector<std::string> computeLibraryPathsOptions(const std::vector<std::string> &libraryPaths) const;

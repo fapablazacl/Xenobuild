@@ -1,11 +1,12 @@
 
-#include "ToolchainFactory.hpp"
+#include <borc/toolchain/ToolchainFactory.hpp>
 
-#include <borc/core/Compiler.hpp>
-#include <borc/core/Linker.hpp>
-#include <borc/core/Toolchain.hpp>
-#include <borc/core/ServiceFactoryGCC.hpp>
-#include <borc/core/ServiceFactoryVC.hpp>
+#include <borc/toolchain/Compiler.hpp>
+#include <borc/toolchain/Linker.hpp>
+#include <borc/toolchain/Toolchain.hpp>
+
+#include "ServiceFactoryGCC.hpp"
+#include "ServiceFactoryVC.hpp"
 
 namespace borc {
     class ToolchainFactoryImpl : public ToolchainFactory {

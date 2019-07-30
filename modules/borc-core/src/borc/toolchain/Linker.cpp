@@ -1,11 +1,12 @@
 
-#include "Linker.hpp"
+#include <borc/toolchain/Linker.hpp>
 
-#include "Command.hpp"
-#include "CommandFactory.hpp"
-#include "Project.hpp"
-#include "Module.hpp"
 #include <iostream>
+#include <borc/toolchain/Command.hpp>
+#include <borc/toolchain/CommandFactory.hpp>
+#include <borc/model/Package.hpp>
+#include <borc/model/Artifact.hpp>
+
 
 namespace borc {
 	Linker::Linker(CommandFactory *commandFactory, const std::string &commandPath, const LinkerSwitches &switches, const LinkerConfiguration &configuration) {
@@ -15,17 +16,17 @@ namespace borc {
 		this->configuration = configuration;
 	}
 
-	std::string Linker::link(const Project *project, const Module *module, const std::vector<std::string> &objectFiles) const {
-		std::cout << "Linking " << toString(module->getType()) << " module " << module->getName() << " ..." << std::endl;
+	std::string Linker::link(const Package *package, const Artifact *artifact, const std::vector<std::string> &objectFiles) const {
+		std::cout << "Linking ${ArtifactType} module " << artifact->getName() << " ..." << std::endl;
 
-		const std::string outputModuleFilePath = module->getOutputFilePath().string();
+		const std::string outputModuleFilePath = artifact->getPath().string();
 
-		const auto librariesOptions = this->computeLibrariesOptions(this->collectLibraries(project, module));
-		const auto libraryPathsOptions = this->computeLibraryPathsOptions(this->collectLibraryPaths(project, module));
+		const auto librariesOptions = this->computeLibrariesOptions(this->collectLibraries(package, artifact));
+		const auto libraryPathsOptions = this->computeLibraryPathsOptions(this->collectLibraryPaths(package, artifact));
 
 		Command *command = commandFactory->createCommand(commandPath);
 
-		if (module->getType() == ModuleType::Library) {
+		if (artifact->getType() == Artifact::Type::LibraryDynamic) {
 			command->addOption(switches.buildSharedLibrary);
 		}
 
@@ -59,10 +60,10 @@ namespace borc {
 		return options;
 	}
 
-	std::vector<std::string> Linker::collectLibraries(const Project *project, const Module *module) const {
+	std::vector<std::string> Linker::collectLibraries(const Package *package, const Artifact *artifact) const {
 		std::vector<std::string> libraries = configuration.importLibraries;
 
-		for (const Module *dependency : module->getDependencies()) {
+		for (const Artifact *dependency : artifact->getDependencies()) {
 			const std::string library = dependency->getName();
 			libraries.push_back(library);
 		}
@@ -70,11 +71,11 @@ namespace borc {
 		return libraries;
 	}
 
-	std::vector<std::string> Linker::collectLibraryPaths(const Project *project, const Module *module) const {
+	std::vector<std::string> Linker::collectLibraryPaths(const Package *package, const Artifact *artifact) const {
 		std::vector<std::string> paths = configuration.importLibraryPaths;
 
-		for (const Module *dependency : module->getDependencies()) {
-			const std::string path = dependency->getOutputPath().string();
+		for (const Artifact *dependency : artifact->getDependencies()) {
+			const std::string path = dependency->getPath().string();
 			paths.push_back(path);
 		}
 

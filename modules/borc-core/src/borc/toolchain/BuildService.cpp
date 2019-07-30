@@ -1,13 +1,12 @@
 
-#include "BuildService.hpp"
+#include <borc/toolchain/BuildService.hpp>
 
 #include <algorithm>
-#include <boost/filesystem.hpp>
-
-#include "Project.hpp"
-#include "Module.hpp"
-#include "Compiler.hpp"
-#include "Linker.hpp"
+#include <boost/filesystem/path.hpp>
+#include <borc/model/Artifact.hpp>
+#include <borc/model/Package.hpp>
+#include <borc/toolchain/Compiler.hpp>
+#include <borc/toolchain/Linker.hpp>
 
 namespace borc {
 	BuildService::BuildService(const Compiler *compiler, const Linker *linker) {
@@ -15,11 +14,11 @@ namespace borc {
 		this->linker = linker;
 	}
 
-	static CompileOptions computeCompileOptions(const Module *module) {
+	static CompileOptions computeCompileOptions(const Artifact *artifact) {
 		std::vector<std::string> directories;
 
-		for (Module *module : module->getDependencies()) {
-			const std::string directory = module->getPath().string();
+		for (const Artifact *artifact : artifact->getDependencies()) {
+			const std::string directory = artifact->getPath().string();
 
 			directories.push_back(directory);
 		}
@@ -27,28 +26,28 @@ namespace borc {
 		return { directories };
 	}
 
-	void BuildService::buildProject(const Project *project) {
-		auto modules = project->getModules();
-
+	void BuildService::buildProject(const Package *package) {
 		int builtModules = 0;
 
-		for (const Module *module : modules) {
-			const CompileOptions compileOptions = computeCompileOptions(module);
+		for (const Artifact *artifact : package->getArtifacts()) {
+			const CompileOptions compileOptions = computeCompileOptions(artifact);
 
-			std::cout << "Building module " << module->getName() << " ..." << std::endl;
+			std::cout << "Building module " << artifact->getName() << " ..." << std::endl;
 
-			const auto files = module->getFiles();
+			const auto files = artifact->getSourceFiles();
 
 			std::vector<std::string> objectFiles;
-			std::copy_if(files.begin(), files.end(), std::back_inserter(objectFiles), [&](const auto &file) {
-				return this->isFileCompilable(file);
+			for (const boost::filesystem::path &file : files) {
+				if (this->isFileCompilable(file.string())) {
+					objectFiles.push_back(file.string());
+				}
+			}
+
+			std::transform(objectFiles.begin(), objectFiles.end(), objectFiles.begin(), [&](const std::string &file) {
+				return this->compiler->compile(package, artifact, file, compileOptions);
 			});
 
-			std::transform(objectFiles.begin(), objectFiles.end(), objectFiles.begin(), [&](const auto &file) {
-				return this->compiler->compile(project, module, file, compileOptions);
-			});
-
-			linker->link(project, module, objectFiles);
+			linker->link(package, artifact, objectFiles);
 
 			builtModules++;
 		}
