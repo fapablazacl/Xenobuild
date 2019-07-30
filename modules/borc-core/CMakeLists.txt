@@ -2,6 +2,9 @@
 include_directories("../borc-core/include")
 
 add_library(borc-core 
+    "include/borc/dag/BuildGraphGenerator.hpp"
+    "include/borc/dag/Node.hpp"
+    "include/borc/dag/NodeRepository.hpp"
     "include/borc/model/Artifact.hpp"
     "include/borc/model/Package.hpp"
     "include/borc/model/Context.hpp"
@@ -14,6 +17,9 @@ add_library(borc-core
     "include/borc/services/FileServiceImpl.hpp"
     "include/borc/utility/MetaProperty.hpp"
 
+    "src/borc/dag/BuildGraphGenerator.cpp"
+    "src/borc/dag/Node.cpp"
+    "src/borc/dag/NodeRepository.cpp"
     "src/borc/model/Artifact.cpp"
     "src/borc/model/Package.cpp"
     "src/borc/model/Context.cpp"

@@ -71,10 +71,9 @@ namespace borc {
         };
         */
 
-        // *** 
         std::unique_ptr<Package> package = this->makePackage(packageEntity, moduleEntities);
 
-        // Now we need to 
+        // Now we need to start the build!
 
         // Now we have parsed all the artifacts in the main package. 
         // Let's parse all the additional packages. We need that when we solve all the dependencies to create references
