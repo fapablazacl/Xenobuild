@@ -34,7 +34,7 @@ namespace borc {
 
 			std::cout << "Building module " << artifact->getName() << " ..." << std::endl;
 
-			const auto files = artifact->getSourceFiles();
+			const auto files = artifact->getSourcePaths();
 
 			std::vector<std::string> objectFiles;
 			for (const boost::filesystem::path &file : files) {

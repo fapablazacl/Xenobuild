@@ -10,6 +10,6 @@ namespace borc {
     BuildServiceImpl::~BuildServiceImpl() {}
 
     void BuildServiceImpl::build(Package *package) {
-        
+
     }
 }

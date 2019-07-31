@@ -52,7 +52,7 @@ namespace borc {
             return dependencies;
         }
 
-        std::vector<boost::filesystem::path> getSourceFiles() const {
+        std::vector<boost::filesystem::path> getSourcePaths() const {
             return sourcePaths;
         }
 
@@ -71,6 +71,8 @@ namespace borc {
         void setSourcePaths(const std::vector<boost::filesystem::path> &sourcePaths);
 
         void setIncludePaths(const std::vector<boost::filesystem::path> &includePaths);
+
+        std::vector<boost::filesystem::path> getSourceFiles(const boost::filesystem::path &baseFolder) const;
 
     private:
         Package *package = nullptr;

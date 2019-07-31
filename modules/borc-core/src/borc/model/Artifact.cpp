@@ -1,5 +1,8 @@
 
 #include <borc/model/Artifact.hpp>
+#include <borc/model/Package.hpp>
+
+#include <boost/filesystem.hpp>
 
 namespace borc {
     Artifact::Artifact(Package *package) {
@@ -30,5 +33,34 @@ namespace borc {
 
     void Artifact::setIncludePaths(const std::vector<boost::filesystem::path> &includePaths) {
         this->includePaths = includePaths;
+    }
+
+    std::vector<boost::filesystem::path> Artifact::getSourceFiles(const boost::filesystem::path &baseFolder) const {
+        std::vector<boost::filesystem::path> sourceFiles;
+
+        for (const boost::filesystem::path &sourcePath : sourcePaths) {
+            const boost::filesystem::path solvedSourcePath = baseFolder / path / sourcePath;
+
+            if (! boost::filesystem::exists(solvedSourcePath)) {
+                continue;
+            }
+
+            if (boost::filesystem::is_directory(solvedSourcePath)) {
+                boost::filesystem::recursive_directory_iterator it{solvedSourcePath}, end;
+
+                while (it != end) {
+                    if (! boost::filesystem::is_directory(it->path())) {
+                        sourceFiles.push_back(solvedSourcePath);
+                    }
+
+                    ++it;
+                }
+
+            } else {
+                sourceFiles.push_back(solvedSourcePath);
+            }
+        }
+
+        return sourceFiles;
     }
 }
