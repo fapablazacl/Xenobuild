@@ -8,6 +8,7 @@ namespace borc {
 	class Source;
 	class Node;
 	class NodeRepository;
+
 	class BuildGraphGenerator {
 	public:
 		explicit BuildGraphGenerator(NodeRepository *nodeRepository, const Toolchain *toolchain);

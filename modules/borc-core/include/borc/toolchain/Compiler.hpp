@@ -33,6 +33,8 @@ namespace borc {
 	};
 
 	class Source;
+	class Dag;
+	class DagNode;
 	class Compiler {
 	public:
 		explicit Compiler(
@@ -42,10 +44,12 @@ namespace borc {
 			const CompilerConfiguration &configuration
 		);
 
-		// [[deprecated]]
+		[[deprecated]]
 		std::string compile(const Package *package, const Artifact *artifact, const std::string &file, const CompileOptions &options) const;
 
 		Command* createCompileCommand(const Source *source, const CompileOptions &options) const;
+
+		DagNode* createDag(Dag *dag, const Source *source) const;
 
 		boost::filesystem::path getObjectFilePath(const Source *source) const;
 

@@ -7,6 +7,8 @@
 #include <borc/model/Source.hpp>
 #include <borc/model/Artifact.hpp>
 #include <borc/model/Package.hpp>
+#include <borc/utility/Dag.hpp>
+#include <borc/utility/DagNode.hpp>
 
 namespace borc {
 	Compiler::Compiler(CommandFactory *commandFactory, const std::string &commandPath, const CompilerSwitches &switches, const CompilerConfiguration &configuration) {
@@ -97,5 +99,13 @@ namespace borc {
 		command->addOptionRange(std::begin(configuration.flags), std::end(configuration.flags));
 
 		return command;
+	}
+
+	DagNode* Compiler::createDag(Dag *dag, const Source *source) const {
+		auto command = this->createCompileCommand(source, {});
+
+		// TODO: compute dependent headers
+
+		return dag->createNode(command);
 	}
 }
