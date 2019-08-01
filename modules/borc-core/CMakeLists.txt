@@ -21,6 +21,8 @@ add_library(borc-core
     "include/borc/services/BuildService.hpp"
     "include/borc/services/BuildServiceImpl.hpp"
     "include/borc/utility/MetaProperty.hpp"
+    "include/borc/utility/Dag.hpp"
+    "include/borc/utility/DagNode.hpp"
     "include/borc/toolchain/Compiler.hpp"
     "include/borc/toolchain/Linker.hpp"
     "include/borc/toolchain/Toolchain.hpp"

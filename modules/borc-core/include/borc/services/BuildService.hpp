@@ -3,14 +3,16 @@
 #define __BORC_SERVICES_BUILDSERVICE_HPP__
 
 #include <string>
+#include <memory>
 
 namespace borc {
+    class Dag;
     class Package;
     class BuildService {
     public:
         virtual ~BuildService();
 
-        virtual void build(Package *package) = 0;
+        virtual std::unique_ptr<Dag> createBuildDag(Package *package) = 0;
     };
 }
 

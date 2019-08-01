@@ -1,6 +1,8 @@
 
 #include <borc/services/BuildServiceImpl.hpp>
 
+#include <borc/utility/Dag.hpp>
+#include <borc/utility/DagNode.hpp>
 #include <borc/model/Package.hpp>
 #include <borc/model/Artifact.hpp>
 #include <borc/model/Source.hpp>
@@ -17,9 +19,13 @@ namespace borc {
         this->logger = logger;
     }
 
+
     BuildServiceImpl::~BuildServiceImpl() {}
 
-    void BuildServiceImpl::build(Package *package) {
+
+    std::unique_ptr<Dag> BuildServiceImpl::createBuildDag(Package *package) {
+        auto dag = std::make_unique<Dag>();
+
         for (Artifact *artifact : package->getArtifacts()) {
             const Linker *linker = toolchain->selectLinker(artifact);
 
@@ -40,12 +46,14 @@ namespace borc {
 
                 if (!compiler) {
                     if (logger) {
-                        logger->warn("Couldn't find a compiler using the current compiler");
+                        logger->warn("Couldn't find a compiler using the current toolchain");
                     }
 
                     continue;
                 }
             }
         }
+
+        return dag;
     }
 }

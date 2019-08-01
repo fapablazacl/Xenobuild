@@ -16,7 +16,7 @@ namespace borc {
 
         virtual ~BuildServiceImpl();
 
-        virtual void build(Package *package) override;
+        virtual std::unique_ptr<Dag> createBuildDag(Package *package) override;
 
     private:
         boost::filesystem::path basePath;
