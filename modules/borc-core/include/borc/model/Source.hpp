@@ -8,6 +8,7 @@
 
 namespace borc {
 	class Artifact;
+
 	class Source {
 	public:
 		explicit Source(const Artifact *artifact, const boost::filesystem::path &partialFilePath);

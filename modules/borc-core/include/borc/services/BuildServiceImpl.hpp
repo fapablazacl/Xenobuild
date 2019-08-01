@@ -8,18 +8,21 @@
 
 namespace borc {
     class Toolchain;
+    class LoggingService;
 
     class BuildServiceImpl : public BuildService {
     public:
-        BuildServiceImpl(const boost::filesystem::path &outputFolder, Toolchain *toolchain);
+        BuildServiceImpl(const boost::filesystem::path &basePath, const boost::filesystem::path &outputFolder, Toolchain *toolchain, LoggingService *logger);
 
         virtual ~BuildServiceImpl();
 
         virtual void build(Package *package) override;
 
     private:
+        boost::filesystem::path basePath;
         boost::filesystem::path outputFolder;
         Toolchain *toolchain = nullptr;
+        LoggingService *logger = nullptr;
     };
 }
 
