@@ -7,7 +7,6 @@
 #include <borc/model/Package.hpp>
 #include <borc/model/Artifact.hpp>
 
-
 namespace borc {
 	Linker::Linker(CommandFactory *commandFactory, const std::string &commandPath, const LinkerSwitches &switches, const LinkerConfiguration &configuration) {
 		this->commandFactory = commandFactory;
@@ -37,6 +36,29 @@ namespace borc {
 		command->execute();
 
 		return outputModuleFilePath;
+	}
+
+	LinkOutput Linker::link(const Package *package, const Artifact *artifact, const std::vector<boost::filesystem::path> &objectFiles) const {
+		const std::string outputModuleFilePath = artifact->getPath().string();
+
+		const auto librariesOptions = this->computeLibrariesOptions(this->collectLibraries(package, artifact));
+		const auto libraryPathsOptions = this->computeLibraryPathsOptions(this->collectLibraryPaths(package, artifact));
+
+		Command *command = commandFactory->createCommand(commandPath);
+
+		if (artifact->getType() == Artifact::Type::LibraryDynamic) {
+			command->addOption(switches.buildSharedLibrary);
+		}
+
+		command->addOptionRange(librariesOptions.begin(), librariesOptions.end());
+		command->addOptionRange(libraryPathsOptions.begin(), libraryPathsOptions.end());
+		command->addOption(switches.moduleOutput + outputModuleFilePath);
+
+		for (const boost::filesystem::path &objetFile : objectFiles) {
+			command->addOption(objetFile.string());
+		}
+
+		return {outputModuleFilePath,  command};
 	}
 
 	std::vector<std::string> Linker::computeLibrariesOptions(const std::vector<std::string> &libraries) const {

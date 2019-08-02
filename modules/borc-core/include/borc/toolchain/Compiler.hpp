@@ -7,6 +7,7 @@
 #include <boost/filesystem/path.hpp>
 
 namespace borc {
+	class DagNode;
 	class Package;
 	class Artifact;
 	class Command;
@@ -32,6 +33,11 @@ namespace borc {
 		std::vector<std::string> includePaths;
 	};
 
+	struct CompileOutput {
+		boost::filesystem::path outputFileRelativePath;
+		DagNode *node = nullptr;
+	};
+
 	class Source;
 	class Dag;
 	class DagNode;
@@ -49,7 +55,7 @@ namespace borc {
 
 		Command* createCompileCommand(const Source *source, const CompileOptions &options) const;
 
-		DagNode* createDag(Dag *dag, const Source *source) const;
+		CompileOutput compile(Dag *dag, const Source *source) const;
 
 		boost::filesystem::path getObjectFilePath(const Source *source) const;
 

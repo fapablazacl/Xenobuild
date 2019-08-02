@@ -4,9 +4,10 @@
 
 #include <string>
 #include <vector>
-
+#include <boost/filesystem/path.hpp>
 
 namespace borc {
+	class Command;
 	class CommandFactory;
 	class Package;
 	class Artifact;
@@ -27,11 +28,18 @@ namespace borc {
 		LinkerConfiguration() {}
 	};
 
+	struct LinkOutput {
+		boost::filesystem::path outputArtifactRelativePath;
+		Command *command = nullptr;
+	};
+
 	class Linker {
 	public:
 		explicit Linker(CommandFactory *commandFactory, const std::string &commandPath, const LinkerSwitches &switches, const LinkerConfiguration &configuration);
 
 		std::string link(const Package *package, const Artifact *artifact, const std::vector<std::string> &objectFiles) const;
+
+		LinkOutput link(const Package *package, const Artifact *artifact, const std::vector<boost::filesystem::path> &objectFiles) const;
 
 	private:
 		std::vector<std::string> collectLibraries(const Package *package, const Artifact *artifact) const;

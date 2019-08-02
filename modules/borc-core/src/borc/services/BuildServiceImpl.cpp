@@ -40,6 +40,7 @@ namespace borc {
             DagNode *artifactDagNode = dag->createNode();
 
             const std::vector<boost::filesystem::path> sourceFiles = artifact->getSourceFiles(basePath);
+            std::vector<boost::filesystem::path> objectFiles;
 
             for (const boost::filesystem::path &sourceFile : sourceFiles) {
                 Source source {artifact, sourceFile};
@@ -54,12 +55,16 @@ namespace borc {
                     continue;
                 }
 
-                DagNode *sourceDagNode = compiler->createDag(dag.get(), &source);
+                CompileOutput compileOutput = compiler->compile(dag.get(), &source);
 
-                artifactDagNode->previous.push_back(sourceDagNode);
+                objectFiles.push_back(compileOutput.outputFileRelativePath);
+                artifactDagNode->previous.push_back(compileOutput.node);
             }
 
-            // artifactDagNode->command = linker->createDag()
+            LinkOutput linkOutput = linker->link(package, artifact, objectFiles);
+            artifactDagNode->command = linkOutput.command;
+
+            dag->getRoot()->previous.push_back(artifactDagNode);
         }
 
         return dag;
