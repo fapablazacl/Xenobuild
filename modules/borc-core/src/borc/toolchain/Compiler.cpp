@@ -107,6 +107,7 @@ namespace borc {
 		boost::filesystem::path outputFileRelativePath = this->getObjectFilePath(source);
 
 		// TODO: compute dependent headers
+		node->previous.push_back(dag->createNode(commandFactory->createPathCommand(outputFileRelativePath.parent_path(), PathCommand::Create)));
 
 		return CompileOutput{outputFileRelativePath, node};
 	}
