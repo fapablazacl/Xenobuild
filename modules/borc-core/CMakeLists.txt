@@ -49,6 +49,8 @@ add_library(borc-core
     "src/borc/services/FileServiceImpl.cpp"
     "src/borc/services/LoggingService.cpp"
     "src/borc/services/LoggingServiceImpl.cpp"
+    "src/borc/utility/Dag.cpp"
+    "src/borc/utility/DagNode.cpp"
     "src/borc/utility/DagVisitor.cpp"
     "src/borc/toolchain/Compiler.cpp"
     "src/borc/toolchain/Linker.cpp"
