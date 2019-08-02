@@ -3,7 +3,7 @@
 
 #include <borc/utility/Dag.hpp>
 #include <borc/utility/DagNode.hpp>
-#include <borc/model/command/Command.hpp>
+#include <borc/model/Command.hpp>
 
 namespace borc {    
     void DagVisitor::visit(Dag *dag) {

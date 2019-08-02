@@ -1,7 +1,7 @@
 
 #include "ServiceFactoryVC.hpp"
 
-#include <borc/model/command/Command.hpp>
+#include <borc/model/Command.hpp>
 #include <borc/toolchain/Compiler.hpp>
 #include <borc/toolchain/Linker.hpp>
 #include <borc/toolchain/BuildService.hpp>

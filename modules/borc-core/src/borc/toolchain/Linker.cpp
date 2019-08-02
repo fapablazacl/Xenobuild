@@ -4,8 +4,8 @@
 #include <iostream>
 #include <borc/model/Package.hpp>
 #include <borc/model/Artifact.hpp>
-#include <borc/model/command/Command.hpp>
-#include <borc/model/command/CommandFactory.hpp>
+#include <borc/model/Command.hpp>
+#include <borc/model/CommandFactory.hpp>
 
 namespace borc {
 	Linker::Linker(CommandFactory *commandFactory, const std::string &commandPath, const LinkerSwitches &switches, const LinkerConfiguration &configuration) {
@@ -16,10 +16,11 @@ namespace borc {
 	}
 
 	std::string Linker::link(const Package *package, const Artifact *artifact, const std::vector<std::string> &objectFiles) const {
-		std::cout << "Linking ${ArtifactType} module " << artifact->getName() << " ..." << std::endl;
+		// std::cout << "Linking ${ArtifactType} module " << artifact->getName() << " ..." << std::endl;
 
 		const std::string outputModuleFilePath = artifact->getPath().string();
 
+		/*
 		const auto librariesOptions = this->computeLibrariesOptions(this->collectLibraries(package, artifact));
 		const auto libraryPathsOptions = this->computeLibraryPathsOptions(this->collectLibraryPaths(package, artifact));
 
@@ -34,6 +35,7 @@ namespace borc {
 		command->addOption(switches.moduleOutput + outputModuleFilePath);
 		command->addOptionRange(std::begin(objectFiles), std::end(objectFiles));
 		command->execute();
+		*/
 
 		return outputModuleFilePath;
 	}
@@ -44,21 +46,23 @@ namespace borc {
 		const auto librariesOptions = this->computeLibrariesOptions(this->collectLibraries(package, artifact));
 		const auto libraryPathsOptions = this->computeLibraryPathsOptions(this->collectLibraryPaths(package, artifact));
 
-		Command *command = commandFactory->createCommand(commandPath);
+		std::vector<std::string> commandOptions;
 
 		if (artifact->getType() == Artifact::Type::LibraryDynamic) {
-			command->addOption(switches.buildSharedLibrary);
+			commandOptions.push_back(switches.buildSharedLibrary);
 		}
 
-		command->addOptionRange(librariesOptions.begin(), librariesOptions.end());
-		command->addOptionRange(libraryPathsOptions.begin(), libraryPathsOptions.end());
-		command->addOption(switches.moduleOutput + outputModuleFilePath);
+		commandOptions.insert(commandOptions.end(), librariesOptions.begin(), librariesOptions.end());
+		commandOptions.insert(commandOptions.end(), libraryPathsOptions.begin(), libraryPathsOptions.end());
+		commandOptions.push_back(switches.moduleOutput + outputModuleFilePath);
 
 		for (const boost::filesystem::path &objetFile : objectFiles) {
-			command->addOption(objetFile.string());
+			commandOptions.push_back(objetFile.string());
 		}
 
-		return {outputModuleFilePath,  command};
+		Command *command = commandFactory->createCommand(commandPath, commandOptions);
+
+		return {outputModuleFilePath, command};
 	}
 
 	std::vector<std::string> Linker::computeLibrariesOptions(const std::vector<std::string> &libraries) const {

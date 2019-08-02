@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "Command.hpp"
+#include <borc/model/Command.hpp>
 
 namespace borc {
 	class SystemCommand : public Command {
@@ -15,8 +15,6 @@ namespace borc {
 		explicit SystemCommand(const std::string &base, const std::vector<std::string> &options);
 
 		virtual void execute() override;
-
-		virtual void addOption(const std::string &option) override;
 
 	private:
 		const std::string _base;

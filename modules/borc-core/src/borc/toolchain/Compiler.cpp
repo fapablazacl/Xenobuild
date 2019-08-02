@@ -5,8 +5,8 @@
 #include <borc/model/Source.hpp>
 #include <borc/model/Artifact.hpp>
 #include <borc/model/Package.hpp>
-#include <borc/model/command/Command.hpp>
-#include <borc/model/command/CommandFactory.hpp>
+#include <borc/model/Command.hpp>
+#include <borc/model/CommandFactory.hpp>
 #include <borc/utility/Dag.hpp>
 #include <borc/utility/DagNode.hpp>
 
@@ -24,6 +24,7 @@ namespace borc {
 		// TODO: Use a valid Outputpath
 		const auto objectFilePath = boost::filesystem::canonical(artifact->getPath()) / boost::filesystem::path(file + ".obj");
 
+		/*
 		std::cout << "    " << file << " ..." << std::endl;
 
 		Command *command = commandFactory->createCommand(
@@ -53,6 +54,7 @@ namespace borc {
 		command->addOptionRange(std::begin(configuration.flags), std::end(configuration.flags));
 
 		command->execute();
+		*/
 
 		return objectFilePath.string();
 	}
@@ -70,35 +72,32 @@ namespace borc {
 		const auto sourceFilePath = source->getPartialFilePath();
 		const auto objectFilePath = this->getObjectFilePath(source);
 
-		std::cout << "    " << source->getPartialFilePath() << " ..." << std::endl;
-
-		Command *command = commandFactory->createCommand(
-			commandPath, {
-				switches.zeroOptimization,
-				switches.includeDebug,
-				switches.compile,
-				"\"" + sourceFilePath.string() + "\"",
-				switches.objectFileOutput + "\"" + objectFilePath.string() + "\"",
-			}
-		);
+		std::vector<std::string> commandOptions = {
+			switches.zeroOptimization,
+			switches.includeDebug,
+			switches.compile,
+			"\"" + sourceFilePath.string() + "\"",
+			switches.objectFileOutput + "\"" + objectFilePath.string() + "\"",
+		};
 
 		// compute system include directories
 		for (const std::string &path : configuration.systemIncludePaths) {
 			const std::string includeOption = switches.includePath + path;
-			command->addOption(includeOption);
+
+			commandOptions.push_back(includeOption);
 		}
 
 		// compute additional include directories
 		for (const std::string &path : options.includePaths) {
 			const std::string includeOption = switches.includePath + path;
 
-			command->addOption(includeOption);
+			commandOptions.push_back(includeOption);
 		}
 
 		// add additional compiler options
-		command->addOptionRange(std::begin(configuration.flags), std::end(configuration.flags));
+		commandOptions.insert(commandOptions.end(), std::begin(configuration.flags), std::end(configuration.flags));
 
-		return command;
+		return commandFactory->createCommand(commandPath, commandOptions);
 	}
 
 	CompileOutput Compiler::compile(Dag *dag, const Source *source) const {

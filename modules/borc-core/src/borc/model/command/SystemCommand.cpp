@@ -1,5 +1,5 @@
 
-#include <borc/model/command/SystemCommand.hpp>
+#include "SystemCommand.hpp"
 
 #include <iostream>
 #include <stdexcept>
@@ -21,11 +21,13 @@ namespace borc {
 		const int exitCode = std::system(systemCommand.c_str());
 
 		if (exitCode != 0) {
-			throw std::runtime_error("The command returned an erroneous exit code: " + std::to_string(exitCode));
-		}
-	}
+			std::string msg;
 
-	void SystemCommand::addOption(const std::string &option) {
-		_options.push_back(option);
+			msg += "The command \n";
+			msg += "'" + systemCommand + "'\n";
+			msg += "returned an erroneous exit code: " + std::to_string(exitCode);
+
+			throw std::runtime_error(msg);
+		}
 	}
 }
