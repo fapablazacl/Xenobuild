@@ -50,7 +50,7 @@ namespace borc {
 
                 while (it != end) {
                     if (! boost::filesystem::is_directory(it->path())) {
-                        sourceFiles.push_back(solvedSourcePath);
+                        sourceFiles.push_back(it->path());
                     }
 
                     ++it;

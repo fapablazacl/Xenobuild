@@ -49,7 +49,14 @@ namespace borc {
 
                 if (!compiler) {
                     if (logger) {
-                        logger->warn("Couldn't find a compiler using the current toolchain");
+                        std::string msg = "";
+
+                        msg += "Couldn't find a compiler using the current toolchain ";
+                        msg += "for the file ";
+                        msg += "'" + sourceFile.string() + "'";
+                        msg += ".";
+
+                        logger->warn(msg);
                     }
 
                     continue;
