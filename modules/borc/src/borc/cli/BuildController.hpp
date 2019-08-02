@@ -1,6 +1,6 @@
 
-#ifndef __BORC_CLI_CONFIGURECONTROLLER_HPP__
-#define __BORC_CLI_CONFIGURECONTROLLER_HPP__
+#ifndef __BORC_CLI_BUILDCONTROLLER_HPP__
+#define __BORC_CLI_BUILDCONTROLLER_HPP__
 
 #include "Controller.hpp"
 
@@ -13,9 +13,9 @@ namespace borc {
     class Package;
     class FileService;
 
-    class ConfigureController : public Controller {
+    class BuildController : public Controller {
     public:
-        virtual ~ConfigureController();
+        virtual ~BuildController();
 
         virtual void perform(int argc, char **argv) override;
 

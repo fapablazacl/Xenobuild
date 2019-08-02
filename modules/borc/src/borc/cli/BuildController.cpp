@@ -1,5 +1,5 @@
 
-#include "ConfigureController.hpp"
+#include "BuildController.hpp"
 
 #include <iostream>
 #include <boost/program_options.hpp>
@@ -16,10 +16,10 @@
 #include <borc/model/Package.hpp>
 
 namespace borc {
-    ConfigureController::~ConfigureController() {}
+    BuildController::~BuildController() {}
 
 
-    void ConfigureController::perform(int argc, char **argv) {
+    void BuildController::perform(int argc, char **argv) {
         // parse the command line
         boost::program_options::options_description desc("Allowed options for Configure subcommand");
         desc.add_options()
@@ -87,12 +87,12 @@ namespace borc {
     }
 
 
-    bool ConfigureController::checkValidBorcFile(const boost::filesystem::path &filePath) const {
+    bool BuildController::checkValidBorcFile(const boost::filesystem::path &filePath) const {
         return !boost::filesystem::is_directory(filePath) && boost::filesystem::exists(filePath);
     }
 
 
-    PackageEntity ConfigureController::makePackageEntity(const boost::filesystem::path &basePath, FileService &fileService) const {
+    PackageEntity BuildController::makePackageEntity(const boost::filesystem::path &basePath, FileService &fileService) const {
         const auto packageFilePath = basePath / "package.borc";
 
         if (! checkValidBorcFile(packageFilePath)) {
@@ -109,7 +109,7 @@ namespace borc {
     }
 
 
-    std::vector<ModuleEntity> ConfigureController::makeModuleEntities(const boost::filesystem::path &basePath, FileService &fileService, const PackageEntity &packageEntity) const {
+    std::vector<ModuleEntity> BuildController::makeModuleEntities(const boost::filesystem::path &basePath, FileService &fileService, const PackageEntity &packageEntity) const {
         std::vector<ModuleEntity> moduleEntities;
 
         for (const std::string &modulePartialPath : packageEntity.modules) {
@@ -132,7 +132,7 @@ namespace borc {
     }
 
 
-    std::unique_ptr<Package> ConfigureController::makePackage(const PackageEntity &packageEntity, const std::vector<ModuleEntity> &moduleEntities) const {
+    std::unique_ptr<Package> BuildController::makePackage(const PackageEntity &packageEntity, const std::vector<ModuleEntity> &moduleEntities) const {
         // now we are ready to create the package and artifacts instances
         auto package = std::make_unique<Package>(packageEntity.name);
 
