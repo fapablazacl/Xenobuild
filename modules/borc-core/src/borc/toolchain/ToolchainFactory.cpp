@@ -48,8 +48,8 @@ namespace borc {
         };
 
         ServiceFactoryGCC serviceFactoryGCC = ServiceFactoryGCC {
-            "/usr/local/Cellar/gcc/8.2.0/bin/gcc-8"
-            // "gcc"
+            // "/usr/local/Cellar/gcc/8.2.0/bin/gcc-8"
+            "gcc"
         };
     };
 

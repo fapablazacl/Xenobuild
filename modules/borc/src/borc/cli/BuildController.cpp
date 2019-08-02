@@ -11,9 +11,17 @@
 #include <borc/entity/PackageEntity.hpp>
 #include <borc/entity/LanguageEntity.hpp>
 #include <borc/entity/ModuleEntity.hpp>
-
 #include <borc/model/Artifact.hpp>
 #include <borc/model/Package.hpp>
+#include <borc/services/BuildServiceImpl.hpp>
+#include <borc/services/LoggingServiceImpl.hpp>
+#include <borc/utility/DagVisitor.hpp>
+#include <borc/toolchain/ToolchainFactory.hpp>
+#include <borc/toolchain/Toolchain.hpp>
+
+#include <borc/utility/DagNode.hpp>
+#include <borc/utility/Dag.hpp>
+#include <borc/utility/DagVisitor.hpp>
 
 namespace borc {
     BuildController::~BuildController() {}
@@ -71,7 +79,19 @@ namespace borc {
         };
         */
 
+        LoggingServiceImpl loggingService {"BuildServiceImpl"};
+
+        auto toolchainFactory = ToolchainFactory::create();
+        auto toolchain =toolchainFactory->createToolchain(ToolchainFamily::GCC);
+
         std::unique_ptr<Package> package = this->makePackage(packageEntity, moduleEntities);
+
+        BuildServiceImpl buildService{baseFolderPath, baseFolderPath / ".borc" / "gcc", toolchain.get(), &loggingService};
+
+        auto dag = buildService.createBuildDag(package.get());
+
+        DagVisitor dagVisitor;
+        dagVisitor.visit(dag.get());
 
         // Now we need to start the build!
 
