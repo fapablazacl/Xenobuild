@@ -1,6 +1,6 @@
 
-#ifndef __BORC_MODEL_PROCESSCOMMAND_HPP__
-#define __BORC_MODEL_PROCESSCOMMAND_HPP__
+#ifndef __BORC_MODEL_COMMAND_PROCESSCOMMAND_HPP__
+#define __BORC_MODEL_COMMAND_PROCESSCOMMAND_HPP__
 
 #include <string>
 #include <vector>

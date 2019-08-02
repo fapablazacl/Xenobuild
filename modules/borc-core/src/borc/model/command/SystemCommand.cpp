@@ -1,5 +1,5 @@
 
-#include <borc/toolchain/SystemCommand.hpp>
+#include <borc/model/command/SystemCommand.hpp>
 
 #include <iostream>
 #include <stdexcept>

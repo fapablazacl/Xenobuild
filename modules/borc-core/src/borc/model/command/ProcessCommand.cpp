@@ -1,5 +1,5 @@
 
-#include <borc/toolchain/ProcessCommand.hpp>
+#include <borc/model/command/ProcessCommand.hpp>
 
 #include <iostream>
 #include <stdexcept>

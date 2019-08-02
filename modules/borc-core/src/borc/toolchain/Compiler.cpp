@@ -2,11 +2,11 @@
 #include <borc/toolchain/Compiler.hpp>
 
 #include <boost/filesystem.hpp>
-#include <borc/toolchain/Command.hpp>
-#include <borc/toolchain/CommandFactory.hpp>
 #include <borc/model/Source.hpp>
 #include <borc/model/Artifact.hpp>
 #include <borc/model/Package.hpp>
+#include <borc/model/command/Command.hpp>
+#include <borc/model/command/CommandFactory.hpp>
 #include <borc/utility/Dag.hpp>
 #include <borc/utility/DagNode.hpp>
 

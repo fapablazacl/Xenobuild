@@ -2,7 +2,7 @@
 #ifndef __BORC_CORE_SERVICEFACTORYVC_HPP__
 #define __BORC_CORE_SERVICEFACTORYVC_HPP__
 
-#include <borc/toolchain/CommandFactory.hpp>
+#include <borc/model/command/CommandFactory.hpp>
 #include <borc/toolchain/ServiceFactory.hpp>
 
 namespace borc {

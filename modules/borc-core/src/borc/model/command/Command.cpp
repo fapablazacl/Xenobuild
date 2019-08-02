@@ -1,5 +1,5 @@
 
-#include <borc/toolchain/Command.hpp>
+#include <borc/model/command/Command.hpp>
 
 namespace borc {
 	Command::~Command() {}

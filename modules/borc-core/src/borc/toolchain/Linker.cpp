@@ -2,10 +2,10 @@
 #include <borc/toolchain/Linker.hpp>
 
 #include <iostream>
-#include <borc/toolchain/Command.hpp>
-#include <borc/toolchain/CommandFactory.hpp>
 #include <borc/model/Package.hpp>
 #include <borc/model/Artifact.hpp>
+#include <borc/model/command/Command.hpp>
+#include <borc/model/command/CommandFactory.hpp>
 
 namespace borc {
 	Linker::Linker(CommandFactory *commandFactory, const std::string &commandPath, const LinkerSwitches &switches, const LinkerConfiguration &configuration) {

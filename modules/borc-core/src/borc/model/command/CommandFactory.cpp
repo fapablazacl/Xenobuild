@@ -1,9 +1,9 @@
 
-#include <borc/toolchain/CommandFactory.hpp>
+#include <borc/model/command/CommandFactory.hpp>
 
 #include <iostream>
 #include <boost/filesystem.hpp>
-#include <borc/toolchain/SystemCommand.hpp>
+#include <borc/model/command/SystemCommand.hpp>
 
 namespace borc {
 	class PathCommandImpl : public Command {
