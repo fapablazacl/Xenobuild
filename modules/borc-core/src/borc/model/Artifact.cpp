@@ -52,14 +52,17 @@ namespace borc {
 
                 while (it != end) {
                     if (! boost::filesystem::is_directory(it->path())) {
-                        auto source = new Source(this, it->path(), it->path());
+                        const auto filePath = it->path();
+                        const auto relativeFilePath = boost::filesystem::relative(filePath, baseFolder);
+
+                        auto source = new Source{this, filePath, relativeFilePath};
+
                         sources.emplace_back(source);
                         // sourceFiles.push_back(it->path());
                     }
 
                     ++it;
                 }
-
             } else {
                 auto source = new Source(this, solvedSourcePath, solvedSourcePath);
                 sources.emplace_back(source);

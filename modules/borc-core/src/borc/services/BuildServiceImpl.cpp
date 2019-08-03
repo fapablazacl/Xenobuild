@@ -37,9 +37,9 @@ namespace borc {
                 continue;
             }
 
-            DagNode *artifactDagNode = dag->createNode();
-
             artifact->rebuildSources(basePath);
+
+            DagNode *artifactDagNode = dag->createNode();
 
             const std::vector<Source*> sources = artifact->getSources();
             std::vector<boost::filesystem::path> objectFiles;
