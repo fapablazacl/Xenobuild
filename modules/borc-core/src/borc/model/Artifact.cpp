@@ -1,8 +1,10 @@
 
 #include <borc/model/Artifact.hpp>
-#include <borc/model/Package.hpp>
 
 #include <boost/filesystem.hpp>
+#include <borc/model/Package.hpp>
+#include <borc/model/Source.hpp>
+
 
 namespace borc {
     Artifact::Artifact(Package *package) {
@@ -35,8 +37,8 @@ namespace borc {
         this->includePaths = includePaths;
     }
 
-    std::vector<boost::filesystem::path> Artifact::getSourceFiles(const boost::filesystem::path &baseFolder) const {
-        std::vector<boost::filesystem::path> sourceFiles;
+    void Artifact::rebuildSources(const boost::filesystem::path &baseFolder) {
+        sources.clear();
 
         for (const boost::filesystem::path &sourcePath : sourcePaths) {
             const boost::filesystem::path solvedSourcePath = baseFolder / path / sourcePath;
@@ -50,17 +52,29 @@ namespace borc {
 
                 while (it != end) {
                     if (! boost::filesystem::is_directory(it->path())) {
-                        sourceFiles.push_back(it->path());
+                        auto source = new Source(this, it->path(), it->path());
+                        sources.emplace_back(source);
+                        // sourceFiles.push_back(it->path());
                     }
 
                     ++it;
                 }
 
             } else {
-                sourceFiles.push_back(solvedSourcePath);
+                auto source = new Source(this, solvedSourcePath, solvedSourcePath);
+                sources.emplace_back(source);
+                // sourceFiles.push_back(solvedSourcePath);
             }
         }
+    }
 
-        return sourceFiles;
+    std::vector<Source*> Artifact::getSources() const {
+        std::vector<Source*> result;
+
+        for (auto &source : sources) {
+            result.push_back(source.get());
+        }
+
+        return result;
     }
 }

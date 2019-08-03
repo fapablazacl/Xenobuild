@@ -28,7 +28,7 @@ namespace borc {
 
     const Compiler* Toolchain::selectCompiler(const Source *source) const {
         for (auto &pair : compilers) {
-            if (pair.first.match(source->getPartialFilePath())) {
+            if (pair.first.match(source->getFilePath())) {
                 return pair.second;
             }
         }

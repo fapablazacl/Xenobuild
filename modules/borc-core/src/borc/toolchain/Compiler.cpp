@@ -60,15 +60,19 @@ namespace borc {
 	}
 
 	boost::filesystem::path Compiler::getObjectFilePath(const boost::filesystem::path &outputPath, const Source *source) const {
-		const boost::filesystem::path objectFileName = source->getPartialFilePath().filename().string() + ".obj";
-		const boost::filesystem::path objectFileParentPath = outputPath / source->getArtifact()->getPath() / source->getPartialFilePath().parent_path();
+		const boost::filesystem::path objectFileName = source->getFilePath().filename().string() + ".obj";
+		const boost::filesystem::path objectFileParentPath 
+			= outputPath 
+			/ source->getArtifact()->getPath() 
+			/ source->getRelativeFilePath().parent_path();
+
 		const boost::filesystem::path objectFilePath = objectFileParentPath / objectFileName;
 		
 		return objectFilePath;
 	}
 
 	Command* Compiler::createCompileCommand(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const {
-		const auto sourceFilePath = source->getPartialFilePath();
+		const auto sourceFilePath = source->getFilePath();
 		const auto objectFilePath = this->getObjectFilePath(outputPath, source);
 
 		std::vector<std::string> commandOptions = {

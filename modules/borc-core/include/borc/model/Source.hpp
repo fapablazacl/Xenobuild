@@ -11,7 +11,7 @@ namespace borc {
 
 	class Source {
 	public:
-		explicit Source(const Artifact *artifact, const boost::filesystem::path &partialFilePath);
+		explicit Source(const Artifact *artifact, const boost::filesystem::path &filePath, const boost::filesystem::path &relativeFilePath);
 
 		~Source();
 
@@ -19,12 +19,17 @@ namespace borc {
 			return artifact;
 		}
 
-		boost::filesystem::path getPartialFilePath() const {
-			return partialFilePath;
+		boost::filesystem::path getFilePath() const {
+			return filePath;
+		}
+
+		boost::filesystem::path getRelativeFilePath() const {
+			return relativeFilePath;
 		}
 
 	private:
-		boost::filesystem::path partialFilePath;
+		boost::filesystem::path filePath;
+		boost::filesystem::path relativeFilePath;
 		const Artifact *artifact = nullptr;
 	};
 }

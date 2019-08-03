@@ -39,13 +39,13 @@ namespace borc {
 
             DagNode *artifactDagNode = dag->createNode();
 
-            const std::vector<boost::filesystem::path> sourceFiles = artifact->getSourceFiles(basePath);
+            artifact->rebuildSources(basePath);
+
+            const std::vector<Source*> sources = artifact->getSources();
             std::vector<boost::filesystem::path> objectFiles;
 
-            for (const boost::filesystem::path &sourceFile : sourceFiles) {
-                Source source {artifact, sourceFile};
-
-                const Compiler *compiler = toolchain->selectCompiler(&source);
+            for (Source *source : sources) {
+                const Compiler *compiler = toolchain->selectCompiler(source);
 
                 if (!compiler) {
                     if (logger) {
@@ -53,7 +53,7 @@ namespace borc {
 
                         msg += "Couldn't find a compiler using the current toolchain ";
                         msg += "for the file ";
-                        msg += "'" + sourceFile.string() + "'";
+                        msg += "'" + source->getFilePath().string() + "'";
                         msg += ".";
 
                         logger->warn(msg);
@@ -62,7 +62,7 @@ namespace borc {
                     continue;
                 }
 
-                CompileOutput compileOutput = compiler->compile(dag.get(), outputPath, &source);
+                CompileOutput compileOutput = compiler->compile(dag.get(), outputPath, source);
 
                 objectFiles.push_back(compileOutput.outputFileRelativePath);
                 artifactDagNode->previous.push_back(compileOutput.node);

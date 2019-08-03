@@ -14,6 +14,7 @@ namespace borc {
     };
 
     class Package;
+    class Source;
     class Artifact {
     public:
         enum class Type {
@@ -72,7 +73,12 @@ namespace borc {
 
         void setIncludePaths(const std::vector<boost::filesystem::path> &includePaths);
 
-        std::vector<boost::filesystem::path> getSourceFiles(const boost::filesystem::path &baseFolder) const;
+        /**
+         * @brief Reconstruct all the internal object Source files based on the supplied base folder
+         */
+        void rebuildSources(const boost::filesystem::path &baseFolder);
+
+        std::vector<Source*> getSources() const;
 
     private:
         Package *package = nullptr;
@@ -84,6 +90,8 @@ namespace borc {
 
         std::vector<boost::filesystem::path> sourcePaths;
         std::vector<boost::filesystem::path> includePaths;
+
+        std::vector<std::unique_ptr<Source>> sources;
     };
 }
 
