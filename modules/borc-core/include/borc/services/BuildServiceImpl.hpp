@@ -12,7 +12,7 @@ namespace borc {
 
     class BuildServiceImpl : public BuildService {
     public:
-        BuildServiceImpl(const boost::filesystem::path &basePath, const boost::filesystem::path &outputFolder, Toolchain *toolchain, LoggingService *logger);
+        BuildServiceImpl(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, LoggingService *logger);
 
         virtual ~BuildServiceImpl();
 
@@ -20,7 +20,7 @@ namespace borc {
 
     private:
         boost::filesystem::path basePath;
-        boost::filesystem::path outputFolder;
+        boost::filesystem::path outputPath;
         Toolchain *toolchain = nullptr;
         LoggingService *logger = nullptr;
     };

@@ -86,6 +86,7 @@ namespace borc {
 
         std::unique_ptr<Package> package = this->makePackage(packageEntity, moduleEntities);
 
+        // TODO: construct the output folder based on the current toolchain and version.
         BuildServiceImpl buildService{baseFolderPath, baseFolderPath / ".borc" / "gcc", toolchain.get(), &loggingService};
 
         auto dag = buildService.createBuildDag(package.get());

@@ -59,18 +59,17 @@ namespace borc {
 		return objectFilePath.string();
 	}
 
-	boost::filesystem::path Compiler::getObjectFilePath(const Source *source) const {
-		const auto objectBaseFilePath = source->getPartialFilePath().string() + ".obj";
-		// const auto outputPath = source->getParentModule()->getOutputPath();
-		const auto outputPath = source->getArtifact()->getPath();
-		const auto objectFilePath = boost::filesystem::canonical(outputPath) / boost::filesystem::path(objectBaseFilePath);
-
+	boost::filesystem::path Compiler::getObjectFilePath(const boost::filesystem::path &outputPath, const Source *source) const {
+		const boost::filesystem::path objectFileName = source->getPartialFilePath().filename().string() + ".obj";
+		const boost::filesystem::path objectFileParentPath = outputPath / source->getArtifact()->getPath() / source->getPartialFilePath().parent_path();
+		const boost::filesystem::path objectFilePath = objectFileParentPath / objectFileName;
+		
 		return objectFilePath;
 	}
 
-	Command* Compiler::createCompileCommand(const Source *source, const CompileOptions &options) const {
+	Command* Compiler::createCompileCommand(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const {
 		const auto sourceFilePath = source->getPartialFilePath();
-		const auto objectFilePath = this->getObjectFilePath(source);
+		const auto objectFilePath = this->getObjectFilePath(outputPath, source);
 
 		std::vector<std::string> commandOptions = {
 			switches.zeroOptimization,
@@ -100,10 +99,10 @@ namespace borc {
 		return commandFactory->createCommand(commandPath, commandOptions);
 	}
 
-	CompileOutput Compiler::compile(Dag *dag, const Source *source) const {
-		Command *command = this->createCompileCommand(source, {});
+	CompileOutput Compiler::compile(Dag *dag, const boost::filesystem::path &outputPath, const Source *source) const {
+		Command *command = this->createCompileCommand(outputPath, source, {});
 		DagNode *node = dag->createNode(command);
-		boost::filesystem::path outputFileRelativePath = this->getObjectFilePath(source);
+		boost::filesystem::path outputFileRelativePath = this->getObjectFilePath(outputPath, source);
 
 		// TODO: compute dependent headers
 		node->previous.push_back(dag->createNode(commandFactory->createPathCommand(outputFileRelativePath.parent_path(), PathCommand::Create)));

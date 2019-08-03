@@ -12,9 +12,9 @@
 #include <borc/services/LoggingService.hpp>
 
 namespace borc {
-    BuildServiceImpl::BuildServiceImpl(const boost::filesystem::path &basePath, const boost::filesystem::path &outputFolder, Toolchain *toolchain, LoggingService *logger) {
+    BuildServiceImpl::BuildServiceImpl(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, LoggingService *logger) {
         this->basePath = basePath;
-        this->outputFolder = outputFolder;
+        this->outputPath = outputPath;
         this->toolchain = toolchain;
         this->logger = logger;
     }
@@ -62,7 +62,7 @@ namespace borc {
                     continue;
                 }
 
-                CompileOutput compileOutput = compiler->compile(dag.get(), &source);
+                CompileOutput compileOutput = compiler->compile(dag.get(), outputPath, &source);
 
                 objectFiles.push_back(compileOutput.outputFileRelativePath);
                 artifactDagNode->previous.push_back(compileOutput.node);
