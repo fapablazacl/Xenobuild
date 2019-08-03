@@ -48,6 +48,7 @@ namespace borc {
                 const Compiler *compiler = toolchain->selectCompiler(source);
 
                 if (!compiler) {
+                    /*
                     if (logger) {
                         std::string msg = "";
 
@@ -58,6 +59,7 @@ namespace borc {
 
                         logger->warn(msg);
                     }
+                    */
 
                     continue;
                 }

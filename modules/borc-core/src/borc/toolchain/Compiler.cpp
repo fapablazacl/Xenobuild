@@ -108,6 +108,8 @@ namespace borc {
 		DagNode *node = dag->createNode(command);
 		boost::filesystem::path outputFileRelativePath = this->getObjectFilePath(outputPath, source);
 
+		
+
 		// TODO: compute dependent headers
 		node->previous.push_back(dag->createNode(commandFactory->createPathCommand(outputFileRelativePath.parent_path(), PathCommand::Create)));
 

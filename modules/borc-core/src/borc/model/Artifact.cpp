@@ -58,7 +58,6 @@ namespace borc {
                         auto source = new Source{this, filePath, relativeFilePath};
 
                         sources.emplace_back(source);
-                        // sourceFiles.push_back(it->path());
                     }
 
                     ++it;
@@ -66,7 +65,6 @@ namespace borc {
             } else {
                 auto source = new Source(this, solvedSourcePath, solvedSourcePath);
                 sources.emplace_back(source);
-                // sourceFiles.push_back(solvedSourcePath);
             }
         }
     }
