@@ -18,47 +18,6 @@ namespace borc {
 		this->configuration = configuration;
 	}
 
-	std::string Compiler::compile(const Package *package, const Artifact *artifact, const std::string &file, const CompileOptions &options) const {
-		const auto sourceFilePath = boost::filesystem::canonical(artifact->getPath() / boost::filesystem::path(file));
-
-		// TODO: Use a valid Outputpath
-		const auto objectFilePath = boost::filesystem::canonical(artifact->getPath()) / boost::filesystem::path(file + ".obj");
-
-		/*
-		std::cout << "    " << file << " ..." << std::endl;
-
-		Command *command = commandFactory->createCommand(
-			commandPath, {
-				switches.zeroOptimization,
-				switches.includeDebug,
-				switches.compile,
-				"\"" + sourceFilePath.string() + "\"",
-				switches.objectFileOutput + "\"" + objectFilePath.string() + "\"",
-			}
-		);
-
-		// compute system include directories
-		for (const std::string &path : configuration.systemIncludePaths) {
-			const std::string includeOption = switches.includePath + path;
-			command->addOption(includeOption);
-		}
-
-		// compute additional include directories
-		for (const std::string &path : options.includePaths) {
-			const std::string includeOption = switches.includePath + path;
-
-			command->addOption(includeOption);
-		}
-
-		// add additional compiler options
-		command->addOptionRange(std::begin(configuration.flags), std::end(configuration.flags));
-
-		command->execute();
-		*/
-
-		return objectFilePath.string();
-	}
-
 	boost::filesystem::path Compiler::getObjectFilePath(const boost::filesystem::path &outputPath, const Source *source) const {
 		const boost::filesystem::path objectFileName = source->getFilePath().filename().string() + ".obj";
 		const boost::filesystem::path objectFileParentPath 

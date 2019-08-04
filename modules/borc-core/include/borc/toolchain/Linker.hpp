@@ -37,8 +37,6 @@ namespace borc {
 	public:
 		explicit Linker(CommandFactory *commandFactory, const std::string &commandPath, const LinkerSwitches &switches, const LinkerConfiguration &configuration);
 
-		std::string link(const Package *package, const Artifact *artifact, const std::vector<std::string> &objectFiles) const;
-
 		LinkOutput link(const Package *package, const Artifact *artifact, const std::vector<boost::filesystem::path> &objectFiles) const;
 
 	private:

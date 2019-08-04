@@ -15,31 +15,6 @@ namespace borc {
 		this->configuration = configuration;
 	}
 
-	std::string Linker::link(const Package *package, const Artifact *artifact, const std::vector<std::string> &objectFiles) const {
-		// std::cout << "Linking ${ArtifactType} module " << artifact->getName() << " ..." << std::endl;
-
-		const std::string outputModuleFilePath = artifact->getPath().string();
-
-		/*
-		const auto librariesOptions = this->computeLibrariesOptions(this->collectLibraries(package, artifact));
-		const auto libraryPathsOptions = this->computeLibraryPathsOptions(this->collectLibraryPaths(package, artifact));
-
-		Command *command = commandFactory->createCommand(commandPath);
-
-		if (artifact->getType() == Artifact::Type::LibraryDynamic) {
-			command->addOption(switches.buildSharedLibrary);
-		}
-
-		command->addOptionRange(librariesOptions.begin(), librariesOptions.end());
-		command->addOptionRange(libraryPathsOptions.begin(), libraryPathsOptions.end());
-		command->addOption(switches.moduleOutput + outputModuleFilePath);
-		command->addOptionRange(std::begin(objectFiles), std::end(objectFiles));
-		command->execute();
-		*/
-
-		return outputModuleFilePath;
-	}
-
 	LinkOutput Linker::link(const Package *package, const Artifact *artifact, const std::vector<boost::filesystem::path> &objectFiles) const {
 		const std::string outputModuleFilePath = artifact->getPath().string();
 

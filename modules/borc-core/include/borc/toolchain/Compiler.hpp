@@ -50,14 +50,11 @@ namespace borc {
 			const CompilerConfiguration &configuration
 		);
 
-		[[deprecated]]
-		std::string compile(const Package *package, const Artifact *artifact, const std::string &file, const CompileOptions &options) const;
-
-		Command* createCompileCommand(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const;
-
 		CompileOutput compile(Dag *dag, const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const;
 
 	private:
+		Command* createCompileCommand(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const;
+
 		boost::filesystem::path getObjectFilePath(const boost::filesystem::path &outputPath, const Source *source) const;
 
 	private:
