@@ -2,8 +2,8 @@
 #include "ServiceFactoryVC.hpp"
 
 #include <borc/model/Command.hpp>
-#include <borc/toolchain/CompilerImpl.hpp>
-#include <borc/toolchain/LinkerImpl.hpp>
+#include "CompilerImpl.hpp"
+#include "LinkerImpl.hpp"
 
 
 namespace borc {

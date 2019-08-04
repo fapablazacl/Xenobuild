@@ -4,8 +4,7 @@
 
 #include <set>
 #include <boost/filesystem.hpp>
-
-#include "Toolchain.hpp"
+#include <borc/toolchain/Toolchain.hpp>
 
 namespace borc {
 	struct SourceType {

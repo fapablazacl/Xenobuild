@@ -1,5 +1,5 @@
 
-#include <borc/toolchain/CompilerImpl.hpp>
+#include "CompilerImpl.hpp"
 
 #include <boost/filesystem.hpp>
 #include <borc/model/Source.hpp>

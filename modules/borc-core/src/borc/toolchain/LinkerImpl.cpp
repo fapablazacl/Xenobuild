@@ -1,5 +1,5 @@
 
-#include <borc/toolchain/LinkerImpl.hpp>
+#include "LinkerImpl.hpp"
 
 #include <iostream>
 #include <borc/model/Package.hpp>

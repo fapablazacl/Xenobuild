@@ -1,5 +1,5 @@
 
-#include <borc/toolchain/CompilerImpl.hpp>
+#include <borc/toolchain/Compiler.hpp>
 
 namespace borc {
 	Compiler::~Compiler() {}

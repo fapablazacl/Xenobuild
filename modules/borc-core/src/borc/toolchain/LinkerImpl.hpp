@@ -2,7 +2,7 @@
 #ifndef __BORC_TOOLCHAIN_LINKERIMPL_HPP__
 #define __BORC_TOOLCHAIN_LINKERIMPL_HPP__
 
-#include "Linker.hpp"
+#include <borc/toolchain/Linker.hpp>
 
 #include <string>
 #include <vector>
