@@ -1,6 +1,7 @@
 
 #include <borc/toolchain/ToolchainFactory.hpp>
 
+#include <stdexcept>
 #include <borc/toolchain/Compiler.hpp>
 #include <borc/toolchain/Linker.hpp>
 
@@ -34,9 +35,9 @@ namespace borc {
                 };
 
                 return std::make_unique<ToolchainImpl>(compilers, serviceFactory->getLinker());
-            } else {
-                return std::unique_ptr<ToolchainImpl>();
-            }
+            } 
+
+            throw std::runtime_error("Unsupported toolchain");
         }
 
     private:
@@ -48,8 +49,8 @@ namespace borc {
         };
 
         ServiceFactoryGCC serviceFactoryGCC {
-            // "/usr/local/Cellar/gcc/8.2.0/bin/gcc-8"
-            "gcc"
+            // "/usr/local/Cellar/gcc/8.2.0/bin/gcc-8"  // For macOS
+            "gcc"                                       // for other unixes
         };
     };
 
