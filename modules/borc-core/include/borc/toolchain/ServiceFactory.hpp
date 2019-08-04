@@ -14,10 +14,6 @@ namespace borc {
 	public:
 		virtual ~ServiceFactory();
 
-		virtual BuildService createBuildService() = 0;
-
-		virtual RunService createRunService() = 0;
-
 		virtual const Compiler* getCompiler() const = 0;
 
 		virtual const Linker* getLinker() const = 0;

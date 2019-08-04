@@ -30,8 +30,6 @@ add_library(borc-core
     "include/borc/toolchain/Linker.hpp"
     "include/borc/toolchain/Toolchain.hpp"
     "include/borc/toolchain/ToolchainFactory.hpp"
-    "include/borc/toolchain/BuildService.hpp"
-    "include/borc/toolchain/RunService.hpp"
     "include/borc/toolchain/ServiceFactory.hpp"
 
     "src/borc/dag/BuildGraphGenerator.cpp"
@@ -61,8 +59,6 @@ add_library(borc-core
     "src/borc/toolchain/Linker.cpp"
     "src/borc/toolchain/Toolchain.cpp"
     "src/borc/toolchain/ToolchainFactory.cpp"
-    "src/borc/toolchain/BuildService.cpp"
-    "src/borc/toolchain/RunService.cpp"
     "src/borc/toolchain/ServiceFactory.cpp"
     "src/borc/toolchain/ServiceFactoryGCC.hpp"
     "src/borc/toolchain/ServiceFactoryGCC.cpp"

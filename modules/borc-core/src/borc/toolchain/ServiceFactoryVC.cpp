@@ -4,8 +4,7 @@
 #include <borc/model/Command.hpp>
 #include <borc/toolchain/Compiler.hpp>
 #include <borc/toolchain/Linker.hpp>
-#include <borc/toolchain/BuildService.hpp>
-#include <borc/toolchain/RunService.hpp>
+
 
 namespace borc {
     ServiceFactoryVC::ServiceFactoryVC(const std::string &installationPath, const std::string &windowsKitPath) {
@@ -18,14 +17,6 @@ namespace borc {
     }
 
     ServiceFactoryVC::~ServiceFactoryVC() {}
-
-    BuildService ServiceFactoryVC::createBuildService() {
-        return BuildService{ compiler.get(), linker.get() };
-    }
-
-    RunService ServiceFactoryVC::createRunService() {
-        return RunService{ compiler.get(), linker.get() };
-    }
 
     const Compiler* ServiceFactoryVC::getCompiler() const {
         return compiler.get();

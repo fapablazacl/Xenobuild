@@ -10,10 +10,6 @@ namespace borc {
 	public:
 		explicit ServiceFactoryGCC(const std::string &commandBase);
 
-		virtual BuildService createBuildService() override;
-
-		virtual RunService createRunService() override;
-
 	private:
 		std::unique_ptr<Compiler> createCompiler();
 

@@ -12,10 +12,6 @@ namespace borc {
 
 		virtual ~ServiceFactoryVC();
 
-		virtual BuildService createBuildService() override;
-
-		virtual RunService createRunService() override;
-
 		virtual const Compiler* getCompiler() const override;
 
 		virtual const Linker* getLinker() const override;

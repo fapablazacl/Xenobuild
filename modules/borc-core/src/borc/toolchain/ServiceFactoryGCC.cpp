@@ -4,8 +4,6 @@
 #include <borc/model/Command.hpp>
 #include <borc/toolchain/Compiler.hpp>
 #include <borc/toolchain/Linker.hpp>
-#include <borc/toolchain/BuildService.hpp>
-#include <borc/toolchain/RunService.hpp>
 
 namespace borc {
     ServiceFactoryGCC::ServiceFactoryGCC(const std::string &commandBase) {
@@ -13,14 +11,6 @@ namespace borc {
 
         this->compiler = this->createCompiler();
         this->linker = this->createLinker();
-    }
-
-    BuildService ServiceFactoryGCC::createBuildService() {
-        return BuildService{ compiler.get(), linker.get() };
-    }
-
-    RunService ServiceFactoryGCC::createRunService() {
-        return RunService{ compiler.get(), linker.get() };
     }
 
     std::unique_ptr<Compiler> ServiceFactoryGCC::createCompiler() {
