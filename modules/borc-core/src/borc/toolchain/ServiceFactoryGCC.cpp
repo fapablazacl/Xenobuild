@@ -2,8 +2,8 @@
 #include "ServiceFactoryGCC.hpp"
 
 #include <borc/model/Command.hpp>
-#include <borc/toolchain/Compiler.hpp>
-#include <borc/toolchain/Linker.hpp>
+#include <borc/toolchain/CompilerImpl.hpp>
+#include <borc/toolchain/LinkerImpl.hpp>
 
 namespace borc {
     ServiceFactoryGCC::ServiceFactoryGCC(const std::string &commandBase) {
@@ -23,7 +23,7 @@ namespace borc {
 
         CompilerConfiguration configuration;
 
-        return std::make_unique<Compiler> (&commandFactory, commandBase, switches, configuration);
+        return std::make_unique<CompilerImpl> (&commandFactory, commandBase, switches, configuration);
     }
 
     std::unique_ptr<Linker> ServiceFactoryGCC::createLinker() {
@@ -38,7 +38,7 @@ namespace borc {
             "stdc++", "stdc++fs"
         };
 
-        return std::make_unique<Linker> (&commandFactory, commandBase, switches, configuration);
+        return std::make_unique<LinkerImpl> (&commandFactory, commandBase, switches, configuration);
     }
 
     const Compiler* ServiceFactoryGCC::getCompiler() const {

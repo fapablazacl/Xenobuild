@@ -2,8 +2,8 @@
 #include "ServiceFactoryVC.hpp"
 
 #include <borc/model/Command.hpp>
-#include <borc/toolchain/Compiler.hpp>
-#include <borc/toolchain/Linker.hpp>
+#include <borc/toolchain/CompilerImpl.hpp>
+#include <borc/toolchain/LinkerImpl.hpp>
 
 
 namespace borc {
@@ -40,7 +40,7 @@ namespace borc {
         compilerSwitches.includePath = "/I";
         compilerSwitches.includeDebug = "/DEBUG:FULL";
 
-        return std::make_unique<Compiler> (
+        return std::make_unique<CompilerImpl> (
             &commandFactory, compilerCommand, compilerSwitches,
             CompilerConfiguration { 
                 {"/EHsc", "/std:c++17"}, 
@@ -72,7 +72,7 @@ namespace borc {
 
         linkerConfiguration.importLibraries = { "AdvAPI32" };
 
-        return std::make_unique<Linker>(
+        return std::make_unique<LinkerImpl>(
             &commandFactory, 
             linkerCommand,
             linkerSwitches, 

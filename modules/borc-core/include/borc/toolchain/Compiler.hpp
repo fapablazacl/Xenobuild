@@ -1,33 +1,14 @@
 
-#ifndef __BORC_MODEL_BUILDCOMPILER_HPP__
-#define __BORC_MODEL_BUILDCOMPILER_HPP__
+#ifndef __BORC_TOOLCHAIN_COMPILER_HPP__
+#define __BORC_TOOLCHAIN_COMPILER_HPP__
 
 #include <vector>
 #include <iostream>
 #include <boost/filesystem/path.hpp>
 
 namespace borc {
+	class Dag;
 	class DagNode;
-	class Package;
-	class Artifact;
-	class Command;
-	class CommandFactory;
-
-	struct CompilerSwitches {
-		std::string compile;
-		std::string objectFileOutput;
-		std::string includeDebug;
-		std::string zeroOptimization;
-		std::string includePath;
-
-		CompilerSwitches() {}
-	};
-
-	//! Compiler default configuration
-	struct CompilerConfiguration {
-		std::vector<std::string> flags;
-		std::vector<std::string> systemIncludePaths;
-	};
 
 	struct CompileOptions {
 		std::vector<std::string> includePaths;
@@ -39,29 +20,11 @@ namespace borc {
 	};
 
 	class Source;
-	class Dag;
-	class DagNode;
 	class Compiler {
 	public:
-		explicit Compiler(
-			CommandFactory *commandFactory, 
-			const std::string &commandPath, 
-			const CompilerSwitches &switches, 
-			const CompilerConfiguration &configuration
-		);
+		virtual ~Compiler();
 
-		CompileOutput compile(Dag *dag, const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const;
-
-	private:
-		Command* createCompileCommand(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const;
-
-		boost::filesystem::path getObjectFilePath(const boost::filesystem::path &outputPath, const Source *source) const;
-
-	private:
-		CommandFactory *commandFactory = nullptr;
-		std::string commandPath;
-		CompilerSwitches switches;
-		CompilerConfiguration configuration;
+		virtual CompileOutput compile(Dag *dag, const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const = 0;
 	};
 }
 
