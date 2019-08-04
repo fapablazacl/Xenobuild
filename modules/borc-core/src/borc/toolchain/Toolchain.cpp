@@ -1,8 +1,8 @@
 
 #include <borc/toolchain/Toolchain.hpp>
-#include <borc/model/Source.hpp>
 
 #include <algorithm>
+#include <borc/model/Source.hpp>
 
 namespace borc {
     SourceType::SourceType(const std::initializer_list<std::string> &wildcards) {
@@ -35,7 +35,7 @@ namespace borc {
 
         return nullptr;
     }
-
+    
     const Linker* Toolchain::selectLinker(const Artifact *artifact) const {
         return linker;
     }
