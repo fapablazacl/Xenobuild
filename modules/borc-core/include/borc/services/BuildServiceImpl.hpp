@@ -9,6 +9,9 @@
 namespace borc {
     class Toolchain;
     class LoggingService;
+    class Artifact;
+
+    struct CompileOptions;
 
     class BuildServiceImpl : public BuildService {
     public:
@@ -17,6 +20,9 @@ namespace borc {
         virtual ~BuildServiceImpl();
 
         virtual std::unique_ptr<Dag> createBuildDag(Package *package) override;
+
+    private:
+        CompileOptions computeCompileOptions(const Artifact *artifact) const;
 
     private:
         boost::filesystem::path basePath;

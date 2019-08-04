@@ -1,6 +1,7 @@
 
 #include <borc/services/BuildServiceImpl.hpp>
 
+#include <iostream>
 #include <borc/utility/Dag.hpp>
 #include <borc/utility/DagNode.hpp>
 #include <borc/model/Package.hpp>
@@ -39,6 +40,8 @@ namespace borc {
 
             artifact->rebuildSources(basePath);
 
+            const CompileOptions compileOptions = this->computeCompileOptions(artifact);
+
             DagNode *artifactDagNode = dag->createNode();
 
             const std::vector<Source*> sources = artifact->getSources();
@@ -47,7 +50,7 @@ namespace borc {
             for (Source *source : sources) {
                 const Compiler *compiler = toolchain->selectCompiler(source);
 
-                if (!compiler) {
+                if (! compiler) {
                     /*
                     if (logger) {
                         std::string msg = "";
@@ -64,7 +67,7 @@ namespace borc {
                     continue;
                 }
 
-                CompileOutput compileOutput = compiler->compile(dag.get(), outputPath, source);
+                CompileOutput compileOutput = compiler->compile(dag.get(), outputPath, source, compileOptions);
 
                 objectFiles.push_back(compileOutput.outputFileRelativePath);
                 artifactDagNode->previous.push_back(compileOutput.node);
@@ -77,5 +80,17 @@ namespace borc {
         }
 
         return dag;
+    }
+
+
+    CompileOptions BuildServiceImpl::computeCompileOptions(const Artifact *artifact) const {
+        CompileOptions options;
+
+        for (const boost::filesystem::path &includePath : artifact->getIncludePaths()) {
+            const auto resolvedIncludePath = basePath / artifact->getPath() / includePath;
+            options.includePaths.push_back(resolvedIncludePath.string());
+        }
+
+        return options;
     }
 }

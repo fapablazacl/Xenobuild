@@ -55,7 +55,7 @@ namespace borc {
 
 		Command* createCompileCommand(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const;
 
-		CompileOutput compile(Dag *dag, const boost::filesystem::path &outputPath, const Source *source) const;
+		CompileOutput compile(Dag *dag, const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const;
 
 	private:
 		boost::filesystem::path getObjectFilePath(const boost::filesystem::path &outputPath, const Source *source) const;

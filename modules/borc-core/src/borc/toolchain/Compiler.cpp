@@ -103,12 +103,10 @@ namespace borc {
 		return commandFactory->createCommand(commandPath, commandOptions);
 	}
 
-	CompileOutput Compiler::compile(Dag *dag, const boost::filesystem::path &outputPath, const Source *source) const {
-		Command *command = this->createCompileCommand(outputPath, source, {});
+	CompileOutput Compiler::compile(Dag *dag, const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const {
+		Command *command = this->createCompileCommand(outputPath, source, options);
 		DagNode *node = dag->createNode(command);
 		boost::filesystem::path outputFileRelativePath = this->getObjectFilePath(outputPath, source);
-
-		
 
 		// TODO: compute dependent headers
 		node->previous.push_back(dag->createNode(commandFactory->createPathCommand(outputFileRelativePath.parent_path(), PathCommand::Create)));
