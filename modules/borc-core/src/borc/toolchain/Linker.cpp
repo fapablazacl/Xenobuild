@@ -69,7 +69,8 @@ namespace borc {
 		std::vector<std::string> options;
 
 		for (const std::string &importLibrary : libraries) {
-			options.push_back(importLibrary + ".lib");
+			// options.push_back(importLibrary + ".lib");
+			options.push_back("-l" + importLibrary);
 		}
 
 		return options;
