@@ -29,6 +29,7 @@ add_library(borc-core
     "include/borc/toolchain/Compiler.hpp"
     "include/borc/toolchain/Linker.hpp"
     "include/borc/toolchain/Toolchain.hpp"
+    "include/borc/toolchain/ToolchainImpl.hpp"
     "include/borc/toolchain/ToolchainFactory.hpp"
     "include/borc/toolchain/ServiceFactory.hpp"
 
@@ -58,6 +59,7 @@ add_library(borc-core
     "src/borc/toolchain/Compiler.cpp"
     "src/borc/toolchain/Linker.cpp"
     "src/borc/toolchain/Toolchain.cpp"
+    "src/borc/toolchain/ToolchainImpl.cpp"
     "src/borc/toolchain/ToolchainFactory.cpp"
     "src/borc/toolchain/ServiceFactory.cpp"
     "src/borc/toolchain/ServiceFactoryGCC.hpp"

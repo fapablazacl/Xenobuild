@@ -2,19 +2,6 @@
 #ifndef __BORC_CORE_TOOLCHAIN_HPP__
 #define __BORC_CORE_TOOLCHAIN_HPP__
 
-#include <set>
-#include <boost/filesystem.hpp>
-
-namespace borc {
-	struct SourceType {
-		SourceType(const std::initializer_list<std::string> &wildcards);
-
-		bool match(const boost::filesystem::path &filePath) const;
-
-		std::set<std::string> wildcards;
-	};
-}
-
 namespace borc {
 	class Compiler;
 	class Linker;
@@ -23,17 +10,11 @@ namespace borc {
 
 	class Toolchain {
 	public:
-		explicit Toolchain(const std::vector<std::pair<SourceType, const Compiler*>> &compilers, const Linker *linker);
+		virtual ~Toolchain();
 
-		~Toolchain();
+		virtual const Compiler* selectCompiler(const Source *source) const = 0;
 
-		const Compiler* selectCompiler(const Source *source) const;
-
-		const Linker* selectLinker(const Artifact *artifact) const;
-
-	private:
-		std::vector<std::pair<SourceType, const Compiler*>> compilers;
-		const Linker *linker = nullptr;
+		virtual const Linker* selectLinker(const Artifact *artifact) const = 0;
 	};
 }
 

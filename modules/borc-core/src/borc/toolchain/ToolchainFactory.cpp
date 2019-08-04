@@ -3,7 +3,7 @@
 
 #include <borc/toolchain/Compiler.hpp>
 #include <borc/toolchain/Linker.hpp>
-#include <borc/toolchain/Toolchain.hpp>
+#include <borc/toolchain/ToolchainImpl.hpp>
 
 #include "ServiceFactoryGCC.hpp"
 #include "ServiceFactoryVC.hpp"
@@ -33,9 +33,9 @@ namespace borc {
                     { cppSourceType, serviceFactory->getCompiler() }
                 };
 
-                return std::make_unique<Toolchain>(compilers, serviceFactory->getLinker());
+                return std::make_unique<ToolchainImpl>(compilers, serviceFactory->getLinker());
             } else {
-                return std::unique_ptr<Toolchain>();
+                return std::unique_ptr<ToolchainImpl>();
             }
         }
 
