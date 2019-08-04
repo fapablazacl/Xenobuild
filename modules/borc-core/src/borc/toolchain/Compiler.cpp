@@ -63,7 +63,7 @@ namespace borc {
 		const boost::filesystem::path objectFileName = source->getFilePath().filename().string() + ".obj";
 		const boost::filesystem::path objectFileParentPath 
 			= outputPath 
-			/ source->getArtifact()->getPath() 
+			// / source->getArtifact()->getPath()
 			/ source->getRelativeFilePath().parent_path();
 
 		const boost::filesystem::path objectFilePath = objectFileParentPath / objectFileName;

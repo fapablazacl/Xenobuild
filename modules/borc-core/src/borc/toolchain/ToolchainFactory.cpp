@@ -42,12 +42,12 @@ namespace borc {
     private:
         SourceType cppSourceType = {"*.cpp", "*.cxx", "*.c++", "*.cc"};
 
-        ServiceFactoryVC serviceFactoryVC = ServiceFactoryVC {
+        ServiceFactoryVC serviceFactoryVC {
             "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Tools\\MSVC\\14.16.27023\\",
             "C:\\Program Files (x86)\\Windows Kits\\10\\"
         };
 
-        ServiceFactoryGCC serviceFactoryGCC = ServiceFactoryGCC {
+        ServiceFactoryGCC serviceFactoryGCC {
             // "/usr/local/Cellar/gcc/8.2.0/bin/gcc-8"
             "gcc"
         };
