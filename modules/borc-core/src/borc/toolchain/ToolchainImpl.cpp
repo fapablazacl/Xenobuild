@@ -19,9 +19,9 @@ namespace borc {
 }
 
 namespace borc {
-    ToolchainImpl::ToolchainImpl(const std::vector<std::pair<SourceType, const Compiler*>> &compilers, const Linker *linker) {
+    ToolchainImpl::ToolchainImpl(const std::vector<std::pair<SourceType, const Compiler*>> &compilers, const std::vector<std::pair<ArtifactChecker*, const Linker*>> &linkers) {
         this->compilers = compilers;
-        this->linker = linker;
+        this->linkers = linkers;
     }
 
     ToolchainImpl::~ToolchainImpl() {}
@@ -37,6 +37,12 @@ namespace borc {
     }
     
     const Linker* ToolchainImpl::selectLinker(const Artifact *artifact) const {
-        return linker;
+        for (auto &pair : linkers) {
+            if (pair.first->check(artifact)) {
+                return pair.second;
+            }
+        }
+
+        return nullptr;
     }
 }
