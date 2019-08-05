@@ -8,15 +8,16 @@
 namespace borc {
 	class Compiler;
 	class Linker;
-	class RunService;
-	class BuildService;
+	class SourceChecker;
+	class ArtifactChecker;
+
 	class ServiceFactory {
 	public:
 		virtual ~ServiceFactory();
 
-		virtual const Compiler* getCompiler() const = 0;
+		virtual const std::vector<std::pair<SourceChecker*, const Compiler*>> getCompilers() const = 0;
 
-		virtual const Linker* getLinker() const = 0;
+		virtual const std::vector<std::pair<ArtifactChecker*, const Linker*>> getLinkers() const = 0;
 	};
 } 
 

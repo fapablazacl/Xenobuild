@@ -2,9 +2,11 @@
 #include "ServiceFactoryVC.hpp"
 
 #include <borc/model/Command.hpp>
+#include <borc/toolchain/SourceChecker.hpp>
+
+#include "ArtifactTypeChecker.hpp"
 #include "CompilerImpl.hpp"
 #include "LinkerImpl.hpp"
-
 
 namespace borc {
     ServiceFactoryVC::ServiceFactoryVC(const std::string &installationPath, const std::string &windowsKitPath) {
@@ -12,19 +14,22 @@ namespace borc {
         const std::string compilerCommand = commandBasePath + "cl.exe";
         const std::string linkerCommand = commandBasePath + "link.exe";
 
-        this->compiler = this->createCompiler(compilerCommand, installationPath, windowsKitPath);
-        this->linker = this->createLinker(linkerCommand, installationPath, windowsKitPath);
+        compilers.push_back({
+            std::make_unique<SourceChecker>(std::initializer_list<std::string>({"*.cpp", "*.cxx", "*.c++", "*.cc"})), 
+            this->createCompiler(compilerCommand, installationPath, windowsKitPath)
+        });
+
+        linkers.push_back({
+            std::make_unique<ArtifactTypeChecker>(std::initializer_list<Artifact::Type>({
+                Artifact::Type::ApplicationCli, 
+                Artifact::Type::ApplicationGui, 
+                Artifact::Type::LibraryDynamic
+            })),
+            this->createLinker(linkerCommand, installationPath, windowsKitPath)
+        });
     }
 
     ServiceFactoryVC::~ServiceFactoryVC() {}
-
-    const Compiler* ServiceFactoryVC::getCompiler() const {
-        return compiler.get();
-    }
-
-    const Linker* ServiceFactoryVC::getLinker() const  {
-        return linker.get();
-    }
 
     std::unique_ptr<Compiler> ServiceFactoryVC::createCompiler(const std::string &compilerCommand, const std::string &installationPath, const std::string &windowsKitPath) {
         const std::string standardIncludePath = installationPath + "include";

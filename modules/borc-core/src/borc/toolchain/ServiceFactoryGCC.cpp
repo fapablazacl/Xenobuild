@@ -2,16 +2,40 @@
 #include "ServiceFactoryGCC.hpp"
 
 #include <borc/model/Command.hpp>
+#include <borc/toolchain/SourceChecker.hpp>
+
+#include "ArtifactTypeChecker.hpp"
 #include "CompilerImpl.hpp"
 #include "LinkerImpl.hpp"
+#include "ArchiveLinker.hpp"
 
 namespace borc {
     ServiceFactoryGCC::ServiceFactoryGCC(const std::string &commandBase) {
         this->commandBase = commandBase;
 
-        this->compiler = this->createCompiler();
-        this->linker = this->createLinker();
+        compilers.push_back({
+            std::make_unique<SourceChecker>(std::initializer_list<std::string>({"*.cpp", "*.cxx", "*.c++", "*.cc"})),
+            this->createCompiler()
+        });
+
+        linkers.push_back({
+            std::make_unique<ArtifactTypeChecker>(std::initializer_list<Artifact::Type>({
+                Artifact::Type::ApplicationCli, 
+                Artifact::Type::ApplicationGui, 
+                Artifact::Type::LibraryDynamic
+            })), 
+            this->createLinker()
+        });
+
+        linkers.push_back({
+            std::make_unique<ArtifactTypeChecker>(std::initializer_list<Artifact::Type>({
+                Artifact::Type::LibraryStatic
+            })), 
+            this->createStaticLinker()
+        });
     }
+
+    ServiceFactoryGCC::~ServiceFactoryGCC() {}
 
     std::unique_ptr<Compiler> ServiceFactoryGCC::createCompiler() {
         CompilerSwitches switches;
@@ -41,11 +65,12 @@ namespace borc {
         return std::make_unique<LinkerImpl> (&commandFactory, commandBase, switches, configuration);
     }
 
-    const Compiler* ServiceFactoryGCC::getCompiler() const {
-        return compiler.get();
-    }
+    std::unique_ptr<Linker> ServiceFactoryGCC::createStaticLinker() {
+        ArchiveLinker::Switches switches;
 
-    const Linker* ServiceFactoryGCC::getLinker() const {
-        return linker.get();
+        switches.buildStaticLibrary = "rcs";
+        switches.moduleOutput = "";
+
+        return std::make_unique<ArchiveLinker>(&commandFactory, "ar", switches);
     }
 }

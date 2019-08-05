@@ -8,47 +8,16 @@
 #include <borc/model/Artifact.hpp>
 
 namespace borc {
-	struct SourceType {
-		SourceType(const std::initializer_list<std::string> &wildcards);
-
-		bool match(const boost::filesystem::path &filePath) const;
-
-		std::set<std::string> wildcards;
-	};
-
-	class ArtifactChecker {
-	public:
-		virtual ~ArtifactChecker() {}
-
-		virtual bool check(const Artifact *artifact) const = 0;
-	};
-
-	class ArtifactTypeChecker : public ArtifactChecker {
-	public:
-		ArtifactTypeChecker(const Artifact::Type type) {
-			this->type = type;
-		}
-
-		virtual ~ArtifactTypeChecker() {}
-
-		virtual bool check(const Artifact *artifact) const override {
-			return type == artifact->getType();
-		}
-
-	private:
-		Artifact::Type type;
-	};
-}
-
-namespace borc {
 	class Compiler;
 	class Linker;
 	class Source;
 	class Artifact;
+	class SourceChecker;
+	class ArtifactChecker;
 
 	class ToolchainImpl : public Toolchain {
 	public:
-		explicit ToolchainImpl(const std::vector<std::pair<SourceType, const Compiler*>> &compilers, const std::vector<std::pair<ArtifactChecker*, const Linker*>> &linkers);
+		explicit ToolchainImpl(const std::vector<std::pair<SourceChecker*, const Compiler*>> &compilers, const std::vector<std::pair<ArtifactChecker*, const Linker*>> &linkers);
 
 		virtual ~ToolchainImpl();
 
@@ -57,7 +26,7 @@ namespace borc {
 		virtual const Linker* selectLinker(const Artifact *artifact) const override;
 
 	private:
-		std::vector<std::pair<SourceType, const Compiler*>> compilers;
+		std::vector<std::pair<SourceChecker*, const Compiler*>> compilers;
 		std::vector<std::pair<ArtifactChecker*, const Linker*>> linkers;
 	};
 }

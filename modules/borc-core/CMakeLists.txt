@@ -31,6 +31,8 @@ add_library(borc-core
     "include/borc/toolchain/Toolchain.hpp"
     "include/borc/toolchain/ToolchainFactory.hpp"
     "include/borc/toolchain/ServiceFactory.hpp"
+    "include/borc/toolchain/ArtifactChecker.hpp"
+    "include/borc/toolchain/SourceChecker.hpp"
 
     "src/borc/dag/BuildGraphGenerator.cpp"
     "src/borc/dag/Node.cpp"
@@ -68,8 +70,14 @@ add_library(borc-core
     "src/borc/toolchain/ToolchainImpl.cpp"
     "src/borc/toolchain/ToolchainFactory.cpp"
     "src/borc/toolchain/ServiceFactory.cpp"
+    "src/borc/toolchain/ServiceFactoryStub.hpp"
+    "src/borc/toolchain/ServiceFactoryStub.cpp"
     "src/borc/toolchain/ServiceFactoryGCC.hpp"
     "src/borc/toolchain/ServiceFactoryGCC.cpp"
     "src/borc/toolchain/ServiceFactoryVC.hpp"
     "src/borc/toolchain/ServiceFactoryVC.cpp"
+    "src/borc/toolchain/ArtifactChecker.cpp"
+    "src/borc/toolchain/SourceChecker.cpp"
+    "src/borc/toolchain/ArtifactTypeChecker.hpp"
+    "src/borc/toolchain/ArtifactTypeChecker.cpp"
 )

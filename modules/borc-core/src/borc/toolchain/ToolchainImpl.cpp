@@ -3,23 +3,11 @@
 
 #include <algorithm>
 #include <borc/model/Source.hpp>
+#include <borc/toolchain/SourceChecker.hpp>
+#include <borc/toolchain/ArtifactChecker.hpp>
 
 namespace borc {
-    SourceType::SourceType(const std::initializer_list<std::string> &wildcards) {
-        this->wildcards = wildcards;
-    }
-
-    bool SourceType::match(const boost::filesystem::path &filePath) const {
-        const std::string ext = "*" + filePath.extension().string();
-
-        auto it = std::find(wildcards.begin(), wildcards.end(), ext);
-
-        return it != wildcards.end();
-    }
-}
-
-namespace borc {
-    ToolchainImpl::ToolchainImpl(const std::vector<std::pair<SourceType, const Compiler*>> &compilers, const std::vector<std::pair<ArtifactChecker*, const Linker*>> &linkers) {
+    ToolchainImpl::ToolchainImpl(const std::vector<std::pair<SourceChecker*, const Compiler*>> &compilers, const std::vector<std::pair<ArtifactChecker*, const Linker*>> &linkers) {
         this->compilers = compilers;
         this->linkers = linkers;
     }
@@ -28,7 +16,7 @@ namespace borc {
 
     const Compiler* ToolchainImpl::selectCompiler(const Source *source) const {
         for (auto &pair : compilers) {
-            if (pair.first.match(source->getFilePath())) {
+            if (pair.first->check(source->getFilePath())) {
                 return pair.second;
             }
         }

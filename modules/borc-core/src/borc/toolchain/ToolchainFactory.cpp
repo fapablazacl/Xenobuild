@@ -4,10 +4,13 @@
 #include <stdexcept>
 #include <borc/toolchain/Compiler.hpp>
 #include <borc/toolchain/Linker.hpp>
+#include <borc/toolchain/SourceChecker.hpp>
+#include <borc/toolchain/ArtifactChecker.hpp>
 
 #include "ToolchainImpl.hpp"
 #include "ServiceFactoryGCC.hpp"
 #include "ServiceFactoryVC.hpp"
+#include "ArtifactTypeChecker.hpp"
 
 namespace borc {
     class ToolchainFactoryImpl : public ToolchainFactory {
@@ -20,29 +23,18 @@ namespace borc {
             ServiceFactory *serviceFactory = nullptr;
 
             switch (family) {
-                case ToolchainFamily::VC: 
-                    serviceFactory = &serviceFactoryVC;
-                    break;
-
-                case ToolchainFamily::GCC:
-                    serviceFactory = &serviceFactoryGCC;
-                    break;
+                case ToolchainFamily::VC: serviceFactory = &serviceFactoryVC; break;
+                case ToolchainFamily::GCC: serviceFactory = &serviceFactoryGCC; break;
             }
 
-            if (serviceFactory) {
-                const std::vector<std::pair<SourceType, const Compiler*>> compilers = {
-                    { cppSourceType, serviceFactory->getCompiler() }
-                };
+            if (! serviceFactory) {
+                throw std::runtime_error("Unsupported toolchain");
+            }
 
-                return std::make_unique<ToolchainImpl>(compilers, serviceFactory->getLinker());
-            } 
-
-            throw std::runtime_error("Unsupported toolchain");
+            return std::make_unique<ToolchainImpl>(serviceFactory->getCompilers(), serviceFactory->getLinkers());
         }
 
     private:
-        SourceType cppSourceType = {"*.cpp", "*.cxx", "*.c++", "*.cc"};
-
         ServiceFactoryVC serviceFactoryVC {
             "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Tools\\MSVC\\14.16.27023\\",
             "C:\\Program Files (x86)\\Windows Kits\\10\\"

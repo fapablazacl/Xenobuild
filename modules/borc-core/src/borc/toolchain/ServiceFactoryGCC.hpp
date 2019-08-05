@@ -2,29 +2,24 @@
 #ifndef __BORC_CORE_SERVICEFACTORYGCC_HPP__
 #define __BORC_CORE_SERVICEFACTORYGCC_HPP__
 
-#include <borc/model/CommandFactory.hpp>
-#include <borc/toolchain/ServiceFactory.hpp>
+#include "ServiceFactoryStub.hpp"
 
 namespace borc {
-	class ServiceFactoryGCC : public ServiceFactory {
+	class ServiceFactoryGCC : public ServiceFactoryStub {
 	public:
 		explicit ServiceFactoryGCC(const std::string &commandBase);
+
+		virtual ~ServiceFactoryGCC();
 
 	private:
 		std::unique_ptr<Compiler> createCompiler();
 
 		std::unique_ptr<Linker> createLinker();
 
-		virtual const Compiler* getCompiler() const override;
-
-		virtual const Linker* getLinker() const override;
+		std::unique_ptr<Linker> createStaticLinker();
 
 	private:
 		std::string commandBase;
-		std::unique_ptr<Compiler> compiler;
-		std::unique_ptr<Linker> linker;
-
-		CommandFactory commandFactory;
 	};
 } 
 
