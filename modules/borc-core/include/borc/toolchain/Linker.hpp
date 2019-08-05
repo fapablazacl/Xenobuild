@@ -20,7 +20,7 @@ namespace borc {
 	public:
 		virtual ~Linker();
 
-		virtual LinkOutput link(const Package *package, const Artifact *artifact, const std::vector<boost::filesystem::path> &objectFiles) const = 0;
+		virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Artifact *artifact, const std::vector<boost::filesystem::path> &objectFiles) const = 0;
 	};
 }
 

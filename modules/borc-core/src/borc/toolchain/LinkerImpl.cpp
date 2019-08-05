@@ -17,7 +17,7 @@ namespace borc {
 
     LinkerImpl::~LinkerImpl() {}
 
-	LinkOutput LinkerImpl::link(const Package *package, const Artifact *artifact, const std::vector<boost::filesystem::path> &objectFiles) const {
+	LinkOutput LinkerImpl::link(const boost::filesystem::path &outputPath, const Package *package, const Artifact *artifact, const std::vector<boost::filesystem::path> &objectFiles) const {
 		const std::string outputModuleFilePath = artifact->getPath().string();
 
 		const auto librariesOptions = this->computeLibrariesOptions(this->collectLibraries(package, artifact));

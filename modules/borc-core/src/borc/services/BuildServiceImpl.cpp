@@ -73,7 +73,7 @@ namespace borc {
                 artifactDagNode->previous.push_back(compileOutput.node);
             }
 
-            LinkOutput linkOutput = linker->link(package, artifact, objectFiles);
+            LinkOutput linkOutput = linker->link(outputPath, package, artifact, objectFiles);
             artifactDagNode->command = linkOutput.command;
 
             dag->getRoot()->previous.push_back(artifactDagNode);

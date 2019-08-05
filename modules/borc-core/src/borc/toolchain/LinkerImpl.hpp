@@ -36,7 +36,7 @@ namespace borc {
 
         virtual ~LinkerImpl();
 
-		virtual LinkOutput link(const Package *package, const Artifact *artifact, const std::vector<boost::filesystem::path> &objectFiles) const override;
+		virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Artifact *artifact, const std::vector<boost::filesystem::path> &objectFiles) const override;
 
 	private:
 		std::vector<std::string> collectLibraries(const Package *package, const Artifact *artifact) const;
