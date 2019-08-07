@@ -1,6 +1,15 @@
 
 include_directories("../borc-core/include")
 
+find_package(Boost
+    REQUIRED
+    COMPONENTS filesystem
+)
+include_directories(${Boost_INCLUDE_DIRS})
+link_directories(${Boost_LIBRARY_DIRS})
+
+find_package(nlohmann_json REQUIRED)
+
 add_library(borc-core 
     "include/borc/dag/BuildGraphGenerator.hpp"
     "include/borc/dag/Node.hpp"
@@ -81,3 +90,5 @@ add_library(borc-core
     "src/borc/toolchain/ArtifactTypeChecker.hpp"
     "src/borc/toolchain/ArtifactTypeChecker.cpp"
 )
+
+target_link_libraries(borc-core ${Boost_LIBRARIES} nlohmann_json::nlohmann_json)
