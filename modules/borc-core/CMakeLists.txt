@@ -42,6 +42,8 @@ add_library(borc-core
     "include/borc/toolchain/ServiceFactory.hpp"
     "include/borc/toolchain/ArtifactChecker.hpp"
     "include/borc/toolchain/SourceChecker.hpp"
+    "include/borc/build/BuildCache.hpp"
+    "include/borc/build/BuildCacheImpl.hpp"
 
     "src/borc/dag/BuildGraphGenerator.cpp"
     "src/borc/dag/Node.cpp"
@@ -89,6 +91,8 @@ add_library(borc-core
     "src/borc/toolchain/SourceChecker.cpp"
     "src/borc/toolchain/ArtifactTypeChecker.hpp"
     "src/borc/toolchain/ArtifactTypeChecker.cpp"
+    "src/borc/build/BuildCache.cpp"
+    "src/borc/build/BuildCacheImpl.cpp"
 )
 
 target_link_libraries(borc-core ${Boost_LIBRARIES} nlohmann_json::nlohmann_json)

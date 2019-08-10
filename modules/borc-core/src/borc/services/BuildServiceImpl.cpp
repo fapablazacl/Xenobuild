@@ -11,12 +11,14 @@
 #include <borc/toolchain/Compiler.hpp>
 #include <borc/toolchain/Linker.hpp>
 #include <borc/services/LoggingService.hpp>
+#include <borc/build/BuildCache.hpp>
 
 namespace borc {
-    BuildServiceImpl::BuildServiceImpl(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, LoggingService *logger) {
+    BuildServiceImpl::BuildServiceImpl(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, BuildCache* buildCache, LoggingService *logger) {
         this->basePath = basePath;
         this->outputPath = outputPath;
         this->toolchain = toolchain;
+        this->buildCache = buildCache;
         this->logger = logger;
     }
 
@@ -38,6 +40,10 @@ namespace borc {
                 continue;
             }
 
+            if (! buildCache->needsRebuild(artifact)) {
+                continue;
+            }
+
             artifact->rebuildSources(basePath);
 
             const CompileOptions compileOptions = this->computeCompileOptions(artifact);
@@ -50,20 +56,7 @@ namespace borc {
             for (Source *source : sources) {
                 const Compiler *compiler = toolchain->selectCompiler(source);
 
-                if (! compiler) {
-                    /*
-                    if (logger) {
-                        std::string msg = "";
-
-                        msg += "Couldn't find a compiler using the current toolchain ";
-                        msg += "for the file ";
-                        msg += "'" + source->getFilePath().string() + "'";
-                        msg += ".";
-
-                        logger->warn(msg);
-                    }
-                    */
-
+                if (!compiler || !buildCache->needsRebuild(source)) {
                     continue;
                 }
 

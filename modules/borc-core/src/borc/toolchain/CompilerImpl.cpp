@@ -22,7 +22,6 @@ namespace borc {
 		const boost::filesystem::path objectFileName = source->getFilePath().filename().string() + ".obj";
 		const boost::filesystem::path objectFileParentPath 
 			= outputPath 
-			// / source->getArtifact()->getPath()
 			/ source->getRelativeFilePath().parent_path();
 
 		const boost::filesystem::path objectFilePath = objectFileParentPath / objectFileName;
@@ -63,10 +62,11 @@ namespace borc {
 	}
 
 	CompileOutput CompilerImpl::compile(Dag *dag, const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const {
+		const boost::filesystem::path outputFileRelativePath = this->getObjectFilePath(outputPath, source);
+
 		Command *command = this->createCompileCommand(outputPath, source, options);
 		DagNode *node = dag->createNode(command);
-		boost::filesystem::path outputFileRelativePath = this->getObjectFilePath(outputPath, source);
-
+		
 		// TODO: compute dependent headers
 		node->previous.push_back(dag->createNode(commandFactory->createPathCommand(outputFileRelativePath.parent_path(), PathCommand::Create)));
 

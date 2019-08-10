@@ -10,12 +10,13 @@ namespace borc {
     class Toolchain;
     class LoggingService;
     class Artifact;
+    class BuildCache;
 
     struct CompileOptions;
 
     class BuildServiceImpl : public BuildService {
     public:
-        BuildServiceImpl(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, LoggingService *logger);
+        BuildServiceImpl(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, BuildCache* buildCache, LoggingService *logger);
 
         virtual ~BuildServiceImpl();
 
@@ -28,6 +29,7 @@ namespace borc {
         boost::filesystem::path basePath;
         boost::filesystem::path outputPath;
         Toolchain *toolchain = nullptr;
+        BuildCache *buildCache = nullptr;
         LoggingService *logger = nullptr;
     };
 }

@@ -20,4 +20,8 @@ namespace borc {
 	}
 
 	Source::~Source() {}
+
+	std::time_t Source::getModifiedTime() const {
+		return boost::filesystem::last_write_time(filePath);
+	}
 }

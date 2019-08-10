@@ -18,6 +18,7 @@
 #include <borc/utility/DagVisitor.hpp>
 #include <borc/toolchain/ToolchainFactory.hpp>
 #include <borc/toolchain/Toolchain.hpp>
+#include <borc/build/BuildCacheImpl.hpp>
 
 #include <borc/utility/DagNode.hpp>
 #include <borc/utility/Dag.hpp>
@@ -87,7 +88,9 @@ namespace borc {
         std::unique_ptr<Package> package = this->makePackage(packageEntity, moduleEntities);
 
         // TODO: construct the output folder based on the current toolchain and version.
-        BuildServiceImpl buildService{baseFolderPath, baseFolderPath / ".borc" / "gcc", toolchain.get(), &loggingService};
+        // TODO: Create the BuildCache from a factory, because it depends on the current toolchain.
+        BuildCacheImpl buildCacheImpl;
+        BuildServiceImpl buildService{baseFolderPath, baseFolderPath / ".borc" / "gcc", toolchain.get(), &buildCacheImpl, &loggingService};
 
         auto dag = buildService.createBuildDag(package.get());
 

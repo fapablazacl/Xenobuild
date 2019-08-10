@@ -27,6 +27,8 @@ namespace borc {
 			return relativeFilePath;
 		}
 
+		std::time_t getModifiedTime() const;
+
 	private:
 		boost::filesystem::path filePath;
 		boost::filesystem::path relativeFilePath;
