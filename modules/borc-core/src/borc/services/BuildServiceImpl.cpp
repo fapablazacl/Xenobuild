@@ -40,9 +40,11 @@ namespace borc {
                 continue;
             }
 
+            /*
             if (! buildCache->needsRebuild(artifact)) {
                 continue;
             }
+            */
 
             artifact->rebuildSources(basePath);
 
@@ -56,7 +58,7 @@ namespace borc {
             for (Source *source : sources) {
                 const Compiler *compiler = toolchain->selectCompiler(source);
 
-                if (!compiler || !buildCache->needsRebuild(source)) {
+                if (!compiler || !buildCache->needsRebuild(source->getFilePath())) {
                     continue;
                 }
 

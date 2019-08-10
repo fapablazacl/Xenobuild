@@ -2,16 +2,16 @@
 #ifndef __BORC_BUILD_BUILDCACHE_HPP__
 #define __BORC_BUILD_BUILDCACHE_HPP__
 
+#include <boost/filesystem/path.hpp>
+
 namespace borc {
-    class Artifact;
-    class Source;
     class BuildCache {
     public:
         virtual ~BuildCache();
 
-        virtual bool needsRebuild(const Artifact *artifact) = 0;
+        virtual bool needsRebuild(const boost::filesystem::path &filePath) const = 0;
 
-        virtual bool needsRebuild(const Source *source) = 0;
+        virtual void putCache(const boost::filesystem::path &filePath) = 0;
     };
 }
 
