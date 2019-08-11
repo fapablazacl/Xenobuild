@@ -29,29 +29,6 @@ namespace borc {
 
 
     void BuildController::perform(int argc, char **argv) {
-        // parse the command line
-        boost::program_options::options_description desc("Allowed options for Configure subcommand");
-        desc.add_options()
-            ("help", "produce help message")
-            ("build-type", boost::program_options::value<std::string>(), "set build type (debug, release, all)")
-            ("toolchain", boost::program_options::value<std::string>(), "set toolchain (gcc, vc, clang)")
-        ;
-
-        boost::program_options::variables_map vm;
-        boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
-        boost::program_options::notify(vm);    
-
-        if (vm.count("help")) {
-            std::cout << desc << "\n";
-            return;
-        }
-
-        if (vm.count("build-type")) {
-            std::cout << "Build type was set to " << vm["build-type"].as<std::string>() << ".\n";
-        } else {
-            std::cout << "Build type defaulted to 'all'.\n";
-        }
-
         // perform the configure operation
         FileServiceImpl service;
         const boost::filesystem::path baseFolderPath = boost::filesystem::current_path();
@@ -110,6 +87,38 @@ namespace borc {
             // TODO: Add package parsing routine
         }
         */
+    }
+
+
+    boost::optional<BuildController::Options> BuildController::parseOptions(int argc, char **argv) const {
+        boost::program_options::options_description desc("Allowed options for Configure subcommand");
+        desc.add_options()
+            ("help", "produce help message")
+            ("build-type", boost::program_options::value<std::string>(), "set build type (debug, release, all)")
+            ("toolchain", boost::program_options::value<std::string>(), "set toolchain (gcc, vc, clang)")
+        ;
+
+        boost::program_options::variables_map vm;
+        boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
+        boost::program_options::notify(vm);
+
+        if (vm.count("help")) {
+            std::cout << desc << "\n";
+
+            return {};
+        } else {
+            BuildController::Options options;
+
+            if (vm.count("build-type")) {
+                options.buildType = vm["build-type"].as<std::string>();
+            }
+
+            if (vm.count("toolchain")) {
+                options.toolchain = vm["toolchain"].as<std::string>();
+            }
+
+            return options;
+        }
     }
 
 

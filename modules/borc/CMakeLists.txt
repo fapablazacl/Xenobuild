@@ -17,6 +17,8 @@ add_executable(borc
     "src/borc/cli/Controller.hpp"
     "src/borc/cli/BuildController.cpp"
     "src/borc/cli/BuildController.hpp"
+    "src/borc/cli/ConfigureController.cpp"
+    "src/borc/cli/ConfigureController.hpp"
     "src/borc/cli/ControllerFactory.cpp"
     "src/borc/cli/ControllerFactory.hpp"
 )

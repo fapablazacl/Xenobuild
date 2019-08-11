@@ -3,6 +3,7 @@
 
 #include <stdexcept>
 #include "BuildController.hpp"
+#include "ConfigureController.hpp"
 
 namespace borc {
     template<typename ControllerImpl>
@@ -15,6 +16,7 @@ namespace borc {
 
     ControllerFactory::ControllerFactory() {
         makers["build"] = std::make_unique<ControllerMakerImpl<BuildController>>();
+        makers["configure"] = std::make_unique<ControllerMakerImpl<ConfigureController>>();
     }
 
     ControllerFactory::~ControllerFactory() {}

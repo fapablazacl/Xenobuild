@@ -5,6 +5,7 @@
 #include "Controller.hpp"
 
 #include <boost/filesystem/path.hpp>
+#include <boost/optional/optional.hpp>
 
 namespace borc {
     struct PackageEntity;
@@ -20,6 +21,14 @@ namespace borc {
         virtual void perform(int argc, char **argv) override;
 
     private:
+        struct Options {
+            boost::optional<std::string> buildType;
+            boost::optional<std::string> toolchain;
+        };
+
+    private:
+        boost::optional<Options> parseOptions(int argc, char **argv) const;
+
         bool checkValidBorcFile(const boost::filesystem::path &filePath) const;
 
         PackageEntity makePackageEntity(const boost::filesystem::path &basePath, FileService &fileService) const;
