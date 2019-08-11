@@ -9,6 +9,7 @@
 #include <borc/model/Source.hpp>
 #include <borc/toolchain/Toolchain.hpp>
 #include <borc/toolchain/Compiler.hpp>
+#include <borc/toolchain/CompileOptions.hpp>
 #include <borc/toolchain/Linker.hpp>
 #include <borc/services/LoggingService.hpp>
 #include <borc/build/BuildCache.hpp>
@@ -25,7 +26,6 @@ namespace borc {
 
     BuildServiceImpl::~BuildServiceImpl() {}
 
-
     std::unique_ptr<Dag> BuildServiceImpl::createBuildDag(Package *package) {
         auto dag = std::make_unique<Dag>();
 
@@ -40,7 +40,7 @@ namespace borc {
                 continue;
             }
 
-            artifact->rebuildSources(basePath);
+            artifact->rescanSources(basePath);
 
             const CompileOptions compileOptions = this->computeCompileOptions(artifact);
 
@@ -80,6 +80,14 @@ namespace borc {
         for (const boost::filesystem::path &includePath : artifact->getIncludePaths()) {
             const auto resolvedIncludePath = basePath / artifact->getPath() / includePath;
             options.includePaths.push_back(resolvedIncludePath.string());
+        }
+
+        // TODO: Compute this recursively
+        // compute include paths for dependent artifacts
+        for (const Artifact *dependentArtifact : artifact->getDependencies()) {
+            CompileOptions dependentOptions = this->computeCompileOptions(dependentArtifact);
+
+            options.mergeWith(dependentOptions);
         }
 
         return options;

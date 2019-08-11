@@ -37,7 +37,7 @@ namespace borc {
         this->includePaths = includePaths;
     }
 
-    void Artifact::rebuildSources(const boost::filesystem::path &baseFolder) {
+    void Artifact::rescanSources(const boost::filesystem::path &baseFolder) {
         sources.clear();
 
         for (const boost::filesystem::path &sourcePath : sourcePaths) {

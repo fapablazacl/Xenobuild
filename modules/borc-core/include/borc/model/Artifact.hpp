@@ -76,7 +76,7 @@ namespace borc {
         /**
          * @brief Reconstruct all the internal object Source files based on the supplied base folder
          */
-        void rebuildSources(const boost::filesystem::path &baseFolder);
+        void rescanSources(const boost::filesystem::path &baseFolder);
 
         std::vector<Source*> getSources() const;
 

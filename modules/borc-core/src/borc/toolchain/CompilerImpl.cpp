@@ -7,8 +7,10 @@
 #include <borc/model/Package.hpp>
 #include <borc/model/Command.hpp>
 #include <borc/model/CommandFactory.hpp>
+#include <borc/toolchain/CompileOptions.hpp>
 #include <borc/utility/Dag.hpp>
 #include <borc/utility/DagNode.hpp>
+
 
 namespace borc {
 	CompilerImpl::CompilerImpl(CommandFactory *commandFactory, const std::string &commandPath, const CompilerSwitches &switches, const CompilerConfiguration &configuration) {

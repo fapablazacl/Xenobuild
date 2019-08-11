@@ -10,9 +10,7 @@ namespace borc {
 	class Dag;
 	class DagNode;
 
-	struct CompileOptions {
-		std::vector<std::string> includePaths;
-	};
+	struct CompileOptions;
 
 	struct CompileOutput {
 		boost::filesystem::path outputFileRelativePath;
