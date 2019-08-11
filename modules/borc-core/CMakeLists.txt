@@ -11,9 +11,6 @@ link_directories(${Boost_LIBRARY_DIRS})
 find_package(nlohmann_json REQUIRED)
 
 add_library(borc-core 
-    "include/borc/dag/BuildGraphGenerator.hpp"
-    "include/borc/dag/Node.hpp"
-    "include/borc/dag/NodeRepository.hpp"
     "include/borc/model/Source.hpp"
     "include/borc/model/Artifact.hpp"
     "include/borc/model/Package.hpp"
@@ -45,9 +42,6 @@ add_library(borc-core
     "include/borc/build/BuildCache.hpp"
     "include/borc/build/BuildCacheFactory.hpp"
 
-    "src/borc/dag/BuildGraphGenerator.cpp"
-    "src/borc/dag/Node.cpp"
-    "src/borc/dag/NodeRepository.cpp"
     "src/borc/model/Source.cpp"
     "src/borc/model/Artifact.cpp"
     "src/borc/model/Package.cpp"
