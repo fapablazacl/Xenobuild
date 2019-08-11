@@ -174,7 +174,7 @@ namespace borc {
         // available artifact types for C/C++ projects
         const std::map<std::string, Artifact::Type> artifactTypeMap = {
             {"application/cli", Artifact::Type::ApplicationCli},
-            {"application/gli", Artifact::Type::ApplicationGui},
+            {"application/gui", Artifact::Type::ApplicationGui},
             {"library/static", Artifact::Type::LibraryStatic},
             {"library/dynamic", Artifact::Type::LibraryDynamic}
         };
@@ -226,7 +226,7 @@ namespace borc {
             Artifact *artifact = artifacts[i];
 
             for (const std::string dependency :  moduleEntity.dependencies) {
-                // TODO: Expand the dependency solving from the (future) context ...
+                // TODO: Expand the dependency solving from the (future) context object ...
                 bool found = false;
                 for (const Artifact *dependentArtifact : artifacts) {
                     if (dependency == dependentArtifact->getName()) {

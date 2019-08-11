@@ -18,10 +18,17 @@ namespace borc {
     LinkerImpl::~LinkerImpl() {}
 
 	LinkOutput LinkerImpl::link(const boost::filesystem::path &outputPath, const Package *package, const Artifact *artifact, const std::vector<boost::filesystem::path> &objectFiles) const {
-		const std::string outputModuleFilePath = artifact->getPath().string();
+		// TODO: Change artifact name based on the current toolchain
+        boost::filesystem::path moduleName = artifact->getName();
+
+		if (artifact->getType() == Artifact::Type::LibraryDynamic) {
+			moduleName = "lib" + moduleName.string() + ".so";
+		}
+
+        const boost::filesystem::path moduleOutputPath = outputPath / artifact->getPath() / moduleName;
 
 		const auto librariesOptions = this->computeLibrariesOptions(this->collectLibraries(package, artifact));
-		const auto libraryPathsOptions = this->computeLibraryPathsOptions(this->collectLibraryPaths(package, artifact));
+		const auto libraryPathsOptions = this->computeLibraryPathsOptions(this->collectLibraryPaths(package, artifact, outputPath));
 
 		std::vector<std::string> commandOptions;
 
@@ -31,7 +38,7 @@ namespace borc {
 
 		commandOptions.insert(commandOptions.end(), librariesOptions.begin(), librariesOptions.end());
 		commandOptions.insert(commandOptions.end(), libraryPathsOptions.begin(), libraryPathsOptions.end());
-		commandOptions.push_back(switches.moduleOutput + outputModuleFilePath);
+		commandOptions.push_back(switches.moduleOutput + moduleOutputPath.string());
 
 		for (const boost::filesystem::path &objetFile : objectFiles) {
 			commandOptions.push_back(objetFile.string());
@@ -39,7 +46,7 @@ namespace borc {
 
 		Command *command = commandFactory->createCommand(commandPath, commandOptions);
 
-		return {outputModuleFilePath, command};
+		return {moduleOutputPath, command};
 	}
 
 	std::vector<std::string> LinkerImpl::computeLibrariesOptions(const std::vector<std::string> &libraries) const {
@@ -75,11 +82,11 @@ namespace borc {
 		return libraries;
 	}
 
-	std::vector<std::string> LinkerImpl::collectLibraryPaths(const Package *package, const Artifact *artifact) const {
+	std::vector<std::string> LinkerImpl::collectLibraryPaths(const Package *package, const Artifact *artifact, const boost::filesystem::path &outputPath) const {
 		std::vector<std::string> paths = configuration.importLibraryPaths;
 
 		for (const Artifact *dependency : artifact->getDependencies()) {
-			const std::string path = dependency->getPath().string();
+			const std::string path = (outputPath / dependency->getPath()).string();
 			paths.push_back(path);
 		}
 

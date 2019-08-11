@@ -17,6 +17,7 @@ namespace borc {
     ArchiveLinker::~ArchiveLinker() {}
 
     LinkOutput ArchiveLinker::link(const boost::filesystem::path &outputPath, const Package *package, const Artifact *artifact, const std::vector<boost::filesystem::path> &objectFiles) const {
+        // TODO: Change artifact name based on the current toolchain
         const boost::filesystem::path archiveName = "lib" + artifact->getName() + ".a";
         const boost::filesystem::path archiveOutputPath = outputPath / artifact->getPath() / archiveName;
 

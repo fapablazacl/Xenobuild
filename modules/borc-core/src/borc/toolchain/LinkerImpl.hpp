@@ -40,7 +40,7 @@ namespace borc {
 
 	private:
 		std::vector<std::string> collectLibraries(const Package *package, const Artifact *artifact) const;
-		std::vector<std::string> collectLibraryPaths(const Package *package, const Artifact *artifact) const;
+		std::vector<std::string> collectLibraryPaths(const Package *package, const Artifact *artifact, const boost::filesystem::path &outputPath) const;
 		
 		std::vector<std::string> computeLibrariesOptions(const std::vector<std::string> &libraries) const;
 		std::vector<std::string> computeLibraryPathsOptions(const std::vector<std::string> &libraryPaths) const;
