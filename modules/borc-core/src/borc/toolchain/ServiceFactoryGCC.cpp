@@ -39,7 +39,7 @@ namespace borc {
 
     std::unique_ptr<Compiler> ServiceFactoryGCC::createCompiler() {
         CompilerSwitches switches;
-        switches.compile = "-c";
+        switches.compile = "-std=c++17 -c";
         switches.includeDebug = "-g";
         switches.zeroOptimization = "-O0";
         switches.objectFileOutput = "-o";

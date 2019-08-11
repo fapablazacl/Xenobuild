@@ -1,6 +1,6 @@
 
 {
-    "name": "devwarecl/borc",
+    "name": "borc",
     "description": "Build orchrestation system based on modularity and reusability",
     "version": "1.0.0",
     "type": "application/cli",
@@ -9,6 +9,6 @@
         "src"
     ],
     "dependencies": [
-        "devwarecl/borc-core"
+        "borc-core"
     ]
 }

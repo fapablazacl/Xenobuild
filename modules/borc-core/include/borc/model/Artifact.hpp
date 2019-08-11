@@ -80,6 +80,8 @@ namespace borc {
 
         std::vector<Source*> getSources() const;
 
+        void setDependencies(const std::vector<const Artifact*> &dependentArtifacts);
+
     private:
         Package *package = nullptr;
         std::string name;

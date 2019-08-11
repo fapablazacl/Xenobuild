@@ -218,6 +218,33 @@ namespace borc {
             artifact->setSourcePaths(sourcePaths);
         }
 
+        // solve module dependencies
+        std::vector<Artifact*> artifacts = package->getArtifacts();
+
+        for (int i=0; i<moduleEntities.size(); i++) {
+            const ModuleEntity &moduleEntity = moduleEntities[i];
+            Artifact *artifact = artifacts[i];
+
+            for (const std::string dependency :  moduleEntity.dependencies) {
+                // TODO: Expand the dependency solving from the (future) context ...
+                bool found = false;
+                for (const Artifact *dependentArtifact : artifacts) {
+                    if (dependency == dependentArtifact->getName()) {
+                        auto dependencies = artifact->getDependencies();
+                        dependencies.push_back(dependentArtifact);
+                        artifact->setDependencies(dependencies);
+
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (! found) {
+                    std::cout << "WARNING: dependency " << dependency << " for artifact " << artifact->getName() << " couldn't be found" << std::endl;
+                }
+            }
+        }
+
         return package;
     }
 }

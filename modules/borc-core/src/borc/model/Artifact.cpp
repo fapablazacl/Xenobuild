@@ -37,6 +37,10 @@ namespace borc {
         this->includePaths = includePaths;
     }
 
+    void Artifact::setDependencies(const std::vector<const Artifact*> &dependentArtifacts) {
+        dependencies = dependentArtifacts; 
+    }
+
     void Artifact::rescanSources(const boost::filesystem::path &baseFolder) {
         sources.clear();
 
