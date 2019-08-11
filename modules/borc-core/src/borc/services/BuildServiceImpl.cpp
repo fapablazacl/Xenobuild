@@ -40,12 +40,6 @@ namespace borc {
                 continue;
             }
 
-            /*
-            if (! buildCache->needsRebuild(artifact)) {
-                continue;
-            }
-            */
-
             artifact->rebuildSources(basePath);
 
             const CompileOptions compileOptions = this->computeCompileOptions(artifact);
@@ -65,13 +59,15 @@ namespace borc {
                 CompileOutput compileOutput = compiler->compile(dag.get(), outputPath, source, compileOptions);
 
                 objectFiles.push_back(compileOutput.outputFileRelativePath);
-                artifactDagNode->previous.push_back(compileOutput.node);
+                
+                artifactDagNode->appendDependency(compileOutput.node);
             }
 
             LinkOutput linkOutput = linker->link(outputPath, package, artifact, objectFiles);
-            artifactDagNode->command = linkOutput.command;
+            
+            artifactDagNode->setCommand(linkOutput.command);
 
-            dag->getRoot()->previous.push_back(artifactDagNode);
+            dag->getRoot()->appendDependency(artifactDagNode);
         }
 
         return dag;

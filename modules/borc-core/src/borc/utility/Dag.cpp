@@ -10,7 +10,7 @@ namespace borc {
     Dag::~Dag() {}
 
     DagNode *Dag::createNode(Command *command) {
-        auto node = new DagNode{command, {}};
+        auto node = new DagNode{this, command};
 
         nodeStorage.emplace_back(node);
 

@@ -68,7 +68,7 @@ namespace borc {
 		DagNode *node = dag->createNode(command);
 		
 		// TODO: compute dependent headers
-		node->previous.push_back(dag->createNode(commandFactory->createPathCommand(outputFileRelativePath.parent_path(), PathCommand::Create)));
+		node->createDependency(commandFactory->createPathCommand(outputFileRelativePath.parent_path(), PathCommand::Create));
 
 		return CompileOutput{outputFileRelativePath, node};
 	}

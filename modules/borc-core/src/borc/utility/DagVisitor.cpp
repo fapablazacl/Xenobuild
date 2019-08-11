@@ -12,12 +12,12 @@ namespace borc {
 
 
     void DagVisitor::visitNode(DagNode *dagNode) {
-        for (DagNode *dependency : dagNode->previous) {
+        for (DagNode *dependency : dagNode->getDependencies()) {
             this->visitNode(dependency);
         }
 
-        if (dagNode->command) {
-            dagNode->command->execute();
+        if (dagNode->getCommand()) {
+            dagNode->getCommand()->execute();
         }
     }
 }

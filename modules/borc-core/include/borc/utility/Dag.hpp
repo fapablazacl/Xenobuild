@@ -16,12 +16,6 @@ namespace borc {
 
         ~Dag();
 
-        DagNode *createNode() {
-            return this->createNode(nullptr);
-        }
-
-        DagNode *createNode(Command *command);
-
         DagNode* getRoot() {
             return root;
         }
@@ -30,6 +24,12 @@ namespace borc {
             return root;
         }
     
+        DagNode *createNode() {
+            return this->createNode(nullptr);
+        }
+
+        DagNode *createNode(Command *command);
+
     private:
         DagNode *root;
         std::vector<std::unique_ptr<DagNode>> nodeStorage;

@@ -2,7 +2,8 @@
     "name": "felide",
     "description": "A modern IDE built on C++ & <3",
     "modules": [
-        "modules/borc-core"
+        "modules/borc-core",
+        "modules/borc"
     ],
     "packageSearchPaths": [
         "packages"
