@@ -83,10 +83,11 @@ namespace borc {
 		const auto sourceFilePath = source->getFilePath();
 		const auto objectFilePath = this->getObjectFilePath(outputPath, source);
 
-		std::vector<std::string> commandOptions = {
-			switches.generateDependencies,
-			"\"" + sourceFilePath.string() + "\""
-		};
+		std::vector<std::string> commandOptions;
+
+		boost::split(commandOptions,switches.generateDependencies, boost::is_any_of(" "));
+
+		commandOptions.push_back(sourceFilePath.string());
 
 		// compute system include directories
 		for (const std::string &path : configuration.systemIncludePaths) {
@@ -121,7 +122,7 @@ namespace borc {
 		boost::filesystem::path compilerPath = boost::process::search_path(commandPath);
 		boost::process::ipstream pipeStream;
         // boost::process::child childProcess {compilerPath, boost::process::args(commandOptions), boost::process::std_out > pipeStream};
-		boost::process::child childProcess {compilerPath, opt, boost::process::std_out > pipeStream};
+		boost::process::child childProcess {compilerPath, boost::process::args(commandOptions), boost::process::std_out > pipeStream};
 
         std::string line;
         std::vector<std::string> specs;
