@@ -44,6 +44,7 @@ namespace borc {
         switches.zeroOptimization = "-O0";
         switches.objectFileOutput = "-o";
         switches.includePath = "-I";
+        switches.generateDependencies = "-MM -MG";
 
         CompilerConfiguration configuration;
 

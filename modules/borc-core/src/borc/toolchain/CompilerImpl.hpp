@@ -21,6 +21,7 @@ namespace borc {
 		std::string includeDebug;
 		std::string zeroOptimization;
 		std::string includePath;
+		std::string generateDependencies;
 
 		CompilerSwitches() {}
 	};
@@ -49,6 +50,8 @@ namespace borc {
 		Command* createCompileCommand(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const;
 
 		boost::filesystem::path getObjectFilePath(const boost::filesystem::path &outputPath, const Source *source) const;
+
+		std::vector<boost::filesystem::path> computeFileDependencies(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const;
 
 	private:
 		CommandFactory *commandFactory = nullptr;
