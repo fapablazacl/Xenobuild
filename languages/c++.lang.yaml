@@ -1,0 +1,16 @@
+# C++ language definition file
+
+id: c++
+
+tools:
+  -
+    id: compiler
+    input: 
+    output: ${outputPath}/${compiler.id}-${compiler.version}/
+
+  -
+    id: linker
+    input: 
+
+  -
+    id: archiver
