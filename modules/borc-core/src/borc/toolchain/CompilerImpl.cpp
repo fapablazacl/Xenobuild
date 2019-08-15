@@ -106,22 +106,8 @@ namespace borc {
 		// add additional compiler options
 		commandOptions.insert(commandOptions.end(), std::begin(configuration.flags), std::end(configuration.flags));
 
-		std::string opt;
-		for (const std::string &option : commandOptions) {
-			opt += " " + option;
-		}
-
-		// log output
-		std::cout << "**************************" << std::endl;
-		std::cout << commandPath;
-		for (const std::string &option : commandOptions) {
-			std::cout << " " << option;
-		}
-		std::cout << std::endl << "**************************" << std::endl;
-
 		boost::filesystem::path compilerPath = boost::process::search_path(commandPath);
 		boost::process::ipstream pipeStream;
-        // boost::process::child childProcess {compilerPath, boost::process::args(commandOptions), boost::process::std_out > pipeStream};
 		boost::process::child childProcess {compilerPath, boost::process::args(commandOptions), boost::process::std_out > pipeStream};
 
         std::string line;
@@ -133,14 +119,14 @@ namespace borc {
 
         childProcess.wait();
 
-		// log output
-		std::cout << "**************************" << std::endl;
-		for (const std::string &line : specs) {
-			std::cout << line << std::endl;
-		}
-		std::cout << "**************************" << std::endl;
-
+		// from the third element onwards we have the dependencies ...
 		std::vector<boost::filesystem::path> dependencies;
+		for (int i=2; i<specs.size(); i++) {
+			std::string dependency = specs[i];
+			std::replace(dependency.begin(), dependency.end(), '\\', ' ');
+
+			dependencies.push_back(dependency);
+		}
 
 		return dependencies;
 	}
