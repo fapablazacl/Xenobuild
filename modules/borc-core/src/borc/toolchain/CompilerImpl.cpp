@@ -66,7 +66,7 @@ namespace borc {
 
 	CompileOutput CompilerImpl::compile(Dag *dag, const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const {
 		// ******************
-		this->computeFileDependencies(outputPath, source, options);
+		this->computeFileDependencies(source, options);
 
 		const boost::filesystem::path outputFileRelativePath = this->getObjectFilePath(outputPath, source);
 
@@ -79,13 +79,12 @@ namespace borc {
 		return CompileOutput{outputFileRelativePath, node};
 	}
 
-	std::vector<boost::filesystem::path> CompilerImpl::computeFileDependencies(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const {
+	std::vector<boost::filesystem::path> CompilerImpl::computeFileDependencies(const Source *source, const CompileOptions &options) const {
 		const auto sourceFilePath = source->getFilePath();
-		const auto objectFilePath = this->getObjectFilePath(outputPath, source);
 
 		std::vector<std::string> commandOptions;
 
-		boost::split(commandOptions,switches.generateDependencies, boost::is_any_of(" "));
+		boost::split(commandOptions, switches.generateDependencies, boost::is_any_of(" "));
 
 		commandOptions.push_back(sourceFilePath.string());
 

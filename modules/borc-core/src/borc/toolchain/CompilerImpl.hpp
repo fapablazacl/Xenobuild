@@ -51,7 +51,7 @@ namespace borc {
 
 		boost::filesystem::path getObjectFilePath(const boost::filesystem::path &outputPath, const Source *source) const;
 
-		std::vector<boost::filesystem::path> computeFileDependencies(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const;
+		std::vector<boost::filesystem::path> computeFileDependencies(const Source *source, const CompileOptions &options) const;
 
 	private:
 		CommandFactory *commandFactory = nullptr;
