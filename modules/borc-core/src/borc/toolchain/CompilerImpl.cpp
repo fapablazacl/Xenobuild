@@ -123,7 +123,9 @@ namespace borc {
 		std::vector<boost::filesystem::path> dependencies;
 		for (int i=2; i<specs.size(); i++) {
 			std::string dependency = specs[i];
-			std::replace(dependency.begin(), dependency.end(), '\\', ' ');
+
+			boost::algorithm::replace_all(dependency, "\\", "");
+			boost::algorithm::trim(dependency);
 
 			dependencies.push_back(dependency);
 		}
