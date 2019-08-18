@@ -46,6 +46,10 @@ namespace borc {
 
 		virtual CompileOutput compile(Dag *dag, const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const override;
 
+		virtual std::vector<boost::filesystem::path> computeDependencies(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const override;
+
+		virtual boost::filesystem::path compiteOutputFile(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const override;
+
 	private:
 		Command* createCompileCommand(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const;
 

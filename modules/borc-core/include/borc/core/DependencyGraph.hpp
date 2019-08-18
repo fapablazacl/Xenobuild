@@ -83,6 +83,14 @@ namespace borc {
             return node;
         }
 
+        DependencyNode<ValueType>* createNode(const ValueType value) {
+            auto node = this->createNode();
+
+            value->setValue(value);
+
+            return node;
+        }
+
 
         DependencyNode<ValueType>* getPointer() {
             return pointer;

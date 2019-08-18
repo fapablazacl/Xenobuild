@@ -26,6 +26,7 @@ namespace borc {
 
     BuildServiceImpl::~BuildServiceImpl() {}
 
+
     std::unique_ptr<Dag> BuildServiceImpl::createBuildDag(Package *package) {
         auto dag = std::make_unique<Dag>();
 
@@ -99,10 +100,40 @@ namespace borc {
         auto packageNode = buildGraph->getPointer();
 
         for (Artifact *artifact : package->getArtifacts()) {
+            const Linker *linker = toolchain->selectLinker(artifact);
+
+            if (!linker) {
+                continue;
+            }
+
+            const CompileOptions compileOptions = this->computeCompileOptions(artifact);
+
             auto artifactNode = buildGraph->createNode();
 
-            artifactNode->setValue();
+            artifact->rescanSources(basePath);
+            for (Source *source : artifact->getSources()) {
+                const Compiler *compiler = toolchain->selectCompiler(source);
 
+                if (!compiler || !buildCache->needsRebuild(source->getFilePath())) {
+                    continue;
+                }
+
+                auto sourcePointer = buildGraph->createNode();
+
+                for (const boost::filesystem::path &includeFile : compiler->computeDependencies(outputPath, source, compileOptions)) {
+                    auto includePointer = buildGraph->createNode();
+                    includePointer->setValue(includeFile);
+                    sourcePointer->addPointer(includePointer);
+                }
+
+                auto objectPointer = buildGraph->createNode();
+                objectPointer->setValue(compiler->compiteOutputFile(outputPath, source, compileOptions));
+                objectPointer->addPointer(sourcePointer);
+
+                artifactNode->addPointer(objectPointer);
+            }
+
+            artifactNode->setValue(artifact->getName());
             packageNode->addPointer(artifactNode);
         }
 
