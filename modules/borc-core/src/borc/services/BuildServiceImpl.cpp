@@ -120,19 +120,19 @@ namespace borc {
                     continue;
                 }
 
+                auto objectPointer = buildGraph->createNode();
+                objectPointer->setValue(compiler->compiteOutputFile(outputPath, source, compileOptions));
+                
                 auto sourcePointer = buildGraph->createNode();
-
                 sourcePointer->setValue(source->getFilePath());
+                objectPointer->addPointer(sourcePointer);
 
                 for (const boost::filesystem::path &includeFile : compiler->computeDependencies(outputPath, source, compileOptions)) {
                     auto includePointer = buildGraph->createNode();
                     includePointer->setValue(includeFile);
+                    // objectPointer->addPointer(includePointer);
                     sourcePointer->addPointer(includePointer);
                 }
-
-                auto objectPointer = buildGraph->createNode();
-                objectPointer->setValue(compiler->compiteOutputFile(outputPath, source, compileOptions));
-                objectPointer->addPointer(sourcePointer);
 
                 artifactNode->addPointer(objectPointer);
             }
