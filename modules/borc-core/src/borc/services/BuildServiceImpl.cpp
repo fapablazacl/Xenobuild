@@ -110,7 +110,7 @@ namespace borc {
 
             const CompileOptions compileOptions = this->computeCompileOptions(artifact);
 
-            auto artifactNode = buildGraph->createNode();
+            auto artifactNode = buildGraph->createOrGetNode(artifact->getName());
 
             artifact->rescanSources(basePath);
             for (Source *source : artifact->getSources()) {
@@ -120,16 +120,16 @@ namespace borc {
                     continue;
                 }
 
-                auto objectPointer = buildGraph->createNode();
-                objectPointer->setValue(compiler->compiteOutputFile(outputPath, source, compileOptions));
+                auto objectFilePath = compiler->compiteOutputFile(outputPath, source, compileOptions);
+                auto objectPointer = buildGraph->createOrGetNode(objectFilePath);
                 
-                auto sourcePointer = buildGraph->createNode();
-                sourcePointer->setValue(source->getFilePath());
+                auto sourcePointer = buildGraph->createOrGetNode(source->getFilePath());
                 objectPointer->addPointer(sourcePointer);
 
-                for (const boost::filesystem::path &includeFile : compiler->computeDependencies(outputPath, source, compileOptions)) {
-                    auto includePointer = buildGraph->createNode();
-                    includePointer->setValue(includeFile);
+                const auto includeFiles = compiler->computeDependencies(outputPath, source, compileOptions);
+                for (const boost::filesystem::path &includeFile : includeFiles) {
+                    auto includePointer = buildGraph->createOrGetNode(includeFile);
+
                     // objectPointer->addPointer(includePointer);
                     sourcePointer->addPointer(includePointer);
                 }
@@ -137,7 +137,6 @@ namespace borc {
                 artifactNode->addPointer(objectPointer);
             }
 
-            artifactNode->setValue(artifact->getName());
             packageNode->addPointer(artifactNode);
         }
 

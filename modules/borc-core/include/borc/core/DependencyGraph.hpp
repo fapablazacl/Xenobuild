@@ -13,21 +13,14 @@ namespace borc {
     template<typename ValueType>
     struct DependencyNode {
     public:
+/*
         explicit DependencyNode(DependencyGraph<ValueType> *graph) {
             this->graph = graph;
         }
-
+*/
         explicit DependencyNode(DependencyGraph<ValueType> *graph, const ValueType &value) {
             this->graph = graph;
-
             this->setValue(value);
-        }
-
-        explicit DependencyNode(DependencyGraph<ValueType> *graph, const ValueType &value, const DependencyNode *pointee) {
-            this->graph = graph;
-
-            this->setValue(value);
-            this->setPointee(pointee);
         }
 
         void setValue(const ValueType value) {
@@ -38,12 +31,12 @@ namespace borc {
             return value;
         }
 
-        void setPointee(const DependencyNode<ValueType>* pointee) {
-            this->pointee = pointee;
+        void addPointee(DependencyNode<ValueType>* pointee) {
+            pointees.push_back(pointee);
         }
-    
-        DependencyNode<ValueType>* getPointee() const {
-            return pointee;
+
+        void removePointee(DependencyNode<ValueType>* pointee) {
+            pointees.erase(pointee);
         }
 
         void addPointer(DependencyNode<ValueType>* pointer) {
@@ -61,7 +54,11 @@ namespace borc {
     private:
         DependencyGraph<ValueType> *graph = nullptr;
         ValueType value;
-        DependencyNode *pointee = nullptr;
+
+        // what nodes depends on me
+        std::vector<DependencyNode<ValueType> *> pointees;
+
+        // what nodes I depends on
         std::vector<DependencyNode<ValueType> *> pointers;
     };
 
@@ -69,12 +66,13 @@ namespace borc {
     class DependencyGraph {
     public:
         DependencyGraph() {
-            pointer = new DependencyNode<ValueType>(this);
+            pointer = new DependencyNode<ValueType>(this, ValueType{});
             nodeStorage.emplace_back(pointer);
         }
 
         ~DependencyGraph() {}
 
+        /*
         DependencyNode<ValueType>* createNode() {
             auto node = new DependencyNode<ValueType>(this);
 
@@ -82,13 +80,24 @@ namespace borc {
 
             return node;
         }
+        */
 
         DependencyNode<ValueType>* createNode(const ValueType value) {
-            auto node = this->createNode();
+            auto node = new DependencyNode<ValueType>(this, value);
 
-            value->setValue(value);
+            nodeStorage.emplace_back(node);
+            valueNodeMap.insert({value, node});
 
             return node;
+        }
+
+
+        DependencyNode<ValueType>* createOrGetNode(const ValueType value) {
+            if (auto valueIt=valueNodeMap.find(value); valueIt!=valueNodeMap.end()) {
+                return valueIt->second;
+            }
+
+            return this->createNode(value);
         }
 
 
@@ -117,7 +126,7 @@ namespace borc {
     private:
         DependencyNode<ValueType>* pointer = nullptr;
         std::vector<std::unique_ptr<DependencyNode<ValueType>>> nodeStorage;
-        // std::map<ValueType, DependencyNode<ValueType>*> valueNodeMap;
+        std::map<ValueType, DependencyNode<ValueType>*> valueNodeMap;
     };
 }
 

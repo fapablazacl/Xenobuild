@@ -55,7 +55,6 @@ namespace borc {
         const PackageEntity packageEntity = this->makePackageEntity(baseFolderPath, service);
         const std::vector<ModuleEntity> moduleEntities = this->makeModuleEntities(baseFolderPath, service, packageEntity);
         
-
         // we have all the information needed in order to process the packages.
         /*
         std::set<std::string> languages;
@@ -214,6 +213,7 @@ namespace borc {
                 artifact->setType(artifactTypeIt->second);
             } else {
                 std::string msg;
+
                 msg += "Invalid artifact type";
                 msg += " '" + moduleEntity.type + "' ";
                 msg += "for the";
