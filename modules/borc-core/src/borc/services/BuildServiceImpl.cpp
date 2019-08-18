@@ -92,4 +92,20 @@ namespace borc {
 
         return options;
     }
+
+
+    std::unique_ptr<DependencyBuildGraph> BuildServiceImpl::computeDependencyGraph(const Package *package) const {
+        auto buildGraph = std::make_unique<DependencyBuildGraph>();
+        auto packageNode = buildGraph->getPointer();
+
+        for (Artifact *artifact : package->getArtifacts()) {
+            auto artifactNode = buildGraph->createNode();
+
+            artifactNode->setValue();
+
+            packageNode->addPointer(artifactNode);
+        }
+
+        return buildGraph;
+    }
 }

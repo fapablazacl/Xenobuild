@@ -4,8 +4,12 @@
 
 #include <string>
 #include <memory>
+#include <boost/filesystem/path.hpp>
+#include <borc/core/DependencyGraph.hpp>
 
 namespace borc {
+    typedef DependencyGraph<boost::filesystem::path> DependencyBuildGraph;
+
     class Dag;
     class Package;
     class BuildService {
@@ -13,6 +17,8 @@ namespace borc {
         virtual ~BuildService();
 
         virtual std::unique_ptr<Dag> createBuildDag(Package *package) = 0;
+
+        virtual std::unique_ptr<DependencyBuildGraph> computeDependencyGraph(const Package *package) const = 0;
     };
 }
 
