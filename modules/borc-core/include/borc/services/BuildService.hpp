@@ -8,6 +8,7 @@
 #include <borc/core/DependencyGraph.hpp>
 
 namespace borc {
+    typedef DependencyNode<boost::filesystem::path> DependencyBuildNode;
     typedef DependencyGraph<boost::filesystem::path> DependencyBuildGraph;
 
     class Dag;

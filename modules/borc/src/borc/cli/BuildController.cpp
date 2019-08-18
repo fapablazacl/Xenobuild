@@ -25,6 +25,25 @@
 #include <borc/utility/DagVisitor.hpp>
 
 namespace borc {
+    static void showDependencyNode(const DependencyBuildNode *node, const int indent=0) {
+        for (int i=0; i<indent; i++) {
+            std::cout << " ";
+        }
+
+        std::cout << node->getValue() << std::endl;
+
+        for (const DependencyBuildNode *pointer : node->getPointers()) {
+            showDependencyNode(pointer, indent + 2);
+        }
+    }
+
+    static void showDependencyGraph(const DependencyBuildGraph *graph) {
+        showDependencyNode(graph->getPointer());
+    }
+}
+
+
+namespace borc {
     BuildController::~BuildController() {}
 
 
@@ -71,11 +90,16 @@ namespace borc {
 
         BuildServiceImpl buildService{baseFolderPath, baseFolderPath / ".borc" / "gcc", toolchain.get(), buildCache, &loggingService};
 
-        auto dag = buildService.createBuildDag(package.get());
+        auto dependencyGraph = buildService.computeDependencyGraph(package.get());
 
+        showDependencyGraph(dependencyGraph.get());
+
+        /*
+        auto dag = buildService.createBuildDag(package.get());
         DagVisitor dagVisitor;
         dagVisitor.visit(dag.get());
-
+        */
+        
         // Now we need to start the build!
 
         // Now we have parsed all the artifacts in the main package. 

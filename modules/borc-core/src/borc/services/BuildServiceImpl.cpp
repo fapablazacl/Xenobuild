@@ -99,6 +99,8 @@ namespace borc {
         auto buildGraph = std::make_unique<DependencyBuildGraph>();
         auto packageNode = buildGraph->getPointer();
 
+        packageNode->setValue(package->getName());
+
         for (Artifact *artifact : package->getArtifacts()) {
             const Linker *linker = toolchain->selectLinker(artifact);
 
@@ -114,11 +116,13 @@ namespace borc {
             for (Source *source : artifact->getSources()) {
                 const Compiler *compiler = toolchain->selectCompiler(source);
 
-                if (!compiler || !buildCache->needsRebuild(source->getFilePath())) {
+                if (!compiler) {
                     continue;
                 }
 
                 auto sourcePointer = buildGraph->createNode();
+
+                sourcePointer->setValue(source->getFilePath());
 
                 for (const boost::filesystem::path &includeFile : compiler->computeDependencies(outputPath, source, compileOptions)) {
                     auto includePointer = buildGraph->createNode();
