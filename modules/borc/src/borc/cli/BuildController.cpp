@@ -25,21 +25,46 @@
 #include <borc/utility/DagVisitor.hpp>
 
 namespace borc {
-    static void showDependencyNode(const DependencyBuildNode *node, const int indent=0) {
-        for (int i=0; i<indent; i++) {
-            std::cout << " ";
+    class DependencyGraphVisitor {
+    public:
+        virtual ~DependencyGraphVisitor() {}
+
+        virtual void visit(const DependencyBuildGraph *graph) = 0;
+    };
+
+    class DependencyGraphVisitorImpl : public DependencyGraphVisitor {
+    public:
+        virtual void visit(const DependencyBuildGraph *graph) override {
+            this->visit(graph->getPointer());
         }
 
-        std::cout << node->getValue() << std::endl;
+    private:
+        void visit(const DependencyBuildNode *node, const int indent = 0) {
+            for (int i=0; i<indent; i++) {
+                std::cout << " ";
+            }
 
-        for (const DependencyBuildNode *pointer : node->getPointers()) {
-            showDependencyNode(pointer, indent + 2);
+            std::cout << node->getValue() << std::endl;
+
+            for (const DependencyBuildNode *pointer : node->getPointers()) {
+                this->visit(pointer, indent + 2);
+            }
         }
-    }
+    };
 
-    static void showDependencyGraph(const DependencyBuildGraph *graph) {
-        showDependencyNode(graph->getPointer());
-    }
+    class BuildDependencyGraphVisitor : public DependencyGraphVisitor {
+    public:
+        virtual void visit(const DependencyBuildGraph *graph) override {
+            this->visit(graph->getPointer());
+        }
+
+    private:
+        void visit(const DependencyBuildNode *node) {
+            for (const DependencyBuildNode *pointer : node->getPointers()) {
+                this->visit(pointer);
+            }
+        }
+    };
 }
 
 
@@ -89,9 +114,11 @@ namespace borc {
 
         BuildServiceImpl buildService{baseFolderPath, baseFolderPath / ".borc" / "gcc", toolchain.get(), buildCache, &loggingService};
 
+        std::cout << "Computing source dependencies for package '" << package->getName() << "' ..." << std::endl;
         auto dependencyGraph = buildService.computeDependencyGraph(package.get());
+        auto dependencyGraphVisitor = std::make_unique<BuildDependencyGraphVisitor>();
 
-        showDependencyGraph(dependencyGraph.get());
+        dependencyGraphVisitor->visit(dependencyGraph.get());
 
         /*
         auto dag = buildService.createBuildDag(package.get());
