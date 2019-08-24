@@ -14,7 +14,9 @@ namespace borc {
 
         virtual ~BuildCacheImpl();
 
-        virtual bool needsRebuild(const boost::filesystem::path &path) override;
+        virtual bool needsRebuild(const boost::filesystem::path &path) const override;
+
+        virtual void markAsBuilt(const boost::filesystem::path &path) override;
 
     private:
         void loadCache();
@@ -22,6 +24,8 @@ namespace borc {
         void saveCache();
 
         std::string getCacheFileName() const;
+
+        std::time_t computeMark(const boost::filesystem::path &path) const;
 
     private:
         boost::filesystem::path outputPath;

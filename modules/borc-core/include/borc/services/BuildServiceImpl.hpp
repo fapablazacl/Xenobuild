@@ -4,6 +4,7 @@
 
 #include "BuildService.hpp"
 
+#include <vector>
 #include <boost/filesystem/path.hpp>
 
 namespace borc {
@@ -11,6 +12,7 @@ namespace borc {
     class LoggingService;
     class Artifact;
     class BuildCache;
+    class Command;
 
     struct CompileOptions;
 
@@ -27,12 +29,16 @@ namespace borc {
     private:
         CompileOptions computeCompileOptions(const Artifact *artifact) const;
 
+        Command* createBuildCacheUpdateCommand(const boost::filesystem::path &filePath);
+
     private:
         boost::filesystem::path basePath;
         boost::filesystem::path outputPath;
         Toolchain *toolchain = nullptr;
         BuildCache *buildCache = nullptr;
         LoggingService *logger = nullptr;
+
+        std::vector<std::unique_ptr<Command>> commandStorage;
     };
 }
 

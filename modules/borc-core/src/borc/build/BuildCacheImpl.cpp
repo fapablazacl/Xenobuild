@@ -8,13 +8,10 @@
 namespace borc {
     BuildCacheImpl::BuildCacheImpl(const boost::filesystem::path &outputPath) {
         this->outputPath = outputPath;
-
         this->loadCache();
     }
 
-    BuildCacheImpl::~BuildCacheImpl() {
-        this->saveCache();
-    }
+    BuildCacheImpl::~BuildCacheImpl() {}
 
     std::string BuildCacheImpl::getCacheFileName() const {
         return (outputPath / "buildCache.txt").string();
@@ -58,17 +55,27 @@ namespace borc {
         }
     }
 
-    bool BuildCacheImpl::needsRebuild(const boost::filesystem::path &path) {
+    bool BuildCacheImpl::needsRebuild(const boost::filesystem::path &path) const {
         bool modified = true;
 
-        const std::time_t timestamp = boost::filesystem::last_write_time(path);
+        const auto timestamp = this->computeMark(path);
 
         if (auto it = pathTimeMap.find(path); it != pathTimeMap.end()) {
-            modified = (timestamp != it->second);
+            return timestamp != it->second;
         } 
+
+        return modified;
+    }
+
+    void BuildCacheImpl::markAsBuilt(const boost::filesystem::path &path) {
+        const auto timestamp = this->computeMark(path);
 
         pathTimeMap.insert({path, timestamp});
 
-        return modified;
+        this->saveCache();
+    }
+
+    std::time_t BuildCacheImpl::computeMark(const boost::filesystem::path &path) const {
+        return boost::filesystem::last_write_time(path);
     }
 }

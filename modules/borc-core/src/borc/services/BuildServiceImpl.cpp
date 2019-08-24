@@ -7,6 +7,7 @@
 #include <borc/model/Package.hpp>
 #include <borc/model/Artifact.hpp>
 #include <borc/model/Source.hpp>
+#include <borc/model/Command.hpp>
 #include <borc/toolchain/Toolchain.hpp>
 #include <borc/toolchain/Compiler.hpp>
 #include <borc/toolchain/CompileOptions.hpp>
@@ -15,6 +16,23 @@
 #include <borc/build/BuildCache.hpp>
 
 namespace borc {
+    class BuildCacheUpdateCommand : public Command {
+    public:
+        BuildCacheUpdateCommand(BuildCache *buildCache, const boost::filesystem::path &sourceFilePath) {
+            this->buildCache = buildCache;
+            this->sourceFilePath = sourceFilePath;
+        }
+
+        virtual void execute() override {
+            buildCache->markAsBuilt(sourceFilePath);
+        }
+
+    private:
+        BuildCache *buildCache = nullptr;
+        boost::filesystem::path sourceFilePath;
+    };
+
+
     BuildServiceImpl::BuildServiceImpl(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, BuildCache* buildCache, LoggingService *logger) {
         this->basePath = basePath;
         this->outputPath = outputPath;
@@ -47,10 +65,9 @@ namespace borc {
 
             DagNode *artifactDagNode = dag->createNode();
 
-            const std::vector<Source*> sources = artifact->getSources();
             std::vector<boost::filesystem::path> objectFiles;
 
-            for (Source *source : sources) {
+            for (Source *source : artifact->getSources()) {
                 const Compiler *compiler = toolchain->selectCompiler(source);
 
                 if (!compiler || !buildCache->needsRebuild(source->getFilePath())) {
@@ -58,10 +75,13 @@ namespace borc {
                 }
 
                 CompileOutput compileOutput = compiler->compile(dag.get(), outputPath, source, compileOptions);
-
                 objectFiles.push_back(compileOutput.outputFileRelativePath);
-                
-                artifactDagNode->appendDependency(compileOutput.node);
+
+                Command *buildCacheUpdateCommand = this->createBuildCacheUpdateCommand(source->getFilePath());
+                DagNode *buildCacheUpdate = dag->createNode(buildCacheUpdateCommand);
+                buildCacheUpdate->appendDependency(compileOutput.node);
+
+                artifactDagNode->appendDependency(buildCacheUpdate);
             }
 
             LinkOutput linkOutput = linker->link(outputPath, package, artifact, objectFiles);
@@ -141,5 +161,14 @@ namespace borc {
         }
 
         return buildGraph;
+    }
+
+
+    Command* BuildServiceImpl::createBuildCacheUpdateCommand(const boost::filesystem::path &filePath) {
+        auto command = new BuildCacheUpdateCommand(this->buildCache, filePath);
+
+        commandStorage.emplace_back(command);
+
+        return command;
     }
 }
