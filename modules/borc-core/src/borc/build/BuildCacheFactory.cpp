@@ -8,8 +8,8 @@ namespace borc {
 
     BuildCacheFactory::~BuildCacheFactory() {}
 
-    BuildCache* BuildCacheFactory::createBuildCache(const boost::filesystem::path &cacheFilePath) {
-        auto cache = new BuildCacheImpl();
+    BuildCache* BuildCacheFactory::createBuildCache(const boost::filesystem::path &cachePath) {
+        auto cache = new BuildCacheImpl(cachePath);
 
         cacheStorage.emplace_back(cache);
 

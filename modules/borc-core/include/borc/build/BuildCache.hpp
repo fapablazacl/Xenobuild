@@ -9,9 +9,10 @@ namespace borc {
     public:
         virtual ~BuildCache();
 
-        virtual bool needsRebuild(const boost::filesystem::path &filePath) const = 0;
-
-        virtual void putCache(const boost::filesystem::path &filePath) = 0;
+        /**
+         * @brief Check if the current timestamp in the filesystem is different against the registered one
+         */
+        virtual bool needsRebuild(const boost::filesystem::path &path) = 0;
     };
 }
 

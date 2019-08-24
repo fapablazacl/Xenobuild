@@ -109,23 +109,26 @@ namespace borc {
 
         // TODO: construct the output folder based on the current toolchain and version.
         // TODO: Create the BuildCache from a factory, because it depends on the current toolchain.
+        const boost::filesystem::path outputPath = baseFolderPath / ".borc" / "gcc";
+
         BuildCacheFactory buildCacheFactory;
-        BuildCache *buildCache = buildCacheFactory.createBuildCache("");
+        BuildCache *buildCache = buildCacheFactory.createBuildCache(outputPath);
 
-        BuildServiceImpl buildService{baseFolderPath, baseFolderPath / ".borc" / "gcc", toolchain.get(), buildCache, &loggingService};
+        BuildServiceImpl buildService{baseFolderPath, outputPath, toolchain.get(), buildCache, &loggingService};
 
+        /*
         std::cout << "Computing source dependencies for package '" << package->getName() << "' ..." << std::endl;
+
         auto dependencyGraph = buildService.computeDependencyGraph(package.get());
         auto dependencyGraphVisitor = std::make_unique<BuildDependencyGraphVisitor>();
 
         dependencyGraphVisitor->visit(dependencyGraph.get());
+        */
 
-        /*
         auto dag = buildService.createBuildDag(package.get());
         DagVisitor dagVisitor;
         dagVisitor.visit(dag.get());
-        */
-        
+
         // Now we need to start the build!
 
         // Now we have parsed all the artifacts in the main package. 

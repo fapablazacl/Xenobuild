@@ -2,9 +2,9 @@
 #ifndef __BORC_BUILD_BUILDCACHEFACTORY_HPP__
 #define __BORC_BUILD_BUILDCACHEFACTORY_HPP__
 
-#include <boost/filesystem/path.hpp>
 #include <memory>
 #include <vector>
+#include <boost/filesystem/path.hpp>
 
 namespace borc {
     class BuildCache;
