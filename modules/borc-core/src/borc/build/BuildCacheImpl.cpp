@@ -34,10 +34,12 @@ namespace borc {
             std::vector<std::string> parts;
             boost::algorithm::split(parts, line, boost::is_any_of(":"));
 
-            pathTimeMap.insert({
-                boost::filesystem::path{parts[0]},
-                static_cast<std::time_t>(std::stoi(parts[1]))
-            });
+            if (parts.size() >= 2) {
+                pathTimeMap.insert({
+                    boost::filesystem::path{parts[0]},
+                    static_cast<std::time_t>(std::stoi(parts[1]))
+                });
+            }
         }
     }
 
@@ -52,7 +54,7 @@ namespace borc {
         }
 
         for (const auto &pair : pathTimeMap) {
-            fs << pair.first << ":" << pair.second << std::endl;
+            fs << pair.first.string() << ":" << pair.second << std::endl;
         }
     }
 
