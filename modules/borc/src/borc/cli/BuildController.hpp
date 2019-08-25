@@ -26,7 +26,7 @@ namespace borc {
             boost::optional<std::string> toolchain;
             bool force = false;
             bool showHelp = false;
-            std::string helpMessage = "";
+            std::string helpMessage;
         };
 
     private:
