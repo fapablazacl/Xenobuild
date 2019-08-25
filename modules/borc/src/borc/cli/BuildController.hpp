@@ -25,10 +25,12 @@ namespace borc {
             boost::optional<std::string> buildType;
             boost::optional<std::string> toolchain;
             bool force = false;
+            bool showHelp = false;
+            std::string helpMessage = "";
         };
 
     private:
-        boost::optional<Options> parseOptions(int argc, char **argv) const;
+        Options parseOptions(int argc, char **argv) const;
 
         bool checkValidBorcFile(const boost::filesystem::path &filePath) const;
 

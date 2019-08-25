@@ -2,6 +2,7 @@
 #include "BuildController.hpp"
 
 #include <iostream>
+#include <sstream>
 #include <boost/program_options.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/process.hpp>
@@ -73,9 +74,10 @@ namespace borc {
 
 
     void BuildController::perform(int argc, char **argv) {
-        auto options = this->parseOptions(argc, argv);
+        const auto options = this->parseOptions(argc, argv);
 
-        if (!options) {
+        if (options.showHelp) {
+            std::cout << options.helpMessage;
             return;
         }
 
@@ -120,7 +122,7 @@ namespace borc {
         BuildCacheFactory buildCacheFactory;
 
         BuildCache *buildCache = nullptr;
-        if (options->force) {
+        if (options.force) {
             buildCache = buildCacheFactory.createNullBuildCache();
         } else {
             buildCache = buildCacheFactory.createBuildCache(outputPath);
@@ -155,7 +157,7 @@ namespace borc {
     }
 
 
-    boost::optional<BuildController::Options> BuildController::parseOptions(int argc, char **argv) const {
+    BuildController::Options BuildController::parseOptions(int argc, char **argv) const {
         boost::program_options::options_description desc("Allowed options for Configure subcommand");
         desc.add_options()
             ("help", "produce help message")
@@ -168,27 +170,30 @@ namespace borc {
         boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
         boost::program_options::notify(vm);
 
+        BuildController::Options options;
+
         if (vm.count("help")) {
-            std::cout << desc << "\n";
+            std::stringstream ss;
 
-            return {};
-        } else {
-            BuildController::Options options;
+            ss << desc << "\n";
 
-            if (vm.count("build-type")) {
-                options.buildType = vm["build-type"].as<std::string>();
-            }
-
-            if (vm.count("toolchain")) {
-                options.toolchain = vm["toolchain"].as<std::string>();
-            }
-
-            if (vm.count("force")) {
-                options.force = true;
-            }
-
-            return options;
+            options.showHelp = true;
+            options.helpMessage = ss.str();
         }
+        
+        if (vm.count("build-type")) {
+            options.buildType = vm["build-type"].as<std::string>();
+        }
+
+        if (vm.count("toolchain")) {
+            options.toolchain = vm["toolchain"].as<std::string>();
+        }
+
+        if (vm.count("force")) {
+            options.force = true;
+        }
+
+        return options;
     }
 
 
