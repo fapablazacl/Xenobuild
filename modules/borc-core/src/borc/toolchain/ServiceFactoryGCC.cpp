@@ -60,7 +60,8 @@ namespace borc {
 
         LinkerConfiguration configuration;
         configuration.importLibraries = {
-            "stdc++", "stdc++fs"
+            "stdc++"
+            // , "stdc++fs"
         };
 
         return std::make_unique<LinkerImpl> (&commandFactory, commandBase, switches, configuration);
