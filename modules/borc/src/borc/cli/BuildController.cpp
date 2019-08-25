@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <sstream>
-#include <boost/program_options.hpp>
+
 #include <boost/filesystem.hpp>
 #include <boost/process.hpp>
 #include <nlohmann/json.hpp>
@@ -23,6 +23,7 @@
 #include <borc/utility/Dag.hpp>
 #include <borc/utility/DagVisitor.hpp>
 
+#include "BuildControllerOptions.hpp"
 #include "../common/EntityLoader.hpp"
 #include "../common/PackageFactory.hpp"
 
@@ -31,7 +32,7 @@ namespace borc {
 
 
     void BuildController::perform(int argc, char **argv) {
-        const auto options = this->parseOptions(argc, argv);
+        const auto options = BuildControllerOptions::parse(argc, argv);
 
         if (options.showHelp) {
             std::cout << options.helpMessage;
@@ -113,45 +114,5 @@ namespace borc {
             // TODO: Add package parsing routine
         }
         */
-    }
-
-
-    BuildController::Options BuildController::parseOptions(int argc, char **argv) const {
-        boost::program_options::options_description desc("Allowed options for Configure subcommand");
-        desc.add_options()
-            ("help", "produce help message")
-            ("build-type", boost::program_options::value<std::string>(), "set build type (debug, release, all)")
-            ("toolchain", boost::program_options::value<std::string>(), "set toolchain (gcc, vc, clang)")
-            ("force,f", "Force a rebuild")
-        ;
-
-        boost::program_options::variables_map vm;
-        boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
-        boost::program_options::notify(vm);
-
-        BuildController::Options options;
-
-        if (vm.count("help")) {
-            std::stringstream ss;
-
-            ss << desc << "\n";
-
-            options.showHelp = true;
-            options.helpMessage = ss.str();
-        }
-        
-        if (vm.count("build-type")) {
-            options.buildType = vm["build-type"].as<std::string>();
-        }
-
-        if (vm.count("toolchain")) {
-            options.toolchain = vm["toolchain"].as<std::string>();
-        }
-
-        if (vm.count("force")) {
-            options.force = true;
-        }
-
-        return options;
     }
 }

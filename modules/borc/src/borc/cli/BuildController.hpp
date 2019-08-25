@@ -10,6 +10,7 @@
 namespace borc {
     struct PackageEntity;
     struct ModuleEntity;
+    struct BuildControllerOptions;
 
     class Package;
     class FileService;
@@ -19,18 +20,6 @@ namespace borc {
         virtual ~BuildController();
 
         virtual void perform(int argc, char **argv) override;
-
-    private:
-        struct Options {
-            boost::optional<std::string> buildType;
-            boost::optional<std::string> toolchain;
-            bool force = false;
-            bool showHelp = false;
-            std::string helpMessage;
-        };
-
-    private:
-        Options parseOptions(int argc, char **argv) const;
     };
 }
 

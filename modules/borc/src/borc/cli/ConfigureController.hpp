@@ -5,19 +5,13 @@
 #include "Controller.hpp"
 
 namespace borc {
+    struct ConfigureControllerOptions;
+
     class ConfigureController : public Controller {
     public:
         virtual ~ConfigureController();
 
         virtual void perform(int argc, char **argv) override;
-
-    private:
-        struct Options {
-            
-        };
-
-    private:
-        Options parseCommandLine(int arhc, char **argv) const;
     };
 }
 
