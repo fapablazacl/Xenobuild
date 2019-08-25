@@ -13,6 +13,7 @@ link_directories(${Boost_LIBRARY_DIRS})
 
 add_executable(borc 
     "src/Main.cpp"
+    "src/borc/cli/ControllerStub.hpp"
     "src/borc/cli/Controller.cpp"
     "src/borc/cli/Controller.hpp"
     "src/borc/cli/BuildController.cpp"

@@ -2,24 +2,15 @@
 #ifndef __BORC_CLI_BUILDCONTROLLER_HPP__
 #define __BORC_CLI_BUILDCONTROLLER_HPP__
 
-#include "Controller.hpp"
-
-#include <boost/filesystem/path.hpp>
-#include <boost/optional/optional.hpp>
+#include "ControllerStub.hpp"
+#include "BuildControllerOptions.hpp"
 
 namespace borc {
-    struct PackageEntity;
-    struct ModuleEntity;
-    struct BuildControllerOptions;
-
-    class Package;
-    class FileService;
-
-    class BuildController : public Controller {
+    class BuildController : public ControllerStub<BuildControllerOptions> {
     public:
         virtual ~BuildController();
 
-        virtual void perform(int argc, char **argv) override;
+        virtual void perform(const BuildControllerOptions &options) override;
     };
 }
 

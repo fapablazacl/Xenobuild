@@ -2,16 +2,15 @@
 #ifndef __BORC_CLI_CONFIGURECONTROLLER_HPP__
 #define __BORC_CLI_CONFIGURECONTROLLER_HPP__
 
-#include "Controller.hpp"
+#include "ControllerStub.hpp"
+#include "ConfigureControllerOptions.hpp"
 
 namespace borc {
-    struct ConfigureControllerOptions;
-
-    class ConfigureController : public Controller {
+    class ConfigureController : public ControllerStub<ConfigureControllerOptions> {
     public:
         virtual ~ConfigureController();
 
-        virtual void perform(int argc, char **argv) override;
+        virtual void perform(const ConfigureControllerOptions &options) override;
     };
 }
 

@@ -5,10 +5,7 @@
 #include <sstream>
 
 #include <boost/filesystem.hpp>
-#include <boost/process.hpp>
-#include <nlohmann/json.hpp>
 #include <borc/services/FileServiceImpl.hpp>
-#include <borc/parsing/JSONDeserializer.hpp>
 #include <borc/entity/PackageEntity.hpp>
 #include <borc/entity/LanguageEntity.hpp>
 #include <borc/entity/ModuleEntity.hpp>
@@ -30,9 +27,7 @@
 namespace borc {
     BuildController::~BuildController() {}
 
-
-    void BuildController::perform(int argc, char **argv) {
-        const auto options = BuildControllerOptions::parse(argc, argv);
+    void BuildController::perform(const BuildControllerOptions &options) {
 
         if (options.showHelp) {
             std::cout << options.helpMessage;
