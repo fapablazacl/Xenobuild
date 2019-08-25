@@ -6,7 +6,7 @@
 
 #include "ArtifactTypeChecker.hpp"
 #include "CompilerImpl.hpp"
-#include "LinkerImpl.hpp"
+#include "ModuleLinker.hpp"
 #include "ArchiveLinker.hpp"
 
 namespace borc {
@@ -64,7 +64,7 @@ namespace borc {
             // , "stdc++fs"
         };
 
-        return std::make_unique<LinkerImpl> (&commandFactory, commandBase, switches, configuration);
+        return std::make_unique<ModuleLinker> (&commandFactory, commandBase, switches, configuration);
     }
 
     std::unique_ptr<Linker> ServiceFactoryGCC::createStaticLinker() {

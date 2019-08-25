@@ -6,7 +6,7 @@
 
 #include "ArtifactTypeChecker.hpp"
 #include "CompilerImpl.hpp"
-#include "LinkerImpl.hpp"
+#include "ModuleLinker.hpp"
 
 namespace borc {
     ServiceFactoryVC::ServiceFactoryVC(const std::string &installationPath, const std::string &windowsKitPath) {
@@ -77,7 +77,7 @@ namespace borc {
 
         linkerConfiguration.importLibraries = { "AdvAPI32" };
 
-        return std::make_unique<LinkerImpl>(
+        return std::make_unique<ModuleLinker>(
             &commandFactory, 
             linkerCommand,
             linkerSwitches, 

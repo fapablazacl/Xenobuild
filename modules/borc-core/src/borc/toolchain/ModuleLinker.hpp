@@ -1,6 +1,6 @@
 
-#ifndef __BORC_TOOLCHAIN_LINKERIMPL_HPP__
-#define __BORC_TOOLCHAIN_LINKERIMPL_HPP__
+#ifndef __BORC_TOOLCHAIN_MODULELINKER_HPP__
+#define __BORC_TOOLCHAIN_MODULELINKER_HPP__
 
 #include <borc/toolchain/Linker.hpp>
 
@@ -30,11 +30,11 @@ namespace borc {
 		LinkerConfiguration() {}
 	};
 
-	class LinkerImpl : public Linker {
+	class ModuleLinker : public Linker {
 	public:
-		explicit LinkerImpl(CommandFactory *commandFactory, const std::string &commandPath, const LinkerSwitches &switches, const LinkerConfiguration &configuration);
+		explicit ModuleLinker(CommandFactory *commandFactory, const std::string &commandPath, const LinkerSwitches &switches, const LinkerConfiguration &configuration);
 
-        virtual ~LinkerImpl();
+        virtual ~ModuleLinker();
 
 		virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Artifact *artifact, const std::vector<boost::filesystem::path> &objectFiles) const override;
 
