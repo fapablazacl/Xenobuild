@@ -24,3 +24,8 @@ add_executable(borc
 )
 
 target_link_libraries(borc borc-core ${Boost_LIBRARIES} pthread)
+
+install(TARGETS borc
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib)
