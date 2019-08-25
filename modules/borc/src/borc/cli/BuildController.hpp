@@ -24,6 +24,7 @@ namespace borc {
         struct Options {
             boost::optional<std::string> buildType;
             boost::optional<std::string> toolchain;
+            bool force = false;
         };
 
     private:

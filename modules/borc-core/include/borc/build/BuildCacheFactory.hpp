@@ -16,6 +16,8 @@ namespace borc {
 
         BuildCache* createBuildCache(const boost::filesystem::path &cacheFilePath);
 
+        BuildCache* createNullBuildCache();
+
     private:
         std::vector<std::unique_ptr<BuildCache>> cacheStorage;
     };

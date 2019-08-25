@@ -73,6 +73,12 @@ namespace borc {
 
 
     void BuildController::perform(int argc, char **argv) {
+        auto options = this->parseOptions(argc, argv);
+
+        if (!options) {
+            return;
+        }
+
         // perform the configure operation
         FileServiceImpl service;
         const boost::filesystem::path baseFolderPath = boost::filesystem::current_path();
@@ -112,7 +118,13 @@ namespace borc {
         const boost::filesystem::path outputPath = baseFolderPath / ".borc" / "gcc";
 
         BuildCacheFactory buildCacheFactory;
-        BuildCache *buildCache = buildCacheFactory.createBuildCache(outputPath);
+
+        BuildCache *buildCache = nullptr;
+        if (options->force) {
+            buildCache = buildCacheFactory.createNullBuildCache();
+        } else {
+            buildCache = buildCacheFactory.createBuildCache(outputPath);
+        }
 
         BuildServiceImpl buildService{baseFolderPath, outputPath, toolchain.get(), buildCache, &loggingService};
 
@@ -149,6 +161,7 @@ namespace borc {
             ("help", "produce help message")
             ("build-type", boost::program_options::value<std::string>(), "set build type (debug, release, all)")
             ("toolchain", boost::program_options::value<std::string>(), "set toolchain (gcc, vc, clang)")
+            ("force,f", "Force a rebuild")
         ;
 
         boost::program_options::variables_map vm;
@@ -168,6 +181,10 @@ namespace borc {
 
             if (vm.count("toolchain")) {
                 options.toolchain = vm["toolchain"].as<std::string>();
+            }
+
+            if (vm.count("force")) {
+                options.force = true;
             }
 
             return options;
