@@ -21,14 +21,14 @@
 #include <borc/utility/DagVisitor.hpp>
 
 #include "BuildControllerOptions.hpp"
-#include "../common/JSONEntityLoader.hpp"
+#include "../common/EntityLoader.hpp"
+#include "../common/EntityLoaderFactory.hpp"
 #include "../common/PackageFactory.hpp"
 
 namespace borc {
     BuildController::~BuildController() {}
 
     void BuildController::perform(const BuildControllerOptions &options) {
-
         if (options.showHelp) {
             std::cout << options.helpMessage;
             return;
@@ -38,9 +38,11 @@ namespace borc {
         FileServiceImpl service;
         const boost::filesystem::path baseFolderPath = boost::filesystem::current_path();
 
-        const JSONEntityLoader entityLoader {baseFolderPath, service};
-        const PackageEntity packageEntity = entityLoader.loadPackageEntity();
-        const std::vector<ModuleEntity> moduleEntities = entityLoader.loadModuleEntities(packageEntity);
+        EntityLoaderFactory entityLoaderFactory;
+
+        const auto entityLoader = entityLoaderFactory.createLoader(baseFolderPath, service);
+        const PackageEntity packageEntity = entityLoader->loadPackageEntity();
+        const std::vector<ModuleEntity> moduleEntities = entityLoader->loadModuleEntities(packageEntity);
         
         // we have all the information needed in order to process the packages.
         /*
