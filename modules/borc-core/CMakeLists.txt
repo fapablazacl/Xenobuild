@@ -11,6 +11,8 @@ link_directories(${Boost_LIBRARY_DIRS})
 find_package(nlohmann_json REQUIRED)
 
 add_library(borc-core 
+    "include/borc/core/DependencyGraph.hpp"
+    "include/borc/model/Version.hpp"
     "include/borc/model/Source.hpp"
     "include/borc/model/Artifact.hpp"
     "include/borc/model/Package.hpp"
@@ -34,6 +36,7 @@ add_library(borc-core
     "include/borc/utility/DagVisitor.hpp"
     "include/borc/toolchain/CompileOptions.hpp"
     "include/borc/toolchain/Compiler.hpp"
+    "include/borc/toolchain/CompilerVersionDetector.hpp"
     "include/borc/toolchain/Linker.hpp"
     "include/borc/toolchain/Toolchain.hpp"
     "include/borc/toolchain/ToolchainFactory.hpp"
@@ -43,6 +46,7 @@ add_library(borc-core
     "include/borc/build/BuildCache.hpp"
     "include/borc/build/BuildCacheFactory.hpp"
 
+    "src/borc/model/Version.cpp"
     "src/borc/model/Source.cpp"
     "src/borc/model/Artifact.cpp"
     "src/borc/model/Package.cpp"
@@ -64,6 +68,9 @@ add_library(borc-core
     "src/borc/utility/DagVisitor.cpp"
     "src/borc/toolchain/CompileOptions.cpp"
     "src/borc/toolchain/Compiler.cpp"
+    "src/borc/toolchain/CompilerVersionDetector.cpp"
+    "src/borc/toolchain/GCCCompilerVersionDetector.hpp"
+    "src/borc/toolchain/GCCCompilerVersionDetector.cpp"
     "src/borc/toolchain/CompilerImpl.hpp"
     "src/borc/toolchain/CompilerImpl.cpp"
     "src/borc/toolchain/Linker.cpp"
