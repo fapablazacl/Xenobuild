@@ -26,11 +26,14 @@ add_executable(borc
     "src/borc/cli/ConfigureControllerOptions.hpp"
     "src/borc/cli/ControllerFactory.cpp"
     "src/borc/cli/ControllerFactory.hpp"
+    "src/borc/common/EntityLoaderFactory.hpp"
+    "src/borc/common/EntityLoaderFactory.cpp"
     "src/borc/common/EntityLoader.hpp"
     "src/borc/common/EntityLoader.cpp"
+    "src/borc/common/JSONEntityLoader.hpp"
+    "src/borc/common/JSONEntityLoader.cpp"
     "src/borc/common/PackageFactory.hpp"
     "src/borc/common/PackageFactory.cpp"
-
 )
 
 target_link_libraries(borc borc-core ${Boost_LIBRARIES} pthread)

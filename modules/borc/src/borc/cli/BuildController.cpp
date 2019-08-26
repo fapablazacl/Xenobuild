@@ -21,7 +21,7 @@
 #include <borc/utility/DagVisitor.hpp>
 
 #include "BuildControllerOptions.hpp"
-#include "../common/EntityLoader.hpp"
+#include "../common/JSONEntityLoader.hpp"
 #include "../common/PackageFactory.hpp"
 
 namespace borc {
@@ -38,7 +38,7 @@ namespace borc {
         FileServiceImpl service;
         const boost::filesystem::path baseFolderPath = boost::filesystem::current_path();
 
-        const EntityLoader entityLoader {baseFolderPath, service};
+        const JSONEntityLoader entityLoader {baseFolderPath, service};
         const PackageEntity packageEntity = entityLoader.loadPackageEntity();
         const std::vector<ModuleEntity> moduleEntities = entityLoader.loadModuleEntities(packageEntity);
         
