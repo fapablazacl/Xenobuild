@@ -9,8 +9,6 @@ namespace borc {
 
         desc.add_options()
             ("help", "produce help message")
-            ("build-type", boost::program_options::value<std::string>(), "set build type (debug, release, all)")
-            ("toolchain", boost::program_options::value<std::string>(), "set toolchain (gcc, vc, clang)")
             ("force,f", "Force a rebuild")
         ;
 
@@ -29,14 +27,6 @@ namespace borc {
             options.helpMessage = ss.str();
         }
         
-        if (vm.count("build-type")) {
-            options.buildType = vm["build-type"].as<std::string>();
-        }
-
-        if (vm.count("toolchain")) {
-            options.toolchain = vm["toolchain"].as<std::string>();
-        }
-
         if (vm.count("force")) {
             options.force = true;
         }

@@ -7,8 +7,6 @@
 
 namespace borc {
     struct BuildControllerOptions {
-        boost::optional<std::string> buildType;
-        boost::optional<std::string> toolchain;
         bool force = false;
         bool showHelp = false;
         std::string helpMessage;
