@@ -41,6 +41,10 @@ namespace borc {
         dependencies = dependentArtifacts; 
     }
 
+    void Artifact::setLanguage(const Language &lang) {
+        language = lang;
+    }
+
     void Artifact::rescanSources(const boost::filesystem::path &baseFolder) {
         sources.clear();
 
@@ -49,7 +53,7 @@ namespace borc {
 
             if (! boost::filesystem::exists(solvedSourcePath)) {
                 continue;
-            }
+            }void Artifact::setLanguage(const Language &lang) const {
 
             if (boost::filesystem::is_directory(solvedSourcePath)) {
                 boost::filesystem::recursive_directory_iterator it{solvedSourcePath}, end;

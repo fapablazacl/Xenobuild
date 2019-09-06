@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <boost/filesystem/path.hpp>
+#include <borc/model/Language.hpp>
 
 namespace borc {
     struct Version {
@@ -51,6 +52,10 @@ namespace borc {
             return type;
         }
 
+        Language getLanguage() const {
+            return language;
+        }
+
         boost::filesystem::path getPath() const {
             return path;
         }
@@ -77,6 +82,8 @@ namespace borc {
 
         void setName(const std::string &name);
 
+        void setLanguage(const Language &lang);
+
         void setPath(const boost::filesystem::path &path);
 
         void setType(const Type type);
@@ -102,6 +109,7 @@ namespace borc {
         boost::filesystem::path path;
         Type type;
         Version version;
+        Language language;
         std::vector<const Artifact*> dependencies;
 
         std::vector<boost::filesystem::path> sourcePaths;
