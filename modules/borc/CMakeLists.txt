@@ -34,6 +34,8 @@ add_executable(borc
     "src/borc/common/JSONEntityLoader.cpp"
     "src/borc/common/PackageFactory.hpp"
     "src/borc/common/PackageFactory.cpp"
+    "src/borc/common/BuildConfiguration.hpp"
+    "src/borc/common/BuildConfiguration.cpp"
 )
 
 target_link_libraries(borc borc-core ${Boost_LIBRARIES} pthread)
