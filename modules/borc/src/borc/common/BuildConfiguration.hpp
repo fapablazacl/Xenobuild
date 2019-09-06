@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <utility>
+#include <tuple>
 #include <borc/utility/MetaProperty.hpp>
 #include <borc/model/Version.hpp>
 
