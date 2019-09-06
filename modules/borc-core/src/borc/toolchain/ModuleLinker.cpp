@@ -21,7 +21,7 @@ namespace borc {
 		// TODO: Change artifact name based on the current toolchain
         boost::filesystem::path moduleName = artifact->getName();
 
-		if (artifact->getType() == Artifact::Type::LibraryDynamic) {
+		if (artifact->getType() == Artifact::Type{"library", "dynamic"}) {
 			moduleName = "lib" + moduleName.string() + ".so";
 		}
 
@@ -32,7 +32,7 @@ namespace borc {
 
 		std::vector<std::string> commandOptions;
 
-		if (artifact->getType() == Artifact::Type::LibraryDynamic) {
+		if (artifact->getType() == Artifact::Type{"library", "dynamic"}) {
 			commandOptions.push_back(switches.buildSharedLibrary);
 		}
 

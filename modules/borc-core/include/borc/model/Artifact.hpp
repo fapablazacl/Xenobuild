@@ -17,11 +17,25 @@ namespace borc {
     class Source;
     class Artifact {
     public:
-        enum class Type {
-            ApplicationCli,
-            ApplicationGui,
-            LibraryStatic,
-            LibraryDynamic
+        struct Type {
+            std::string tag;
+            std::string subTag;
+
+            bool operator== (const Type &other) const {
+                return tag==other.tag && subTag==other.subTag;
+            }
+
+            bool operator!= (const Type &other) const {
+                return ! (*this == other);
+            }
+
+            bool operator< (const Type &other) const {
+                if (tag < other.tag) {
+                    return true;
+                }
+
+                return subTag < other.subTag;
+            }
         };
 
     public:

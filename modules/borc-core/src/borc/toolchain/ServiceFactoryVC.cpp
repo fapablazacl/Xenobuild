@@ -21,9 +21,9 @@ namespace borc {
 
         linkers.push_back({
             std::make_unique<ArtifactTypeChecker>(std::initializer_list<Artifact::Type>({
-                Artifact::Type::ApplicationCli, 
-                Artifact::Type::ApplicationGui, 
-                Artifact::Type::LibraryDynamic
+                Artifact::Type{"application", "cli"},
+                Artifact::Type{"application", "gui"},
+                Artifact::Type{"library", "dynamic"}
             })),
             this->createLinker(linkerCommand, installationPath, windowsKitPath)
         });

@@ -15,10 +15,10 @@ namespace borc {
 
         // available artifact types for C/C++ projects
         const std::map<std::string, Artifact::Type> artifactTypeMap = {
-            {"application/cli", Artifact::Type::ApplicationCli},
-            {"application/gui", Artifact::Type::ApplicationGui},
-            {"library/static", Artifact::Type::LibraryStatic},
-            {"library/dynamic", Artifact::Type::LibraryDynamic}
+            {"application/cli", Artifact::Type{"application", "cli"} },
+            {"application/gui", Artifact::Type{"application", "gui"} },
+            {"library/static", Artifact::Type{"library", "static"} },
+            {"library/dynamic", Artifact::Type{"library", "dynamic"} }
         };
 
         for (int i=0; i<moduleEntities.size(); i++) {
