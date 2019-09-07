@@ -2,11 +2,18 @@
 #ifndef __BORC_MODEL_SOURCEBUILDRULE_HPP__
 #define __BORC_MODEL_SOURCEBUILDRULE_HPP__
 
+#include <set>
 #include <boost/filesystem/path.hpp>
 
 namespace borc {
-    class SourceBuildRule {
+    class Source;
+    class Compiler;
+    class SourceCompilerMatcher {
     public:
+        explicit SourceCompilerMatcher(Compiler *compiler);
+
+        ~SourceCompilerMatcher();
+
         bool match(const boost::filesystem::path &inputFileName) const {
             return true;
         }
@@ -16,7 +23,8 @@ namespace borc {
         };
 
     private:
-        
+        Compiler *compiler = nullptr;
+        std::set<std::string> wildcards;
     };
 }
 
