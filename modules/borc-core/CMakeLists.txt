@@ -16,6 +16,10 @@ add_library(borc-core
     "include/borc/model/Source.hpp"
     "include/borc/model/Artifact.hpp"
     "include/borc/model/Package.hpp"
+    "include/borc/model/ArtifactBuildRule.hpp"
+    "include/borc/model/SourceBuildRule.hpp"
+    "include/borc/model/BuildPipeline.hpp"
+    
     # "include/borc/model/Context.hpp"
     "include/borc/model/Command.hpp"
     "include/borc/model/CommandFactory.hpp"
@@ -46,6 +50,9 @@ add_library(borc-core
     "include/borc/build/BuildCache.hpp"
     "include/borc/build/BuildCacheFactory.hpp"
 
+    "src/borc/model/ArtifactBuildRule.cpp"
+    "src/borc/model/SourceBuildRule.cpp"
+    "src/borc/model/BuildPipeline.cpp"
     "src/borc/model/Version.cpp"
     "src/borc/model/Source.cpp"
     "src/borc/model/Artifact.cpp"

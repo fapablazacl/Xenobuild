@@ -6,8 +6,9 @@
 #include "borc/cli/Controller.hpp"
 #include "borc/cli/ControllerFactory.hpp"
 
+/*
 int main(int argc, char **argv) {
-    try {
+    /*try {
         if (argc < 2) {
             throw std::runtime_error("No subcommand supplied.");
         }
@@ -25,4 +26,16 @@ int main(int argc, char **argv) {
 
         return 1;
     }
+
+    return 0;
+}
+*/
+
+#include <iostream>
+#include <boost/filesystem.hpp>
+
+int main(int argc, char **argv) {
+    
+
+    return 0;
 }
