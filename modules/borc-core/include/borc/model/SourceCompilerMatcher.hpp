@@ -14,6 +14,9 @@ namespace borc {
         boost::filesystem::path computeOutputFile(const boost::filesystem::path &inputFileName) const {
             return inputFileName.string() + ".obj";
         };
+
+    private:
+        
     };
 }
 

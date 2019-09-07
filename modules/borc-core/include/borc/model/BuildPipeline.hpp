@@ -5,13 +5,14 @@
 #include <boost/filesystem/path.hpp>
 
 namespace borc {
+    class Source;
+
     class BuildPipeline {
     public:
         BuildPipeline();
         ~BuildPipeline();
 
-        void build(const boost::filesystem::path &filePath);
-
+        void build(const Source *source);
     };
 }
 
