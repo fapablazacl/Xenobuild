@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include <boost/filesystem.hpp>
+#include <boost/graph/graphviz.hpp>
 #include <borc/services/FileServiceImpl.hpp>
 #include <borc/entity/PackageEntity.hpp>
 #include <borc/entity/LanguageEntity.hpp>
@@ -87,21 +88,21 @@ namespace borc {
 
         BuildServiceImpl buildService{baseFolderPath, outputPath, toolchain.get(), buildCache, &loggingService};
 
-        /*
         std::cout << "Computing source dependencies for package '" << package->getName() << "' ..." << std::endl;
 
-        auto dependencyGraph = buildService.computeDependencyGraph(package.get());
-        auto dependencyGraphVisitor = std::make_unique<BuildDependencyGraphVisitor>();
+        auto dependencyGraph = buildService.computeDependencyGraph(package->getArtifacts()[0]);
 
-        dependencyGraphVisitor->visit(dependencyGraph.get());
-        */
+        std::fstream fs;
+        fs.open("output.dot", std::ios_base::out);
+        boost::write_graphviz(fs, dependencyGraph);
 
+        /*
         auto dag = buildService.createBuildDag(package.get());
         DagVisitor dagVisitor;
         dagVisitor.visit(dag.get());
+        */
 
         // Now we need to start the build!
-
         // Now we have parsed all the artifacts in the main package. 
         // Let's parse all the additional packages. We need that when we solve all the dependencies to create references
         /*
