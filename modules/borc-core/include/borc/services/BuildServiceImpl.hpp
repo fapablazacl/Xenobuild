@@ -24,7 +24,7 @@ namespace borc {
 
         virtual std::unique_ptr<Dag> createBuildDag(Package *package) override;
 
-        virtual std::unique_ptr<DependencyBuildGraph> computeDependencyGraph(const Package *package) const override;
+        virtual DependencyGraph computeDependencyGraph(Artifact *artifact) const override;
 
     private:
         CompileOptions computeCompileOptions(const Artifact *artifact) const;

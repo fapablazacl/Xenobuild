@@ -115,52 +115,55 @@ namespace borc {
     }
 
 
-    std::unique_ptr<DependencyBuildGraph> BuildServiceImpl::computeDependencyGraph(const Package *package) const {
-        auto buildGraph = std::make_unique<DependencyBuildGraph>();
-        auto packageNode = buildGraph->getPointer();
-
-        packageNode->setValue(package->getName());
-
-        for (Artifact *artifact : package->getArtifacts()) {
-            const Linker *linker = toolchain->selectLinker(artifact);
-
-            if (!linker) {
-                continue;
-            }
-
-            const CompileOptions compileOptions = this->computeCompileOptions(artifact);
-
-            auto artifactNode = buildGraph->createOrGetNode(artifact->getName());
-
-            artifact->rescanSources(basePath);
-            for (Source *source : artifact->getSources()) {
-                const Compiler *compiler = toolchain->selectCompiler(source);
-
-                if (!compiler) {
-                    continue;
-                }
-
-                auto objectFilePath = compiler->compiteOutputFile(outputPath, source, compileOptions);
-                auto objectPointer = buildGraph->createOrGetNode(objectFilePath);
-                
-                auto sourcePointer = buildGraph->createOrGetNode(source->getFilePath());
-                objectPointer->addPointer(sourcePointer);
-
-                const auto includeFiles = compiler->computeDependencies(outputPath, source, compileOptions);
-                for (const boost::filesystem::path &includeFile : includeFiles) {
-                    auto includePointer = buildGraph->createOrGetNode(includeFile);
-
-                    // objectPointer->addPointer(includePointer);
-                    sourcePointer->addPointer(includePointer);
-                }
-
-                artifactNode->addPointer(objectPointer);
-            }
-
-            packageNode->addPointer(artifactNode);
+    DependencyGraph BuildServiceImpl::computeDependencyGraph(Artifact *artifact) const {
+        if (!artifact) {
+            // TODO: throw exception
+            return {};
         }
 
-        return buildGraph;
+        const Linker *linker = toolchain->selectLinker(artifact);
+
+        if (!linker) {
+            // TODO: throw exception
+            return {};
+        }
+
+        DependencyGraph graph;
+
+        auto artifactVD = boost::add_vertex(graph);
+        graph[artifactVD].filePath = artifact->getPath() / artifact->getName();
+
+        const CompileOptions compileOptions = this->computeCompileOptions(artifact);
+        artifact->rescanSources(basePath);
+
+        for (Source *source : artifact->getSources()) {
+            const Compiler *compiler = toolchain->selectCompiler(source);
+
+            if (!compiler) {
+                // TODO: throw exception because we can't build a source
+                return {};
+            }
+
+            const auto objectFileVD = boost::add_vertex(graph);
+            graph[objectFileVD].filePath = compiler->compiteOutputFile(outputPath, source, compileOptions);
+
+            const auto sourceFileVD = boost::add_vertex(graph);
+            graph[sourceFileVD].filePath = source->getFilePath();
+
+            boost::add_edge(objectFileVD, sourceFileVD, graph);
+
+            const auto includeFiles = compiler->computeDependencies(outputPath, source, compileOptions);
+            for (const boost::filesystem::path &includeFile : includeFiles) {
+                const auto includeFileVD = boost::add_vertex(graph);
+                graph[includeFileVD].filePath = includeFile;
+
+                boost::add_edge(objectFileVD, includeFileVD, graph);
+            }
+
+            boost::add_edge(artifactVD, objectFileVD, graph);
+        }
+
+        return graph;
     }
 
 
