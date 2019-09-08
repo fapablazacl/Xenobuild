@@ -9,10 +9,12 @@
 
 namespace borc {
     struct DependencyGraphVertexData {
+        std::string label;
         boost::filesystem::path filePath;
     };
 
     struct DependencyGraphEdgeData {
+        std::string label;
         std::string command;
     };
 

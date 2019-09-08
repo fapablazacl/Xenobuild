@@ -143,9 +143,11 @@ namespace borc {
 
             const auto objectFileVD = boost::add_vertex(graph);
             graph[objectFileVD].filePath = compiler->compiteOutputFile(outputPath, source, compileOptions);
+            graph[objectFileVD].label = graph[objectFileVD].filePath.filename().string();
 
             const auto sourceFileVD = boost::add_vertex(graph);
             graph[sourceFileVD].filePath = source->getFilePath();
+            graph[sourceFileVD].label = graph[sourceFileVD].filePath.filename().string();
 
             boost::add_edge(objectFileVD, sourceFileVD, graph);
 
@@ -153,6 +155,7 @@ namespace borc {
             for (const boost::filesystem::path &includeFile : includeFiles) {
                 const auto includeFileVD = boost::add_vertex(graph);
                 graph[includeFileVD].filePath = includeFile;
+                graph[includeFileVD].label = graph[includeFileVD].filePath.filename().string();
 
                 boost::add_edge(objectFileVD, includeFileVD, graph);
             }

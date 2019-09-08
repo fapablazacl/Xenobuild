@@ -91,14 +91,12 @@ namespace borc {
         std::cout << "Computing source dependencies for package '" << package->getName() << "' ..." << std::endl;
 
         auto dependencyGraph = buildService.computeDependencyGraph(package->getArtifacts()[0]);
-
-        /*
+        
         std::fstream fs;
         fs.open("output.dot", std::ios_base::out);
-        */
-        boost::write_graphviz(std::cout, dependencyGraph,
-            boost::make_label_writer(boost::get(&DependencyGraphVertexData::filePath, dependencyGraph)),
-            boost::make_label_writer(boost::get(&DependencyGraphEdgeData::command, dependencyGraph))
+        boost::write_graphviz(fs, dependencyGraph,
+            boost::make_label_writer(boost::get(&DependencyGraphVertexData::label, dependencyGraph)),
+            boost::make_label_writer(boost::get(&DependencyGraphEdgeData::label, dependencyGraph))
         );
 
         /*
