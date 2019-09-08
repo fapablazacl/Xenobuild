@@ -149,8 +149,8 @@ namespace borc {
         DependencyGraph graph;
         PathVertexMapper mapper {graph};
 
-        auto artifactVD = boost::add_vertex(graph);
-        graph[artifactVD].filePath = artifact->getPath() / artifact->getName();
+        const auto artifactVD = mapper.getVD(artifact->getPath() / artifact->getName());
+        graph[artifactVD].label = graph[artifactVD].filePath.filename().string();
 
         const CompileOptions compileOptions = this->computeCompileOptions(artifact);
         artifact->rescanSources(basePath);
@@ -163,20 +163,17 @@ namespace borc {
                 continue;
             }
 
-            const auto objectFileVD = boost::add_vertex(graph);
-            graph[objectFileVD].filePath = compiler->compiteOutputFile(outputPath, source, compileOptions);
+            const auto objectFileVD = mapper.getVD(compiler->compiteOutputFile(outputPath, source, compileOptions));
             graph[objectFileVD].label = graph[objectFileVD].filePath.filename().string();
 
-            const auto sourceFileVD = boost::add_vertex(graph);
-            graph[sourceFileVD].filePath = source->getFilePath();
+            const auto sourceFileVD = mapper.getVD(source->getFilePath());
             graph[sourceFileVD].label = graph[sourceFileVD].filePath.filename().string();
 
             boost::add_edge(objectFileVD, sourceFileVD, graph);
 
             const auto includeFiles = compiler->computeDependencies(outputPath, source, compileOptions);
             for (const boost::filesystem::path &includeFile : includeFiles) {
-                const auto includeFileVD = boost::add_vertex(graph);
-                graph[includeFileVD].filePath = includeFile;
+                const auto includeFileVD = mapper.getVD(includeFile);
                 graph[includeFileVD].label = graph[includeFileVD].filePath.filename().string();
 
                 boost::add_edge(objectFileVD, includeFileVD, graph);
