@@ -117,15 +117,12 @@ namespace borc {
 
     DependencyGraph BuildServiceImpl::computeDependencyGraph(Artifact *artifact) const {
         if (!artifact) {
-            // TODO: throw exception
-            return {};
+            throw std::runtime_error("Supplied artifact object is a null pointer.");
         }
 
         const Linker *linker = toolchain->selectLinker(artifact);
-
         if (!linker) {
-            // TODO: throw exception
-            return {};
+            throw std::runtime_error("There is no linker for the supplied artifact.");
         }
 
         DependencyGraph graph;
@@ -140,8 +137,8 @@ namespace borc {
             const Compiler *compiler = toolchain->selectCompiler(source);
 
             if (!compiler) {
-                // TODO: throw exception because we can't build a source
-                return {};
+                // throw std::runtime_error("There is no compiler for the current source.");
+                continue;
             }
 
             const auto objectFileVD = boost::add_vertex(graph);
