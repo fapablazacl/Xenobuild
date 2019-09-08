@@ -114,6 +114,27 @@ namespace borc {
         return options;
     }
 
+    class PathVertexMapper {
+    public:
+        PathVertexMapper(DependencyGraph &graph_) : graph(graph_) {}
+
+        std::size_t getVD(const boost::filesystem::path &path) {
+            if (auto it = pathVertexMap.find(path); it != pathVertexMap.end()) {
+                return it->second;
+            }
+
+            const auto objectFileVD = boost::add_vertex(graph);
+            graph[objectFileVD].filePath = path;
+
+            pathVertexMap[path] = objectFileVD;
+
+            return objectFileVD;
+        }
+
+    private:
+        DependencyGraph &graph;
+        std::map<boost::filesystem::path, std::size_t> pathVertexMap;
+    };
 
     DependencyGraph BuildServiceImpl::computeDependencyGraph(Artifact *artifact) const {
         if (!artifact) {
@@ -126,6 +147,7 @@ namespace borc {
         }
 
         DependencyGraph graph;
+        PathVertexMapper mapper {graph};
 
         auto artifactVD = boost::add_vertex(graph);
         graph[artifactVD].filePath = artifact->getPath() / artifact->getName();
