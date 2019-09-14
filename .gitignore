@@ -2,3 +2,5 @@
 .vscode/*
 .borc/*
 src/*
+docs/borc.vpp.*
+output.dot
