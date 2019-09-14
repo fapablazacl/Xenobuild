@@ -169,7 +169,9 @@ namespace borc {
             const auto sourceFileVD = mapper.getVD(source->getFilePath());
             graph[sourceFileVD].label = graph[sourceFileVD].filePath.filename().string();
 
-            boost::add_edge(objectFileVD, sourceFileVD, graph);
+            const auto objectED = boost::add_edge(objectFileVD, sourceFileVD, graph);
+            graph[objectED.first].label = "Hola";
+            graph[objectED.first].command = "Hola";
 
             const auto includeFiles = compiler->computeDependencies(outputPath, source, compileOptions);
             for (const boost::filesystem::path &includeFile : includeFiles) {
