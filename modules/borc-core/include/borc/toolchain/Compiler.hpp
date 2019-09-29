@@ -26,7 +26,7 @@ namespace borc {
 
 		virtual std::vector<boost::filesystem::path> computeDependencies(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const = 0;
 
-		virtual boost::filesystem::path compiteOutputFile(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const = 0;
+		virtual boost::filesystem::path compileOutputFile(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const = 0;
 	};
 }
 

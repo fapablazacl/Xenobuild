@@ -163,7 +163,7 @@ namespace borc {
                 continue;
             }
 
-            const auto objectFileVD = mapper.getVD(compiler->compiteOutputFile(outputPath, source, compileOptions));
+            const auto objectFileVD = mapper.getVD(compiler->compileOutputFile(outputPath, source, compileOptions));
             graph[objectFileVD].label = graph[objectFileVD].filePath.filename().string();
 
             const auto sourceFileVD = mapper.getVD(source->getFilePath());

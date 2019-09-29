@@ -136,7 +136,7 @@ namespace borc {
 		return this->computeFileDependencies(source, options);
 	}
 
-	boost::filesystem::path CompilerImpl::compiteOutputFile(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const {
+	boost::filesystem::path CompilerImpl::compileOutputFile(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const {
 		return this->getObjectFilePath(outputPath, source);
 	}
 }
