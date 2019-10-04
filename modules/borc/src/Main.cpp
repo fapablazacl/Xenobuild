@@ -5,7 +5,7 @@
 
 #include "borc/cli/Controller.hpp"
 #include "borc/cli/ControllerFactory.hpp"
-
+/*
 int main(int argc, char **argv) {
     try {
         if (argc < 2) {
@@ -28,43 +28,44 @@ int main(int argc, char **argv) {
 
     return 0;
 }
+*/
 
-
-/*
 #include <iostream>
-#include <boost/graph/adjacency_list.hpp>
-#include <boost/graph/graphviz.hpp>
+#include <boost/hana.hpp>
 
-struct VertexProperties {
-    std::string name;
+struct Address {
+    std::string street;
+    int number;
 };
 
-boost::adjacency_list <boost::vecS, boost::vecS, boost::directedS, VertexProperties> createEmptyDirectedGraph() noexcept {
-    return {};
-}
+struct Person {
+    std::string name;
+    int age;
+
+    Address address;
+};
+
+
+BOOST_HANA_ADAPT_STRUCT(Address, street, number);
+BOOST_HANA_ADAPT_STRUCT(Person, name, age, address);
+
+template<typename T>
+class JsonConverter {
+public:
+    void serialize() {
+        
+    }
+};
 
 int main(int argc, char **argv) {
-    // Un vertice se maneja con un Handle
-    auto directedGraph = createEmptyDirectedGraph();
-    auto v1 = boost::add_vertex(directedGraph);
-    auto v2 = boost::add_vertex(directedGraph);
-    auto v3 = boost::add_vertex(directedGraph);
-    auto v4 = boost::add_vertex(directedGraph);
-    auto v5 = boost::add_vertex(directedGraph);
-    auto v6 = boost::add_vertex(directedGraph);
+    Person person {"John", 30, {"San Pancho", 242}};
 
-    directedGraph[v1].name = "Hola";
+    boost::hana::for_each(person, [](auto pair) {
+        std::string fieldName = boost::hana::to<char const*>(boost::hana::first(pair));
+        auto fieldValue = boost::hana::second(pair);
 
-    auto edgeResult1 = boost::add_edge(v1, v2, directedGraph);
-    auto edgeResult2 = boost::add_edge(v2, v3, directedGraph);
-    auto edgeResult3 = boost::add_edge(v1, v3, directedGraph);
-    auto edgeResult4 = boost::add_edge(v3, v4, directedGraph);
-    auto edgeResult5 = boost::add_edge(v4, v5, directedGraph);
-    auto edgeResult6 = boost::add_edge(v5, v6, directedGraph);
-    auto edgeResult7 = boost::add_edge(v3, v6, directedGraph);
-
-    boost::write_graphviz(std::cout, directedGraph);
+        std::cout << fieldName << ":" << fieldValue << std::endl;
+    });
 
     return 0;
 }
-*/
