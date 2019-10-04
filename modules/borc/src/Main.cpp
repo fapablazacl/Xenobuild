@@ -5,7 +5,7 @@
 
 #include "borc/cli/Controller.hpp"
 #include "borc/cli/ControllerFactory.hpp"
-/*
+
 int main(int argc, char **argv) {
     try {
         if (argc < 2) {
@@ -28,8 +28,8 @@ int main(int argc, char **argv) {
 
     return 0;
 }
-*/
 
+/*
 #include <iostream>
 #include <boost/hana.hpp>
 
@@ -69,3 +69,4 @@ int main(int argc, char **argv) {
 
     return 0;
 }
+*/

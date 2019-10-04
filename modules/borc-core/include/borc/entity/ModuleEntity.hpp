@@ -4,25 +4,13 @@
 
 #include <string>
 #include <vector>
-#include <tuple>
 
-#include <borc/utility/MetaProperty.hpp>
+#include <boost/hana.hpp>
 
 namespace borc {
     struct ModuleSourceEntity {
         std::string path;
         bool public_ = false;
-
-        ModuleSourceEntity() {}
-
-        explicit ModuleSourceEntity(const std::string &path_) : path(path_) {}
-
-        constexpr static auto properties = std::make_tuple (
-            property(&ModuleSourceEntity::path, "path"),
-            property(&ModuleSourceEntity::public_, "public")
-        );
-
-        typedef std::string DefaultType;
     };
 
     struct ModuleEntity {
@@ -34,20 +22,10 @@ namespace borc {
 
         std::vector<ModuleSourceEntity> sources;
         std::vector<std::string> dependencies;
-
-        constexpr static auto properties = std::make_tuple (
-            property(&ModuleEntity::name, "name"),
-            property(&ModuleEntity::description, "description"),
-            property(&ModuleEntity::version, "version"),
-            property(&ModuleEntity::type, "type"),
-            property(&ModuleEntity::language, "language"),
-            property(&ModuleEntity::sources, "sources"),
-            property(&ModuleEntity::dependencies, "dependencies")
-        );
-
-        typedef void DefaultType;
-        constexpr static const char* Name = "Module";
     };
 }
+
+BOOST_HANA_ADAPT_STRUCT(borc::ModuleSourceEntity, path, public_);
+BOOST_HANA_ADAPT_STRUCT(borc::ModuleEntity, name, description, version, type, language, sources, dependencies);
 
 #endif

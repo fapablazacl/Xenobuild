@@ -5,11 +5,15 @@
 #include <vector>
 #include <stdexcept>
 #include <typeinfo>
-#include <borc/utility/MetaProperty.hpp>
+#include <boost/hana.hpp>
+#include <nlohmann/json.hpp>
 
 namespace borc {
-    template<typename Type, typename Model>
-    void deserialize(std::vector<Type> &values, const Model &model) {
+    /**
+     * @brief Deserializes the supplied JSON array into a vector of boost.hana structure values
+     */
+    template<typename Type>
+    void deserialize(std::vector<Type> &values, const nlohmann::json &model) {
         values.resize(model.size());
 
         for (int i=0; i<model.size(); i++) {
@@ -20,12 +24,27 @@ namespace borc {
             }
         }
     }
-    
-    template<typename Entity, typename Model>
-    void deserialize(Entity &entity, const Model &model) {
-        constexpr auto propertyCount = std::tuple_size<decltype(Entity::properties)>::value;
 
+    /**
+     * @brief Deserielizes the supplied JSON object into a boost.hana structure value
+     */    
+    template<typename Entity>
+    void deserialize(Entity &entity, const nlohmann::json &model) {
         if (model.is_object()) {
+            boost::hana::for_each(entity, [&](auto pair) {
+                auto fieldName = boost::hana::to<const char*>(boost::hana::first(pair));
+                auto fieldValue = boost::hana::second(pair);
+
+                if (const auto it = model.find(fieldName); it != model.end()) {
+                    
+
+                    return;
+                } else {
+                    // Property fieldName wasn't found in the JSON.
+                }
+            });
+
+            /*
             for_sequence(std::make_index_sequence<propertyCount>{}, [&](auto i) {
                 constexpr auto property = std::get<i>(Entity::properties);
                 using Type = typename decltype(property)::Type;
@@ -42,7 +61,9 @@ namespace borc {
                     // std::cout << "DEBUG: " << "The '" << property.name << "' property wasn't found" << std::endl;
                 }
             });
+            */
         } else {
+            /*
             using Type = typename Entity::DefaultType;
 
             if constexpr (! std::is_same<Type, void>::value) {
@@ -55,6 +76,7 @@ namespace borc {
 
                 throw std::runtime_error(msg.c_str());
             }
+            */
         }
     }
 }

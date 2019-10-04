@@ -8,6 +8,8 @@
 #include "LanguageEntity.hpp"
 #include "ModuleEntity.hpp"
 
+#include <boost/hana.hpp>
+
 namespace borc {
     struct PackageEntity {
         std::string name;
@@ -15,18 +17,9 @@ namespace borc {
         LanguageEntity language;
         std::vector<std::string> modules;
         std::vector<std::string> packageSearchPaths;
-
-        constexpr static auto properties = std::make_tuple (
-            property(&PackageEntity::name, "name"),
-            property(&PackageEntity::description, "description"),
-            property(&PackageEntity::language, "language"),
-            property(&PackageEntity::modules, "modules"),
-            property(&PackageEntity::packageSearchPaths, "packageSearchPaths")
-        );
-
-        typedef void DefaultType;
-
-        constexpr static const char* Name = "Package";
     };
 }
+
+BOOST_HANA_ADAPT_STRUCT(borc::PackageEntity, name, description, language, modules, packageSearchPaths);
+
 #endif

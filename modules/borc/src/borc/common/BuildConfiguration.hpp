@@ -5,7 +5,6 @@
 #include <vector>
 #include <utility>
 #include <tuple>
-#include <borc/utility/MetaProperty.hpp>
 #include <borc/model/Version.hpp>
 
 namespace borc {
@@ -13,10 +12,12 @@ namespace borc {
         std::string toolchain;
         Version version;
 
+        /*
         constexpr static auto properties = std::make_tuple (
             property(&BuildConfiguration::toolchain, "toolchain"),
             property(&BuildConfiguration::version, "version")
         );
+        */
     };
 }
 

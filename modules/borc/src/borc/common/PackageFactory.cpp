@@ -1,6 +1,7 @@
 
 #include "PackageFactory.hpp"
 
+#include <iostream>
 #include <map>
 #include <borc/model/Package.hpp>
 #include <borc/model/Artifact.hpp>
