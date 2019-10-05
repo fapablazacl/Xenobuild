@@ -28,38 +28,3 @@ int main(int argc, char **argv) {
 
     return 0;
 }
-
-/*
-
-#include <iostream>
-#include <boost/hana.hpp>
-
-struct Address {
-    std::string street;
-    int number;
-};
-
-struct Person {
-    std::string name;
-    int age;
-
-    Address address;
-};
-
-
-BOOST_HANA_ADAPT_STRUCT(Address, street, number);
-BOOST_HANA_ADAPT_STRUCT(Person, name, age, address);
-
-int main(int argc, char **argv) {
-    Person person {"John", 30, {"San Pancho", 242}};
-
-    boost::hana::for_each(person, [](auto pair) {
-        std::string fieldName = boost::hana::to<char const*>(boost::hana::first(pair));
-        auto fieldValue = boost::hana::second(pair);
-
-        
-    });
-
-    return 0;
-}
-*/
