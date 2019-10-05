@@ -30,6 +30,7 @@ int main(int argc, char **argv) {
 }
 
 /*
+
 #include <iostream>
 #include <boost/hana.hpp>
 
@@ -49,14 +50,6 @@ struct Person {
 BOOST_HANA_ADAPT_STRUCT(Address, street, number);
 BOOST_HANA_ADAPT_STRUCT(Person, name, age, address);
 
-template<typename T>
-class JsonConverter {
-public:
-    void serialize() {
-        
-    }
-};
-
 int main(int argc, char **argv) {
     Person person {"John", 30, {"San Pancho", 242}};
 
@@ -64,7 +57,7 @@ int main(int argc, char **argv) {
         std::string fieldName = boost::hana::to<char const*>(boost::hana::first(pair));
         auto fieldValue = boost::hana::second(pair);
 
-        std::cout << fieldName << ":" << fieldValue << std::endl;
+        
     });
 
     return 0;

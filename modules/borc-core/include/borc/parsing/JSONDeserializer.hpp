@@ -35,12 +35,18 @@ namespace borc {
                 auto fieldName = boost::hana::to<const char*>(boost::hana::first(pair));
                 auto fieldValue = boost::hana::second(pair);
 
-                if (const auto it = model.find(fieldName); it != model.end()) {
-                    
+                typedef decltype(fieldValue) Type;
 
-                    return;
+                if (const auto it = model.find(fieldName); it != model.end()) {
+                    // check if current property is a simple type or a string one...
+                    if constexpr ( !std::is_class<Type>::value || std::is_same<Type, std::string>::value) {
+                        fieldValue = model[fieldName].template get<Type>();
+                    } else {
+                        deserialize(fieldValue, model[fieldName]);
+                    }
                 } else {
                     // Property fieldName wasn't found in the JSON.
+                    // TODO: Define what to do based as needed,
                 }
             });
 
@@ -63,20 +69,16 @@ namespace borc {
             });
             */
         } else {
-            /*
             using Type = typename Entity::DefaultType;
 
             if constexpr (! std::is_same<Type, void>::value) {
                 entity = Entity( (model.template get<Type>()) );
             } else {
                 std::string msg =
-                    "Don't know how to deserialize the " + 
-                    std::string(Entity::Name) + 
-                    " entity, because is represented by a single value, and the entity doesn't have a default property to use that single value";
+                    "Don't know how to deserialize the entity, because is represented by a single value, and the entity doesn't have a default property to use that single value";
 
                 throw std::runtime_error(msg.c_str());
             }
-            */
         }
     }
 }

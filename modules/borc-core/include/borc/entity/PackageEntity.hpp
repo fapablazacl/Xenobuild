@@ -17,6 +17,8 @@ namespace borc {
         LanguageEntity language;
         std::vector<std::string> modules;
         std::vector<std::string> packageSearchPaths;
+
+        typedef void DefaultType;
     };
 }
 

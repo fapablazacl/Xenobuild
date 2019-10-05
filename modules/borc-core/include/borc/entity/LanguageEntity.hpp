@@ -11,6 +11,8 @@ namespace borc {
     struct LanguageEntity {
         std::string name;
         std::vector<std::string> dialects;
+
+        typedef void DefaultType;
     };
 }
 

@@ -11,6 +11,12 @@ namespace borc {
     struct ModuleSourceEntity {
         std::string path;
         bool public_ = false;
+
+        ModuleSourceEntity() {}
+
+        explicit ModuleSourceEntity(const std::string &path_) : path(path_) {}
+
+        typedef std::string DefaultType;
     };
 
     struct ModuleEntity {
@@ -22,6 +28,8 @@ namespace borc {
 
         std::vector<ModuleSourceEntity> sources;
         std::vector<std::string> dependencies;
+
+        typedef void DefaultType;
     };
 }
 
