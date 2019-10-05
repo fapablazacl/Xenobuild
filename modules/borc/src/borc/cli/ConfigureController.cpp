@@ -2,6 +2,9 @@
 #include "ConfigureController.hpp"
 #include <iostream>
 
+#include <borc/toolchain/Toolchain.hpp>
+#include <borc/toolchain/ToolchainFactory.hpp>
+
 namespace borc {
     ConfigureController::~ConfigureController() {}
 
@@ -17,5 +20,8 @@ namespace borc {
         }
 
         std::cout << "Configuring build: type=" << options.buildType.get() << ", toolchain=" << options.toolchain.get() << std::endl;
+
+        auto factory = ToolchainFactory::create();
+        auto toolchain = factory->createToolchain(options.toolchain.get());
     }
 }

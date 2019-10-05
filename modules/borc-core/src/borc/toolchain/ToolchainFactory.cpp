@@ -29,7 +29,7 @@ namespace borc {
             }
 
             if (! serviceFactory) {
-                throw std::runtime_error("Unsupported toolchain: " + toolchainId);
+                throw std::runtime_error("Unknown toolchain: " + toolchainId);
             }
 
             return std::make_unique<ToolchainImpl>(serviceFactory->getCompilers(), serviceFactory->getLinkers());
