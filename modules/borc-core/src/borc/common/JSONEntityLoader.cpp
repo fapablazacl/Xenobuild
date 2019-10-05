@@ -1,5 +1,5 @@
 
-#include "JSONEntityLoader.hpp"
+#include <borc/common/JSONEntityLoader.hpp>
 
 #include <stdexcept>
 #include <boost/filesystem.hpp>

@@ -22,9 +22,9 @@
 #include <borc/utility/DagVisitor.hpp>
 
 #include "BuildControllerOptions.hpp"
-#include "../common/EntityLoader.hpp"
-#include "../common/EntityLoaderFactory.hpp"
-#include "../common/PackageFactory.hpp"
+#include <borc/common/EntityLoader.hpp>
+#include <borc/common/EntityLoaderFactory.hpp>
+#include <borc/common/PackageFactory.hpp>
 
 namespace borc {
     BuildController::~BuildController() {}

@@ -1,10 +1,10 @@
 
-#include "EntityLoaderFactory.hpp"
+#include <borc/common/EntityLoaderFactory.hpp>
 
 #include <memory>
 #include <boost/filesystem.hpp>
 
-#include "JSONEntityLoader.hpp"
+#include <borc/common/JSONEntityLoader.hpp>
 
 namespace borc {
     EntityLoaderFactory::~EntityLoaderFactory() {}

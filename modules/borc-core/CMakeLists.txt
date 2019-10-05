@@ -48,6 +48,11 @@ add_library(borc-core
     "include/borc/toolchain/SourceChecker.hpp"
     "include/borc/build/BuildCache.hpp"
     "include/borc/build/BuildCacheFactory.hpp"
+    "include/borc/common/EntityLoader.hpp"
+    "include/borc/common/JSONEntityLoader.hpp"
+    "include/borc/common/PackageFactory.hpp"
+    "include/borc/common/BuildConfiguration.hpp"
+    "include/borc/common/EntityLoaderFactory.hpp"
 
     "src/borc/model/ArtifactLinkerMatcher.cpp"
     "src/borc/model/SourceCompilerMatcher.cpp"
@@ -104,6 +109,11 @@ add_library(borc-core
     "src/borc/build/BuildCacheFactory.cpp"
     "src/borc/build/BuildCacheImpl.cpp"
     "src/borc/build/BuildCacheImpl.hpp"
+    "src/borc/common/EntityLoader.cpp"
+    "src/borc/common/JSONEntityLoader.cpp"
+    "src/borc/common/PackageFactory.cpp"
+    "src/borc/common/EntityLoaderFactory.cpp"
+    "src/borc/common/BuildConfiguration.cpp"
 )
 
 target_link_libraries(borc-core ${Boost_LIBRARIES} nlohmann_json::nlohmann_json)
