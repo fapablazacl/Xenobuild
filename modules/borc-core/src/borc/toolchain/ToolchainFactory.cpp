@@ -19,16 +19,17 @@ namespace borc {
 
         virtual ~ToolchainFactoryImpl() {}
 
-        virtual std::unique_ptr<Toolchain> createToolchain(const ToolchainFamily family) override {
+        virtual std::unique_ptr<Toolchain> createToolchain(const std::string &toolchainId) override {
             ServiceFactory *serviceFactory = nullptr;
 
-            switch (family) {
-                case ToolchainFamily::VC: serviceFactory = &serviceFactoryVC; break;
-                case ToolchainFamily::GCC: serviceFactory = &serviceFactoryGCC; break;
+            if (toolchainId == "gcc") {
+                serviceFactory = &serviceFactoryGCC;
+            } else if (toolchainId == "vc") {
+                serviceFactory = &serviceFactoryVC;
             }
 
             if (! serviceFactory) {
-                throw std::runtime_error("Unsupported toolchain");
+                throw std::runtime_error("Unsupported toolchain: " + toolchainId);
             }
 
             return std::make_unique<ToolchainImpl>(serviceFactory->getCompilers(), serviceFactory->getLinkers());

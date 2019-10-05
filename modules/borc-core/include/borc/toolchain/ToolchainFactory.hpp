@@ -5,14 +5,12 @@
 #include <memory>
 
 namespace borc {
-    enum class ToolchainFamily { GCC, VC };
-
     class Toolchain;
     class ToolchainFactory {
     public:
         virtual ~ToolchainFactory() {}
 
-        virtual std::unique_ptr<Toolchain> createToolchain(const ToolchainFamily family) = 0;
+        virtual std::unique_ptr<Toolchain> createToolchain(const std::string &toolchainId) = 0;
 
     public:
         static std::unique_ptr<ToolchainFactory> create();
