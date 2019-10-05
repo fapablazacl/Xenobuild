@@ -90,6 +90,10 @@ namespace borc {
 
         std::cout << "Computing source dependencies for package '" << package->getName() << "' ..." << std::endl;
 
+        if (package->getArtifacts().size() == 0) {
+            throw std::runtime_error("No artifacts detected for package '" + package->getName() + "'.");
+        }
+
         auto dependencyGraph = buildService.computeDependencyGraph(package->getArtifacts()[0]);
         
         std::fstream fs;

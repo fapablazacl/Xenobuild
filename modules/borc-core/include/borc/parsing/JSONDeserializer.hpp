@@ -31,18 +31,18 @@ namespace borc {
     template<typename Entity>
     void deserialize(Entity &entity, const nlohmann::json &model) {
         if (model.is_object()) {
-            boost::hana::for_each(entity, [&](auto pair) {
+            boost::hana::for_each(boost::hana::accessors<Entity>(), [&](auto pair) {
                 auto fieldName = boost::hana::to<const char*>(boost::hana::first(pair));
-                auto fieldValue = boost::hana::second(pair);
+                auto fieldValue = boost::hana::second(pair)(entity);
 
                 typedef decltype(fieldValue) Type;
 
                 if (const auto it = model.find(fieldName); it != model.end()) {
                     // check if current property is a simple type or a string one...
                     if constexpr ( !std::is_class<Type>::value || std::is_same<Type, std::string>::value) {
-                        fieldValue = model[fieldName].template get<Type>();
+                        boost::hana::second(pair)(entity) = model[fieldName].template get<Type>();
                     } else {
-                        deserialize(fieldValue, model[fieldName]);
+                        deserialize(boost::hana::second(pair)(entity), model[fieldName]);
                     }
                 } else {
                     // Property fieldName wasn't found in the JSON.
