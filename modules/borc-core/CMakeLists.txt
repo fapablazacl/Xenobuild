@@ -34,7 +34,6 @@ add_library(borc-core
     "include/borc/services/LoggingServiceImpl.hpp"
     "include/borc/services/BuildService.hpp"
     "include/borc/services/BuildServiceImpl.hpp"
-    "include/borc/utility/MetaProperty.hpp"
     "include/borc/utility/Dag.hpp"
     "include/borc/utility/DagNode.hpp"
     "include/borc/utility/DagVisitor.hpp"
