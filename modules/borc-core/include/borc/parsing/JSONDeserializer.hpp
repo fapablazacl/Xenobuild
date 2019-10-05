@@ -49,25 +49,6 @@ namespace borc {
                     // TODO: Define what to do based as needed,
                 }
             });
-
-            /*
-            for_sequence(std::make_index_sequence<propertyCount>{}, [&](auto i) {
-                constexpr auto property = std::get<i>(Entity::properties);
-                using Type = typename decltype(property)::Type;
-
-                if (const auto propertyIt = model.find(property.name); propertyIt != model.end()) {
-                    if constexpr (! std::is_class<Type>::value || std::is_same<Type, std::string>::value) {
-                        entity.*(property.member) = model[property.name].template get<Type>();
-                    } else {
-                        // std::cout << "Deserializing " << property.name << " property" << std::endl;
-                        deserialize(entity.*(property.member), model[property.name]);
-                    }
-                } else {
-                    // property not found. Maybe raise an exception for non-optional types?
-                    // std::cout << "DEBUG: " << "The '" << property.name << "' property wasn't found" << std::endl;
-                }
-            });
-            */
         } else {
             using Type = typename Entity::DefaultType;
 
