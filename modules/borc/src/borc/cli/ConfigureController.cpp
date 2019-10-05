@@ -62,6 +62,10 @@ int main() {
         auto toolchain = factory->createToolchain(options.toolchain.get());
 
         // detect compiler version
+        Version toolchainVersion = this->detectToolchainVersion();
+
+        // generate the compiler-version folder
+     
     }
 
     Version ConfigureController::detectToolchainVersion() const {

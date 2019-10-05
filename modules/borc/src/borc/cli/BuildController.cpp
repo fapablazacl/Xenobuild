@@ -68,7 +68,7 @@ namespace borc {
         LoggingServiceImpl loggingService {"BuildServiceImpl"};
 
         auto toolchainFactory = ToolchainFactory::create();
-        auto toolchain =toolchainFactory->createToolchain(ToolchainFamily::GCC);
+        auto toolchain = toolchainFactory->createToolchain("gcc");
 
         PackageFactory packageFactory;
         std::unique_ptr<Package> package = packageFactory.createPackage(packageEntity, moduleEntities);
