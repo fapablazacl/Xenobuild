@@ -15,6 +15,8 @@ namespace borc {
         virtual BuildCacheData getData() const override {
             return {};
         }
+        
+        virtual void addBuildConfiguration(const BuildConfiguration &config) override {}
     };
 
     BuildCacheFactory::BuildCacheFactory() {}

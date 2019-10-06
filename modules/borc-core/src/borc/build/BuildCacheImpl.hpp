@@ -22,6 +22,8 @@ namespace borc {
             return buildCacheData;
         }
 
+        virtual void addBuildConfiguration(const BuildConfiguration &config) override;
+
     private:
         void loadCache();
 

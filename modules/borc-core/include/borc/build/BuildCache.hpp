@@ -47,6 +47,13 @@ namespace borc {
         virtual bool needsRebuild(const boost::filesystem::path &path) const = 0;
 
         virtual void markAsBuilt(const boost::filesystem::path &path) = 0;
+
+        /**
+         * @brief Adds a new build configuration to the build cache.
+         * 
+         * This call will mutate the current root build cache to add this new configuration.
+         */
+        virtual void addBuildConfiguration(const BuildConfiguration &config) = 0;
     };
 }
 

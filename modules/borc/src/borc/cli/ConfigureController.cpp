@@ -89,8 +89,14 @@ int main() {
         // detect compiler version
         Version toolchainVersion = this->detectToolchainVersion();
 
-        // generate the compiler-version folder
-     
+        // setup the configuration requested by the user
+        auto config = BuildConfiguration{};
+        config.toolchainId = options.toolchain.get();
+        config.arch = "x86_64";
+        config.type = options.buildType.get();
+        config.version = toolchainVersion;
+
+        buildCache->addBuildConfiguration(config);
     }
 
     Version ConfigureController::detectToolchainVersion() const {

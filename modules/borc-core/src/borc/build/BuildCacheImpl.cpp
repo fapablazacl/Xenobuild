@@ -78,4 +78,8 @@ namespace borc {
     std::time_t BuildCacheImpl::computeMark(const boost::filesystem::path &path) const {
         return boost::filesystem::last_write_time(path);
     }
+
+    void BuildCacheImpl::addBuildConfiguration(const BuildConfiguration &config) {
+        
+    }
 }
