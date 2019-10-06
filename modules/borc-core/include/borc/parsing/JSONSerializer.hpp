@@ -9,45 +9,45 @@
 
 namespace borc {
     /**
-     * @brief Serializes the supplied JSON array into a vector of boost.hana structure values
+     * @brief Serializes the supplied boost.hana vector structure values to a JSON array
      */
     template<typename Type>
     void serialize(nlohmann::json &model, const std::vector<Type> &values) {
-        for (std::size_t i=0; i<values.size(); i++) {
-
-        }
-
-
-        values.resize(model.size());
-
-        for (int i=0; i<model.size(); i++) {
-            if constexpr (! std::is_class<Type>::value || std::is_same<Type, std::string>::value) {
-                values[i] = model[i].template get<Type>();
+        for (const Type &value : values) {
+            if constexpr (IsSimple<Type>::value) {
+                model.push_back(value);
             } else {
-                deserialize(values[i], model[i]);
+                nlohmann::json submodel;
+
+                serialize(submodel, value);
+
+                model.push_back(submodel);
             }
         }
     }
 
+    /**
+     * @brief Deserielizes the supplied JSON object into a boost.hana structure value
+     */    
+    template<typename Entity>
+    void serialize(nlohmann::json &model, const Entity &entity) {
+        boost::hana::for_each(boost::hana::accessors<Entity>(), [&](auto pair) {
+            auto fieldName = boost::hana::to<const char*>(boost::hana::first(pair));
+            auto fieldValue = boost::hana::second(pair)(entity);
 
-    template<typename Entity, typename Model>
-    Model serialize(const Entity &entity) {
-        constexpr auto propertyCount = std::tuple_size<decltype(Entity::properties)>::value;
-        
-        Model model;
+            typedef decltype(fieldValue) Type;
 
-        for_sequence(std::make_index_sequence<propertyCount>{}, [&](auto i) {
-            constexpr auto property = std::get<i>(Entity::properties);
-            using Type = typename decltype(property)::Type;
-
-            if constexpr (! std::is_class<Type>::value || std::is_same<Type, std::string>::value) {
-                model[property.name] = entity.*(property.member);
+            // check if current property is a simple type
+            if constexpr (IsSimple<Type>::value) {
+                model[fieldName] = fieldValue;
             } else {
-                model[property.name] = serialize<Type>(entity.*(property.member));
+                nlohmann::json submodel;
+
+                serialize(submodel, fieldValue);
+
+                model[fieldName] = submodel;
             }
         });
-        
-        return model;
     }
 }
 
