@@ -4,6 +4,10 @@
 #include <fstream>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/hana.hpp>
+#include <borc/parsing/JSONDeserializer.hpp>
+#include <borc/parsing/JSONSerializer.hpp>
+
 
 namespace borc {
     BuildCacheImpl::BuildCacheImpl(const boost::filesystem::path &outputPath) {

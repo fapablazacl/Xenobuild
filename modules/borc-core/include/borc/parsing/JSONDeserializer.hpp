@@ -8,6 +8,8 @@
 #include <boost/hana.hpp>
 #include <nlohmann/json.hpp>
 
+#include "JSONCommon.hpp"
+
 namespace borc {
     /**
      * @brief Deserializes the supplied JSON array into a vector of boost.hana structure values
@@ -17,7 +19,8 @@ namespace borc {
         values.resize(model.size());
 
         for (int i=0; i<model.size(); i++) {
-            if constexpr (! std::is_class<Type>::value || std::is_same<Type, std::string>::value) {
+            // if constexpr (! std::is_class<Type>::value || std::is_same<Type, std::string>::value) {
+            if constexpr (IsSimple<Type>::value) {
                 values[i] = model[i].template get<Type>();
             } else {
                 deserialize(values[i], model[i]);
@@ -39,7 +42,8 @@ namespace borc {
 
                 if (const auto it = model.find(fieldName); it != model.end()) {
                     // check if current property is a simple type or a string one...
-                    if constexpr ( !std::is_class<Type>::value || std::is_same<Type, std::string>::value) {
+                    // if constexpr (! std::is_class<Type>::value || std::is_same<Type, std::string>::value) {
+                    if constexpr (IsSimple<Type>::value) {
                         boost::hana::second(pair)(entity) = model[fieldName].template get<Type>();
                     } else {
                         deserialize(boost::hana::second(pair)(entity), model[fieldName]);
