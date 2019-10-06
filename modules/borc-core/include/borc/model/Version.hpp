@@ -11,6 +11,18 @@ namespace borc {
         int minor = 0;
         int revision = 0;
 
+        bool operator< (const Version &rhs) const;
+        
+        bool operator>= (const Version &rhs) const {
+            return ! (*this < rhs);
+        }
+
+        bool operator== (const Version &rhs) const;
+
+        bool operator!= (const Version &rhs) const {
+            return ! (*this == rhs);
+        }
+
         static Version parse(const std::string &str);
     };    
 }

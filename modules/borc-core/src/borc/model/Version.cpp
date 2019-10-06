@@ -20,4 +20,24 @@ namespace borc {
             std::atoi(results[2].c_str())
         };
     }
+
+    bool Version::operator< (const Version &rhs) const {
+        if (major >= rhs.major) {
+            return false;
+        }
+        
+        if (minor >= rhs.minor) {
+            return false;
+        }
+        
+        if (revision >= rhs.revision) {
+            return false;
+        }
+        
+        return true;
+    }
+
+    bool Version::operator== (const Version &rhs) const {
+        return major == rhs.major && minor == rhs.minor && revision == rhs.revision;
+    }
 }

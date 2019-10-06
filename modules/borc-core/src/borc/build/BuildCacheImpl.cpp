@@ -80,6 +80,6 @@ namespace borc {
     }
 
     void BuildCacheImpl::addBuildConfiguration(const BuildConfiguration &config) {
-        
+        buildCacheData.sourceSetMap[config] = {};
     }
 }

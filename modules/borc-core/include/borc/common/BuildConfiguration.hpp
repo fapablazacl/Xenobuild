@@ -21,6 +21,8 @@ namespace borc {
 
         //! build type
         std::string type;
+
+        bool operator< (const BuildConfiguration &other) const;
     };
 }
 
