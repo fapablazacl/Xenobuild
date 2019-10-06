@@ -2,22 +2,25 @@
 #ifndef __BORC_COMMON_BUILDCONFIGURATION_HPP__
 #define __BORC_COMMON_BUILDCONFIGURATION_HPP__
 
-#include <vector>
-#include <utility>
-#include <tuple>
+#include <string>
 #include <borc/model/Version.hpp>
 
 namespace borc {
+    /**
+     * @brief The
+     */
     struct BuildConfiguration {
-        std::string toolchain;
+        //! the build toolchainId used in the configuration
+        std::string toolchainId;
+
+        //! target architecture 
+        std::string arch;
+
+        //! the version
         Version version;
 
-        /*
-        constexpr static auto properties = std::make_tuple (
-            property(&BuildConfiguration::toolchain, "toolchain"),
-            property(&BuildConfiguration::version, "version")
-        );
-        */
+        //! build type
+        std::string type;
     };
 }
 
