@@ -48,10 +48,6 @@ int main() {
 
     ConfigureController::~ConfigureController() {}
 
-    static BuildCacheData createMockBuildCacheData() {
-        return {};
-    }
-
     void ConfigureController::perform(const ConfigureControllerOptions &options) {
         if (options.showHelp) {
             std::cout << options.helpMessage;
@@ -59,18 +55,31 @@ int main() {
             return;
         }
 
-        boost::filesystem::path packagePath = boost::filesystem::current_path();
-
         // grab current configured builds and show them to the user.
-        // if no 
-        auto buildCacheFactory = BuildCacheFactory{};
-        auto buildCache = buildCacheFactory.createBuildCache(packagePath, createMockBuildCacheData());
+        const auto packagePath = boost::filesystem::current_path();
+        const auto outputPath = packagePath / ".borc";
 
+        auto buildCacheFactory = BuildCacheFactory{};
+        auto buildCache = buildCacheFactory.createBuildCache(outputPath);
+        auto buildCacheData = buildCache->getData();
+
+        if (buildCacheData.sourceSetMap.size() == 0 && !options.buildType && !options.toolchain) {
+            throw std::runtime_error(
+                "There is no configurations associated. Must select a build type and a toolchain.\n"
+                "See 'borc configure --help' for details."
+            );
+        }
 
         if (!options.buildType && !options.toolchain) {
-            throw std::runtime_error("Must select a build type and a toolchain.");
+            std::cout << "Configured builds for current package:" << std::endl;
+
+            for (const auto &pair : buildCacheData.sourceSetMap) {
+                const auto &config = pair.first;
+                std::cout << "    " << config.toolchainId << "-" << config.version << "(" << config.arch << ")" << std::endl;
+            }
+
+            return;
         }
-        //
 
         std::cout << "Configuring build: type=" << options.buildType.get() << ", toolchain=" << options.toolchain.get() << std::endl;
 

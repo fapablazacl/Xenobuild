@@ -85,7 +85,7 @@ namespace borc {
             buildCache = buildCacheFactory.createNullBuildCache();
         } else {
             // TODO: 
-            buildCache = buildCacheFactory.createBuildCache(outputPath, {});
+            buildCache = buildCacheFactory.createBuildCache(outputPath);
         }
 
         BuildServiceImpl buildService{baseFolderPath, outputPath, toolchain.get(), buildCache, &loggingService};

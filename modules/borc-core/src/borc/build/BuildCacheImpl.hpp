@@ -10,7 +10,7 @@
 namespace borc {
     class BuildCacheImpl : public BuildCache {
     public:
-        BuildCacheImpl(const boost::filesystem::path &outputPath, const BuildCacheData &buildCacheData);
+        BuildCacheImpl(const boost::filesystem::path &outputPath);
 
         virtual ~BuildCacheImpl();
 

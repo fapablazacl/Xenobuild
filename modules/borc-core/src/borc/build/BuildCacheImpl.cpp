@@ -6,9 +6,8 @@
 #include <boost/algorithm/string.hpp>
 
 namespace borc {
-    BuildCacheImpl::BuildCacheImpl(const boost::filesystem::path &outputPath, const BuildCacheData &buildCacheData) {
+    BuildCacheImpl::BuildCacheImpl(const boost::filesystem::path &outputPath) {
         this->outputPath = outputPath;
-        this->buildCacheData = buildCacheData;
         this->loadCache();
     }
 

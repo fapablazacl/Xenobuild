@@ -5,6 +5,7 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <boost/optional.hpp>
 #include <boost/filesystem/path.hpp>
 #include <borc/common/BuildConfiguration.hpp>
 
@@ -23,7 +24,7 @@ namespace borc {
         std::map<BuildConfiguration, SourceSet> sourceSetMap;
 
         //! The currently selected build configuration. It used by default by all the subcommands
-        BuildConfiguration currentBuildConfiguration;
+        boost::optional<BuildConfiguration> currentBuildConfiguration;
     };
 
     /**

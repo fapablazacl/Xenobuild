@@ -16,7 +16,7 @@ namespace borc {
         
         ~BuildCacheFactory();
 
-        BuildCache* createBuildCache(const boost::filesystem::path &cacheFilePath, const BuildCacheData &data);
+        BuildCache* createBuildCache(const boost::filesystem::path &cacheFilePath);
 
         BuildCache* createNullBuildCache();
 
