@@ -10,13 +10,17 @@
 namespace borc {
     class BuildCacheImpl : public BuildCache {
     public:
-        BuildCacheImpl(const boost::filesystem::path &outputPath);
+        BuildCacheImpl(const boost::filesystem::path &outputPath, const BuildCacheData &buildCacheData);
 
         virtual ~BuildCacheImpl();
 
         virtual bool needsRebuild(const boost::filesystem::path &path) const override;
 
         virtual void markAsBuilt(const boost::filesystem::path &path) override;
+
+        virtual BuildCacheData getData() const {
+            return buildCacheData;
+        }
 
     private:
         void loadCache();
@@ -30,6 +34,7 @@ namespace borc {
     private:
         boost::filesystem::path outputPath;
         std::map<boost::filesystem::path, std::time_t> pathTimeMap;
+        BuildCacheData buildCacheData;
     };
 }
 

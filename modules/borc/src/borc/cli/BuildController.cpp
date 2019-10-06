@@ -16,6 +16,7 @@
 #include <borc/services/LoggingServiceImpl.hpp>
 #include <borc/toolchain/ToolchainFactory.hpp>
 #include <borc/toolchain/Toolchain.hpp>
+#include <borc/build/BuildCache.hpp>
 #include <borc/build/BuildCacheFactory.hpp>
 #include <borc/utility/DagNode.hpp>
 #include <borc/utility/Dag.hpp>
@@ -83,7 +84,8 @@ namespace borc {
         if (options.force) {
             buildCache = buildCacheFactory.createNullBuildCache();
         } else {
-            buildCache = buildCacheFactory.createBuildCache(outputPath);
+            // TODO: 
+            buildCache = buildCacheFactory.createBuildCache(outputPath, {});
         }
 
         BuildServiceImpl buildService{baseFolderPath, outputPath, toolchain.get(), buildCache, &loggingService};

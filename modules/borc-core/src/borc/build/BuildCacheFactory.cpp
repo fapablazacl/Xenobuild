@@ -10,15 +10,19 @@ namespace borc {
             return true;
         }
 
-        virtual void markAsBuilt(const boost::filesystem::path &path) override {}        
+        virtual void markAsBuilt(const boost::filesystem::path &path) override {}
+
+        virtual BuildCacheData getData() const override {
+            return {};
+        }
     };
 
     BuildCacheFactory::BuildCacheFactory() {}
 
     BuildCacheFactory::~BuildCacheFactory() {}
 
-    BuildCache* BuildCacheFactory::createBuildCache(const boost::filesystem::path &cachePath) {
-        auto cache = new BuildCacheImpl(cachePath);
+    BuildCache* BuildCacheFactory::createBuildCache(const boost::filesystem::path &cachePath, const BuildCacheData &data) {
+        auto cache = new BuildCacheImpl(cachePath, data);
 
         cacheStorage.emplace_back(cache);
 

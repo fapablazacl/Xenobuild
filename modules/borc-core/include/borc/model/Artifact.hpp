@@ -5,15 +5,11 @@
 #include <string>
 #include <vector>
 #include <boost/filesystem/path.hpp>
+
+#include <borc/model/Version.hpp>
 #include <borc/model/Language.hpp>
 
 namespace borc {
-    struct Version {
-        int major;
-        int minor;
-        int revision;
-    };
-
     class Package;
     class Source;
     class Artifact {

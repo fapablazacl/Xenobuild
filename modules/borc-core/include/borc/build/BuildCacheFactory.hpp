@@ -7,6 +7,8 @@
 #include <boost/filesystem/path.hpp>
 
 namespace borc {
+    struct BuildCacheData;
+
     class BuildCache;
     class BuildCacheFactory {
     public:
@@ -14,7 +16,7 @@ namespace borc {
         
         ~BuildCacheFactory();
 
-        BuildCache* createBuildCache(const boost::filesystem::path &cacheFilePath);
+        BuildCache* createBuildCache(const boost::filesystem::path &cacheFilePath, const BuildCacheData &data);
 
         BuildCache* createNullBuildCache();
 

@@ -2,9 +2,12 @@
 #include "ConfigureController.hpp"
 #include <iostream>
 
+#include <boost/filesystem.hpp>
 #include <borc/model/Version.hpp>
 #include <borc/toolchain/Toolchain.hpp>
 #include <borc/toolchain/ToolchainFactory.hpp>
+#include <borc/build/BuildCache.hpp>
+#include <borc/build/BuildCacheFactory.hpp>
 
 namespace borc {
     const std::string cxxDetectorSource = R"(
@@ -45,6 +48,10 @@ int main() {
 
     ConfigureController::~ConfigureController() {}
 
+    static BuildCacheData createMockBuildCacheData() {
+        return {};
+    }
+
     void ConfigureController::perform(const ConfigureControllerOptions &options) {
         if (options.showHelp) {
             std::cout << options.helpMessage;
@@ -52,9 +59,18 @@ int main() {
             return;
         }
 
+        boost::filesystem::path packagePath = boost::filesystem::current_path();
+
+        // grab current configured builds and show them to the user.
+        // if no 
+        auto buildCacheFactory = BuildCacheFactory{};
+        auto buildCache = buildCacheFactory.createBuildCache(packagePath, createMockBuildCacheData());
+
+
         if (!options.buildType && !options.toolchain) {
             throw std::runtime_error("Must select a build type and a toolchain.");
         }
+        //
 
         std::cout << "Configuring build: type=" << options.buildType.get() << ", toolchain=" << options.toolchain.get() << std::endl;
 
