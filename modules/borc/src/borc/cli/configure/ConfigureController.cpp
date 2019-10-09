@@ -75,7 +75,7 @@ int main() {
 
             for (const auto &pair : buildCacheData.sourceSetMap) {
                 const auto &config = pair.first;
-                std::cout << "    " << config.toolchainId << "-" << config.version << "(" << config.arch << ")" << std::endl;
+                std::cout << "    " << config.computeIdentifier() << std::endl;
             }
 
             return;

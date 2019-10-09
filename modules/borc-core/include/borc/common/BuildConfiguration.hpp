@@ -23,6 +23,8 @@ namespace borc {
         std::string type;
 
         bool operator< (const BuildConfiguration &other) const;
+
+        std::string computeIdentifier() const;
     };
 }
 

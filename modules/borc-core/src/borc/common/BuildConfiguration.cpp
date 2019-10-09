@@ -22,4 +22,8 @@ namespace borc {
 
         return false;
     }
+
+    std::string BuildConfiguration::computeIdentifier() const {
+        return toolchainId + "-" + static_cast<std::string>(version) + "(" + arch + ")";
+    }
 }

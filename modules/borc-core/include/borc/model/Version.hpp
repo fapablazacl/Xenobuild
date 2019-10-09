@@ -42,7 +42,7 @@ namespace borc {
 }
 
 inline std::ostream& operator << (std::ostream &os, const borc::Version &version) {
-    return os << version.major << "." << version.minor << "." << version.revision;
+    return os << static_cast<std::string>(version);
 }
 
 #endif

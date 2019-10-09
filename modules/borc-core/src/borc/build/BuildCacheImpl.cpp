@@ -8,7 +8,7 @@
 #include <borc/parsing/JSONDeserializer.hpp>
 #include <borc/parsing/JSONSerializer.hpp>
 
-BOOST_HANA_ADAPT_STRUCT(borc::BuildConfiguration, toolchainId, arch /*, version*/, type);
+BOOST_HANA_ADAPT_STRUCT(borc::BuildConfiguration, toolchainId, arch, version, type);
 
 namespace borc {
     BuildCacheImpl::BuildCacheImpl(const boost::filesystem::path &outputPath) {
@@ -86,7 +86,8 @@ namespace borc {
 
     void BuildCacheImpl::addBuildConfiguration(const BuildConfiguration &config) {
         buildCacheData.sourceSetMap[config] = {};
-
         // TODO: Store to a file
+        const std::string configName = config.computeIdentifier();
+        
     }
 }
