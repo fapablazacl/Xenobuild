@@ -40,4 +40,10 @@ namespace borc {
     bool Version::operator== (const Version &rhs) const {
         return major == rhs.major && minor == rhs.minor && revision == rhs.revision;
     }
+
+    Version::operator std::string() const {
+        return std::to_string(major) + "." + 
+            std::to_string(minor) + "." + 
+            std::to_string(revision);
+    }
 }
