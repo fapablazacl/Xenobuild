@@ -2,8 +2,9 @@
 #include "ControllerFactory.hpp"
 
 #include <stdexcept>
-#include "BuildController.hpp"
-#include "ConfigureController.hpp"
+
+#include <borc/cli/build/BuildController.hpp>
+#include <borc/cli/configure/ConfigureController.hpp>
 
 namespace borc {
     template<typename ControllerImpl>

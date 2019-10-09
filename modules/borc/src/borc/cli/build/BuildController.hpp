@@ -2,7 +2,7 @@
 #ifndef __BORC_CLI_BUILDCONTROLLER_HPP__
 #define __BORC_CLI_BUILDCONTROLLER_HPP__
 
-#include "ControllerStub.hpp"
+#include <borc/cli/ControllerStub.hpp>
 #include "BuildControllerOptions.hpp"
 
 namespace borc {

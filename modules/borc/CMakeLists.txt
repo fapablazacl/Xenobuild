@@ -6,6 +6,7 @@ find_package(Boost
 
 include_directories(
     "../borc-core/include"
+    "./src"
     ${Boost_INCLUDE_DIRS}
 )
 
@@ -16,14 +17,14 @@ add_executable(borc
     "src/borc/cli/ControllerStub.hpp"
     "src/borc/cli/Controller.cpp"
     "src/borc/cli/Controller.hpp"
-    "src/borc/cli/BuildController.cpp"
-    "src/borc/cli/BuildController.hpp"
-    "src/borc/cli/BuildControllerOptions.cpp"
-    "src/borc/cli/BuildControllerOptions.hpp"
-    "src/borc/cli/ConfigureController.cpp"
-    "src/borc/cli/ConfigureController.hpp"
-    "src/borc/cli/ConfigureControllerOptions.cpp"
-    "src/borc/cli/ConfigureControllerOptions.hpp"
+    "src/borc/cli/build/BuildController.cpp"
+    "src/borc/cli/build/BuildController.hpp"
+    "src/borc/cli/build/BuildControllerOptions.cpp"
+    "src/borc/cli/build/BuildControllerOptions.hpp"
+    "src/borc/cli/configure/ConfigureController.cpp"
+    "src/borc/cli/configure/ConfigureController.hpp"
+    "src/borc/cli/configure/ConfigureControllerOptions.cpp"
+    "src/borc/cli/configure/ConfigureControllerOptions.hpp"
     "src/borc/cli/ControllerFactory.cpp"
     "src/borc/cli/ControllerFactory.hpp"
 )
