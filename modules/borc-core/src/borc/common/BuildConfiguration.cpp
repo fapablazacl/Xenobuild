@@ -20,7 +20,7 @@ namespace borc {
             return false;
         }
 
-        return false;
+        return true;
     }
 
     std::string BuildConfiguration::computeIdentifier() const {
