@@ -8,7 +8,7 @@
 #include <borc/parsing/JSONDeserializer.hpp>
 #include <borc/parsing/JSONSerializer.hpp>
 
-BOOST_HANA_ADAPT_STRUCT(borc::BuildConfiguration, toolchainId, arch, version, type);
+BOOST_HANA_ADAPT_STRUCT(borc::BuildConfiguration, toolchainId, arch, version, buildTypes);
 
 namespace borc {
     BuildCacheImpl::BuildCacheImpl(const boost::filesystem::path &outputPath) {

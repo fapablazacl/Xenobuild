@@ -48,6 +48,26 @@ int main() {
 
     ConfigureController::~ConfigureController() {}
 
+    /**
+     * @brief Determine all the build types from the parameter, specially when "All is used".
+     * @todo: The values generated should come from the currently selected toolchain
+     */
+    static std::vector<BuildType> generateBuildTypes(const Toolchain *, const std::string &buildTypeValue) {
+        if (buildTypeValue == "all") {
+            return { BuildType{"Debug"},BuildType{"Release"} };
+        } else {
+            return { BuildType{buildTypeValue} };
+        }
+    }
+
+    /**
+     * @brief Detect the current (native) architecture. 
+     * @todo Can be computed from a preprocessor directive.
+     */
+    static std::string detectArchitecture() {
+        return "x86_64";
+    }
+
     void ConfigureController::perform(const ConfigureControllerOptions &options) {
         if (options.showHelp) {
             std::cout << options.helpMessage;
@@ -86,15 +106,12 @@ int main() {
         auto factory = ToolchainFactory::create();
         auto toolchain = factory->createToolchain(options.toolchain.get());
 
-        // detect compiler version
-        Version toolchainVersion = this->detectToolchainVersion();
-
         // setup the configuration requested by the user
         auto config = BuildConfiguration{};
         config.toolchainId = options.toolchain.get();
-        config.arch = "x86_64";
-        config.type = options.buildType.get();
-        config.version = toolchainVersion;
+        config.arch = detectArchitecture();
+        config.buildTypes = generateBuildTypes(toolchain.get(), options.buildType.get());
+        config.version = detectToolchainVersion();
 
         buildCache->addBuildConfiguration(config);
     }

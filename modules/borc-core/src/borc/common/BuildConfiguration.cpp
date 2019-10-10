@@ -8,15 +8,27 @@ namespace borc {
             return false;
         }
 
-        if (arch >= other.arch) {
-            return false;
-        }
-
         if (version >= other.version) {
             return false;
         }
 
-        if (type >= other.type) {
+        if (arch >= other.arch) {
+            return false;
+        }
+
+        return true;
+    }
+
+    bool BuildConfiguration::operator== (const BuildConfiguration &rhs) const {
+        if (toolchainId != rhs.toolchainId) {
+            return false;
+        }
+
+        if (version != rhs.version) {
+            return false;
+        }
+
+        if (arch != rhs.arch) {
             return false;
         }
 
@@ -24,6 +36,6 @@ namespace borc {
     }
 
     std::string BuildConfiguration::computeIdentifier() const {
-        return toolchainId + "-" + static_cast<std::string>(version) + "(" + arch + ")";
+        return toolchainId + "-" + static_cast<std::string>(version) + "-" + arch;
     }
 }
