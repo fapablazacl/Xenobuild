@@ -25,6 +25,11 @@ namespace borc {
         virtual void addBuildConfiguration(const BuildConfiguration &config) override;
 
     private:
+        //! loads the build configuration from the current output path
+        void loadConfigurations();
+
+        void saveConfigurations();
+
         void loadCache();
 
         void saveCache();

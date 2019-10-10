@@ -17,22 +17,7 @@ namespace borc {
     BuildCacheImpl::BuildCacheImpl(const boost::filesystem::path &outputPath) {
         this->outputPath = outputPath;
         this->loadCache();
-
-        // loads the build configuration from the current path
-        const auto configFilePath = outputPath / "configuration.json";
-
-        if (boost::filesystem::exists(configFilePath)) {
-            auto fileService = FileServiceImpl{};
-
-            const std::string configurationJsonContent = fileService.load(configFilePath.string());
-            const nlohmann::json configurationJson = nlohmann::json::parse(configurationJsonContent);
-
-            std::vector<BuildConfiguration> buildConfigurations;
-
-            deserialize(buildConfigurations, configurationJson);
-
-            
-        }
+        this->loadConfigurations();
     }
 
     BuildCacheImpl::~BuildCacheImpl() {}
@@ -104,6 +89,34 @@ namespace borc {
     }
 
     void BuildCacheImpl::addBuildConfiguration(const BuildConfiguration &config) {
-        buildCacheData.sourceSetMap[config] = {};
+        buildCacheData.buildConfigurations.push_back(config);
+
+        this->saveConfigurations();
+    }
+
+    void BuildCacheImpl::loadConfigurations() {
+        const auto configFilePath = outputPath / "configuration.json";
+
+        if (boost::filesystem::exists(configFilePath)) {
+            auto fileService = FileServiceImpl{};
+
+            const std::string configurationJsonContent = fileService.load(configFilePath.string());
+            const nlohmann::json configurationJson = nlohmann::json::parse(configurationJsonContent);
+
+            deserialize(buildCacheData.buildConfigurations, configurationJson);
+        }
+    }
+
+    void BuildCacheImpl::saveConfigurations() {
+        // loads the build configuration from the current path
+        const auto configFilePath = outputPath / "configuration.json";
+
+        nlohmann::json configurationJson;
+        serialize(configurationJson, buildCacheData.buildConfigurations);
+        const std::string configurationJsonContent = configurationJson.dump(4);
+
+        auto fileService = FileServiceImpl{};
+
+        fileService.save(configFilePath.string(), configurationJsonContent);
     }
 }

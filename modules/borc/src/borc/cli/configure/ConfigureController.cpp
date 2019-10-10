@@ -83,7 +83,7 @@ int main() {
         auto buildCache = buildCacheFactory.createBuildCache(outputPath);
         auto buildCacheData = buildCache->getData();
 
-        if (buildCacheData.sourceSetMap.size() == 0 && !options.buildType && !options.toolchain) {
+        if (buildCacheData.buildConfigurations.size() == 0 && !options.buildType && !options.toolchain) {
             throw std::runtime_error(
                 "There is no configurations associated. Must select a build type and a toolchain.\n"
                 "See 'borc configure --help' for details."
@@ -93,8 +93,7 @@ int main() {
         if (!options.buildType && !options.toolchain) {
             std::cout << "Configured builds for current package:" << std::endl;
 
-            for (const auto &pair : buildCacheData.sourceSetMap) {
-                const auto &config = pair.first;
+            for (const auto &config : buildCacheData.buildConfigurations) {
                 std::cout << "    " << config.computeIdentifier() << std::endl;
             }
 
