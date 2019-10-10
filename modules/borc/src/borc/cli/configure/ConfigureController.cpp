@@ -62,7 +62,7 @@ int main() {
 
     /**
      * @brief Detect the current (native) architecture. 
-     * @todo Can be computed from a preprocessor directive.
+     * @todo This information can be computed from a preprocessor directive.
      */
     static std::string detectArchitecture() {
         return "x86_64";
