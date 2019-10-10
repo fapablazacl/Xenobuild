@@ -89,15 +89,15 @@ namespace borc {
     }
 
     void BuildCacheImpl::addBuildConfiguration(const BuildConfiguration &newConfig) {
-        buildCacheData.buildConfigurations.insert(newConfig);
+        auto it = buildCacheData.buildConfigurations.find(newConfig);
 
-
-        /*
-        const auto &configs = buildCacheData.buildConfigurations;
-        auto it = std::find(configs.begin(), configs.end(), newConfig);
-
-        buildCacheData.buildConfigurations.push_back(newConfig);
-        */
+        if (it == buildCacheData.buildConfigurations.end()) {
+            buildCacheData.buildConfigurations.insert(newConfig);
+        } else {
+            for (auto buildType : newConfig.buildTypes) {
+                it->buildTypes.insert(buildType);
+            }
+        }
 
         this->saveConfigurations();
     }
