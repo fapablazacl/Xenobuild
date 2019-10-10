@@ -88,8 +88,16 @@ namespace borc {
         return boost::filesystem::last_write_time(path);
     }
 
-    void BuildCacheImpl::addBuildConfiguration(const BuildConfiguration &config) {
-        buildCacheData.buildConfigurations.push_back(config);
+    void BuildCacheImpl::addBuildConfiguration(const BuildConfiguration &newConfig) {
+        buildCacheData.buildConfigurations.insert(newConfig);
+
+
+        /*
+        const auto &configs = buildCacheData.buildConfigurations;
+        auto it = std::find(configs.begin(), configs.end(), newConfig);
+
+        buildCacheData.buildConfigurations.push_back(newConfig);
+        */
 
         this->saveConfigurations();
     }

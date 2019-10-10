@@ -52,7 +52,7 @@ int main() {
      * @brief Determine all the build types from the parameter, specially when "All is used".
      * @todo: The values generated should come from the currently selected toolchain
      */
-    static std::vector<BuildType> generateBuildTypes(const Toolchain *, const std::string &buildTypeValue) {
+    static std::set<BuildType> generateBuildTypes(const Toolchain *, const std::string &buildTypeValue) {
         if (buildTypeValue == "all") {
             return { BuildType{"Debug"},BuildType{"Release"} };
         } else {

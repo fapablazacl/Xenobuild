@@ -2,6 +2,8 @@
 #ifndef __BORC_PARSING_JSONSERIALIZER_HPP__
 #define __BORC_PARSING_JSONSERIALIZER_HPP__
 
+#include <vector>
+#include <set>
 #include <boost/hana.hpp>
 #include <nlohmann/json.hpp>
 
@@ -13,6 +15,21 @@ namespace borc {
      */
     template<typename Type>
     void serialize(nlohmann::json &model, const std::vector<Type> &values) {
+        for (const Type &value : values) {
+            if constexpr (IsSimple<Type>::value) {
+                model.push_back(value);
+            } else {
+                nlohmann::json submodel;
+
+                serialize(submodel, value);
+
+                model.push_back(submodel);
+            }
+        }
+    }
+
+    template<typename Type>
+    void serialize(nlohmann::json &model, const std::set<Type> &values) {
         for (const Type &value : values) {
             if constexpr (IsSimple<Type>::value) {
                 model.push_back(value);

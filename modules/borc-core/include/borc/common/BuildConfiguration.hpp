@@ -4,11 +4,14 @@
 
 #include <string>
 #include <vector>
+#include <set>
 #include <borc/model/Version.hpp>
 
 namespace borc {
     /**
      * @brief Abstracts the concrete compiler and linker flags used to build object files and binaries.
+     * 
+     * These flags are extracted from the Toolchain during builds.
      */
     struct BuildType {
         std::string type;
@@ -21,6 +24,10 @@ namespace borc {
 
         explicit operator std::string() const {
             return type;
+        }
+
+        bool operator< (const BuildType &rhs) const {
+            return type < rhs.type;
         }
 
         typedef std::string DefaultType;
@@ -42,7 +49,7 @@ namespace borc {
         std::string arch;
 
         //! build types associated to this build configuration
-        std::vector<BuildType> buildTypes;
+        std::set<BuildType> buildTypes;
 
         bool operator< (const BuildConfiguration &other) const;
 

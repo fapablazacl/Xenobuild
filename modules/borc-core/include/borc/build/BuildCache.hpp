@@ -23,7 +23,7 @@ namespace borc {
         // Map from a build configuration to a set of sources, that where used in the last/current build
         // std::map<BuildConfiguration, SourceSet> sourceSetMap;
 
-        std::vector<BuildConfiguration> buildConfigurations;
+        std::set<BuildConfiguration> buildConfigurations;
 
         //! The currently selected build configuration. It used by default by all the subcommands
         boost::optional<BuildConfiguration> currentBuildConfiguration;
