@@ -5,15 +5,28 @@
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/hana.hpp>
+#include <borc/services/FileServiceImpl.hpp>
 #include <borc/parsing/JSONDeserializer.hpp>
 #include <borc/parsing/JSONSerializer.hpp>
 
+BOOST_HANA_ADAPT_STRUCT(borc::Version, major, minor, revision);
 BOOST_HANA_ADAPT_STRUCT(borc::BuildConfiguration, toolchainId, arch, version, buildTypes);
+BOOST_HANA_ADAPT_STRUCT(borc::BuildType, type);
 
 namespace borc {
     BuildCacheImpl::BuildCacheImpl(const boost::filesystem::path &outputPath) {
         this->outputPath = outputPath;
         this->loadCache();
+
+        // loads the build configuration from the current path
+        auto fileService = FileServiceImpl{};
+
+        const std::string configurationJsonContent = fileService.load((outputPath / "configuration.json").string());
+        const nlohmann::json configurationJson = nlohmann::json::parse(configurationJsonContent);
+
+        std::vector<BuildConfiguration> buildConfigurations;
+        deserialize(buildConfigurations, configurationJson);
+
     }
 
     BuildCacheImpl::~BuildCacheImpl() {}
@@ -86,8 +99,5 @@ namespace borc {
 
     void BuildCacheImpl::addBuildConfiguration(const BuildConfiguration &config) {
         buildCacheData.sourceSetMap[config] = {};
-        // TODO: Store to a file
-        const std::string configName = config.computeIdentifier();
-        
     }
 }

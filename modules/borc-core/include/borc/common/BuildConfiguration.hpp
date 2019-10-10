@@ -22,6 +22,8 @@ namespace borc {
         explicit operator std::string() const {
             return type;
         }
+
+        typedef std::string DefaultType;
     };
 
     /**
@@ -54,6 +56,8 @@ namespace borc {
          * @brief Generates a std::string with the format: 'toolchainId-version-arch'
          */ 
         std::string computeIdentifier() const;
+
+        typedef void DefaultType;
     };
 }
 

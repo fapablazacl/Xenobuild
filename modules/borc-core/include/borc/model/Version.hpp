@@ -38,6 +38,8 @@ namespace borc {
         }
 
         static Version parse(const std::string &str);
+
+        typedef std::string DefaultType;
     };    
 }
 
