@@ -19,14 +19,20 @@ namespace borc {
         this->loadCache();
 
         // loads the build configuration from the current path
-        auto fileService = FileServiceImpl{};
+        const auto configFilePath = outputPath / "configuration.json";
 
-        const std::string configurationJsonContent = fileService.load((outputPath / "configuration.json").string());
-        const nlohmann::json configurationJson = nlohmann::json::parse(configurationJsonContent);
+        if (boost::filesystem::exists(configFilePath)) {
+            auto fileService = FileServiceImpl{};
 
-        std::vector<BuildConfiguration> buildConfigurations;
-        deserialize(buildConfigurations, configurationJson);
+            const std::string configurationJsonContent = fileService.load(configFilePath.string());
+            const nlohmann::json configurationJson = nlohmann::json::parse(configurationJsonContent);
 
+            std::vector<BuildConfiguration> buildConfigurations;
+
+            deserialize(buildConfigurations, configurationJson);
+
+            
+        }
     }
 
     BuildCacheImpl::~BuildCacheImpl() {}
