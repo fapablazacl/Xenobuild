@@ -2,6 +2,7 @@
 #include "ConfigureController.hpp"
 #include <iostream>
 
+#include <boost/process.hpp>
 #include <boost/filesystem.hpp>
 #include <borc/model/Version.hpp>
 #include <borc/toolchain/Toolchain.hpp>
@@ -85,12 +86,35 @@ namespace borc {
     Version ConfigureController::detectToolchainVersion() const {
         // 1. Compile C++ version detector
         if (std::system("gcc other/CXXCompilerVersionDetector.cpp -O0 -oother/CXXCompilerVersionDetector") != 0) {
-            throw std::runtime_error("Failed CXXCompilerVersionDetector compilation");
+            throw std::runtime_error("Failed CXXCompilerVersionDetector compilation.");
         }
 
         // 2. Execute it, and grab the output
         if (std::system("./other/CXXCompilerVersionDetector") != 0) {
             throw std::runtime_error("Couln't detect the compiler version, because the toolchain is unsupported for now.");
+        }
+
+        std::cout << "Preparing process" << std::endl;
+        boost::filesystem::path compilerPath = boost::process::search_path("./other/CXXCompilerVersionDetector");
+
+        std::cout << "Creating pipestream" << std::endl;
+		boost::process::ipstream pipeStream;
+
+        std::cout << "Creating chld process" << std::endl;
+		boost::process::child childProcess {compilerPath, boost::process::std_out > pipeStream};
+        
+        std::cout << "Grabbing output" << std::endl;
+        std::string line;
+        std::vector<std::string> specs;
+
+        while (pipeStream && std::getline(pipeStream, line) && !line.empty()) {
+            specs.push_back(line);
+        }
+
+        childProcess.wait();
+
+        for (const auto &line : specs) {
+            std::cout << line << std::endl;
         }
 
         // 3. Parse the output and return the result.
