@@ -18,7 +18,7 @@ namespace borc {
 
         virtual void markAsBuilt(const boost::filesystem::path &path) override;
 
-        virtual BuildCacheData getData() const {
+        virtual BuildCacheData getData() const override {
             return buildCacheData;
         }
 
