@@ -10,42 +10,6 @@
 #include <borc/build/BuildCacheFactory.hpp>
 
 namespace borc {
-    const std::string cxxDetectorSource = R"(
-#include <stdio.h>
-
-struct compiler_t {
-    const char *name;
-    int version_major;
-    int version_minor;
-    int version_patch;
-};
-
-int main() {
-    struct compiler_t compiler = {
-        NULL, 0, 0, 0
-    };
-
-#if defined(__clang__)
-    compiler.name = "clang";
-    compiler.version_major = __clang_major__;
-    compiler.version_minor = __clang_minor__;
-    compiler.version_patch = __clang_patchlevel__;
-#elif defined(__GNUC__)
-    compiler.name = "gcc";
-    compiler.version_major = __GNUC__;
-    compiler.version_minor = __GNUC_MINOR__;
-    compiler.version_patch = __GNUC_PATCHLEVEL__;
-#endif
-
-    if (compiler.name) {
-        printf("%s-%d.%d.%d\n", compiler.name, compiler.version_major, compiler.version_minor, compiler.version_patch);
-        
-        return 0;
-    } else {
-        return 1;
-    }
-})";
-
     ConfigureController::~ConfigureController() {}
 
     /**
@@ -120,8 +84,14 @@ int main() {
 
     Version ConfigureController::detectToolchainVersion() const {
         // 1. Compile C++ version detector
+        if (std::system("gcc other/CXXCompilerVersionDetector.cpp -O0 -oother/CXXCompilerVersionDetector") != 0) {
+            throw std::runtime_error("Failed CXXCompilerVersionDetector compilation");
+        }
 
         // 2. Execute it, and grab the output
+        if (std::system("./other/CXXCompilerVersionDetector") != 0) {
+            throw std::runtime_error("Couln't detect the compiler version, because the toolchain is unsupported for now.");
+        }
 
         // 3. Parse the output and return the result.
         return {1, 1, 1};
