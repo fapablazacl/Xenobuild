@@ -68,15 +68,12 @@ namespace borc {
 
         LoggingServiceImpl loggingService {"BuildServiceImpl"};
 
-        auto toolchainFactory = ToolchainFactory::create();
-        auto toolchain = toolchainFactory->createToolchain("gcc");
-
         PackageFactory packageFactory;
         std::unique_ptr<Package> package = packageFactory.createPackage(packageEntity, moduleEntities);
 
         // TODO: construct the output folder based on the current toolchain and version.
         // TODO: Create the BuildCache from a factory, because it depends on the current toolchain.
-        const boost::filesystem::path outputPath = baseFolderPath / ".borc" / "gcc";
+        const boost::filesystem::path outputPath = baseFolderPath / ".borc";
 
         BuildCacheFactory buildCacheFactory;
 
@@ -88,7 +85,20 @@ namespace borc {
             buildCache = buildCacheFactory.createBuildCache(outputPath);
         }
 
-        BuildServiceImpl buildService{baseFolderPath, outputPath, toolchain.get(), buildCache, &loggingService};
+        BuildCacheData buildCacheData = buildCache->getData();
+
+        if (buildCacheData.buildConfigurations.size() == 0) {
+            throw std::runtime_error("No configurations detected. Please, run 'borc configure --help' for details");
+        }
+
+        if (! buildCacheData.currentBuildConfiguration) {
+            throw std::runtime_error("No configuration selected as the current one. Please, run 'borc configure' for details");
+        }
+
+        auto toolchainFactory = ToolchainFactory::create();
+        auto toolchain = toolchainFactory->createToolchain(buildCacheData.currentBuildConfiguration->computeIdentifier());
+
+        BuildServiceImpl buildService {baseFolderPath, outputPath, toolchain.get(), buildCache, &loggingService};
 
         std::cout << "Computing source dependencies for package '" << package->getName() << "' ..." << std::endl;
 
