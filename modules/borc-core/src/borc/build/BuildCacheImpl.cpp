@@ -116,7 +116,10 @@ namespace borc {
     }
 
     void BuildCacheImpl::saveConfigurations() {
-        // loads the build configuration from the current path
+        if (!boost::filesystem::exists(outputPath) && ! boost::filesystem::create_directory(outputPath) ) {
+            throw std::runtime_error("Couldn't create the '" + outputPath.string() +  "' directory. Please check user/group/folder permissions");
+        }
+
         const auto configFilePath = outputPath / "configuration.json";
 
         nlohmann::json configurationJson;

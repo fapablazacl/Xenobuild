@@ -75,8 +75,11 @@ int main() {
             return;
         }
 
-        // grab current configured builds and show them to the user.
         const auto packagePath = boost::filesystem::current_path();
+        if (! boost::filesystem::exists(packagePath / "borc-package.json")) {
+            throw std::runtime_error("There is no package file in the folder '" + packagePath.string() + "'");
+        }
+
         const auto outputPath = packagePath / ".borc";
 
         auto buildCacheFactory = BuildCacheFactory{};
