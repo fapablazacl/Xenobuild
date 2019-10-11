@@ -29,7 +29,7 @@ namespace borc {
 
         fs.open(filePath.c_str(), std::ios_base::out);
         if (!fs.is_open()) {
-            throw std::runtime_error("The file " + filePath + "could't be opened");
+            throw std::runtime_error("The file '" + filePath + "' could't be opened");
         }
 
         if (content.size() > 0) {
