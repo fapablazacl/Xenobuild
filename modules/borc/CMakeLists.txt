@@ -29,7 +29,13 @@ add_executable(borc
     "src/borc/cli/ControllerFactory.hpp"
 )
 
-target_link_libraries(borc borc-core ${Boost_LIBRARIES} pthread)
+if (WIN32)
+	set (PTHREAD_LIB )
+else()
+	set (PTHREAD_LIB pthread)
+endif()
+
+target_link_libraries(borc borc-core ${Boost_LIBRARIES} ${PTHREAD_LIB})
 
 install(TARGETS borc
         RUNTIME DESTINATION bin

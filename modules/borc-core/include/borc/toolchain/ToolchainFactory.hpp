@@ -3,6 +3,7 @@
 #define __BORC_CORE_TOOLCHAINFACTORY_HPP__
 
 #include <memory>
+#include <string>
 
 namespace borc {
     class Toolchain;
