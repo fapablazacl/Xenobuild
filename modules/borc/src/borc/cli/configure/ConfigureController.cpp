@@ -80,6 +80,8 @@ namespace borc {
         config.buildTypes = generateBuildTypes(toolchain.get(), options.buildType.get());
         config.version = detectToolchainVersion();
 
+        std::cout << "Detected compiler version: " << std::string(config.version) << std::endl;
+
         buildCache->addBuildConfiguration(config);
     }
 
@@ -90,20 +92,15 @@ namespace borc {
         }
 
         // 2. Execute it, and grab the output
-        if (std::system("./other/CXXCompilerVersionDetector") != 0) {
-            throw std::runtime_error("Couln't detect the compiler version, because the toolchain is unsupported for now.");
+        boost::filesystem::path compilerPath = boost::filesystem::path("./other/CXXCompilerVersionDetector");
+
+        if (! boost::filesystem::exists(compilerPath)) {
+            throw std::runtime_error("Compiler detector not found in path '" + compilerPath.string() + "'.");
         }
 
-        std::cout << "Preparing process" << std::endl;
-        boost::filesystem::path compilerPath = boost::process::search_path("./other/CXXCompilerVersionDetector");
-
-        std::cout << "Creating pipestream" << std::endl;
 		boost::process::ipstream pipeStream;
-
-        std::cout << "Creating chld process" << std::endl;
 		boost::process::child childProcess {compilerPath, boost::process::std_out > pipeStream};
         
-        std::cout << "Grabbing output" << std::endl;
         std::string line;
         std::vector<std::string> specs;
 
@@ -113,11 +110,19 @@ namespace borc {
 
         childProcess.wait();
 
-        for (const auto &line : specs) {
-            std::cout << line << std::endl;
+        if (specs.size() != 1) {
+            throw std::runtime_error("Couldn't detect compiler type and version (unexpected output)");
+        }
+
+        std::vector<std::string> compilerDetectorOutput;
+
+        boost::algorithm::split(compilerDetectorOutput, specs[0], boost::is_any_of("-"));
+
+        if (compilerDetectorOutput.size() != 2) {
+            throw std::runtime_error("Couldn't detect compiler type and version (unexpected output)");
         }
 
         // 3. Parse the output and return the result.
-        return {1, 1, 1};
+        return Version::parse(compilerDetectorOutput[1]);
     }
 }
