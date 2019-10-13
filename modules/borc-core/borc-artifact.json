@@ -8,7 +8,7 @@
     "sources": [
         {
             "path": "include",
-            "public": true
+            "public_": true
         },
         "src"
     ],

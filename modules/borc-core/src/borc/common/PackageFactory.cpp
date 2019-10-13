@@ -52,8 +52,10 @@ namespace borc {
 
             for (const ModuleSourceEntity &moduleSourceEntity : moduleEntity.sources) {
                 if (moduleSourceEntity.public_) {
+                    std::cout << "IncludePath: " << moduleSourceEntity.path << std::endl;
                     includePaths.push_back(moduleSourceEntity.path);
                 } else {
+                    std::cout << "SourcePath: " << moduleSourceEntity.path << std::endl;
                     sourcePaths.push_back(moduleSourceEntity.path);
                 }
             }
@@ -70,7 +72,7 @@ namespace borc {
             Artifact *artifact = artifacts[i];
 
             for (const std::string dependency :  moduleEntity.dependencies) {
-                // TODO: Expand the dependency solving from the (future) context object ...
+                // TODO: Expand the dependency solving from the (future) build context object ...
                 bool found = false;
                 for (const Artifact *dependentArtifact : artifacts) {
                     if (dependency == dependentArtifact->getName()) {

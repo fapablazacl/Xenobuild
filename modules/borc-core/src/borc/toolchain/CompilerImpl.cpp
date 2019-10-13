@@ -36,6 +36,7 @@ namespace borc {
 		const auto sourceFilePath = source->getFilePath();
 		const auto objectFilePath = this->getObjectFilePath(outputPath, source);
 
+		// TODO: Factor these options 
 		std::vector<std::string> commandOptions = {
 			switches.zeroOptimization,
 			switches.includeDebug,
@@ -54,6 +55,13 @@ namespace borc {
 		// compute additional include directories
 		for (const std::string &path : options.includePaths) {
 			const std::string includeOption = switches.includePath + path;
+
+			commandOptions.push_back(includeOption);
+		}
+
+		// compute include paths from the artifact
+		for (const boost::filesystem::path &includePath : source->getArtifact()->getIncludePaths()) {
+			const std::string includeOption = switches.includePath + includePath.string();
 
 			commandOptions.push_back(includeOption);
 		}

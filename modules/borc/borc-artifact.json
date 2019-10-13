@@ -6,6 +6,10 @@
     "type": "application/cli",
     "language": "c++/17",
     "sources": [
+        {
+            "path": "src",
+            "public_": true
+        },
         "src"
     ],
     "dependencies": [
