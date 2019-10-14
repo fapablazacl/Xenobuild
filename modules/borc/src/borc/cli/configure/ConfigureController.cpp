@@ -8,7 +8,7 @@
 #include <borc/toolchain/Toolchain.hpp>
 #include <borc/toolchain/ToolchainFactory.hpp>
 #include <borc/build/BuildCache.hpp>
-#include <borc/build/BuildCacheFactory.hpp>
+#include <borc/build/ConfigurationService.hpp>
 
 namespace borc {
     ConfigureController::~ConfigureController() {}
@@ -47,11 +47,10 @@ namespace borc {
 
         const auto outputPath = packagePath / ".borc";
 
-        auto buildCacheFactory = BuildCacheFactory{};
-        auto buildCache = buildCacheFactory.createBuildCache(outputPath);
-        auto buildCacheData = buildCache->getData();
+        auto configurationService = ConfigurationService{outputPath};
+        auto configurationData = configurationService.getData();
 
-        if (buildCacheData.buildConfigurations.size() == 0 && !options.buildType && !options.toolchain) {
+        if (configurationData.buildConfigurations.size() == 0 && !options.buildType && !options.toolchain) {
             throw std::runtime_error(
                 "There is no configurations associated. Must select a build type and a toolchain.\n"
                 "See 'borc configure --help' for details."
@@ -61,7 +60,7 @@ namespace borc {
         if (!options.buildType && !options.toolchain) {
             std::cout << "Configured builds for current package:" << std::endl;
 
-            for (const auto &config : buildCacheData.buildConfigurations) {
+            for (const auto &config : configurationData.buildConfigurations) {
                 std::cout << "    " << config.computeIdentifier() << std::endl;
             }
 
@@ -82,7 +81,7 @@ namespace borc {
 
         std::cout << "Detected compiler version: " << std::string(config.version) << std::endl;
 
-        buildCache->addBuildConfiguration(config);
+        configurationService.addBuildConfiguration(config);
     }
 
     Version ConfigureController::detectToolchainVersion() const {

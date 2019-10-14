@@ -18,18 +18,7 @@ namespace borc {
 
         virtual void markAsBuilt(const boost::filesystem::path &path) override;
 
-        virtual BuildCacheData getData() const override {
-            return buildCacheData;
-        }
-
-        virtual void addBuildConfiguration(const BuildConfiguration &config) override;
-
     private:
-        //! loads the build configuration from the current output path
-        void loadConfigurations();
-
-        void saveConfigurations();
-
         void loadCache();
 
         void saveCache();
@@ -41,7 +30,6 @@ namespace borc {
     private:
         boost::filesystem::path outputPath;
         std::map<boost::filesystem::path, std::time_t> pathTimeMap;
-        BuildCacheData buildCacheData;
     };
 }
 

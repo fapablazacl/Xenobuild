@@ -17,7 +17,7 @@
 #include <borc/toolchain/ToolchainFactory.hpp>
 #include <borc/toolchain/Toolchain.hpp>
 #include <borc/build/BuildCache.hpp>
-#include <borc/build/BuildCacheFactory.hpp>
+#include <borc/build/ConfigurationService.hpp>
 #include <borc/utility/DagNode.hpp>
 #include <borc/utility/Dag.hpp>
 #include <borc/utility/DagVisitor.hpp>
@@ -51,35 +51,32 @@ namespace borc {
         PackageFactory packageFactory;
         std::unique_ptr<Package> package = packageFactory.createPackage(packageEntity, moduleEntities);
 
-        // TODO: construct the output folder based on the current toolchain and version.
-        // TODO: Create the BuildCache from a factory, because it depends on the current toolchain.
         const boost::filesystem::path outputPath = baseFolderPath / ".borc";
 
-        BuildCacheFactory buildCacheFactory;
+        ConfigurationService configurationService {outputPath};
+        ConfigurationData configurationData = configurationService.getData();
 
-        BuildCache *buildCache = buildCacheFactory.createBuildCache(outputPath);
-
-        BuildCacheData buildCacheData = buildCache->getData();
-
-        if (buildCacheData.buildConfigurations.size() == 0) {
+        if (configurationData.buildConfigurations.size() == 0) {
             throw std::runtime_error("No configurations detected. Please, run 'borc configure --help' for details");
         }
 
-        if (! buildCacheData.currentBuildConfiguration) {
+        if (! configurationData.currentBuildConfiguration) {
             std::cout << "No configuration selected as the current one. Picking the first one" << std::endl;
-            buildCacheData.currentBuildConfiguration = *buildCacheData.buildConfigurations.begin();
+            configurationData.currentBuildConfiguration = *configurationData.buildConfigurations.begin();
         }
 
-        std::cout << "Building configuration " << buildCacheData.currentBuildConfiguration.get().computeIdentifier() << " ..." << std::endl;
+        auto buildCache = configurationService.createBuildCache(configurationData.currentBuildConfiguration.get());
+
+        std::cout << "Building configuration " << configurationData.currentBuildConfiguration.get().computeIdentifier() << " ..." << std::endl;
 
         auto toolchainFactory = ToolchainFactory::create();
-        auto toolchain = toolchainFactory->createToolchain(buildCacheData.currentBuildConfiguration.get().toolchainId);
+        auto toolchain = toolchainFactory->createToolchain(configurationData.currentBuildConfiguration.get().toolchainId);
 
         BuildServiceImpl buildService {
             baseFolderPath, 
-            outputPath / buildCacheData.currentBuildConfiguration.get().computeIdentifier(), 
+            outputPath / configurationData.currentBuildConfiguration.get().computeIdentifier(), 
             toolchain.get(), 
-            buildCache, 
+            buildCache.get(), 
             &loggingService
         };
 
