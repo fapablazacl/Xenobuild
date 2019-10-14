@@ -65,7 +65,7 @@ namespace borc {
 
     private:
         boost::filesystem::path outputPath;
-        ConfigurationData buildCacheData;
+        ConfigurationData configurationData;
     };
 }
 

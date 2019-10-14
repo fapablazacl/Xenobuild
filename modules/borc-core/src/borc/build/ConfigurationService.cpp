@@ -22,10 +22,10 @@ namespace borc {
 
 
     void ConfigurationService::addBuildConfiguration(const BuildConfiguration &newConfig) {
-        auto it = buildCacheData.buildConfigurations.find(newConfig);
+        auto it = configurationData.buildConfigurations.find(newConfig);
 
-        if (it == buildCacheData.buildConfigurations.end()) {
-            buildCacheData.buildConfigurations.insert(newConfig);
+        if (it == configurationData.buildConfigurations.end()) {
+            configurationData.buildConfigurations.insert(newConfig);
         } else {
             for (auto buildType : newConfig.buildTypes) {
                 it->buildTypes.insert(buildType);
@@ -36,7 +36,7 @@ namespace borc {
     }
 
     ConfigurationData ConfigurationService::getData() const {
-        return buildCacheData;
+        return configurationData;
     }
 
     void ConfigurationService::loadConfigurations() {
@@ -48,7 +48,7 @@ namespace borc {
             const std::string configurationJsonContent = fileService.load(configFilePath.string());
             const nlohmann::json configurationJson = nlohmann::json::parse(configurationJsonContent);
 
-            deserialize(buildCacheData.buildConfigurations, configurationJson);
+            deserialize(configurationData.buildConfigurations, configurationJson);
         }
     }
 
@@ -60,7 +60,7 @@ namespace borc {
         const auto configFilePath = outputPath / "configuration.json";
 
         nlohmann::json configurationJson;
-        serialize(configurationJson, buildCacheData.buildConfigurations);
+        serialize(configurationJson, configurationData.buildConfigurations);
         const std::string configurationJsonContent = configurationJson.dump(4);
 
         auto fileService = FileServiceImpl{};
