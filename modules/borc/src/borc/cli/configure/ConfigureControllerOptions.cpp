@@ -11,6 +11,7 @@ namespace borc {
             ("help", "produce this message")
             ("build-type", boost::program_options::value<std::string>(), "set build type (debug, release, all)")
             ("toolchain", boost::program_options::value<std::string>(), "set toolchain (gcc, vc, clang)")
+            ("search-path", boost::program_options::value<std::string>(), "set current search path directory")
         ;
 
         boost::program_options::variables_map vm;
@@ -34,6 +35,10 @@ namespace borc {
 
         if (vm.count("toolchain")) {
             options.toolchain = vm["toolchain"].as<std::string>();
+        }
+
+        if (vm.count("search-path")) {
+            options.searchPaths.push_back(vm["search-path"].as<std::string>());
         }
 
         return options;
