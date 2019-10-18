@@ -4,7 +4,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/process.hpp>
 #include <borc/model/Source.hpp>
-#include <borc/model/Artifact.hpp>
+#include <borc/model/Module.hpp>
 #include <borc/model/Package.hpp>
 #include <borc/model/Command.hpp>
 #include <borc/model/CommandFactory.hpp>
@@ -59,8 +59,8 @@ namespace borc {
 			commandOptions.push_back(includeOption);
 		}
 
-		// compute include paths from the artifact
-		for (const boost::filesystem::path &includePath : source->getArtifact()->getIncludePaths()) {
+		// compute include paths from the module
+		for (const boost::filesystem::path &includePath : source->getModule()->getIncludePaths()) {
 			const std::string includeOption = switches.includePath + includePath.string();
 
 			commandOptions.push_back(includeOption);

@@ -1,6 +1,6 @@
 
 #include <borc/model/Package.hpp>
-#include <borc/model/Artifact.hpp>
+#include <borc/model/Module.hpp>
 
 namespace borc {
     Package::Package(const std::string &name) {
@@ -11,22 +11,22 @@ namespace borc {
     Package::~Package() {}
 
 
-    std::vector<Artifact*> Package::getArtifacts() const {
-        std::vector<Artifact*> result;
+    std::vector<Module*> Package::getModules() const {
+        std::vector<Module*> result;
 
-        for (auto &artifact : artifacts) {
-            result.push_back(artifact.get());
+        for (auto &module : modules) {
+            result.push_back(module.get());
         }
 
         return result;
     }
 
 
-    Artifact* Package::createArtifact() {
-        auto artifact = new Artifact(this);
+    Module* Package::createModule() {
+        auto module = new Module(this);
 
-        artifacts.emplace_back(artifact);
+        modules.emplace_back(module);
 
-        return artifact;
+        return module;
     }
 }

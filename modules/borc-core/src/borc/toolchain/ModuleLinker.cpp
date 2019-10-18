@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <borc/model/Package.hpp>
-#include <borc/model/Artifact.hpp>
+#include <borc/model/Module.hpp>
 #include <borc/model/Command.hpp>
 #include <borc/model/CommandFactory.hpp>
 
@@ -17,22 +17,22 @@ namespace borc {
 
     ModuleLinker::~ModuleLinker() {}
 
-	LinkOutput ModuleLinker::link(const boost::filesystem::path &outputPath, const Package *package, const Artifact *artifact, const std::vector<boost::filesystem::path> &objectFiles) const {
-		// TODO: Change artifact name based on the current toolchain
-        boost::filesystem::path moduleName = artifact->getName();
+	LinkOutput ModuleLinker::link(const boost::filesystem::path &outputPath, const Package *package, const Module *module, const std::vector<boost::filesystem::path> &objectFiles) const {
+		// TODO: Change module name based on the current toolchain
+        boost::filesystem::path moduleName = module->getName();
 
-		if (artifact->getType() == Artifact::Type{"library", "dynamic"}) {
+		if (module->getType() == Module::Type{"library", "dynamic"}) {
 			moduleName = "lib" + moduleName.string() + ".so";
 		}
 
-        const boost::filesystem::path moduleOutputPath = outputPath / artifact->getPath() / moduleName;
+        const boost::filesystem::path moduleOutputPath = outputPath / module->getPath() / moduleName;
 
-		const auto librariesOptions = this->computeLibrariesOptions(this->collectLibraries(package, artifact));
-		const auto libraryPathsOptions = this->computeLibraryPathsOptions(this->collectLibraryPaths(package, artifact, outputPath));
+		const auto librariesOptions = this->computeLibrariesOptions(this->collectLibraries(package, module));
+		const auto libraryPathsOptions = this->computeLibraryPathsOptions(this->collectLibraryPaths(package, module, outputPath));
 
 		std::vector<std::string> commandOptions;
 
-		if (artifact->getType() == Artifact::Type{"library", "dynamic"}) {
+		if (module->getType() == Module::Type{"library", "dynamic"}) {
 			commandOptions.push_back(switches.buildSharedLibrary);
 		}
 
@@ -71,10 +71,10 @@ namespace borc {
 		return options;
 	}
 
-	std::vector<std::string> ModuleLinker::collectLibraries(const Package *package, const Artifact *artifact) const {
+	std::vector<std::string> ModuleLinker::collectLibraries(const Package *package, const Module *module) const {
 		std::vector<std::string> libraries = configuration.importLibraries;
 
-		for (const Artifact *dependency : artifact->getDependencies()) {
+		for (const Module *dependency : module->getDependencies()) {
 			const std::string library = dependency->getName();
 			libraries.push_back(library);
 		}
@@ -82,10 +82,10 @@ namespace borc {
 		return libraries;
 	}
 
-	std::vector<std::string> ModuleLinker::collectLibraryPaths(const Package *package, const Artifact *artifact, const boost::filesystem::path &outputPath) const {
+	std::vector<std::string> ModuleLinker::collectLibraryPaths(const Package *package, const Module *module, const boost::filesystem::path &outputPath) const {
 		std::vector<std::string> paths = configuration.importLibraryPaths;
 
-		for (const Artifact *dependency : artifact->getDependencies()) {
+		for (const Module *dependency : module->getDependencies()) {
 			const std::string path = (outputPath / dependency->getPath()).string();
 			paths.push_back(path);
 		}

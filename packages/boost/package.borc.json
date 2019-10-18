@@ -4,15 +4,15 @@
     "modules": [
         {
             "name": "filesystem",
-            "artifact": "boost_filesystem"
+            "module": "boost_filesystem"
         }, 
         {
             "name": "system",
-            "artifact": "boost_system"
+            "module": "boost_system"
         },
         {
             "name": "program_options",
-            "artifact": "boost_program_options"
+            "module": "boost_program_options"
         }
     ]
 }

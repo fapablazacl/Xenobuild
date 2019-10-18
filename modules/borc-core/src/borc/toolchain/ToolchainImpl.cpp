@@ -4,10 +4,10 @@
 #include <algorithm>
 #include <borc/model/Source.hpp>
 #include <borc/toolchain/SourceChecker.hpp>
-#include <borc/toolchain/ArtifactChecker.hpp>
+#include <borc/toolchain/ModuleChecker.hpp>
 
 namespace borc {
-    ToolchainImpl::ToolchainImpl(const std::vector<std::pair<SourceChecker*, const Compiler*>> &compilers, const std::vector<std::pair<ArtifactChecker*, const Linker*>> &linkers) {
+    ToolchainImpl::ToolchainImpl(const std::vector<std::pair<SourceChecker*, const Compiler*>> &compilers, const std::vector<std::pair<ModuleChecker*, const Linker*>> &linkers) {
         this->compilers = compilers;
         this->linkers = linkers;
     }
@@ -24,9 +24,9 @@ namespace borc {
         return nullptr;
     }
     
-    const Linker* ToolchainImpl::selectLinker(const Artifact *artifact) const {
+    const Linker* ToolchainImpl::selectLinker(const Module *module) const {
         for (auto &pair : linkers) {
-            if (pair.first->check(artifact)) {
+            if (pair.first->check(module)) {
                 return pair.second;
             }
         }

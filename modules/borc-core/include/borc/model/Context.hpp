@@ -8,13 +8,13 @@
 
 namespace borc {
     class Package;
-    class Artifact;
+    class Module;
 
     /**
      * @brief The execution context of the build system. 
      * @todo Add support for package and module versioning
      * 
-     * Has all the supplemental data needed to build the current artifact, like the currently parsed and referenced software modules.
+     * Has all the supplemental data needed to build the current module, like the currently parsed and referenced software modules.
      */
     class Context {
     public:
@@ -26,14 +26,14 @@ namespace borc {
 
         void unregisterPackage(const Package *package);
 
-        const Artifact* findModule(const std::string &identifier) const;
+        const Module* findModule(const std::string &identifier) const;
 
     private:
-        std::string getModuleIdentifier(const Artifact *artifact) const;
+        std::string getModuleIdentifier(const Module *module) const;
 
     private:
         std::vector<const Package*> packages;
-        std::map<std::string, const Artifact*> moduleMap;
+        std::map<std::string, const Module*> moduleMap;
     };
 }
 

@@ -3,12 +3,12 @@
 #define __BORC_TOOLCHAIN_ARTIFACTCHECKER_HPP__
 
 namespace borc {
-    class Artifact;
-    class ArtifactChecker {
+    class Module;
+    class ModuleChecker {
 	public:
-		virtual ~ArtifactChecker();
+		virtual ~ModuleChecker();
 
-		virtual bool check(const Artifact *artifact) const = 0;
+		virtual bool check(const Module *module) const = 0;
 	};
 }
 

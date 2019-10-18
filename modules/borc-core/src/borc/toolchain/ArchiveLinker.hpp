@@ -19,7 +19,7 @@ namespace borc {
 
 		virtual ~ArchiveLinker();
 
-		virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Artifact *artifact, const std::vector<boost::filesystem::path> &objectFiles) const override;
+		virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Module *module, const std::vector<boost::filesystem::path> &objectFiles) const override;
 
     private:
         CommandFactory *commandFactory = nullptr;

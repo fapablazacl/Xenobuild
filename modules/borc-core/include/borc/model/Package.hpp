@@ -9,7 +9,7 @@
 #include "Language.hpp"
 
 namespace borc {
-    class Artifact;
+    class Module;
     class Package {
     public:
         Package(const std::string &name);
@@ -20,13 +20,13 @@ namespace borc {
             return name;
         }
 
-        std::vector<Artifact*> getArtifacts() const;
+        std::vector<Module*> getModules() const;
 
-        Artifact* createArtifact();
+        Module* createModule();
 
     private:
         std::string name;
-        std::vector<std::unique_ptr<Artifact>> artifacts;
+        std::vector<std::unique_ptr<Module>> modules;
     };
 }
 

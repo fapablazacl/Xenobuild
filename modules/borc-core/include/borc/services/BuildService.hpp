@@ -25,14 +25,14 @@ namespace borc {
 
     class Dag;
     class Package;
-    class Artifact;
+    class Module;
     class BuildService {
     public:
         virtual ~BuildService();
 
         virtual std::unique_ptr<Dag> createBuildDag(Package *package) = 0;
 
-        virtual DependencyGraph computeDependencyGraph(Artifact *artifact) const = 0;
+        virtual DependencyGraph computeDependencyGraph(Module *module) const = 0;
     };
 }
 

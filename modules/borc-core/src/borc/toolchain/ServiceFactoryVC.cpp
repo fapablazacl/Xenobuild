@@ -4,7 +4,7 @@
 #include <borc/model/Command.hpp>
 #include <borc/toolchain/SourceChecker.hpp>
 
-#include "ArtifactTypeChecker.hpp"
+#include "ModuleTypeChecker.hpp"
 #include "CompilerImpl.hpp"
 #include "ModuleLinker.hpp"
 
@@ -20,10 +20,10 @@ namespace borc {
         });
 
         linkers.push_back({
-            std::make_unique<ArtifactTypeChecker>(std::initializer_list<Artifact::Type>({
-                Artifact::Type{"application", "cli"},
-                Artifact::Type{"application", "gui"},
-                Artifact::Type{"library", "dynamic"}
+            std::make_unique<ModuleTypeChecker>(std::initializer_list<Module::Type>({
+                Module::Type{"application", "cli"},
+                Module::Type{"application", "gui"},
+                Module::Type{"library", "dynamic"}
             })),
             this->createLinker(linkerCommand, installationPath, windowsKitPath)
         });

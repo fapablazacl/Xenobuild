@@ -5,7 +5,7 @@
 #include <boost/filesystem.hpp>
 
 namespace borc {
-	Source::Source(const Artifact *artifact, const boost::filesystem::path &filePath, const boost::filesystem::path &relativeFilePath) {
+	Source::Source(const Module *module, const boost::filesystem::path &filePath, const boost::filesystem::path &relativeFilePath) {
 		if (! filePath.is_absolute()) {
 			throw std::runtime_error("Source::Source: 'filePath' must be an absolute path.");
 		}
@@ -14,7 +14,7 @@ namespace borc {
 			throw std::runtime_error("Source::Source: 'relativeFilePath' must be a relative path.");
 		}
 
-		this->artifact = artifact;
+		this->module = module;
 		this->filePath = filePath;
 		this->relativeFilePath = relativeFilePath;
 	}

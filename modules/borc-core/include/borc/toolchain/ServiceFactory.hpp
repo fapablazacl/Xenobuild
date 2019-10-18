@@ -9,7 +9,7 @@ namespace borc {
 	class Compiler;
 	class Linker;
 	class SourceChecker;
-	class ArtifactChecker;
+	class ModuleChecker;
 
 	class ServiceFactory {
 	public:
@@ -17,7 +17,7 @@ namespace borc {
 
 		virtual const std::vector<std::pair<SourceChecker*, const Compiler*>> getCompilers() const = 0;
 
-		virtual const std::vector<std::pair<ArtifactChecker*, const Linker*>> getLinkers() const = 0;
+		virtual const std::vector<std::pair<ModuleChecker*, const Linker*>> getLinkers() const = 0;
 	};
 } 
 

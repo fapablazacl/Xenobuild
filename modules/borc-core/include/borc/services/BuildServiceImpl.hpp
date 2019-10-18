@@ -10,7 +10,7 @@
 namespace borc {
     class Toolchain;
     class LoggingService;
-    class Artifact;
+    class Module;
     class BuildCache;
     class Command;
 
@@ -24,10 +24,10 @@ namespace borc {
 
         virtual std::unique_ptr<Dag> createBuildDag(Package *package) override;
 
-        virtual DependencyGraph computeDependencyGraph(Artifact *artifact) const override;
+        virtual DependencyGraph computeDependencyGraph(Module *module) const override;
 
     private:
-        CompileOptions computeCompileOptions(const Artifact *artifact) const;
+        CompileOptions computeCompileOptions(const Module *module) const;
 
         Command* createBuildCacheUpdateCommand(const boost::filesystem::path &filePath);
 

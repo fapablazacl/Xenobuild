@@ -12,7 +12,7 @@
 namespace borc {
     class Package;
     class Source;
-    class Artifact {
+    class Module {
     public:
         struct Type {
             std::string tag;
@@ -36,9 +36,9 @@ namespace borc {
         };
 
     public:
-        explicit Artifact(Package *package);
+        explicit Module(Package *package);
 
-        ~Artifact();
+        ~Module();
 
         std::string getName() const {
             return name;
@@ -64,7 +64,7 @@ namespace borc {
             return version;
         }
 
-        std::vector<const Artifact*> getDependencies() const {
+        std::vector<const Module*> getDependencies() const {
             return dependencies;
         }
 
@@ -97,7 +97,7 @@ namespace borc {
 
         std::vector<Source*> getSources() const;
 
-        void setDependencies(const std::vector<const Artifact*> &dependentArtifacts);
+        void setDependencies(const std::vector<const Module*> &dependentModules);
 
     private:
         Package *package = nullptr;
@@ -106,7 +106,7 @@ namespace borc {
         Type type;
         Version version;
         Language language;
-        std::vector<const Artifact*> dependencies;
+        std::vector<const Module*> dependencies;
 
         std::vector<boost::filesystem::path> sourcePaths;
         std::vector<boost::filesystem::path> includePaths;

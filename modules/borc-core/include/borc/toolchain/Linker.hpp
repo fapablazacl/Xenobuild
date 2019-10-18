@@ -9,10 +9,10 @@
 namespace borc {
 	class Command;
 	class Package;
-	class Artifact;
+	class Module;
 
 	struct LinkOutput {
-		boost::filesystem::path outputArtifactRelativePath;
+		boost::filesystem::path outputModuleRelativePath;
 		Command *command = nullptr;
 	};
 
@@ -20,7 +20,7 @@ namespace borc {
 	public:
 		virtual ~Linker();
 
-		virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Artifact *artifact, const std::vector<boost::filesystem::path> &objectFiles) const = 0;
+		virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Module *module, const std::vector<boost::filesystem::path> &objectFiles) const = 0;
 	};
 }
 

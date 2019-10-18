@@ -6,7 +6,7 @@ namespace borc {
 	class Compiler;
 	class Linker;
 	class Source;
-	class Artifact;
+	class Module;
 
 	class Toolchain {
 	public:
@@ -14,7 +14,7 @@ namespace borc {
 
 		virtual const Compiler* selectCompiler(const Source *source) const = 0;
 
-		virtual const Linker* selectLinker(const Artifact *artifact) const = 0;
+		virtual const Linker* selectLinker(const Module *module) const = 0;
 	};
 }
 

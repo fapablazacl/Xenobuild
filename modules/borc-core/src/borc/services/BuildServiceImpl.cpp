@@ -5,7 +5,7 @@
 #include <borc/utility/Dag.hpp>
 #include <borc/utility/DagNode.hpp>
 #include <borc/model/Package.hpp>
-#include <borc/model/Artifact.hpp>
+#include <borc/model/Module.hpp>
 #include <borc/model/Source.hpp>
 #include <borc/model/Command.hpp>
 #include <borc/toolchain/Toolchain.hpp>
@@ -48,8 +48,8 @@ namespace borc {
     std::unique_ptr<Dag> BuildServiceImpl::createBuildDag(Package *package) {
         auto dag = std::make_unique<Dag>();
 
-        for (Artifact *artifact : package->getArtifacts()) {
-            const Linker *linker = toolchain->selectLinker(artifact);
+        for (Module *module : package->getModules()) {
+            const Linker *linker = toolchain->selectLinker(module);
 
             if (!linker) {
                 if (logger) {
@@ -59,15 +59,15 @@ namespace borc {
                 continue;
             }
 
-            artifact->rescanSources(basePath);
+            module->rescanSources(basePath);
 
-            const CompileOptions compileOptions = this->computeCompileOptions(artifact);
+            const CompileOptions compileOptions = this->computeCompileOptions(module);
 
-            DagNode *artifactDagNode = dag->createNode();
+            DagNode *moduleDagNode = dag->createNode();
 
             std::vector<boost::filesystem::path> objectFiles;
 
-            for (Source *source : artifact->getSources()) {
+            for (Source *source : module->getSources()) {
                 const Compiler *compiler = toolchain->selectCompiler(source);
 
                 if (!compiler || !buildCache->needsRebuild(source->getFilePath())) {
@@ -81,32 +81,32 @@ namespace borc {
                 DagNode *buildCacheUpdate = dag->createNode(buildCacheUpdateCommand);
                 buildCacheUpdate->appendDependency(compileOutput.node);
 
-                artifactDagNode->appendDependency(buildCacheUpdate);
+                moduleDagNode->appendDependency(buildCacheUpdate);
             }
 
-            LinkOutput linkOutput = linker->link(outputPath, package, artifact, objectFiles);
+            LinkOutput linkOutput = linker->link(outputPath, package, module, objectFiles);
             
-            artifactDagNode->setCommand(linkOutput.command);
+            moduleDagNode->setCommand(linkOutput.command);
 
-            dag->getRoot()->appendDependency(artifactDagNode);
+            dag->getRoot()->appendDependency(moduleDagNode);
         }
 
         return dag;
     }
 
 
-    CompileOptions BuildServiceImpl::computeCompileOptions(const Artifact *artifact) const {
+    CompileOptions BuildServiceImpl::computeCompileOptions(const Module *module) const {
         CompileOptions options;
 
-        for (const boost::filesystem::path &includePath : artifact->getIncludePaths()) {
-            const auto resolvedIncludePath = basePath / artifact->getPath() / includePath;
+        for (const boost::filesystem::path &includePath : module->getIncludePaths()) {
+            const auto resolvedIncludePath = basePath / module->getPath() / includePath;
             options.includePaths.push_back(resolvedIncludePath.string());
         }
 
         // TODO: Compute this recursively
-        // compute include paths for dependent artifacts
-        for (const Artifact *dependentArtifact : artifact->getDependencies()) {
-            CompileOptions dependentOptions = this->computeCompileOptions(dependentArtifact);
+        // compute include paths for dependent modules
+        for (const Module *dependentModule : module->getDependencies()) {
+            CompileOptions dependentOptions = this->computeCompileOptions(dependentModule);
 
             options.mergeWith(dependentOptions);
         }
@@ -136,26 +136,26 @@ namespace borc {
         std::map<boost::filesystem::path, std::size_t> pathVertexMap;
     };
 
-    DependencyGraph BuildServiceImpl::computeDependencyGraph(Artifact *artifact) const {
-        if (!artifact) {
-            throw std::runtime_error("Supplied artifact object is a null pointer.");
+    DependencyGraph BuildServiceImpl::computeDependencyGraph(Module *module) const {
+        if (!module) {
+            throw std::runtime_error("Supplied module object is a null pointer.");
         }
 
-        const Linker *linker = toolchain->selectLinker(artifact);
+        const Linker *linker = toolchain->selectLinker(module);
         if (!linker) {
-            throw std::runtime_error("There is no linker for the supplied artifact.");
+            throw std::runtime_error("There is no linker for the supplied module.");
         }
 
         DependencyGraph graph;
         PathVertexMapper mapper {graph};
 
-        const auto artifactVD = mapper.getVD(artifact->getPath() / artifact->getName());
-        graph[artifactVD].label = graph[artifactVD].filePath.filename().string();
+        const auto moduleVD = mapper.getVD(module->getPath() / module->getName());
+        graph[moduleVD].label = graph[moduleVD].filePath.filename().string();
 
-        const CompileOptions compileOptions = this->computeCompileOptions(artifact);
-        artifact->rescanSources(basePath);
+        const CompileOptions compileOptions = this->computeCompileOptions(module);
+        module->rescanSources(basePath);
 
-        for (Source *source : artifact->getSources()) {
+        for (Source *source : module->getSources()) {
             const Compiler *compiler = toolchain->selectCompiler(source);
 
             if (!compiler) {
@@ -181,7 +181,7 @@ namespace borc {
                 boost::add_edge(objectFileVD, includeFileVD, graph);
             }
 
-            boost::add_edge(artifactVD, objectFileVD, graph);
+            boost::add_edge(moduleVD, objectFileVD, graph);
         }
 
         return graph;

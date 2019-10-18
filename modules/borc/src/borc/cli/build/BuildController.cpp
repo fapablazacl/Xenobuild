@@ -10,7 +10,7 @@
 #include <borc/entity/PackageEntity.hpp>
 #include <borc/entity/LanguageEntity.hpp>
 #include <borc/entity/ModuleEntity.hpp>
-#include <borc/model/Artifact.hpp>
+#include <borc/model/Module.hpp>
 #include <borc/model/Package.hpp>
 #include <borc/services/BuildServiceImpl.hpp>
 #include <borc/services/LoggingServiceImpl.hpp>
@@ -83,11 +83,11 @@ namespace borc {
         /*
         std::cout << "Computing source dependencies for package '" << package->getName() << "' ..." << std::endl;
 
-        if (package->getArtifacts().size() == 0) {
-            throw std::runtime_error("No artifacts detected for package '" + package->getName() + "'.");
+        if (package->getModules().size() == 0) {
+            throw std::runtime_error("No modules detected for package '" + package->getName() + "'.");
         }
 
-        auto dependencyGraph = buildService.computeDependencyGraph(package->getArtifacts()[0]);
+        auto dependencyGraph = buildService.computeDependencyGraph(package->getModules()[0]);
         
         std::fstream fs;
         fs.open("output.dot", std::ios_base::out);

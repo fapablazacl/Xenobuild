@@ -36,10 +36,10 @@ namespace borc {
         std::vector<ModuleEntity> moduleEntities;
 
         for (const std::string &modulePartialPath : packageEntity.modules) {
-            const boost::filesystem::path moduleFilePath = basePath / modulePartialPath / "artifact.borc.json";
+            const boost::filesystem::path moduleFilePath = basePath / modulePartialPath / "module.borc.json";
 
             if (! checkValidBorcFile(moduleFilePath)) {
-                throw std::runtime_error("There is no artifact build file on this folder '" + moduleFilePath.string() + "'");
+                throw std::runtime_error("There is no module build file on this folder '" + moduleFilePath.string() + "'");
             }
 
             auto moduleJsonContent = fileService.load(moduleFilePath.string());

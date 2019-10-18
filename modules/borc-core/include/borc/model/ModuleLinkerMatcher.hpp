@@ -5,7 +5,7 @@
 #include <boost/filesystem/path.hpp>
 
 namespace borc {
-    class ArtifactBuildRule {
+    class ModuleBuildRule {
     public:
 
     };

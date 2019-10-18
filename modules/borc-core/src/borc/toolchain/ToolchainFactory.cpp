@@ -5,12 +5,12 @@
 #include <borc/toolchain/Compiler.hpp>
 #include <borc/toolchain/Linker.hpp>
 #include <borc/toolchain/SourceChecker.hpp>
-#include <borc/toolchain/ArtifactChecker.hpp>
+#include <borc/toolchain/ModuleChecker.hpp>
 
 #include "ToolchainImpl.hpp"
 #include "ServiceFactoryGCC.hpp"
 #include "ServiceFactoryVC.hpp"
-#include "ArtifactTypeChecker.hpp"
+#include "ModuleTypeChecker.hpp"
 
 namespace borc {
     class ToolchainFactoryImpl : public ToolchainFactory {

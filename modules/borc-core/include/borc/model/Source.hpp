@@ -7,16 +7,16 @@
 #include <boost/filesystem/path.hpp>
 
 namespace borc {
-	class Artifact;
+	class Module;
 
 	class Source {
 	public:
-		explicit Source(const Artifact *artifact, const boost::filesystem::path &filePath, const boost::filesystem::path &relativeFilePath);
+		explicit Source(const Module *module, const boost::filesystem::path &filePath, const boost::filesystem::path &relativeFilePath);
 
 		~Source();
 
-		const Artifact* getArtifact() const {
-			return artifact;
+		const Module* getModule() const {
+			return module;
 		}
 
 		boost::filesystem::path getFilePath() const {
@@ -32,7 +32,7 @@ namespace borc {
 	private:
 		boost::filesystem::path filePath;
 		boost::filesystem::path relativeFilePath;
-		const Artifact *artifact = nullptr;
+		const Module *module = nullptr;
 	};
 }
 

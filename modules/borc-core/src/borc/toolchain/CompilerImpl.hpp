@@ -11,7 +11,7 @@
 namespace borc {
 	class DagNode;
 	class Package;
-	class Artifact;
+	class Module;
 	class Command;
 	class CommandFactory;
 

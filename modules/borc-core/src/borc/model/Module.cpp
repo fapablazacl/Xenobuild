@@ -1,5 +1,5 @@
 
-#include <borc/model/Artifact.hpp>
+#include <borc/model/Module.hpp>
 
 #include <boost/filesystem.hpp>
 #include <borc/model/Package.hpp>
@@ -7,45 +7,45 @@
 
 
 namespace borc {
-    Artifact::Artifact(Package *package) {
+    Module::Module(Package *package) {
         this->package = package;
     }
 
-    Artifact::~Artifact() {}
+    Module::~Module() {}
 
-    void Artifact::setName(const std::string &name) {
+    void Module::setName(const std::string &name) {
         this->name = name;
     }
 
-    void Artifact::setPath(const boost::filesystem::path &path) {
+    void Module::setPath(const boost::filesystem::path &path) {
         this->path = path;
     }
 
-    void Artifact::setType(const Artifact::Type type) {
+    void Module::setType(const Module::Type type) {
         this->type = type;
     }
 
-    void Artifact::setVersion(const Version &version) {
+    void Module::setVersion(const Version &version) {
         this->version = version;
     }
 
-    void Artifact::setSourcePaths(const std::vector<boost::filesystem::path> &sourcePaths) {
+    void Module::setSourcePaths(const std::vector<boost::filesystem::path> &sourcePaths) {
         this->sourcePaths = sourcePaths;
     }
 
-    void Artifact::setIncludePaths(const std::vector<boost::filesystem::path> &includePaths) {
+    void Module::setIncludePaths(const std::vector<boost::filesystem::path> &includePaths) {
         this->includePaths = includePaths;
     }
 
-    void Artifact::setDependencies(const std::vector<const Artifact*> &dependentArtifacts) {
-        dependencies = dependentArtifacts; 
+    void Module::setDependencies(const std::vector<const Module*> &dependentModules) {
+        dependencies = dependentModules; 
     }
 
-    void Artifact::setLanguage(const Language &lang) {
+    void Module::setLanguage(const Language &lang) {
         language = lang;
     }
 
-    void Artifact::rescanSources(const boost::filesystem::path &baseFolder) {
+    void Module::rescanSources(const boost::filesystem::path &baseFolder) {
         sources.clear();
 
         for (const boost::filesystem::path &sourcePath : sourcePaths) {
@@ -77,7 +77,7 @@ namespace borc {
         }
     }
 
-    std::vector<Source*> Artifact::getSources() const {
+    std::vector<Source*> Module::getSources() const {
         std::vector<Source*> result;
 
         for (auto &source : sources) {
