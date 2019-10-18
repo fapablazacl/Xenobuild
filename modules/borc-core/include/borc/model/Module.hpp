@@ -1,6 +1,6 @@
 
-#ifndef __BORC_MODEL_ARTIFACT_HPP__
-#define __BORC_MODEL_ARTIFACT_HPP__
+#ifndef __BORC_MODEL_MODULE_HPP__
+#define __BORC_MODEL_MODULE_HPP__
 
 #include <string>
 #include <vector>
