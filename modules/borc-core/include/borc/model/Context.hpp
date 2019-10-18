@@ -29,6 +29,9 @@ namespace borc {
         const Artifact* findModule(const std::string &identifier) const;
 
     private:
+        std::string getModuleIdentifier(const Artifact *artifact) const;
+
+    private:
         std::vector<const Package*> packages;
         std::map<std::string, const Artifact*> moduleMap;
     };
