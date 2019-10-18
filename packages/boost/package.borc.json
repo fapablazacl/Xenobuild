@@ -1,0 +1,18 @@
+{
+    "name": "boost",
+    "description": "The Boost C++ Libraries",
+    "modules": [
+        {
+            "name": "filesystem",
+            "artifact": "boost_filesystem"
+        }, 
+        {
+            "name": "system",
+            "artifact": "boost_system"
+        },
+        {
+            "name": "program_options",
+            "artifact": "boost_program_options"
+        }
+    ]
+}
