@@ -16,7 +16,7 @@ namespace borc {
     JSONEntityLoader::~JSONEntityLoader() {}
 
     PackageEntity JSONEntityLoader::loadPackageEntity() const {
-        const auto packageFilePath = basePath / "borc-package.json";
+        const auto packageFilePath = basePath / "package.borc.json";
 
         if (! checkValidBorcFile(packageFilePath)) {
             throw std::runtime_error("There is no package build file on the folder '" + packageFilePath.string() + "'");
@@ -36,7 +36,7 @@ namespace borc {
         std::vector<ModuleEntity> moduleEntities;
 
         for (const std::string &modulePartialPath : packageEntity.modules) {
-            const boost::filesystem::path moduleFilePath = basePath / modulePartialPath / "borc-artifact.json";
+            const boost::filesystem::path moduleFilePath = basePath / modulePartialPath / "artifact.borc.json";
 
             if (! checkValidBorcFile(moduleFilePath)) {
                 throw std::runtime_error("There is no artifact build file on this folder '" + moduleFilePath.string() + "'");

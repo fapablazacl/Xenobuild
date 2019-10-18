@@ -20,7 +20,7 @@ add_library(borc-core
     "include/borc/model/SourceCompilerMatcher.hpp"
     "include/borc/model/BuildPipeline.hpp"
     
-    # "include/borc/model/Context.hpp"
+    "include/borc/model/Context.hpp"
     "include/borc/model/Command.hpp"
     "include/borc/model/CommandFactory.hpp"
     "include/borc/entity/LanguageEntity.hpp"
@@ -61,7 +61,7 @@ add_library(borc-core
     "src/borc/model/Source.cpp"
     "src/borc/model/Artifact.cpp"
     "src/borc/model/Package.cpp"
-    # "src/borc/model/Context.cpp"
+    "src/borc/model/Context.cpp"
     "src/borc/model/Command.cpp"
     "src/borc/model/CommandFactory.cpp"
     "src/borc/model/command/SystemCommand.hpp"

@@ -41,7 +41,7 @@ namespace borc {
         }
 
         const auto packagePath = boost::filesystem::current_path();
-        if (! boost::filesystem::exists(packagePath / "borc-package.json")) {
+        if (! boost::filesystem::exists(packagePath / "package.borc.json")) {
             throw std::runtime_error("There is no package file in the folder '" + packagePath.string() + "'");
         }
 

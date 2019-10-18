@@ -10,7 +10,7 @@ namespace borc {
     EntityLoaderFactory::~EntityLoaderFactory() {}
 
     std::unique_ptr<EntityLoader> EntityLoaderFactory::createLoader(const boost::filesystem::path &packagePath, FileService &fileService) {
-        if (boost::filesystem::exists(packagePath / "borc-package.json")) {
+        if (boost::filesystem::exists(packagePath / "package.borc.json")) {
             return std::make_unique<JSONEntityLoader>(packagePath, fileService);
         }
 
