@@ -16,6 +16,8 @@ namespace borc {
 
         explicit ModuleSourceEntity(const std::string &path_) : path(path_) {}
 
+        explicit ModuleSourceEntity(const std::string &path_, const bool public__) : path(path_), public_(public__) {}
+
         typedef std::string DefaultType;
     };
 

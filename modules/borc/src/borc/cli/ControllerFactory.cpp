@@ -27,6 +27,6 @@ namespace borc {
             return makerIt->second->make();
         }
         
-        throw std::runtime_error("Unknown subcommand " + name + "");
+        throw std::runtime_error("Unknown subcommand '" + name + "'");
     }
 }
