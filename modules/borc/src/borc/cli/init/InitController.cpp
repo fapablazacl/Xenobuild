@@ -17,7 +17,7 @@ namespace borc {
             return;
         }
 
-        const auto packagePath = options.path;
+        const auto packagePath = options.path / options.packageName;
 
         if (boost::filesystem::exists(packagePath / "package.borc.json")) {
             throw std::runtime_error("A package already exists in the folder '" + packagePath.string() + "'");

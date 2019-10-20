@@ -2,7 +2,7 @@
 #include "ControllerFactory.hpp"
 
 #include <stdexcept>
-
+#include <borc/cli/init/InitController.hpp>
 #include <borc/cli/build/BuildController.hpp>
 #include <borc/cli/configure/ConfigureController.hpp>
 
@@ -18,6 +18,7 @@ namespace borc {
     ControllerFactory::ControllerFactory() {
         makers["build"] = std::make_unique<ControllerMakerImpl<BuildController>>();
         makers["configure"] = std::make_unique<ControllerMakerImpl<ConfigureController>>();
+        makers["init"] = std::make_unique<ControllerMakerImpl<InitController>>();
     }
 
     ControllerFactory::~ControllerFactory() {}

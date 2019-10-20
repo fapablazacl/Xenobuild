@@ -16,9 +16,6 @@ namespace borc {
         virtual ~InitController();
 
         virtual void perform(const InitControllerOptions &options) override;
-
-    private:
-        Version detectToolchainVersion() const;
     };
 }
 
