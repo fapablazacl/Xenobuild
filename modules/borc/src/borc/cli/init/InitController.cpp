@@ -7,6 +7,7 @@
 #include <borc/entity/PackageEntity.hpp>
 #include <borc/entity/ModuleEntity.hpp>
 #include <borc/services/FileServiceImpl.hpp>
+#include <borc/parsing/JSONSerializer.hpp>
 
 namespace borc {
     InitController::~InitController() {}
@@ -41,6 +42,12 @@ namespace borc {
             "modules/" + moduleEntity.name
         };
 
+        // save package to file
+        nlohmann::json packageJson;
+        serialize(packageJson, packageEntity);
+        std::ofstream packageFileStream((packagePath / "package.borc.json").string());
+        packageFileStream << std::setw(4) << packageJson << std::endl;
+
         // create the package structure
         boost::filesystem::create_directories(packagePath);
         for (const auto &moduleEntity : moduleEntities) {
@@ -48,8 +55,11 @@ namespace borc {
 
             boost::filesystem::create_directories(modulePath);
 
-            // TODO: Save the JSON files!
-            // save the file
+            // save module to file
+            nlohmann::json moduleJson;
+            serialize(moduleJson, moduleEntity);
+            std::ofstream moduleFileStream((modulePath / "module.borc.json").string());
+            moduleFileStream << std::setw(4) << moduleJson << std::endl;
 
             for (const auto sourcePath : moduleEntity.sources) {
                 boost::filesystem::create_directories(modulePath / sourcePath.path);
