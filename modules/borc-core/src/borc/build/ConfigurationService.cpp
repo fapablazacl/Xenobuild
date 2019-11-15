@@ -31,13 +31,18 @@ namespace borc {
                 it->buildTypes.insert(buildType);
             }
         }
-
-        this->saveConfigurations();
     }
+
 
     ConfigurationData ConfigurationService::getData() const {
         return configurationData;
     }
+
+
+    void ConfigurationService::saveAllBuildConfigurations() {
+        this->saveConfigurations();
+    }
+    
 
     void ConfigurationService::loadConfigurations() {
         const auto configFilePath = outputPath / "configuration.json";

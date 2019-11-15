@@ -56,6 +56,11 @@ namespace borc {
          * This call will mutate the current root build cache to add this new configuration.
          */
         void addBuildConfiguration(const BuildConfiguration &config);
+
+        /**
+         * @brief Saves all configuration information in disk
+         */
+        void saveAllBuildConfigurations();
     
     private:
         //! loads the build configuration from the current output path

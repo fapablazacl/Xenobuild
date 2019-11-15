@@ -52,7 +52,13 @@ namespace borc {
             return;
         }
 
-        std::cout << "Configuring build: type=" << options.buildType.get() << ", toolchain=" << options.toolchain.get() << std::endl;
+        /*
+        if (options.buildType) {
+            std::cout << "Configuring build: type=" << options.buildType.get() << ", toolchain=" << options.toolchain.get() << std::endl;
+        } else {
+            std::cout << "Configuring build: type=all , toolchain=" << options.toolchain.get() << std::endl;
+        }
+        */
 
         auto factory = ToolchainFactory::create();
         auto toolchain = factory->createToolchain(options.toolchain.get());
@@ -71,6 +77,8 @@ namespace borc {
         // construct the package with the current toolchain, in order grab dependency information
         auto packageService = std::make_unique<PackageService>();
         auto package = packageService->createPackage(basePackagePath);
+
+        configurationService.saveAllBuildConfigurations();
     }
 
 
