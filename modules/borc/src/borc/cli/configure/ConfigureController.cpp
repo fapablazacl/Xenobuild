@@ -17,7 +17,7 @@ namespace borc {
      * @brief Determine all the build types from the parameter, specially when "All is used".
      * @todo: The values generated should come from the currently selected toolchain
      */
-    static std::set<BuildType> generateBuildTypes(const Toolchain *, const std::string &buildTypeValue) {
+    std::set<BuildType> ConfigureController::generateBuildTypes(const Toolchain *, const std::string &buildTypeValue) const {
         if (buildTypeValue == "all") {
             return { BuildType{"Debug"},BuildType{"Release"} };
         } else {
@@ -29,7 +29,7 @@ namespace borc {
      * @brief Detect the current (native) architecture. 
      * @todo This information can be computed from a preprocessor directive.
      */
-    static std::string detectArchitecture() {
+    std::string ConfigureController::detectArchitecture() const {
         return "x86_64";
     }
 
