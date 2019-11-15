@@ -1,7 +1,6 @@
 
 #include <borc/common/PackageFactory.hpp>
 
-#include <iostream>
 #include <map>
 #include <borc/model/Package.hpp>
 #include <borc/model/Module.hpp>
@@ -52,10 +51,8 @@ namespace borc {
 
             for (const ModuleSourceEntity &moduleSourceEntity : moduleEntity.sources) {
                 if (moduleSourceEntity.public_) {
-                    std::cout << "IncludePath: " << moduleSourceEntity.path << std::endl;
                     includePaths.push_back(moduleSourceEntity.path);
                 } else {
-                    std::cout << "SourcePath: " << moduleSourceEntity.path << std::endl;
                     sourcePaths.push_back(moduleSourceEntity.path);
                 }
             }
@@ -86,7 +83,12 @@ namespace borc {
                 }
 
                 if (! found) {
-                    std::cout << "WARNING: dependency " << dependency << " for module " << module->getName() << " couldn't be found" << std::endl;
+                    std::string msg;
+
+                    msg += "Required dependency '" + dependency + "' ";
+                    msg += "for module '" + module->getName() + "' couldn't be found.";
+
+                    throw std::runtime_error(msg);
                 }
             }
         }
