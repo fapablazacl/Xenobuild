@@ -12,26 +12,7 @@
 
 namespace borc {
     ConfigureController::~ConfigureController() {}
-
-    /**
-     * @brief Determine all the build types from the parameter, specially when "All is used".
-     * @todo: The values generated should come from the currently selected toolchain
-     */
-    std::set<BuildType> ConfigureController::generateBuildTypes(const Toolchain *, const std::string &buildTypeValue) const {
-        if (buildTypeValue == "all") {
-            return { BuildType{"Debug"},BuildType{"Release"} };
-        } else {
-            return { BuildType{buildTypeValue} };
-        }
-    }
-
-    /**
-     * @brief Detect the current (native) architecture. 
-     * @todo This information can be computed from a preprocessor directive.
-     */
-    std::string ConfigureController::detectArchitecture() const {
-        return "x86_64";
-    }
+    
 
     void ConfigureController::perform(const ConfigureControllerOptions &options) {
         if (options.showHelp) {
@@ -88,6 +69,7 @@ namespace borc {
 
     }
 
+
     Version ConfigureController::detectToolchainVersion() const {
         // 1. Compile C++ version detector
         if (std::system("gcc other/CXXCompilerVersionDetector.cpp -O0 -oother/CXXCompilerVersionDetector") != 0) {
@@ -127,5 +109,27 @@ namespace borc {
 
         // 3. Parse the output and return the result.
         return Version::parse(compilerDetectorOutput[1]);
+    }
+
+
+    /**
+     * @brief Determine all the build types from the parameter, specially when "All is used".
+     * @todo: The values generated should come from the currently selected toolchain
+     */
+    std::set<BuildType> ConfigureController::generateBuildTypes(const Toolchain *, const std::string &buildTypeValue) const {
+        if (buildTypeValue == "all") {
+            return { BuildType{"Debug"},BuildType{"Release"} };
+        } else {
+            return { BuildType{buildTypeValue} };
+        }
+    }
+
+
+    /**
+     * @brief Detect the current (native) architecture. 
+     * @todo This information can be computed from a preprocessor directive.
+     */
+    std::string ConfigureController::detectArchitecture() const {
+        return "x86_64";
     }
 }
