@@ -27,6 +27,9 @@
 #include <borc/common/EntityLoaderFactory.hpp>
 #include <borc/common/PackageFactory.hpp>
 
+
+#include <borc/services/PackageService.hpp>
+
 namespace borc {
     BuildController::~BuildController() {}
 
@@ -36,22 +39,18 @@ namespace borc {
             return;
         }
 
-        // perform the configure operation
-        FileServiceImpl service;
-        const boost::filesystem::path baseFolderPath = boost::filesystem::current_path();
+        const boost::filesystem::path baseFolderPath = options.sourcePath 
+            ? options.sourcePath.get()
+            : boost::filesystem::current_path();
 
-        EntityLoaderFactory entityLoaderFactory;
+        const boost::filesystem::path outputPath = options.outputPath
+            ? options.outputPath.get()
+            : baseFolderPath / ".borc";
 
-        const auto entityLoader = entityLoaderFactory.createLoader(baseFolderPath, service);
-        const PackageEntity packageEntity = entityLoader->loadPackageEntity();
-        const std::vector<ModuleEntity> moduleEntities = entityLoader->loadModuleEntities(packageEntity);
-        
+        auto packageService = std::make_unique<PackageService>();
+        auto package = packageService->createPackage(baseFolderPath);
+
         LoggingServiceImpl loggingService {"BuildServiceImpl"};
-
-        PackageFactory packageFactory;
-        std::unique_ptr<Package> package = packageFactory.createPackage(packageEntity, moduleEntities);
-
-        const boost::filesystem::path outputPath = baseFolderPath / ".borc";
 
         ConfigurationService configurationService {outputPath};
         ConfigurationData configurationData = configurationService.getData();
