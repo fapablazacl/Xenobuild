@@ -1,6 +1,7 @@
 
 #include "InitController.hpp"
 #include <iostream>
+#include <iomanip>
 
 #include <boost/filesystem.hpp>
 #include <borc/model/Version.hpp>
