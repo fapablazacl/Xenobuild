@@ -31,6 +31,8 @@ namespace borc {
         
         if (vm.count("build-type")) {
             options.buildType = vm["build-type"].as<std::string>();
+        } else {
+            options.buildType = "all";
         }
 
         if (vm.count("toolchain")) {

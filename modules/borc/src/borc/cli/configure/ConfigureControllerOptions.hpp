@@ -12,7 +12,7 @@ namespace borc {
         bool showHelp = false;
         std::string helpMessage;
 
-        boost::optional<std::string> buildType;
+        std::string buildType;
         boost::optional<std::string> toolchain;
 
         //! additional search path for package dependencies        

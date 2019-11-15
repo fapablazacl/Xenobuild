@@ -35,14 +35,14 @@ namespace borc {
         auto configurationService = ConfigurationService{outputPath};
         auto configurationData = configurationService.getData();
 
-        if (configurationData.buildConfigurations.size() == 0 && !options.buildType && !options.toolchain) {
+        if (configurationData.buildConfigurations.size() == 0 && !options.toolchain) {
             throw std::runtime_error(
                 "There is no configurations associated. Must select a build type and a toolchain.\n"
                 "See 'borc configure --help' for details."
             );
         }
 
-        if (!options.buildType && !options.toolchain) {
+        if (!options.toolchain) {
             std::cout << "Configured builds for current package:" << std::endl;
 
             for (const auto &config : configurationData.buildConfigurations) {
@@ -52,13 +52,7 @@ namespace borc {
             return;
         }
 
-        /*
-        if (options.buildType) {
-            std::cout << "Configuring build: type=" << options.buildType.get() << ", toolchain=" << options.toolchain.get() << std::endl;
-        } else {
-            std::cout << "Configuring build: type=all , toolchain=" << options.toolchain.get() << std::endl;
-        }
-        */
+        std::cout << "Configuring build: type=" << options.buildType << ", toolchain=" << options.toolchain.get() << std::endl;
 
         auto factory = ToolchainFactory::create();
         auto toolchain = factory->createToolchain(options.toolchain.get());
@@ -67,7 +61,7 @@ namespace borc {
         auto config = BuildConfiguration{};
         config.toolchainId = options.toolchain.get();
         config.arch = this->detectArchitecture();
-        config.buildTypes = this->generateBuildTypes(toolchain.get(), options.buildType.get());
+        config.buildTypes = this->generateBuildTypes(toolchain.get(), options.buildType);
         config.version = this->detectToolchainVersion();
 
         std::cout << "Detected compiler version: " << std::string(config.version) << std::endl;
