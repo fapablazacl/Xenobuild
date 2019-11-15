@@ -3,13 +3,8 @@
 
 #include <iostream>
 #include <sstream>
-
 #include <boost/filesystem.hpp>
 #include <boost/graph/graphviz.hpp>
-#include <borc/services/FileServiceImpl.hpp>
-#include <borc/entity/PackageEntity.hpp>
-#include <borc/entity/LanguageEntity.hpp>
-#include <borc/entity/ModuleEntity.hpp>
 #include <borc/model/Module.hpp>
 #include <borc/model/Package.hpp>
 #include <borc/services/BuildServiceImpl.hpp>
@@ -21,14 +16,9 @@
 #include <borc/utility/DagNode.hpp>
 #include <borc/utility/Dag.hpp>
 #include <borc/utility/DagVisitor.hpp>
+#include <borc/services/PackageService.hpp>
 
 #include "BuildControllerOptions.hpp"
-#include <borc/common/EntityLoader.hpp>
-#include <borc/common/EntityLoaderFactory.hpp>
-#include <borc/common/PackageFactory.hpp>
-
-
-#include <borc/services/PackageService.hpp>
 
 namespace borc {
     BuildController::~BuildController() {}
