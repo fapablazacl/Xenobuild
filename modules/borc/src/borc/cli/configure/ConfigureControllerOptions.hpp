@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <boost/optional.hpp>
+#include <boost/filesystem/path.hpp>
 
 namespace borc {
     struct ConfigureControllerOptions {
@@ -16,6 +17,9 @@ namespace borc {
 
         //! additional search path for package dependencies        
         std::vector<std::string> searchPaths;
+
+        boost::optional<boost::filesystem::path> sourcePath;
+        boost::optional<boost::filesystem::path> outputPath;
 
         static ConfigureControllerOptions parse(int argc, char **argv);
     };

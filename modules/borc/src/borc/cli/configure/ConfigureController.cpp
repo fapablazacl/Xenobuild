@@ -9,10 +9,13 @@
 #include <borc/toolchain/ToolchainFactory.hpp>
 #include <borc/build/BuildCache.hpp>
 #include <borc/build/ConfigurationService.hpp>
+#include <borc/model/Package.hpp>
+#include <borc/model/Module.hpp>
+#include <borc/services/PackageService.hpp>
 
 namespace borc {
     ConfigureController::~ConfigureController() {}
-    
+
 
     void ConfigureController::perform(const ConfigureControllerOptions &options) {
         if (options.showHelp) {
@@ -21,12 +24,13 @@ namespace borc {
             return;
         }
 
-        const auto packagePath = boost::filesystem::current_path();
-        if (! boost::filesystem::exists(packagePath / "package.borc.json")) {
-            throw std::runtime_error("There is no package file in the folder '" + packagePath.string() + "'");
-        }
+        const boost::filesystem::path basePackagePath = options.sourcePath 
+            ? options.sourcePath.get()
+            : boost::filesystem::current_path();
 
-        const auto outputPath = packagePath / ".borc";
+        const boost::filesystem::path outputPath = options.outputPath
+            ? options.outputPath.get()
+            : basePackagePath / ".borc";
 
         auto configurationService = ConfigurationService{outputPath};
         auto configurationData = configurationService.getData();
@@ -56,17 +60,17 @@ namespace borc {
         // setup the configuration requested by the user
         auto config = BuildConfiguration{};
         config.toolchainId = options.toolchain.get();
-        config.arch = detectArchitecture();
-        config.buildTypes = generateBuildTypes(toolchain.get(), options.buildType.get());
-        config.version = detectToolchainVersion();
+        config.arch = this->detectArchitecture();
+        config.buildTypes = this->generateBuildTypes(toolchain.get(), options.buildType.get());
+        config.version = this->detectToolchainVersion();
 
         std::cout << "Detected compiler version: " << std::string(config.version) << std::endl;
 
         configurationService.addBuildConfiguration(config);
 
-        // construct the package with the current toolchain, in order grab dependencies
-        
-
+        // construct the package with the current toolchain, in order grab dependency information
+        auto packageService = std::make_unique<PackageService>();
+        auto package = packageService->createPackage(basePackagePath);
     }
 
 
