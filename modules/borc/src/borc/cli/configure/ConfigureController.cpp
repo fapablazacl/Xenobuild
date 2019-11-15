@@ -82,6 +82,10 @@ namespace borc {
         std::cout << "Detected compiler version: " << std::string(config.version) << std::endl;
 
         configurationService.addBuildConfiguration(config);
+
+        // construct the package with the current toolchain, in order grab dependencies
+        
+
     }
 
     Version ConfigureController::detectToolchainVersion() const {

@@ -28,6 +28,7 @@ add_library(borc-core
     "include/borc/entity/PackageEntity.hpp"
     "include/borc/parsing/JSONDeserializer.hpp"
     "include/borc/parsing/JSONSerializer.hpp"
+    "include/borc/services/PackageService.hpp"
     "include/borc/services/FileService.hpp"
     "include/borc/services/FileServiceImpl.hpp"
     "include/borc/services/LoggingService.hpp"
@@ -68,6 +69,8 @@ add_library(borc-core
     "src/borc/model/command/SystemCommand.cpp"
     "src/borc/model/command/FolderCommand.hpp"
     "src/borc/model/command/FolderCommand.cpp"
+
+    "src/borc/services/PackageService.cpp"
     "src/borc/services/BuildService.cpp"
     "src/borc/services/BuildServiceImpl.cpp"
     "src/borc/services/FileService.cpp"
