@@ -1,5 +1,5 @@
 
-include_directories("../borc-core/include")
+include_directories("../borc-core/src")
 
 find_package(Boost
     REQUIRED
@@ -10,52 +10,35 @@ link_directories(${Boost_LIBRARY_DIRS})
 
 find_package(nlohmann_json REQUIRED)
 
-add_library(borc-core 
-    "include/borc/core/DependencyGraph.hpp"
-    "include/borc/model/Version.hpp"
-    "include/borc/model/Source.hpp"
-    "include/borc/model/Module.hpp"
-    "include/borc/model/Package.hpp"
-    "include/borc/model/ModuleLinkerMatcher.hpp"
-    "include/borc/model/SourceCompilerMatcher.hpp"
-    "include/borc/model/BuildPipeline.hpp"
-    
-    "include/borc/model/Context.hpp"
-    "include/borc/model/Command.hpp"
-    "include/borc/model/CommandFactory.hpp"
-    "include/borc/entity/LanguageEntity.hpp"
-    "include/borc/entity/ModuleEntity.hpp"
-    "include/borc/entity/PackageEntity.hpp"
-    "include/borc/parsing/JSONDeserializer.hpp"
-    "include/borc/parsing/JSONSerializer.hpp"
-    "include/borc/services/PackageService.hpp"
-    "include/borc/services/FileService.hpp"
-    "include/borc/services/FileServiceImpl.hpp"
-    "include/borc/services/LoggingService.hpp"
-    "include/borc/services/LoggingServiceImpl.hpp"
-    "include/borc/services/BuildService.hpp"
-    "include/borc/services/BuildServiceImpl.hpp"
-    "include/borc/utility/Dag.hpp"
-    "include/borc/utility/DagNode.hpp"
-    "include/borc/utility/DagVisitor.hpp"
-    "include/borc/toolchain/CompileOptions.hpp"
-    "include/borc/toolchain/Compiler.hpp"
-    "include/borc/toolchain/CompilerVersionDetector.hpp"
-    "include/borc/toolchain/Linker.hpp"
-    "include/borc/toolchain/Toolchain.hpp"
-    "include/borc/toolchain/ToolchainFactory.hpp"
-    "include/borc/toolchain/ServiceFactory.hpp"
-    "include/borc/toolchain/ModuleChecker.hpp"
-    "include/borc/toolchain/SourceChecker.hpp"
-    "include/borc/build/ConfigurationService.hpp"
-    "include/borc/build/BuildCache.hpp"
-    "include/borc/common/EntityLoader.hpp"
-    "include/borc/common/JSONEntityLoader.hpp"
-    "include/borc/common/PackageFactory.hpp"
-    "include/borc/common/BuildConfiguration.hpp"
-    "include/borc/common/EntityLoaderFactory.hpp"
+set (src_borc_core
+	"src/borc/core/DependencyGraph.hpp"
+)
 
-    "src/borc/model/ModuleLinkerMatcher.cpp"
+set (src_borc_common
+    "src/borc/common/EntityLoader.hpp"
+    "src/borc/common/JSONEntityLoader.hpp"
+    "src/borc/common/PackageFactory.hpp"
+    "src/borc/common/BuildConfiguration.hpp"
+    "src/borc/common/EntityLoaderFactory.hpp"
+    "src/borc/common/EntityLoader.cpp"
+    "src/borc/common/JSONEntityLoader.cpp"
+    "src/borc/common/PackageFactory.cpp"
+    "src/borc/common/EntityLoaderFactory.cpp"
+    "src/borc/common/BuildConfiguration.cpp"
+)
+
+set (src_borc_model
+	"src/borc/model/Version.hpp"
+    "src/borc/model/Source.hpp"
+    "src/borc/model/Module.hpp"
+    "src/borc/model/Package.hpp"
+    "src/borc/model/ModuleLinkerMatcher.hpp"
+    "src/borc/model/SourceCompilerMatcher.hpp"
+    "src/borc/model/BuildPipeline.hpp"
+    "src/borc/model/Context.hpp"
+    "src/borc/model/Command.hpp"
+    "src/borc/model/CommandFactory.hpp"
+	"src/borc/model/ModuleLinkerMatcher.cpp"
     "src/borc/model/SourceCompilerMatcher.cpp"
     "src/borc/model/BuildPipeline.cpp"
     "src/borc/model/Version.cpp"
@@ -65,11 +48,34 @@ add_library(borc-core
     "src/borc/model/Context.cpp"
     "src/borc/model/Command.cpp"
     "src/borc/model/CommandFactory.cpp"
+)
+
+set (src_borc_model_command
     "src/borc/model/command/SystemCommand.hpp"
     "src/borc/model/command/SystemCommand.cpp"
     "src/borc/model/command/FolderCommand.hpp"
     "src/borc/model/command/FolderCommand.cpp"
+)
 
+set (src_borc_entity
+    "src/borc/entity/LanguageEntity.hpp"
+    "src/borc/entity/ModuleEntity.hpp"
+    "src/borc/entity/PackageEntity.hpp"
+)
+
+set (src_borc_parsing
+    "src/borc/parsing/JSONDeserializer.hpp"
+    "src/borc/parsing/JSONSerializer.hpp"
+)
+
+set (src_borc_services
+    "src/borc/services/PackageService.hpp"
+    "src/borc/services/FileService.hpp"
+    "src/borc/services/FileServiceImpl.hpp"
+    "src/borc/services/LoggingService.hpp"
+    "src/borc/services/LoggingServiceImpl.hpp"
+    "src/borc/services/BuildService.hpp"
+    "src/borc/services/BuildServiceImpl.hpp"
     "src/borc/services/PackageService.cpp"
     "src/borc/services/BuildService.cpp"
     "src/borc/services/BuildServiceImpl.cpp"
@@ -77,10 +83,28 @@ add_library(borc-core
     "src/borc/services/FileServiceImpl.cpp"
     "src/borc/services/LoggingService.cpp"
     "src/borc/services/LoggingServiceImpl.cpp"
+)
+
+set (src_borc_utility
+    "src/borc/utility/Dag.hpp"
+    "src/borc/utility/DagNode.hpp"
+    "src/borc/utility/DagVisitor.hpp"
     "src/borc/utility/Dag.cpp"
     "src/borc/utility/DagNode.cpp"
     "src/borc/utility/DagVisitor.cpp"
-    "src/borc/toolchain/CompileOptions.cpp"
+)
+
+set (src_borc_toolchain
+    "src/borc/toolchain/CompileOptions.hpp"
+    "src/borc/toolchain/Compiler.hpp"
+    "src/borc/toolchain/CompilerVersionDetector.hpp"
+    "src/borc/toolchain/Linker.hpp"
+    "src/borc/toolchain/Toolchain.hpp"
+    "src/borc/toolchain/ToolchainFactory.hpp"
+    "src/borc/toolchain/ServiceFactory.hpp"
+    "src/borc/toolchain/ModuleChecker.hpp"
+    "src/borc/toolchain/SourceChecker.hpp"
+	"src/borc/toolchain/CompileOptions.cpp"
     "src/borc/toolchain/Compiler.cpp"
     "src/borc/toolchain/CompilerVersionDetector.cpp"
     "src/borc/toolchain/GCCCompilerVersionDetector.hpp"
@@ -108,15 +132,37 @@ add_library(borc-core
     "src/borc/toolchain/SourceChecker.cpp"
     "src/borc/toolchain/ModuleTypeChecker.hpp"
     "src/borc/toolchain/ModuleTypeChecker.cpp"
+)
+
+set (src_borc_build
+    "src/borc/build/ConfigurationService.hpp"
+    "src/borc/build/BuildCache.hpp"
     "src/borc/build/ConfigurationService.cpp"
     "src/borc/build/BuildCache.cpp"
     "src/borc/build/BuildCacheImpl.cpp"
     "src/borc/build/BuildCacheImpl.hpp"
-    "src/borc/common/EntityLoader.cpp"
-    "src/borc/common/JSONEntityLoader.cpp"
-    "src/borc/common/PackageFactory.cpp"
-    "src/borc/common/EntityLoaderFactory.cpp"
-    "src/borc/common/BuildConfiguration.cpp"
+)
+
+source_group("\\src\\borc\\core" FILES ${src_borc_core})
+source_group("\\src\\borc\\common" FILES ${src_borc_common})
+source_group("\\src\\borc\\model" FILES ${src_borc_model})
+source_group("\\src\\borc\\model\\command" FILES ${src_borc_model_command})
+source_group("\\src\\borc\\parsing" FILES ${src_borc_parsing})
+source_group("\\src\\borc\\services" FILES ${src_borc_services})
+source_group("\\src\\borc\\utility" FILES ${src_borc_utility})
+source_group("\\src\\borc\\toolchain" FILES ${src_borc_toolchain})
+source_group("\\src\\borc\\build" FILES ${src_borc_build})
+
+add_library(borc-core 
+	${src_borc_core}
+	${src_borc_common}
+	${src_borc_model}
+	${src_borc_model_command}
+	${src_borc_parsing}
+	${src_borc_services}
+	${src_borc_utility}
+	${src_borc_toolchain}
+	${src_borc_build}
 )
 
 target_link_libraries(borc-core ${Boost_LIBRARIES} nlohmann_json::nlohmann_json)
