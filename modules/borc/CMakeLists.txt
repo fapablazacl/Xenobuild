@@ -12,25 +12,49 @@ include_directories(
 
 link_directories(${Boost_LIBRARY_DIRS})
 
-add_executable(borc 
-    "src/Main.cpp"
+set (src "src/Main.cpp")
+
+set (src_borc_cli 
     "src/borc/cli/ControllerStub.hpp"
     "src/borc/cli/Controller.cpp"
     "src/borc/cli/Controller.hpp"
+	"src/borc/cli/ControllerFactory.cpp"
+    "src/borc/cli/ControllerFactory.hpp"
+)
+
+set (src_borc_cli_init
     "src/borc/cli/init/InitController.cpp"
     "src/borc/cli/init/InitController.hpp"
     "src/borc/cli/init/InitControllerOptions.cpp"
     "src/borc/cli/init/InitControllerOptions.hpp"
+)
+
+set (src_borc_cli_build
     "src/borc/cli/build/BuildController.cpp"
     "src/borc/cli/build/BuildController.hpp"
     "src/borc/cli/build/BuildControllerOptions.cpp"
     "src/borc/cli/build/BuildControllerOptions.hpp"
+)
+
+set (src_borc_cli_configure
     "src/borc/cli/configure/ConfigureController.cpp"
     "src/borc/cli/configure/ConfigureController.hpp"
     "src/borc/cli/configure/ConfigureControllerOptions.cpp"
     "src/borc/cli/configure/ConfigureControllerOptions.hpp"
-    "src/borc/cli/ControllerFactory.cpp"
-    "src/borc/cli/ControllerFactory.hpp"
+)
+
+source_group ("\\src" FILES ${src})
+source_group ("\\src\\borc\\cli" FILES ${src_borc_cli})
+source_group ("\\src\\borc\\cli\\init" FILES ${src_borc_cli_init})
+source_group ("\\src\\borc\\cli\\build" FILES ${src_borc_cli_build})
+source_group ("\\src\\borc\\cli\\configure" FILES ${src_borc_cli_configure})
+
+add_executable(borc 
+	${src}
+	${src_borc_cli}
+	${src_borc_cli_init}
+	${src_borc_cli_build}
+	${src_borc_cli_configure}
 )
 
 if (WIN32)
