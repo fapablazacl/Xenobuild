@@ -5,7 +5,7 @@ find_package(Boost
 )
 
 include_directories(
-    "../borc-core/include"
+    "../borc-core/src"
     "./src"
     ${Boost_INCLUDE_DIRS}
 )
