@@ -1,6 +1,7 @@
 {
     "name": "microsoft",
     "platform": "windows",
+    "arch": "x64",
     "description": "Modules for Windows Development (WinAPI)",
     "required": [
         {
@@ -10,7 +11,7 @@
         }, {
             "name": "WindowsKitVersion",
             "type": "folderPath",
-            "desc": "Windows Kit version number"
+            "desc": "Windows Kit version"
         }
     ],
     "modules": [
@@ -31,7 +32,7 @@
                     "path": "${WindowsKitPath}/Lib/${WindowsKitVersion}/ucrt/x64"
                 }
             ],
-            "importLibrary": [
+            "library": [
                 "AdvAPI32"
             ]
         }

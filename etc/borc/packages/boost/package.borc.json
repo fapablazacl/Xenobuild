@@ -1,18 +1,26 @@
 {
     "name": "boost",
     "description": "The Boost C++ Libraries",
+    "required": [
+        {
+            "name": "BoostPath",
+            "type": "folderPath",
+            "desc": "Boost base installation path"
+        }, {
+            "name": "BoostVersion",
+            "type": "folderPath",
+            "desc": "Boost version"
+        }
+    ], 
     "modules": [
         {
-            "name": "filesystem",
-            "artifact": "boost_filesystem"
-        }, 
-        {
-            "name": "system",
-            "artifact": "boost_system"
+            "common": true,
+            "prebuilt": true,
+            "includePath": "${BoostPath}/${BoostVersion}/include",
+            "libraryPath": "${BoostPath}/${BoostVersion}/lib"
         },
-        {
-            "name": "program_options",
-            "artifact": "boost_program_options"
-        }
+        { "name": "filesystem", "library": "boost_filesystem"}, 
+        { "name": "system", "library": "boost_system" }, 
+        { "name": "program_options", "library": "boost_program_options" }
     ]
 }
