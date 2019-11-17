@@ -84,6 +84,11 @@ set (src_borc_services
     "src/borc/services/FileServiceImpl.cpp"
     "src/borc/services/LoggingService.cpp"
     "src/borc/services/LoggingServiceImpl.cpp"
+
+	"src/borc/services/ToolchainService.hpp"
+	"src/borc/services/ToolchainService.cpp"
+	"src/borc/services/ToolchainServiceImpl.hpp"
+	"src/borc/services/ToolchainServiceImpl.cpp"
 )
 
 set (src_borc_utility

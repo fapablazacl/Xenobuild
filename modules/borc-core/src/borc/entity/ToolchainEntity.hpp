@@ -21,7 +21,7 @@ namespace borc {
             std::string generateBuildDependencies;
 
             /* linker switches */
-            std::string outputFile;
+            /*std::string outputFile;*/
             std::string importLibrary;
             std::string libraryPath;
         };
