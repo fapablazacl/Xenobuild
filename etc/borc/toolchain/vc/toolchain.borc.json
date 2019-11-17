@@ -47,7 +47,7 @@
                     },
                     "output": {
                         "fileType": "native/executable",
-                        "name": "${moduleName}.exe"
+                        "fileName": "${moduleName}.exe"
                     }
                 }, 
                 {

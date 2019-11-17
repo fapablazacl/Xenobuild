@@ -61,6 +61,7 @@ set (src_borc_entity
     "src/borc/entity/LanguageEntity.hpp"
     "src/borc/entity/ModuleEntity.hpp"
     "src/borc/entity/PackageEntity.hpp"
+	"src/borc/entity/ToolchainEntity.hpp"
 )
 
 set (src_borc_parsing
@@ -147,6 +148,7 @@ source_group("\\src\\borc\\core" FILES ${src_borc_core})
 source_group("\\src\\borc\\common" FILES ${src_borc_common})
 source_group("\\src\\borc\\model" FILES ${src_borc_model})
 source_group("\\src\\borc\\model\\command" FILES ${src_borc_model_command})
+source_group("\\src\\borc\\entity" FILES ${src_borc_entity})
 source_group("\\src\\borc\\parsing" FILES ${src_borc_parsing})
 source_group("\\src\\borc\\services" FILES ${src_borc_services})
 source_group("\\src\\borc\\utility" FILES ${src_borc_utility})
@@ -158,6 +160,7 @@ add_library(borc-core
 	${src_borc_common}
 	${src_borc_model}
 	${src_borc_model_command}
+	${src_borc_entity}
 	${src_borc_parsing}
 	${src_borc_services}
 	${src_borc_utility}
