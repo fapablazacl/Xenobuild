@@ -1,0 +1,74 @@
+{
+    "id": "vc",
+    "tools": [
+        {
+            "type": "compiler",
+            "command": "cl.exe",
+            "buildRules": [
+                {
+                    "input": {
+                        "fileType": "c++/source"
+                    },
+                    "flags": "/EHsc",
+                    "output": {
+                        "fileType": "native/object",
+                        "fileName": "${inputFileName}.obj"
+                    }
+                }
+            ],
+            "switches": {
+                "dialects": [
+                    { "name": "11",  "flag": "/std:c++11" },
+                    { "name": "14",  "flag": "/std:c++14" },
+                    { "name": "17",  "flag": "/std:c++17" },
+                    { "name": "20",  "flag": "/std:latest" }
+                ],
+                "optimizationLevels": [
+                    { "name": "no", "flag": "/Od" },
+                    { "name": "size", "flag": "/O1" },
+                    { "name": "speed", "flag": "/O2" },
+                    { "name": "ultraSpeed", "flag": "/O3" }
+                ],
+                "debugInformation": "/DEBUG:FULL",
+                "includePath": "/I",
+                "compile": "/c",
+                "outputFile": "/Fo",
+                "generateBuildDependencies": "-MM -MG"
+            }
+        }, 
+        {
+            "type": "linker",
+            "command": "link.exe",
+            "buildRules": [
+                {
+                    "input": {
+                        "moduleType": ["application/gui", "application/cli"],
+                        "fileType": "native/object"
+                    },
+                    "output": {
+                        "fileType": "native/executable",
+                        "name": "${moduleName}"
+                    }
+                }, 
+                {
+                    "input": {
+                        "moduleType": "library/dynamic",
+                        "fileType": "native/object"
+                    },
+                    "flags": [
+                        "/DLL"
+                    ],
+                    "output": {
+                        "fileType": "native/library",
+                        "fileName": "lib${moduleName}.so"
+                    }
+                }
+            ],
+            "switches": {
+                "outputFile": "/OUT:",
+                "importLibrary": "/IMPLIB:",
+                "libraryPath": "/LIBPATH:"
+            }
+        }
+    ]
+}
