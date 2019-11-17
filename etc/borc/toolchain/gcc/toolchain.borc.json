@@ -1,5 +1,5 @@
 {
-    "id": "gcc",
+    "name": "gcc",
     "tools": [
         {
             "type": "compiler",

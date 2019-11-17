@@ -1,5 +1,5 @@
 {
-    "id": "vc",
+    "name": "vc",
     "tools": [
         {
             "type": "compiler",
@@ -47,7 +47,7 @@
                     },
                     "output": {
                         "fileType": "native/executable",
-                        "name": "${moduleName}"
+                        "name": "${moduleName}.exe"
                     }
                 }, 
                 {
@@ -60,7 +60,7 @@
                     ],
                     "output": {
                         "fileType": "native/library",
-                        "fileName": "lib${moduleName}.so"
+                        "fileName": "${moduleName}.dll"
                     }
                 }
             ],

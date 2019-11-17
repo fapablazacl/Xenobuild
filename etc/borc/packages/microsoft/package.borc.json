@@ -1,0 +1,39 @@
+{
+    "name": "microsoft",
+    "platform": "windows",
+    "description": "Modules for Windows Development (WinAPI)",
+    "required": [
+        {
+            "name": "WindowsKitPath",
+            "type": "folderPath",
+            "desc": "Windows Kit installation base path"
+        }, {
+            "name": "WindowsKitVersion",
+            "type": "folderPath",
+            "desc": "Windows Kit version number"
+        }
+    ],
+    "modules": [
+        {
+            "name": "windows",
+            "prebuilt": true,
+            "includePath": [
+                "${WindowsKitPath}/Include/${WindowsKitVersion}/um",
+                "${WindowsKitPath}/Include/${WindowsKitVersion}/ucrt",
+                "${WindowsKitPath}/Include/${WindowsKitVersion}/shared"
+            ],
+            "libraryPath": [
+                {
+                    "arch": "x64",
+                    "path": "${WindowsKitPath}/Lib/${WindowsKitVersion}/um/x64"
+                }, {
+                    "arch": "x64",
+                    "path": "${WindowsKitPath}/Lib/${WindowsKitVersion}/ucrt/x64"
+                }
+            ],
+            "importLibrary": [
+                "AdvAPI32"
+            ]
+        }
+    ]
+}
