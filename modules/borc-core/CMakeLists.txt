@@ -138,6 +138,8 @@ set (src_borc_toolchain
     "src/borc/toolchain/SourceChecker.cpp"
     "src/borc/toolchain/ModuleTypeChecker.hpp"
     "src/borc/toolchain/ModuleTypeChecker.cpp"
+    "src/borc/toolchain/ManagedToolchainImpl.cpp"
+    "src/borc/toolchain/ManagedToolchainImpl.hpp"
 )
 
 set (src_borc_build

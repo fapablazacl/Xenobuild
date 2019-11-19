@@ -1,14 +1,9 @@
 
-#ifndef __BORC_ENTITY_TOOLCHAIN_HPP__
-#define __BORC_ENTITY_TOOLCHAIN_HPP__
+#ifndef __BORC_ENTITY_TOOLCHAINENTITY_HPP__
+#define __BORC_ENTITY_TOOLCHAINENTITY_HPP__
 
 #include <string>
 #include <vector>
-
-#include "LanguageEntity.hpp"
-#include "ModuleEntity.hpp"
-
-#include <boost/hana.hpp>
 
 namespace borc {
     struct ToolchainEntity {
@@ -24,21 +19,29 @@ namespace borc {
             /*std::string outputFile;*/
             std::string importLibrary;
             std::string libraryPath;
+
+            typedef void DefaultType;
         };
 
         struct BuildRuleInput {
             std::string fileType;
+
+            typedef void DefaultType;
         };
 
         struct BuildRuleOutput {
             std::string fileType;
             std::string fileName;
+
+            typedef void DefaultType;
         };
 
         struct BuildRule {
             BuildRuleInput input;
             std::vector<std::string> flags;
             BuildRuleOutput output;
+
+            typedef void DefaultType;
         };
 
         struct Tool {
@@ -48,6 +51,8 @@ namespace borc {
             std::vector<BuildRule> buildRules;
 
             Switches switches;
+
+            typedef void DefaultType;
         };
 
         std::string name;
@@ -56,7 +61,5 @@ namespace borc {
         typedef void DefaultType;
     };
 }
-
-// BOOST_HANA_ADAPT_STRUCT(borc::PackageEntity, name, description, language, modules, packageSearchPaths);
 
 #endif

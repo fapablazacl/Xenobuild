@@ -1,12 +1,19 @@
 
 #include "ToolchainServiceImpl.hpp"
 
-#include <borc/common/EntityLoader.hpp>
-#include <borc/common/EntityLoaderFactory.hpp>
-#include <borc/model/Package.hpp>
-#include <borc/toolchain/Toolchain.hpp>
+#include <boost/hana.hpp>
+#include <nlohmann/json.hpp>
+#include <borc/toolchain/ManagedToolchainImpl.hpp>
 #include <borc/services/FileService.hpp>
 #include <borc/entity/ToolchainEntity.hpp>
+#include <borc/parsing/JSONDeserializer.hpp>
+
+BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::Switches, debugInformation, includePath, compile, outputFile, generateBuildDependencies, importLibrary, libraryPath);
+BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::BuildRuleInput, fileType);
+BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::BuildRuleOutput, fileType, fileName);
+BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::BuildRule, input, flags, output);
+BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::Tool, type, command, buildRules, switches);
+BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity, name, tools);
 
 namespace borc {
     ToolchainServiceImpl::ToolchainServiceImpl(FileService *fileService) {
@@ -15,16 +22,14 @@ namespace borc {
 
 
     std::unique_ptr<Toolchain> ToolchainServiceImpl::createToolchain(const boost::filesystem::path &toolchainFolder) const {
-        /*
-        const auto entityLoader = entityLoaderFactory.createLoader(packageBaseFolder, service);
-        const PackageEntity packageEntity = entityLoader->loadPackageEntity();
-        const std::vector<ModuleEntity> moduleEntities = entityLoader->loadModuleEntities(packageEntity);
-        
-        PackageFactory packageFactory;
+        const auto toolchainFilePath = toolchainFolder / "toolchain.borc.json";
+        const auto toolchainJsonContent = fileService->load(toolchainFilePath.string());
+        const auto toolchainJson = nlohmann::json::parse(toolchainJsonContent);
 
-        auto toolchain  = packageFactory.createPackage(packageEntity, moduleEntities);
+        ToolchainEntity toolchainEntity;
 
-        return toolchain;
-        */
+        deserialize(toolchainEntity, toolchainJson);
+
+        return std::make_unique<ManagedToolchainImpl>(toolchainEntity);
     }
 }
