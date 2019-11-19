@@ -33,14 +33,14 @@ namespace borc {
                 CompilerSwitches compilerSwitches;
                 compilerSwitches.compile = tool.switches.compile;
                 compilerSwitches.objectFileOutput = tool.switches.outputFile;
-                compilerSwitches.zeroOptimization = "/Od";
+                // compilerSwitches.zeroOptimization = "/Od";
                 compilerSwitches.includePath = tool.switches.includePath;
                 compilerSwitches.includeDebug = tool.switches.debugInformation;
 
                 auto compiler = std::make_unique<CompilerImpl> (
                     &commandFactory, tool.command, compilerSwitches,
                     CompilerConfiguration { 
-                        {"/EHsc", "/std:c++17"}, 
+                        {/*"/EHsc", "/std:c++17"*/}, 
                         {}
                     }
                 );
