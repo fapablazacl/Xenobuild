@@ -17,7 +17,7 @@ BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::Tool, type, command, buildRules, 
 BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity, name, tools);
 
 namespace borc {
-    ToolchainServiceImpl::ToolchainServiceImpl(FileService *fileService) {
+    ToolchainServiceImpl::ToolchainServiceImpl(const FileService *fileService) {
         this->fileService = fileService;
     }
 

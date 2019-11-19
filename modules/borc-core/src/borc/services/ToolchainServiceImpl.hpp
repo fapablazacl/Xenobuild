@@ -9,12 +9,12 @@ namespace borc {
 
     class ToolchainServiceImpl : public ToolchainService {
     public:
-        explicit ToolchainServiceImpl(FileService *fileService);
+        explicit ToolchainServiceImpl(const FileService *fileService);
 
         std::unique_ptr<Toolchain> createToolchain(const boost::filesystem::path &toolchainFolder) const override;
 
     private:
-        FileService *fileService = nullptr;
+        const FileService *fileService = nullptr;
     }; 
 }
 
