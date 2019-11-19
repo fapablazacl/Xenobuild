@@ -15,15 +15,14 @@ set (src_borc_core
 )
 
 set (src_borc_common
-    "src/borc/common/EntityLoader.hpp"
-    "src/borc/common/JSONEntityLoader.hpp"
-    "src/borc/common/PackageFactory.hpp"
-    "src/borc/common/BuildConfiguration.hpp"
     "src/borc/common/EntityLoaderFactory.hpp"
-    "src/borc/common/EntityLoader.cpp"
-    "src/borc/common/JSONEntityLoader.cpp"
-    "src/borc/common/PackageFactory.cpp"
     "src/borc/common/EntityLoaderFactory.cpp"
+    "src/borc/common/EntityLoader.hpp"
+    "src/borc/common/EntityLoader.cpp"
+
+    "src/borc/common/JSONEntityLoader.hpp"
+    "src/borc/common/JSONEntityLoader.cpp"
+    "src/borc/common/BuildConfiguration.hpp"
     "src/borc/common/BuildConfiguration.cpp"
 )
 
@@ -71,20 +70,21 @@ set (src_borc_parsing
 
 set (src_borc_services
     "src/borc/services/PackageService.hpp"
+    "src/borc/services/PackageService.cpp"
+    "src/borc/services/PackageServiceImpl.hpp"
+    "src/borc/services/PackageServiceImpl.cpp"
     "src/borc/services/FileService.hpp"
     "src/borc/services/FileServiceImpl.hpp"
     "src/borc/services/LoggingService.hpp"
     "src/borc/services/LoggingServiceImpl.hpp"
     "src/borc/services/BuildService.hpp"
     "src/borc/services/BuildServiceImpl.hpp"
-    "src/borc/services/PackageService.cpp"
     "src/borc/services/BuildService.cpp"
     "src/borc/services/BuildServiceImpl.cpp"
     "src/borc/services/FileService.cpp"
     "src/borc/services/FileServiceImpl.cpp"
     "src/borc/services/LoggingService.cpp"
     "src/borc/services/LoggingServiceImpl.cpp"
-
 	"src/borc/services/ToolchainService.hpp"
 	"src/borc/services/ToolchainService.cpp"
 	"src/borc/services/ToolchainServiceImpl.hpp"

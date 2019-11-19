@@ -10,7 +10,9 @@ namespace borc {
 
     class PackageService {
     public:
-        std::unique_ptr<Package> createPackage(const boost::filesystem::path &packageFilePath) const;
+        virtual ~PackageService();
+
+        virtual std::unique_ptr<Package> createPackage(const boost::filesystem::path &packageFilePath) const = 0;
     }; 
 }
 

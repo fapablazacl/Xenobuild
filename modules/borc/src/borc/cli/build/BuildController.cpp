@@ -16,7 +16,7 @@
 #include <borc/utility/DagNode.hpp>
 #include <borc/utility/Dag.hpp>
 #include <borc/utility/DagVisitor.hpp>
-#include <borc/services/PackageService.hpp>
+#include <borc/services/PackageServiceImpl.hpp>
 
 #include "BuildControllerOptions.hpp"
 
@@ -37,7 +37,7 @@ namespace borc {
             ? options.outputPath.get()
             : baseFolderPath / ".borc";
 
-        auto packageService = std::make_unique<PackageService>();
+        auto packageService = std::make_unique<PackageServiceImpl>();
         auto package = packageService->createPackage(baseFolderPath);
 
         LoggingServiceImpl loggingService {"BuildServiceImpl"};

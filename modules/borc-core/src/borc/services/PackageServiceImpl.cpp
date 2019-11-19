@@ -1,15 +1,35 @@
 
-#include <borc/common/PackageFactory.hpp>
+#include "PackageServiceImpl.hpp"
 
 #include <map>
+#include <borc/common/EntityLoader.hpp>
+#include <borc/common/EntityLoaderFactory.hpp>
 #include <borc/model/Package.hpp>
 #include <borc/model/Module.hpp>
+#include <borc/model/Package.hpp>
+#include <borc/services/FileServiceImpl.hpp>
 #include <borc/entity/PackageEntity.hpp>
+#include <borc/entity/LanguageEntity.hpp>
 #include <borc/entity/ModuleEntity.hpp>
 
 
 namespace borc {
-    std::unique_ptr<Package> PackageFactory::createPackage(const PackageEntity &packageEntity, const std::vector<ModuleEntity> &moduleEntities) {
+    std::unique_ptr<Package> PackageServiceImpl::createPackage(const boost::filesystem::path &packageBaseFolder) const {
+        FileServiceImpl service;
+
+        EntityLoaderFactory entityLoaderFactory;
+
+        const auto entityLoader = entityLoaderFactory.createLoader(packageBaseFolder, service);
+        const PackageEntity packageEntity = entityLoader->loadPackageEntity();
+        const std::vector<ModuleEntity> moduleEntities = entityLoader->loadModuleEntities(packageEntity);
+        
+        std::unique_ptr<Package> package = this->createPackageImpl(packageEntity, moduleEntities);
+
+        return package;
+    }
+
+
+    std::unique_ptr<Package> PackageServiceImpl::createPackageImpl(const PackageEntity &packageEntity, const std::vector<ModuleEntity> &moduleEntities) const {
         // now we are ready to create the package and modules instances
         auto package = std::make_unique<Package>(packageEntity.name);
 
