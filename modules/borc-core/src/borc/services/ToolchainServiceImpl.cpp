@@ -8,7 +8,8 @@
 #include <borc/entity/ToolchainEntity.hpp>
 #include <borc/parsing/JSONDeserializer.hpp>
 
-BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::Switches, debugInformation, includePath, compile, outputFile, generateBuildDependencies, importLibrary, libraryPath);
+BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::EnumeratedOption, name, flag);
+BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::Switches, dialects, optimizationLevels, debugInformation, includePath, compile, outputFile, generateBuildDependencies, importLibrary, libraryPath);
 BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::BuildRuleInput, fileType);
 BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::BuildRuleOutput, fileType, fileName);
 BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::BuildRule, input, flags, output);

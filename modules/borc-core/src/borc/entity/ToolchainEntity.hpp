@@ -7,8 +7,18 @@
 
 namespace borc {
     struct ToolchainEntity {
+        struct EnumeratedOption {
+            std::string name;
+            std::string flag;
+
+            typedef void DefaultType;
+        };
+
         struct Switches {
             /* compiler switches */
+            std::vector<EnumeratedOption> dialects;
+            std::vector<EnumeratedOption> optimizationLevels;
+
             std::string debugInformation;
             std::string includePath;
             std::string compile;

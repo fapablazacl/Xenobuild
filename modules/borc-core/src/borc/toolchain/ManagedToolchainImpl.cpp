@@ -1,6 +1,7 @@
 
 #include "ManagedToolchainImpl.hpp"
 
+#include <borc/model/Command.hpp>
 #include <borc/entity/ToolchainEntity.hpp>
 #include <borc/model/Module.hpp>
 #include <borc/model/Source.hpp>
