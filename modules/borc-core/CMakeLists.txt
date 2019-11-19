@@ -15,13 +15,6 @@ set (src_borc_core
 )
 
 set (src_borc_common
-    "src/borc/common/EntityLoaderFactory.hpp"
-    "src/borc/common/EntityLoaderFactory.cpp"
-    "src/borc/common/EntityLoader.hpp"
-    "src/borc/common/EntityLoader.cpp"
-
-    "src/borc/common/JSONEntityLoader.hpp"
-    "src/borc/common/JSONEntityLoader.cpp"
     "src/borc/common/BuildConfiguration.hpp"
     "src/borc/common/BuildConfiguration.cpp"
 )

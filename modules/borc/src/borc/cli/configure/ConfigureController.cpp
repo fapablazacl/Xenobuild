@@ -11,6 +11,7 @@
 #include <borc/build/ConfigurationService.hpp>
 #include <borc/model/Package.hpp>
 #include <borc/model/Module.hpp>
+#include <borc/services/FileServiceImpl.hpp>
 #include <borc/services/PackageServiceImpl.hpp>
 
 namespace borc {
@@ -69,7 +70,8 @@ namespace borc {
         configurationService.addBuildConfiguration(config);
 
         // construct the package with the current toolchain, in order grab dependency information
-        auto packageService = std::make_unique<PackageServiceImpl>();
+        const FileServiceImpl fileService;
+        auto packageService = std::make_unique<PackageServiceImpl>(&fileService);
         auto package = packageService->createPackage(basePackagePath);
 
         configurationService.saveAllBuildConfigurations();

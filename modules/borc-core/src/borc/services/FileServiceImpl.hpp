@@ -11,11 +11,11 @@ namespace borc {
     public:
         virtual ~FileServiceImpl();
 
-        virtual std::string load(const std::string &filePath) override;
+        virtual std::string load(const std::string &filePath) const override;
 
-        virtual void save(const std::string &filePath, const std::string &content) override;
+        virtual void save(const std::string &filePath, const std::string &content) const override;
 
-        virtual void touch(const std::string &filePath) override;
+        virtual void touch(const std::string &filePath) const override;
     };
 }
 

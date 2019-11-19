@@ -2,11 +2,11 @@
 #include "PackageServiceImpl.hpp"
 
 #include <map>
-#include <borc/common/EntityLoader.hpp>
-#include <borc/common/EntityLoaderFactory.hpp>
+#include <boost/filesystem.hpp>
 #include <borc/model/Package.hpp>
 #include <borc/model/Module.hpp>
 #include <borc/model/Package.hpp>
+#include <borc/parsing/JSONDeserializer.hpp>
 #include <borc/services/FileServiceImpl.hpp>
 #include <borc/entity/PackageEntity.hpp>
 #include <borc/entity/LanguageEntity.hpp>
@@ -14,14 +14,16 @@
 
 
 namespace borc {
+    PackageServiceImpl::PackageServiceImpl(const FileService *fileService) {
+        this->fileService = fileService;
+    }
+
+
     std::unique_ptr<Package> PackageServiceImpl::createPackage(const boost::filesystem::path &packageBaseFolder) const {
         FileServiceImpl service;
 
-        EntityLoaderFactory entityLoaderFactory;
-
-        const auto entityLoader = entityLoaderFactory.createLoader(packageBaseFolder, service);
-        const PackageEntity packageEntity = entityLoader->loadPackageEntity();
-        const std::vector<ModuleEntity> moduleEntities = entityLoader->loadModuleEntities(packageEntity);
+        const PackageEntity packageEntity = this->loadPackageEntity(packageBaseFolder);
+        const std::vector<ModuleEntity> moduleEntities = this->loadModuleEntities(packageBaseFolder, packageEntity);
         
         std::unique_ptr<Package> package = this->createPackageImpl(packageEntity, moduleEntities);
 
@@ -114,5 +116,50 @@ namespace borc {
         }
 
         return package;
+    }
+
+
+    PackageEntity PackageServiceImpl::loadPackageEntity(const boost::filesystem::path &packagePath) const {
+        const auto packageFilePath = packagePath / "package.borc.json";
+
+        if (! checkValidBorcFile(packageFilePath)) {
+            throw std::runtime_error("There is no package build file on the folder '" + packageFilePath.string() + "'");
+        }
+
+        auto packageJsonContent = fileService->load(packageFilePath.string());
+        auto packageJson = nlohmann::json::parse(packageJsonContent);
+
+        PackageEntity packageEntity;
+        deserialize(packageEntity, packageJson);
+
+        return packageEntity;
+    }
+
+
+    std::vector<ModuleEntity> PackageServiceImpl::loadModuleEntities(const boost::filesystem::path &packagePath, const PackageEntity &packageEntity) const {
+        std::vector<ModuleEntity> moduleEntities;
+
+        for (const std::string &modulePartialPath : packageEntity.modules) {
+            const boost::filesystem::path moduleFilePath = packagePath / modulePartialPath / "module.borc.json";
+
+            if (! checkValidBorcFile(moduleFilePath)) {
+                throw std::runtime_error("There is no module build file on this folder '" + moduleFilePath.string() + "'");
+            }
+
+            auto moduleJsonContent = fileService->load(moduleFilePath.string());
+            auto moduleJson = nlohmann::json::parse(moduleJsonContent);
+
+            ModuleEntity moduleEntity;
+            deserialize(moduleEntity, moduleJson);
+
+            moduleEntities.push_back(moduleEntity);
+        }
+
+        return moduleEntities;
+    }
+
+
+    bool PackageServiceImpl::checkValidBorcFile(const boost::filesystem::path &filePath) const {
+        return !boost::filesystem::is_directory(filePath) && boost::filesystem::exists(filePath);
     }
 }

@@ -7,6 +7,7 @@
 #include <boost/graph/graphviz.hpp>
 #include <borc/model/Module.hpp>
 #include <borc/model/Package.hpp>
+#include <borc/services/FileServiceImpl.hpp>
 #include <borc/services/BuildServiceImpl.hpp>
 #include <borc/services/LoggingServiceImpl.hpp>
 #include <borc/toolchain/ToolchainFactory.hpp>
@@ -23,6 +24,7 @@
 namespace borc {
     BuildController::~BuildController() {}
 
+
     void BuildController::perform(const BuildControllerOptions &options) {
         if (options.showHelp) {
             std::cout << options.helpMessage;
@@ -37,7 +39,9 @@ namespace borc {
             ? options.outputPath.get()
             : baseFolderPath / ".borc";
 
-        auto packageService = std::make_unique<PackageServiceImpl>();
+        const FileServiceImpl fileService;
+
+        auto packageService = std::make_unique<PackageServiceImpl>(&fileService);
         auto package = packageService->createPackage(baseFolderPath);
 
         LoggingServiceImpl loggingService {"BuildServiceImpl"};

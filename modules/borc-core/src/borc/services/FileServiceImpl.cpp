@@ -6,7 +6,8 @@
 namespace borc {
     FileServiceImpl::~FileServiceImpl() {}
 
-    std::string FileServiceImpl::load(const std::string &filePath) {
+
+    std::string FileServiceImpl::load(const std::string &filePath) const {
         typedef std::istreambuf_iterator<char> fstream_iterator;
 
         std::fstream fs;
@@ -24,7 +25,8 @@ namespace borc {
         return content;
     }
 
-    void FileServiceImpl::save(const std::string &filePath, const std::string &content) {
+
+    void FileServiceImpl::save(const std::string &filePath, const std::string &content) const {
         std::fstream fs;
 
         fs.open(filePath.c_str(), std::ios_base::out);
@@ -39,7 +41,8 @@ namespace borc {
         }
     }
 
-    void FileServiceImpl::touch(const std::string &filePath) {
+
+    void FileServiceImpl::touch(const std::string &filePath) const {
         std::ofstream os;
         os.open(filePath.c_str(), std::ios_base::out);
         os.close();
