@@ -41,7 +41,7 @@
             "buildRules": [
                 {
                     "input": {
-                        "moduleType": ["application/gui", "application/cli"],
+                        "moduleTypes": ["application/gui", "application/cli"],
                         "fileType": "native/object"
                     },
                     "output": {
@@ -51,12 +51,10 @@
                 }, 
                 {
                     "input": {
-                        "moduleType": "library/dynamic",
+                        "moduleTypes": ["library/dynamic"],
                         "fileType": "native/object"
                     },
-                    "flags": [
-                        "-shared"
-                    ],
+                    "flags": ["-shared"],
                     "output": {
                         "fileType": "native/library",
                         "fileName": "lib${moduleName}.so"
@@ -78,7 +76,7 @@
                         "moduleType": "library/static",
                         "fileType": "native/object"
                     },
-                    "flags": "rcs",
+                    "flags": ["rcs"],
                     "output": {
                         "type": "native/archive",
                         "fileName": "lib${moduleName}.a"

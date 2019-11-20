@@ -9,7 +9,7 @@
                     "input": {
                         "fileType": "c++/source"
                     },
-                    "flags": "/EHsc",
+                    "flags": ["/EHsc"],
                     "output": {
                         "fileType": "native/object",
                         "fileName": "${inputFileName}.obj"
@@ -55,9 +55,7 @@
                         "moduleType": "library/dynamic",
                         "fileType": "native/object"
                     },
-                    "flags": [
-                        "/DLL"
-                    ],
+                    "flags": ["/DLL"],
                     "output": {
                         "fileType": "native/library",
                         "fileName": "${moduleName}.dll"
