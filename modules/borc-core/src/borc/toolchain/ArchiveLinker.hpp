@@ -7,25 +7,25 @@
 namespace borc {
     class CommandFactory;
 
-	class ArchiveLinker : public Linker {
+    class ArchiveLinker : public Linker {
     public:
-    	struct Switches {
+        struct Switches {
             std::string buildStaticLibrary;
             std::string moduleOutput;
         };
 
-	public:
+    public:
         ArchiveLinker(CommandFactory *commandFactory, const std::string &commandPath, const Switches &switches);
 
-		virtual ~ArchiveLinker();
+        virtual ~ArchiveLinker();
 
-		virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Module *module, const std::vector<boost::filesystem::path> &objectFiles) const override;
+        virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Module *module, const std::vector<boost::filesystem::path> &objectFiles) const override;
 
     private:
         CommandFactory *commandFactory = nullptr;
         std::string commandPath;
         Switches switches;
-	};
+    };
 }
 
 #endif

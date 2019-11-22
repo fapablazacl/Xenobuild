@@ -6,19 +6,19 @@
 #include <memory>
 
 namespace borc {
-	class Compiler;
-	class Linker;
-	class SourceChecker;
-	class ModuleChecker;
+    class Compiler;
+    class Linker;
+    class SourceChecker;
+    class ModuleChecker;
 
-	class ServiceFactory {
-	public:
-		virtual ~ServiceFactory();
+    class ServiceFactory {
+    public:
+        virtual ~ServiceFactory();
 
-		virtual const std::vector<std::pair<SourceChecker*, const Compiler*>> getCompilers() const = 0;
+        virtual const std::vector<std::pair<SourceChecker*, const Compiler*>> getCompilers() const = 0;
 
-		virtual const std::vector<std::pair<ModuleChecker*, const Linker*>> getLinkers() const = 0;
-	};
+        virtual const std::vector<std::pair<ModuleChecker*, const Linker*>> getLinkers() const = 0;
+    };
 } 
 
 #endif

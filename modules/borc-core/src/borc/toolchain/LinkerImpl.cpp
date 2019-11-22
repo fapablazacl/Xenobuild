@@ -3,10 +3,10 @@
 
 namespace borc {
     LinkerImpl::LinkerImpl(const boost::filesystem::path &linkerPath, const std::string &command, const LinkerImplSwitches &switches, const std::vector<LinkerImplBuildRule> &buildRules) {
-		this->linkerPath = linkerPath;
-		this->command = command;
-		this->switches = switches;
-		this->buildRules = buildRules;
+        this->linkerPath = linkerPath;
+        this->command = command;
+        this->switches = switches;
+        this->buildRules = buildRules;
     }
 
 

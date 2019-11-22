@@ -9,14 +9,14 @@
 
 namespace borc {
     class SourceChecker {
-	public:
-		SourceChecker(const std::initializer_list<std::string> &wildcards);
+    public:
+        SourceChecker(const std::initializer_list<std::string> &wildcards);
 
-		bool check(const boost::filesystem::path &filePath) const;
+        bool check(const boost::filesystem::path &filePath) const;
 
-	private:
-		std::set<std::string> wildcards;
-	};
+    private:
+        std::set<std::string> wildcards;
+    };
 }
 
 #endif

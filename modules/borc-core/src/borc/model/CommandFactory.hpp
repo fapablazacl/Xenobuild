@@ -8,23 +8,23 @@
 #include <boost/filesystem/path.hpp>
 
 namespace borc {
-	enum class PathCommand {
-		Create,
-		Delete
-	};
+    enum class PathCommand {
+        Create,
+        Delete
+    };
 
-	class Command;
-	class CommandFactory {
-	public:
-		~CommandFactory();
+    class Command;
+    class CommandFactory {
+    public:
+        ~CommandFactory();
 
-		Command* createCommand(const std::string &base, const std::vector<std::string> &options = {});
+        Command* createCommand(const std::string &base, const std::vector<std::string> &options = {});
 
-		Command* createPathCommand(const boost::filesystem::path &path, const PathCommand pathCommand);
+        Command* createPathCommand(const boost::filesystem::path &path, const PathCommand pathCommand);
 
-	private:
-		std::vector<std::unique_ptr<Command>> _cachedCommands;
-	};
+    private:
+        std::vector<std::unique_ptr<Command>> _cachedCommands;
+    };
 }
 
 #endif

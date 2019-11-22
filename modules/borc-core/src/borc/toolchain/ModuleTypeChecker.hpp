@@ -10,16 +10,16 @@
 
 namespace borc {
     class ModuleTypeChecker : public ModuleChecker {
-	public:
-		ModuleTypeChecker(const std::initializer_list<Module::Type> &types);
+    public:
+        ModuleTypeChecker(const std::initializer_list<Module::Type> &types);
 
-		virtual ~ModuleTypeChecker();
+        virtual ~ModuleTypeChecker();
 
-		virtual bool check(const Module *module) const override;
+        virtual bool check(const Module *module) const override;
 
-	private:
-		std::set<Module::Type> types;
-	};
+    private:
+        std::set<Module::Type> types;
+    };
 }
 
 #endif

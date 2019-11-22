@@ -7,11 +7,11 @@
 #include <string>
 
 namespace borc {
-	struct CompileOptions {
-		std::vector<std::string> includePaths;
+    struct CompileOptions {
+        std::vector<std::string> includePaths;
 
         void mergeWith(const CompileOptions &other);
-	};
+    };
 }
 
 #endif

@@ -21,16 +21,16 @@ namespace borc {
         const boost::filesystem::path archiveName = "lib" + module->getName() + ".a";
         const boost::filesystem::path archiveOutputPath = outputPath / module->getPath() / archiveName;
 
-		std::vector<std::string> commandOptions;
+        std::vector<std::string> commandOptions;
         commandOptions.push_back(switches.buildStaticLibrary);
         commandOptions.push_back(switches.moduleOutput + archiveOutputPath.string());
 
         for (const boost::filesystem::path &objetFile : objectFiles) {
-			commandOptions.push_back(objetFile.string());
-		}
+            commandOptions.push_back(objetFile.string());
+        }
 
-		Command *command = commandFactory->createCommand(commandPath, commandOptions);
+        Command *command = commandFactory->createCommand(commandPath, commandOptions);
 
-		return {archiveOutputPath, command};
+        return {archiveOutputPath, command};
     }
 }

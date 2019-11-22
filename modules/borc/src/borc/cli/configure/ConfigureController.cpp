@@ -91,8 +91,8 @@ namespace borc {
             throw std::runtime_error("Compiler detector not found in path '" + compilerPath.string() + "'.");
         }
 
-		boost::process::ipstream pipeStream;
-		boost::process::child childProcess {compilerPath, boost::process::std_out > pipeStream};
+        boost::process::ipstream pipeStream;
+        boost::process::child childProcess {compilerPath, boost::process::std_out > pipeStream};
         
         std::string line;
         std::vector<std::string> specs;

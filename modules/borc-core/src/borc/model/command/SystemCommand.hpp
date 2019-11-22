@@ -8,18 +8,18 @@
 #include <borc/model/Command.hpp>
 
 namespace borc {
-	class SystemCommand : public Command {
-	public:
-		explicit SystemCommand(const std::string &base);
+    class SystemCommand : public Command {
+    public:
+        explicit SystemCommand(const std::string &base);
 
-		explicit SystemCommand(const std::string &base, const std::vector<std::string> &options);
+        explicit SystemCommand(const std::string &base, const std::vector<std::string> &options);
 
-		virtual void execute() override;
+        virtual void execute() override;
 
-	private:
-		const std::string _base;
-		std::vector<std::string> _options;
-	};
+    private:
+        const std::string _base;
+        std::vector<std::string> _options;
+    };
 }
 
 #endif

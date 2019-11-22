@@ -6,28 +6,28 @@
 #include <boost/algorithm/string/join.hpp>
 
 namespace borc {
-	SystemCommand::SystemCommand(const std::string &base)
-		: _base(base) {}
+    SystemCommand::SystemCommand(const std::string &base)
+        : _base(base) {}
 
-	SystemCommand::SystemCommand(const std::string &base, const std::vector<std::string> &options)
-		: _base(base), _options(options) {}
+    SystemCommand::SystemCommand(const std::string &base, const std::vector<std::string> &options)
+        : _base(base), _options(options) {}
 
-	void SystemCommand::execute() {
-		// const std::string systemCommand = _base + " " + join(_options, " ");
-		const std::string systemCommand = _base + " " + boost::algorithm::join(_options, " ");
+    void SystemCommand::execute() {
+        // const std::string systemCommand = _base + " " + join(_options, " ");
+        const std::string systemCommand = _base + " " + boost::algorithm::join(_options, " ");
 
-		std::cout << systemCommand << std::endl;
+        std::cout << systemCommand << std::endl;
 
-		const int exitCode = std::system(systemCommand.c_str());
+        const int exitCode = std::system(systemCommand.c_str());
 
-		if (exitCode != 0) {
-			std::string msg;
+        if (exitCode != 0) {
+            std::string msg;
 
-			msg += "The command \n";
-			msg += "'" + systemCommand + "'\n";
-			msg += "returned an erroneous exit code: " + std::to_string(exitCode);
+            msg += "The command \n";
+            msg += "'" + systemCommand + "'\n";
+            msg += "returned an erroneous exit code: " + std::to_string(exitCode);
 
-			throw std::runtime_error(msg);
-		}
-	}
+            throw std::runtime_error(msg);
+        }
+    }
 }

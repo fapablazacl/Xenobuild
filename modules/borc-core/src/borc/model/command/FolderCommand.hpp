@@ -7,16 +7,16 @@
 #include <boost/filesystem/path.hpp>
 
 namespace borc {
-	class FolderCommand : public Command {
+    class FolderCommand : public Command {
     public:
-		explicit FolderCommand(const boost::filesystem::path &path, const PathCommand pathCommand);
+        explicit FolderCommand(const boost::filesystem::path &path, const PathCommand pathCommand);
 
-		virtual void execute() override;
+        virtual void execute() override;
 
-	private:
-		boost::filesystem::path path;
-		PathCommand pathCommand;
-	};
+    private:
+        boost::filesystem::path path;
+        PathCommand pathCommand;
+    };
 }
 
 #endif

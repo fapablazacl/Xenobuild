@@ -5,11 +5,11 @@
 namespace borc {
     class Module;
     class ModuleChecker {
-	public:
-		virtual ~ModuleChecker();
+    public:
+        virtual ~ModuleChecker();
 
-		virtual bool check(const Module *module) const = 0;
-	};
+        virtual bool check(const Module *module) const = 0;
+    };
 }
 
 #endif

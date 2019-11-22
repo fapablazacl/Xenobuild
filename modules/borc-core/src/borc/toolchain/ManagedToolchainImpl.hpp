@@ -14,7 +14,7 @@ namespace borc {
     struct ToolchainEntity;
 
     class SourceChecker;
-	class ModuleChecker;
+    class ModuleChecker;
 
     class ManagedToolchainImpl : public Toolchain {
     public:
@@ -22,13 +22,13 @@ namespace borc {
 
         virtual ~ManagedToolchainImpl();
 
-    	virtual const Compiler* selectCompiler(const Source *source) const override;
+        virtual const Compiler* selectCompiler(const Source *source) const override;
 
-		virtual const Linker* selectLinker(const Module *module) const override;
+        virtual const Linker* selectLinker(const Module *module) const override;
 
     private:
         std::vector<std::pair<std::unique_ptr<SourceChecker>, std::unique_ptr<Compiler>>> compilers;
-		std::vector<std::pair<std::unique_ptr<ModuleChecker>, std::unique_ptr<Linker>>> linkers;
+        std::vector<std::pair<std::unique_ptr<ModuleChecker>, std::unique_ptr<Linker>>> linkers;
 
         CommandFactory commandFactory;
     };

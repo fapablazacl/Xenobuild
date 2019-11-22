@@ -5,22 +5,22 @@
 #include "ServiceFactoryStub.hpp"
 
 namespace borc {
-	class ServiceFactoryGCC : public ServiceFactoryStub {
-	public:
-		explicit ServiceFactoryGCC(const std::string &commandBase);
+    class ServiceFactoryGCC : public ServiceFactoryStub {
+    public:
+        explicit ServiceFactoryGCC(const std::string &commandBase);
 
-		virtual ~ServiceFactoryGCC();
+        virtual ~ServiceFactoryGCC();
 
-	private:
-		std::unique_ptr<Compiler> createCompiler();
+    private:
+        std::unique_ptr<Compiler> createCompiler();
 
-		std::unique_ptr<Linker> createLinker();
+        std::unique_ptr<Linker> createLinker();
 
-		std::unique_ptr<Linker> createStaticLinker();
+        std::unique_ptr<Linker> createStaticLinker();
 
-	private:
-		std::string commandBase;
-	};
+    private:
+        std::string commandBase;
+    };
 } 
 
 #endif

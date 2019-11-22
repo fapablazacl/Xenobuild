@@ -18,7 +18,7 @@ set (src_borc_cli
     "src/borc/cli/ControllerStub.hpp"
     "src/borc/cli/Controller.cpp"
     "src/borc/cli/Controller.hpp"
-	"src/borc/cli/ControllerFactory.cpp"
+    "src/borc/cli/ControllerFactory.cpp"
     "src/borc/cli/ControllerFactory.hpp"
 )
 
@@ -50,17 +50,17 @@ source_group ("\\src\\borc\\cli\\build" FILES ${src_borc_cli_build})
 source_group ("\\src\\borc\\cli\\configure" FILES ${src_borc_cli_configure})
 
 add_executable(borc 
-	${src}
-	${src_borc_cli}
-	${src_borc_cli_init}
-	${src_borc_cli_build}
-	${src_borc_cli_configure}
+    ${src}
+    ${src_borc_cli}
+    ${src_borc_cli_init}
+    ${src_borc_cli_build}
+    ${src_borc_cli_configure}
 )
 
 if (WIN32)
-	set (PTHREAD_LIB )
+    set (PTHREAD_LIB )
 else()
-	set (PTHREAD_LIB pthread)
+    set (PTHREAD_LIB pthread)
 endif()
 
 target_link_libraries(borc borc-core ${Boost_LIBRARIES} ${PTHREAD_LIB})

@@ -5,17 +5,17 @@
 #include "ServiceFactoryStub.hpp"
 
 namespace borc {
-	class ServiceFactoryVC : public ServiceFactoryStub {
-	public:
-		ServiceFactoryVC(const std::string &installationPath, const std::string &windowsKitPath);
+    class ServiceFactoryVC : public ServiceFactoryStub {
+    public:
+        ServiceFactoryVC(const std::string &installationPath, const std::string &windowsKitPath);
 
-		virtual ~ServiceFactoryVC();
+        virtual ~ServiceFactoryVC();
 
-	private:
-		std::unique_ptr<Compiler> createCompiler(const std::string &compilerCommand, const std::string &installationPath, const std::string &windowsKitPath);
+    private:
+        std::unique_ptr<Compiler> createCompiler(const std::string &compilerCommand, const std::string &installationPath, const std::string &windowsKitPath);
 
-		std::unique_ptr<Linker> createLinker(const std::string &linkerCommand, const std::string &installationPath, const std::string &windowsKitPath);
-	};
+        std::unique_ptr<Linker> createLinker(const std::string &linkerCommand, const std::string &installationPath, const std::string &windowsKitPath);
+    };
 } 
 
 #endif

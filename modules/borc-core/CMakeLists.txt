@@ -11,7 +11,7 @@ link_directories(${Boost_LIBRARY_DIRS})
 find_package(nlohmann_json REQUIRED)
 
 set (src_borc_core
-	"src/borc/core/DependencyGraph.hpp"
+    "src/borc/core/DependencyGraph.hpp"
 )
 
 set (src_borc_common
@@ -20,7 +20,7 @@ set (src_borc_common
 )
 
 set (src_borc_model
-	"src/borc/model/Version.hpp"
+    "src/borc/model/Version.hpp"
     "src/borc/model/Source.hpp"
     "src/borc/model/Module.hpp"
     "src/borc/model/Package.hpp"
@@ -30,7 +30,7 @@ set (src_borc_model
     "src/borc/model/Context.hpp"
     "src/borc/model/Command.hpp"
     "src/borc/model/CommandFactory.hpp"
-	"src/borc/model/ModuleLinkerMatcher.cpp"
+    "src/borc/model/ModuleLinkerMatcher.cpp"
     "src/borc/model/SourceCompilerMatcher.cpp"
     "src/borc/model/BuildPipeline.cpp"
     "src/borc/model/Version.cpp"
@@ -53,7 +53,7 @@ set (src_borc_entity
     "src/borc/entity/LanguageEntity.hpp"
     "src/borc/entity/ModuleEntity.hpp"
     "src/borc/entity/PackageEntity.hpp"
-	"src/borc/entity/ToolchainEntity.hpp"
+    "src/borc/entity/ToolchainEntity.hpp"
 )
 
 set (src_borc_parsing
@@ -78,10 +78,10 @@ set (src_borc_services
     "src/borc/services/FileServiceImpl.cpp"
     "src/borc/services/LoggingService.cpp"
     "src/borc/services/LoggingServiceImpl.cpp"
-	"src/borc/services/ToolchainService.hpp"
-	"src/borc/services/ToolchainService.cpp"
-	"src/borc/services/ToolchainServiceImpl.hpp"
-	"src/borc/services/ToolchainServiceImpl.cpp"
+    "src/borc/services/ToolchainService.hpp"
+    "src/borc/services/ToolchainService.cpp"
+    "src/borc/services/ToolchainServiceImpl.hpp"
+    "src/borc/services/ToolchainServiceImpl.cpp"
 )
 
 set (src_borc_utility
@@ -102,7 +102,7 @@ set (src_borc_toolchain
     "src/borc/toolchain/ServiceFactory.hpp"
     "src/borc/toolchain/ModuleChecker.hpp"
     "src/borc/toolchain/SourceChecker.hpp"
-	"src/borc/toolchain/CompileOptions.cpp"
+    "src/borc/toolchain/CompileOptions.cpp"
     "src/borc/toolchain/Compiler.cpp"
     "src/borc/toolchain/CompilerVersionDetector.cpp"
     "src/borc/toolchain/GCCCompilerVersionDetector.hpp"
@@ -157,16 +157,16 @@ source_group("\\src\\borc\\toolchain" FILES ${src_borc_toolchain})
 source_group("\\src\\borc\\build" FILES ${src_borc_build})
 
 add_library(borc-core 
-	${src_borc_core}
-	${src_borc_common}
-	${src_borc_model}
-	${src_borc_model_command}
-	${src_borc_entity}
-	${src_borc_parsing}
-	${src_borc_services}
-	${src_borc_utility}
-	${src_borc_toolchain}
-	${src_borc_build}
+    ${src_borc_core}
+    ${src_borc_common}
+    ${src_borc_model}
+    ${src_borc_model_command}
+    ${src_borc_entity}
+    ${src_borc_parsing}
+    ${src_borc_services}
+    ${src_borc_utility}
+    ${src_borc_toolchain}
+    ${src_borc_build}
 )
 
 target_link_libraries(borc-core ${Boost_LIBRARIES} nlohmann_json::nlohmann_json)

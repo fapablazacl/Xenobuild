@@ -5,12 +5,12 @@
 #include <string>
 
 namespace borc {
-	class Command {
-	public:
-		virtual ~Command();
+    class Command {
+    public:
+        virtual ~Command();
 
-		virtual void execute() = 0;
-	};
+        virtual void execute() = 0;
+    };
 }
 
 #endif
