@@ -4,6 +4,7 @@
 
 #include "Linker.hpp"
 
+#include <boost/optional/optional_fwd.hpp>
 #include <borc/model/Module.hpp>
 
 namespace borc {
@@ -31,17 +32,32 @@ namespace borc {
     };
 
 
+	class CommandFactory;
+
     class LinkerImpl : public Linker {
     public:
-        LinkerImpl(const boost::filesystem::path &linkerPath, const std::string &command, const LinkerImplSwitches &switches, const std::vector<LinkerImplBuildRule> &buildRules);
+        LinkerImpl(CommandFactory *commandFactory, const boost::filesystem::path &linkerPath, const std::string &commandName, const LinkerImplSwitches &switches, const std::vector<LinkerImplBuildRule> &buildRules);
 
         virtual ~LinkerImpl();
 
         virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Module *module, const std::vector<boost::filesystem::path> &objectFiles) const override;
 
+
+	private:
+		boost::optional<LinkerImplBuildRule> matchBuildRule(const Module *module) const;
+
+		Command* buildLinkCommand(const boost::filesystem::path &outputPath, const Package *package, const Module *module, const std::vector<boost::filesystem::path> &objectFiles, const LinkerImplBuildRule &buildRule) const;
+
+		boost::filesystem::path buildOuputPath(const boost::filesystem::path &outputPath, const Package *package, const Module *module) const;
+
+		std::vector<std::string> buildModuleDependencyOptions(const boost::filesystem::path &outputPath, const Package *package, const Module *dependency) const;
+
+		boost::filesystem::path buildCommandPath() const;
+
     private:
+		CommandFactory *commandFactory = nullptr;
         boost::filesystem::path linkerPath; 
-        std::string command; 
+        std::string commandName; 
         LinkerImplSwitches switches;
         std::vector<LinkerImplBuildRule> buildRules;
     };
