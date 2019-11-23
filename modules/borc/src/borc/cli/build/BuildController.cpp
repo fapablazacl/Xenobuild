@@ -62,13 +62,13 @@ namespace borc {
 
         std::cout << "Building configuration " << configurationData.currentBuildConfiguration.get().computeIdentifier() << " ..." << std::endl;
 
-        auto toolchainFactory = ToolchainFactory::create();
+        auto toolchainFactory = ToolchainFactory::create(".");
         auto toolchain = toolchainFactory->createToolchain(configurationData.currentBuildConfiguration.get().toolchainId);
 
         BuildServiceImpl buildService {
             baseFolderPath, 
             outputPath / configurationData.currentBuildConfiguration.get().computeIdentifier(), 
-            toolchain.get(), 
+            toolchain, 
             buildCache.get(), 
             &loggingService
         };

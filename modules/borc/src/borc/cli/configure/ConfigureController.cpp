@@ -55,14 +55,14 @@ namespace borc {
 
         std::cout << "Configuring build: type=" << options.buildType << ", toolchain=" << options.toolchain.get() << std::endl;
 
-        auto factory = ToolchainFactory::create();
+        auto factory = ToolchainFactory::create(".");
         auto toolchain = factory->createToolchain(options.toolchain.get());
 
         // setup the configuration requested by the user
         auto config = BuildConfiguration{};
         config.toolchainId = options.toolchain.get();
         config.arch = this->detectArchitecture();
-        config.buildTypes = this->generateBuildTypes(toolchain.get(), options.buildType);
+        config.buildTypes = this->generateBuildTypes(toolchain, options.buildType);
         config.version = this->detectToolchainVersion();
 
         std::cout << "Detected compiler version: " << std::string(config.version) << std::endl;

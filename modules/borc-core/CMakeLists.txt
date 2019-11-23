@@ -12,6 +12,8 @@ find_package(nlohmann_json REQUIRED)
 
 set (src_borc_core
     "src/borc/core/DependencyGraph.hpp"
+    "src/borc/core/Core.hpp"
+    "src/borc/core/Core.cpp"
 )
 
 set (src_borc_common

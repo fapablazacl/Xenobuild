@@ -5,16 +5,18 @@
 #include <memory>
 #include <string>
 
+#include <boost/filesystem/path.hpp>
+
 namespace borc {
     class Toolchain;
     class ToolchainFactory {
     public:
         virtual ~ToolchainFactory() {}
 
-        virtual std::unique_ptr<Toolchain> createToolchain(const std::string &toolchainId) = 0;
+        virtual Toolchain* createToolchain(const std::string &toolchainId) = 0;
 
     public:
-        static std::unique_ptr<ToolchainFactory> create();
+        static std::unique_ptr<ToolchainFactory> create(const boost::filesystem::path &toolchainDefinitionPath);
     };
 }
 

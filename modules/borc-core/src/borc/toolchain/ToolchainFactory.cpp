@@ -1,7 +1,10 @@
 
-#include <borc/toolchain/ToolchainFactory.hpp>
+#include "ToolchainFactory.hpp"
 
 #include <stdexcept>
+
+#include <borc/services/FileServiceImpl.hpp>
+#include <borc/services/ToolchainServiceImpl.hpp>
 #include <borc/toolchain/Compiler.hpp>
 #include <borc/toolchain/Linker.hpp>
 #include <borc/toolchain/SourceChecker.hpp>
@@ -15,27 +18,39 @@
 namespace borc {
     class ToolchainFactoryImpl : public ToolchainFactory {
     public:
-        ToolchainFactoryImpl() {}
+        explicit ToolchainFactoryImpl(const boost::filesystem::path &toolchainDefinitionPath) {
+            this->toolchainDefinitionPath = toolchainDefinitionPath;
+
+            FileServiceImpl fileService;
+            ToolchainServiceImpl toolchainService(&fileService);
+
+            // TODO: Add auto discovery
+            const std::vector<std::string> toolchainIds = {
+                "vc", "gcc"
+            };
+
+            for (const std::string &toolchainId : toolchainIds) {
+                const auto toolchainPath = toolchainDefinitionPath / toolchainId;
+
+                toolchainMap.insert({toolchainId, toolchainService.createToolchain(toolchainPath)});
+            }
+        }
 
         virtual ~ToolchainFactoryImpl() {}
 
-        virtual std::unique_ptr<Toolchain> createToolchain(const std::string &toolchainId) override {
-            ServiceFactory *serviceFactory = nullptr;
-
-            if (toolchainId == "gcc") {
-                serviceFactory = &serviceFactoryGCC;
-            } else if (toolchainId == "vc") {
-                serviceFactory = &serviceFactoryVC;
-            }
-
-            if (! serviceFactory) {
-                throw std::runtime_error("Unknown toolchain: " + toolchainId);
-            }
-
-            return std::make_unique<ToolchainImpl>(serviceFactory->getCompilers(), serviceFactory->getLinkers());
+        virtual Toolchain* createToolchain(const std::string &toolchainId) override {
+            if (auto toolchainIt = toolchainMap.find(toolchainId); toolchainIt != toolchainMap.end()) {
+                toolchainIt->second.get();
+            } 
+            
+            throw std::runtime_error("Unknown toolchain: " + toolchainId);
         }
 
     private:
+        boost::filesystem::path toolchainDefinitionPath;
+
+        std::map<std::string, std::unique_ptr<Toolchain>> toolchainMap;
+
         ServiceFactoryVC serviceFactoryVC {
             "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\\Tools\\MSVC\\14.16.27023\\",
             "C:\\Program Files (x86)\\Windows Kits\\10\\"
@@ -47,7 +62,7 @@ namespace borc {
         };
     };
 
-    std::unique_ptr<ToolchainFactory> ToolchainFactory::create() {
-        return std::make_unique<ToolchainFactoryImpl>();
+    std::unique_ptr<ToolchainFactory> ToolchainFactory::create(const boost::filesystem::path &toolchainDefinitionPath) {
+        return std::make_unique<ToolchainFactoryImpl>(toolchainDefinitionPath);
     }
 }
