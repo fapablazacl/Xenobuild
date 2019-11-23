@@ -10,7 +10,7 @@
 #include <borc/services/FileServiceImpl.hpp>
 #include <borc/services/BuildServiceImpl.hpp>
 #include <borc/services/LoggingServiceImpl.hpp>
-#include <borc/toolchain/ToolchainFactory.hpp>
+#include <borc/toolchain/ToolchainFactoryImpl.hpp>
 #include <borc/toolchain/Toolchain.hpp>
 #include <borc/build/BuildCache.hpp>
 #include <borc/build/ConfigurationService.hpp>
@@ -62,7 +62,7 @@ namespace borc {
 
         std::cout << "Building configuration " << configurationData.currentBuildConfiguration.get().computeIdentifier() << " ..." << std::endl;
 
-        auto toolchainFactory = ToolchainFactory::create(".");
+        auto toolchainFactory = std::make_unique<ToolchainFactoryImpl>(".");
         auto toolchain = toolchainFactory->createToolchain(configurationData.currentBuildConfiguration.get().toolchainId);
 
         BuildServiceImpl buildService {

@@ -6,7 +6,7 @@
 #include <boost/filesystem.hpp>
 #include <borc/model/Version.hpp>
 #include <borc/toolchain/Toolchain.hpp>
-#include <borc/toolchain/ToolchainFactory.hpp>
+#include <borc/toolchain/ToolchainFactoryImpl.hpp>
 #include <borc/build/BuildCache.hpp>
 #include <borc/build/ConfigurationService.hpp>
 #include <borc/model/Package.hpp>
@@ -55,7 +55,7 @@ namespace borc {
 
         std::cout << "Configuring build: type=" << options.buildType << ", toolchain=" << options.toolchain.get() << std::endl;
 
-        auto factory = ToolchainFactory::create(".");
+        auto factory = std::make_unique<ToolchainFactoryImpl>(".");
         auto toolchain = factory->createToolchain(options.toolchain.get());
 
         // setup the configuration requested by the user
