@@ -55,7 +55,7 @@ namespace borc {
 
         std::cout << "Configuring build: type=" << options.buildType << ", toolchain=" << options.toolchain.get() << std::endl;
 
-        auto factory = std::make_unique<ToolchainFactoryImpl>(".");
+        auto factory = std::make_unique<ToolchainFactoryImpl>("toolchain");
         auto toolchain = factory->createToolchain(options.toolchain.get());
 
         // setup the configuration requested by the user

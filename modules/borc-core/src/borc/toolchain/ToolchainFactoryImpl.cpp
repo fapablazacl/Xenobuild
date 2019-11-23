@@ -21,7 +21,7 @@ namespace borc {
         };
 
         for (const std::string &toolchainId : toolchainIds) {
-            const auto toolchainPath = toolchainDefinitionPath / toolchainId;
+            const auto toolchainPath = "./etc/borc" / toolchainDefinitionPath / toolchainId;
 
             toolchainMap.insert({toolchainId, toolchainService.createToolchain(toolchainPath)});
         }
@@ -31,9 +31,9 @@ namespace borc {
 
     Toolchain* ToolchainFactoryImpl::createToolchain(const std::string &toolchainId) {
         if (auto toolchainIt = toolchainMap.find(toolchainId); toolchainIt != toolchainMap.end()) {
-            toolchainIt->second.get();
-        } 
-        
+            return toolchainIt->second.get();
+        }  
+
         throw std::runtime_error("Unknown toolchain: " + toolchainId);
     }
 }
