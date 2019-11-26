@@ -10,6 +10,7 @@
 #include <borc/build/BuildCache.hpp>
 #include <borc/build/ConfigurationService.hpp>
 #include <borc/model/Package.hpp>
+#include <borc/model/PackageRegistry.hpp>
 #include <borc/model/Module.hpp>
 #include <borc/services/FileServiceImpl.hpp>
 #include <borc/services/PackageServiceImpl.hpp>
@@ -24,6 +25,8 @@ namespace borc {
 
             return;
         }
+
+        PackageRegistry packageRegistry;
 
         const boost::filesystem::path basePackagePath = options.sourcePath 
             ? options.sourcePath.get()
@@ -72,7 +75,7 @@ namespace borc {
         // construct the package with the current toolchain, in order grab dependency information
         const FileServiceImpl fileService;
         auto packageService = std::make_unique<PackageServiceImpl>(&fileService);
-        auto package = packageService->createPackage(basePackagePath);
+        auto package = packageService->createPackage(basePackagePath, &packageRegistry);
 
         configurationService.saveAllBuildConfigurations();
     }

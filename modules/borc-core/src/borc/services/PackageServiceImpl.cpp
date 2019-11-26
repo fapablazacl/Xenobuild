@@ -26,7 +26,7 @@ namespace borc {
         const PackageEntity packageEntity = this->loadPackageEntity(packageBaseFolder);
         const std::vector<ModuleEntity> moduleEntities = this->loadModuleEntities(packageBaseFolder, packageEntity);
         
-        std::unique_ptr<Package> package = this->createPackageImpl(packageEntity, moduleEntities);
+        std::unique_ptr<Package> package = this->createPackageImpl(packageEntity, moduleEntities, packageRegistry);
 
         return package;
     }

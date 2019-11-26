@@ -7,6 +7,7 @@
 #include <boost/graph/graphviz.hpp>
 #include <borc/model/Module.hpp>
 #include <borc/model/Package.hpp>
+#include <borc/model/PackageRegistry.hpp>
 #include <borc/services/FileServiceImpl.hpp>
 #include <borc/services/BuildServiceImpl.hpp>
 #include <borc/services/LoggingServiceImpl.hpp>
@@ -31,6 +32,8 @@ namespace borc {
             return;
         }
 
+        PackageRegistry packageRegistry;
+
         const boost::filesystem::path baseFolderPath = options.sourcePath 
             ? options.sourcePath.get()
             : boost::filesystem::current_path();
@@ -42,7 +45,7 @@ namespace borc {
         const FileServiceImpl fileService;
 
         auto packageService = std::make_unique<PackageServiceImpl>(&fileService);
-        auto package = packageService->createPackage(baseFolderPath);
+        auto package = packageService->createPackage(baseFolderPath, &packageRegistry);
 
         LoggingServiceImpl loggingService {"BuildServiceImpl"};
 
