@@ -16,11 +16,11 @@
         {
             "common": true,
             "prebuilt": true,
-            "includePath": "${BoostPath}/${BoostVersion}/include",
-            "libraryPath": "${BoostPath}/${BoostVersion}/lib"
+            "includePath": ["${BoostPath}/${BoostVersion}/include"],
+            "libraryPath": ["${BoostPath}/${BoostVersion}/lib"]
         },
-        { "name": "filesystem", "library": "boost_filesystem"}, 
-        { "name": "system", "library": "boost_system" }, 
-        { "name": "program_options", "library": "boost_program_options" }
+        { "name": "filesystem", "library": ["boost_filesystem"]}, 
+        { "name": "system", "library": ["boost_system"] }, 
+        { "name": "program_options", "library": ["boost_program_options"] }
     ]
 }

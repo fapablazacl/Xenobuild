@@ -20,14 +20,27 @@ namespace borc {
             typedef void DefaultType;
         };
 
+        struct LibraryPath {
+            std::string arch;
+            std::string path;
+
+            LibraryPath() {}
+
+            explicit LibraryPath(const std::string &path) {
+                this->path = path;
+            }
+
+            typedef std::string DefaultType;
+        };
+
         struct Module {
             bool common;
             bool prebuilt;
-            std::string includePath;
-            std::string libraryPath;
+            std::vector<std::string> includePath;
+            std::vector<LibraryPath> libraryPath;
 
             std::string name;
-            std::string library;
+            std::vector<std::string> library;
 
             typedef void DefaultType;
         };
@@ -45,6 +58,7 @@ namespace borc {
     };
 }
 
+BOOST_HANA_ADAPT_STRUCT(borc::PackageEntity::LibraryPath, arch, path);
 BOOST_HANA_ADAPT_STRUCT(borc::PackageEntity::Required, name, type, desc);
 BOOST_HANA_ADAPT_STRUCT(borc::PackageEntity::Module, common, prebuilt, includePath, libraryPath, name, library);
 BOOST_HANA_ADAPT_STRUCT(borc::PackageEntity, name, description, required, language, modulePaths, packageSearchPaths, modules);
