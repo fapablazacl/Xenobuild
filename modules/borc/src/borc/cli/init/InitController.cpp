@@ -39,7 +39,7 @@ namespace borc {
         PackageEntity packageEntity;
         packageEntity.name = options.packageName;
         packageEntity.description = "TODO: Add the description of the " + options.packageName + " package.";
-        packageEntity.modules = {
+        packageEntity.modulePaths = {
             "modules/" + moduleEntity.name
         };
 

@@ -1,7 +1,7 @@
 {
     "name": "felide",
     "description": "A modern IDE built on C++ & <3",
-    "modules": [
+    "modulePaths": [
         "modules/borc-core",
         "modules/borc"
     ],

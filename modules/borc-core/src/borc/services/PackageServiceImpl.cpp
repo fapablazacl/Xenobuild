@@ -67,7 +67,7 @@ namespace borc {
                 throw std::runtime_error(msg.c_str());
             }
 
-            module->setPath(boost::filesystem::path{packageEntity.modules[i]});
+            module->setPath(boost::filesystem::path{packageEntity.modulePaths[i]});
 
             std::vector<boost::filesystem::path> includePaths;
             std::vector<boost::filesystem::path> sourcePaths;
@@ -156,7 +156,7 @@ namespace borc {
     std::vector<ModuleEntity> PackageServiceImpl::loadModuleEntities(const boost::filesystem::path &packagePath, const PackageEntity &packageEntity) const {
         std::vector<ModuleEntity> moduleEntities;
 
-        for (const std::string &modulePartialPath : packageEntity.modules) {
+        for (const std::string &modulePartialPath : packageEntity.modulePaths) {
             const boost::filesystem::path moduleFilePath = packagePath / modulePartialPath / "module.borc.json";
 
             if (! checkValidBorcFile(moduleFilePath)) {

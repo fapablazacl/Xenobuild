@@ -15,13 +15,13 @@ namespace borc {
         std::string name;
         std::string description;
         LanguageEntity language;
-        std::vector<std::string> modules;
+        std::vector<std::string> modulePaths;
         std::vector<std::string> packageSearchPaths;
 
         typedef void DefaultType;
     };
 }
 
-BOOST_HANA_ADAPT_STRUCT(borc::PackageEntity, name, description, language, modules, packageSearchPaths);
+BOOST_HANA_ADAPT_STRUCT(borc::PackageEntity, name, description, language, modulePaths, packageSearchPaths);
 
 #endif
