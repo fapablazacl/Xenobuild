@@ -120,9 +120,9 @@ namespace borc {
 
                         msg += "Required dependency ";
                         msg += dependency;
-                        msg += "for module ";
+                        msg += " for module ";
                         msg += module->getName();
-                        msg += "couldn't be found.";
+                        msg += " couldn't be found.";
 
                         throw std::runtime_error(msg);
                     }
