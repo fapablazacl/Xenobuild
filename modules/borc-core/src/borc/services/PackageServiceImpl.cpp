@@ -4,6 +4,7 @@
 #include <map>
 #include <boost/filesystem.hpp>
 #include <borc/model/Package.hpp>
+#include <borc/model/PackageRegistry.hpp>
 #include <borc/model/Module.hpp>
 #include <borc/model/Package.hpp>
 #include <borc/parsing/JSONDeserializer.hpp>
@@ -19,7 +20,7 @@ namespace borc {
     }
 
 
-    std::unique_ptr<Package> PackageServiceImpl::createPackage(const boost::filesystem::path &packageBaseFolder) const {
+    std::unique_ptr<Package> PackageServiceImpl::createPackage(const boost::filesystem::path &packageBaseFolder, const PackageRegistry *packageRegistry) const {
         FileServiceImpl service;
 
         const PackageEntity packageEntity = this->loadPackageEntity(packageBaseFolder);
@@ -31,7 +32,7 @@ namespace borc {
     }
 
 
-    std::unique_ptr<Package> PackageServiceImpl::createPackageImpl(const PackageEntity &packageEntity, const std::vector<ModuleEntity> &moduleEntities) const {
+    std::unique_ptr<Package> PackageServiceImpl::createPackageImpl(const PackageEntity &packageEntity, const std::vector<ModuleEntity> &moduleEntities, const PackageRegistry *packageRegistry) const {
         // now we are ready to create the package and modules instances
         auto package = std::make_unique<Package>(packageEntity.name);
 
@@ -90,7 +91,7 @@ namespace borc {
             const ModuleEntity &moduleEntity = moduleEntities[i];
             Module *module = modules[i];
 
-            for (const std::string dependency :  moduleEntity.dependencies) {
+            for (const std::string dependency : moduleEntity.dependencies) {
                 // TODO: Expand the dependency solving from the (future) build context object ...
                 bool found = false;
                 for (const Module *dependentModule : modules) {
@@ -104,13 +105,27 @@ namespace borc {
                     }
                 }
 
+                // Handle the dependency as a external one.
                 if (! found) {
-                    std::string msg;
+                    auto dependentModule = packageRegistry->findModule(dependency);
 
-                    msg += "Required dependency '" + dependency + "' ";
-                    msg += "for module '" + module->getName() + "' couldn't be found.";
+                    if (dependentModule) {
+                        auto dependencies = module->getDependencies();
+                        dependencies.push_back(dependentModule);
+                        module->setDependencies(dependencies);
 
-                    throw std::runtime_error(msg);
+                        found = true;
+                    } else {
+                        std::string msg = "";
+
+                        msg += "Required dependency ";
+                        msg += dependency;
+                        msg += "for module ";
+                        msg += module->getName();
+                        msg += "couldn't be found.";
+
+                        throw std::runtime_error(msg);
+                    }
                 }
             }
         }

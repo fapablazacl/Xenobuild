@@ -16,11 +16,11 @@ namespace borc {
      * 
      * Has all the supplemental data needed to build the current module, like the currently parsed and referenced software modules.
      */
-    class Context {
+    class PackageRegistry {
     public:
-        Context();
+        PackageRegistry();
 
-        ~Context();
+        ~PackageRegistry();
 
         void registerPackage(const Package *package);
 

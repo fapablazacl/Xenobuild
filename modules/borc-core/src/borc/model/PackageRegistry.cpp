@@ -1,14 +1,14 @@
 
-#include <borc/model/Context.hpp>
+#include <borc/model/PackageRegistry.hpp>
 #include <borc/model/Module.hpp>
 #include <borc/model/Package.hpp>
 
 namespace borc {
-    Context::Context() {}
+    PackageRegistry::PackageRegistry() {}
 
-    Context::~Context() {}
+    PackageRegistry::~PackageRegistry() {}
 
-    void Context::registerPackage(const Package *package) {
+    void PackageRegistry::registerPackage(const Package *package) {
         packages.push_back(package);
 
         for (const Module *module : package->getModules()) {
@@ -17,16 +17,16 @@ namespace borc {
         }
     }
 
-    void Context::unregisterPackage(const Package *package) {
+    void PackageRegistry::unregisterPackage(const Package *package) {
         // TODO: Add implementation
-        throw std::runtime_error("Context::unregisterPackage: Not implemented");
+        throw std::runtime_error("PackageRegistry::unregisterPackage: Not implemented");
     }
 
-    std::string Context::getModuleIdentifier(const Module *module) const {
+    std::string PackageRegistry::getModuleIdentifier(const Module *module) const {
         return module->getPackage()->getName() + "/" + module->getName();
     }
 
-    const Module* Context::findModule(const std::string &identifier) const {
+    const Module* PackageRegistry::findModule(const std::string &identifier) const {
         auto it = moduleMap.find(identifier);
 
         if (it == moduleMap.end()) {

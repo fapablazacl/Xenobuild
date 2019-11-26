@@ -16,10 +16,10 @@ namespace borc {
     public:
         PackageServiceImpl(const FileService *fileService);
 
-        virtual std::unique_ptr<Package> createPackage(const boost::filesystem::path &packageFilePath) const override;
+        virtual std::unique_ptr<Package> createPackage(const boost::filesystem::path &packageFilePath, const PackageRegistry *packageRegistry) const override;
 
     private:
-        std::unique_ptr<Package> createPackageImpl(const PackageEntity &packageEntity, const std::vector<ModuleEntity> &moduleEntities) const;
+        std::unique_ptr<Package> createPackageImpl(const PackageEntity &packageEntity, const std::vector<ModuleEntity> &moduleEntities, const PackageRegistry *packageRegistry) const;
 
         PackageEntity loadPackageEntity(const boost::filesystem::path &packagePath) const;
 
