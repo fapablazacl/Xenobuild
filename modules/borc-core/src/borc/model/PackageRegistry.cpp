@@ -8,23 +8,20 @@ namespace borc {
 
     PackageRegistry::~PackageRegistry() {}
 
-    void PackageRegistry::registerPackage(const Package *package) {
-        packages.push_back(package);
-
+    void PackageRegistry::registerPackage(std::unique_ptr<Package> package) {
         for (const Module *module : package->getModules()) {
             const std::string key = this->getModuleIdentifier(module);
             moduleMap.insert({key, module});
         }
+
+        packages.push_back(std::move(package));
     }
 
-    void PackageRegistry::unregisterPackage(const Package *package) {
-        // TODO: Add implementation
-        throw std::runtime_error("PackageRegistry::unregisterPackage: Not implemented");
-    }
 
     std::string PackageRegistry::getModuleIdentifier(const Module *module) const {
         return module->getPackage()->getName() + "/" + module->getName();
     }
+
 
     const Module* PackageRegistry::findModule(const std::string &identifier) const {
         auto it = moduleMap.find(identifier);

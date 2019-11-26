@@ -13,6 +13,9 @@ namespace borc {
     struct BuildType;
     class Toolchain;
 
+    class PackageRegistry;
+    class PackageService;
+
     class ConfigureController : public ControllerStub<ConfigureControllerOptions> {
     public:
         virtual ~ConfigureController();
@@ -25,6 +28,8 @@ namespace borc {
         std::string detectArchitecture() const;
 
         std::set<BuildType> generateBuildTypes(const Toolchain *, const std::string &buildTypeValue) const;
+
+        std::unique_ptr<PackageRegistry> createPackageRegistry(PackageService *packageService, const boost::filesystem::path &packageRegistryPath) const;
     };
 }
 

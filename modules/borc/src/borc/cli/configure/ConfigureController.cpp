@@ -16,6 +16,8 @@
 #include <borc/services/PackageServiceImpl.hpp>
 
 namespace borc {
+    const std::string PACKAGE_SEARCH_PATH = "./etc/borc/packages";
+    
     ConfigureController::~ConfigureController() {}
 
 
@@ -25,8 +27,6 @@ namespace borc {
 
             return;
         }
-
-        PackageRegistry packageRegistry;
 
         const boost::filesystem::path basePackagePath = options.sourcePath 
             ? options.sourcePath.get()
@@ -75,7 +75,8 @@ namespace borc {
         // construct the package with the current toolchain, in order grab dependency information
         const FileServiceImpl fileService;
         auto packageService = std::make_unique<PackageServiceImpl>(&fileService);
-        auto package = packageService->createPackage(basePackagePath, &packageRegistry);
+        auto packageRegistry = this->createPackageRegistry(packageService.get(), PACKAGE_SEARCH_PATH);
+        auto package = packageService->createPackage(basePackagePath, packageRegistry.get());
 
         configurationService.saveAllBuildConfigurations();
     }
@@ -83,6 +84,7 @@ namespace borc {
 
     Version ConfigureController::detectToolchainVersion() const {
         // 1. Compile C++ version detector
+        // TODO: Use a internally-generated
         if (std::system("gcc other/CXXCompilerVersionDetector.cpp -O0 -oother/CXXCompilerVersionDetector") != 0) {
             throw std::runtime_error("Failed CXXCompilerVersionDetector compilation.");
         }
@@ -129,7 +131,7 @@ namespace borc {
      */
     std::set<BuildType> ConfigureController::generateBuildTypes(const Toolchain *, const std::string &buildTypeValue) const {
         if (buildTypeValue == "all") {
-            return { BuildType{"Debug"},BuildType{"Release"} };
+            return { BuildType{"Debug"}, BuildType{"Release"} };
         } else {
             return { BuildType{buildTypeValue} };
         }
@@ -142,5 +144,21 @@ namespace borc {
      */
     std::string ConfigureController::detectArchitecture() const {
         return "x86_64";
+    }
+
+
+    std::unique_ptr<PackageRegistry> ConfigureController::createPackageRegistry(PackageService *packageService, const boost::filesystem::path &packageRegistryPath) const {
+        using boost::filesystem::directory_entry;
+        using boost::filesystem::directory_iterator;
+
+        auto packageRegistry = std::make_unique<PackageRegistry>();
+
+        for (directory_entry &entry : directory_iterator{packageRegistryPath}) {
+            auto package = packageService->createPackage(entry.path(), nullptr);
+
+            packageRegistry->registerPackage(std::move(package));
+        }
+
+        return packageRegistry;
     }
 }

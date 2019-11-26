@@ -1,17 +1,18 @@
 
-#ifndef __BORC_MODEL_CONTEXT_HPP__
-#define __BORC_MODEL_CONTEXT_HPP__
+#ifndef __BORC_MODEL_PACKAGEREGISTRY_HPP__
+#define __BORC_MODEL_PACKAGEREGISTRY_HPP__
 
 #include <map>
 #include <vector>
 #include <string>
+#include <memory>
 
 namespace borc {
     class Package;
     class Module;
 
     /**
-     * @brief The execution context of the build system. 
+     * @brief Contains a package registry, for storing all the stock packages offered by BORC.
      * @todo Add support for package and module versioning
      * 
      * Has all the supplemental data needed to build the current module, like the currently parsed and referenced software modules.
@@ -22,9 +23,7 @@ namespace borc {
 
         ~PackageRegistry();
 
-        void registerPackage(const Package *package);
-
-        void unregisterPackage(const Package *package);
+        void registerPackage(std::unique_ptr<Package> package);
 
         const Module* findModule(const std::string &identifier) const;
 
@@ -32,7 +31,7 @@ namespace borc {
         std::string getModuleIdentifier(const Module *module) const;
 
     private:
-        std::vector<const Package*> packages;
+        std::vector<std::unique_ptr<Package>> packages;
         std::map<std::string, const Module*> moduleMap;
     };
 }

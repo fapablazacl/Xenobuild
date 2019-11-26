@@ -106,7 +106,7 @@ namespace borc {
                 }
 
                 // Handle the dependency as a external one.
-                if (! found) {
+                if (! found && packageRegistry) {
                     auto dependentModule = packageRegistry->findModule(dependency);
 
                     if (dependentModule) {
@@ -115,17 +115,19 @@ namespace borc {
                         module->setDependencies(dependencies);
 
                         found = true;
-                    } else {
-                        std::string msg = "";
-
-                        msg += "Required dependency ";
-                        msg += dependency;
-                        msg += " for module ";
-                        msg += module->getName();
-                        msg += " couldn't be found.";
-
-                        throw std::runtime_error(msg);
                     }
+                }
+
+                if (! found) {
+                    std::string msg = "";
+
+                    msg += "Required dependency ";
+                    msg += dependency;
+                    msg += " for module ";
+                    msg += module->getName();
+                    msg += " couldn't be found.";
+
+                    throw std::runtime_error(msg);
                 }
             }
         }
