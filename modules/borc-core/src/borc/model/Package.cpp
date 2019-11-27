@@ -20,13 +20,4 @@ namespace borc {
 
         return result;
     }
-
-
-    Module* Package::createModule() {
-        auto module = new Module(this);
-
-        modules.emplace_back(module);
-
-        return module;
-    }
 }

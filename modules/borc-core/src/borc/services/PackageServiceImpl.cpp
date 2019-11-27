@@ -49,8 +49,7 @@ namespace borc {
             auto package = std::make_unique<Package>(packageEntity.name);
 
             for (const auto modulePackage : packageEntity.modules) {
-
-                Module *module = package->createModule();
+                auto module = package->createModule<Module>();
 
                 module->setName(modulePackage.name);
                 /*
@@ -71,16 +70,16 @@ namespace borc {
 
         // available module types for C/C++ projects
         const std::map<std::string, Module::Type> moduleTypeMap = {
-            {"application/cli", Module::Type{"application", "cli"} },
-            {"application/gui", Module::Type{"application", "gui"} },
-            {"library/static", Module::Type{"library", "static"} },
-            {"library/dynamic", Module::Type{"library", "dynamic"} }
+            { "application/cli", Module::Type{"application", "cli"} },
+            { "application/gui", Module::Type{"application", "gui"} },
+            { "library/static", Module::Type{"library", "static"} },
+            { "library/dynamic", Module::Type{"library", "dynamic"} }
         };
 
         for (int i=0; i<moduleEntities.size(); i++) {
             const ModuleEntity &moduleEntity = moduleEntities[i];
 
-            Module *module = package->createModule();
+            auto module = package->createModule<Module>();
 
             module->setName(moduleEntity.name);
 

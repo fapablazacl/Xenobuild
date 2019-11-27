@@ -22,7 +22,14 @@ namespace borc {
 
         std::vector<Module*> getModules() const;
 
-        Module* createModule();
+        template<typename ModuleImpl>
+        ModuleImpl* createModule() {
+            auto module = new ModuleImpl(this);
+
+            modules.emplace_back(module);
+
+            return module;
+        }
 
     private:
         std::string name;
