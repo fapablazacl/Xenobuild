@@ -1,5 +1,7 @@
 
-#include <borc/model/PackageRegistry.hpp>
+#include "PackageRegistry.hpp"
+
+#include <iostream>
 #include <borc/model/Module.hpp>
 #include <borc/model/Package.hpp>
 
@@ -11,6 +13,9 @@ namespace borc {
     void PackageRegistry::registerPackage(std::unique_ptr<Package> package) {
         for (const Module *module : package->getModules()) {
             const std::string key = this->getModuleIdentifier(module);
+
+            std::cout << "Registered " << key << " module." << std::endl;
+
             moduleMap.insert({key, module});
         }
 
@@ -27,8 +32,12 @@ namespace borc {
         auto it = moduleMap.find(identifier);
 
         if (it == moduleMap.end()) {
+            std::cout << identifier << " module  not found" << std::endl;
+
             return nullptr;
         }
+
+        std::cout << identifier << " module found!" << std::endl;
 
         return it->second;
     }

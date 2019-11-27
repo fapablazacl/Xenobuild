@@ -21,6 +21,7 @@
         },
         { "name": "filesystem", "library": ["boost_filesystem"]}, 
         { "name": "system", "library": ["boost_system"] }, 
-        { "name": "program_options", "library": ["boost_program_options"] }
+        { "name": "program_options", "library": ["boost_program_options"] },
+        { "name": "process", "library": ["boost_process"] }
     ]
 }

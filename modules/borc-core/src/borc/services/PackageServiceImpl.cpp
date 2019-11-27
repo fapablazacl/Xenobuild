@@ -33,7 +33,7 @@ namespace borc {
             return package;
         } else {
             /*
-            // TODO: Put this validation only when this package is beign imported
+            // TODO: Put this validation in Configuration Time!
             if (packageEntity.required.size() > 0) {
                 std::string msg;
 
@@ -49,6 +49,7 @@ namespace borc {
             auto package = std::make_unique<Package>(packageEntity.name);
 
             for (const auto modulePackage : packageEntity.modules) {
+                // TODO: Process "common" modules (serves as a set of base definitions)
                 auto module = package->createModule<Module>();
 
                 // module name
