@@ -160,7 +160,7 @@ namespace borc {
             const boost::filesystem::path moduleFilePath = packagePath / modulePartialPath / "module.borc.json";
 
             if (! checkValidBorcFile(moduleFilePath)) {
-                throw std::runtime_error("There is no module build file on this folder '" + moduleFilePath.string() + "'");
+                throw std::runtime_error("There is no module build file on this folder '" + (packagePath / modulePartialPath).string() + "'");
             }
 
             auto moduleJsonContent = fileService->load(moduleFilePath.string());
