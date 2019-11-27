@@ -2,6 +2,7 @@
 #include "PackageServiceImpl.hpp"
 
 #include <map>
+#include <iostream>
 #include <boost/filesystem.hpp>
 #include <borc/model/Package.hpp>
 #include <borc/model/PackageRegistry.hpp>
@@ -21,14 +22,46 @@ namespace borc {
 
 
     std::unique_ptr<Package> PackageServiceImpl::createPackage(const boost::filesystem::path &packageBaseFolder, const PackageRegistry *packageRegistry) const {
-        FileServiceImpl service;
-
         const PackageEntity packageEntity = this->loadPackageEntity(packageBaseFolder);
-        const std::vector<ModuleEntity> moduleEntities = this->loadModuleEntities(packageBaseFolder, packageEntity);
-        
-        std::unique_ptr<Package> package = this->createPackageImpl(packageEntity, moduleEntities, packageRegistry);
 
-        return package;
+        if (packageEntity.modulePaths.size() > 0) {
+            std::cout << "Creating package " << packageEntity.name << " ..." << std::endl;
+
+            const std::vector<ModuleEntity> moduleEntities = this->loadModuleEntities(packageBaseFolder, packageEntity);
+            std::unique_ptr<Package> package = this->createPackageImpl(packageEntity, moduleEntities, packageRegistry);
+
+            return package;
+        } else {
+            /*
+            // TODO: Put this validation only when this package is beign imported
+            if (packageEntity.required.size() > 0) {
+                std::string msg;
+
+                msg += "This package requires the following variables to be defined:\n";
+                for (const auto &variable : packageEntity.required) {
+                    msg += "    " + variable.name + ":" + variable.type + "\n";
+                }
+
+                throw std::runtime_error(msg);
+            }
+            */
+
+            auto package = std::make_unique<Package>(packageEntity.name);
+
+            for (const auto modulePackage : packageEntity.modules) {
+
+                Module *module = package->createModule();
+
+                module->setName(modulePackage.name);
+                /*
+                module->setIncludePaths();
+                module->setLibraryPaths();
+                module->setLibrary();
+                */
+            }
+
+            return package;
+        }
     }
 
 
@@ -92,7 +125,7 @@ namespace borc {
             Module *module = modules[i];
 
             for (const std::string dependency : moduleEntity.dependencies) {
-                // TODO: Expand the dependency solving from the (future) build context object ...
+                // Solve the dependency with the modules inside the package
                 bool found = false;
                 for (const Module *dependentModule : modules) {
                     if (dependency == dependentModule->getName()) {
@@ -105,7 +138,7 @@ namespace borc {
                     }
                 }
 
-                // Handle the dependency as a external one.
+                // Solve the dependency as a external one
                 if (! found && packageRegistry) {
                     auto dependentModule = packageRegistry->findModule(dependency);
 
