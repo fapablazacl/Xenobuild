@@ -99,6 +99,22 @@ namespace borc {
 
         void setDependencies(const std::vector<const Module*> &dependentModules);
 
+        bool hasSources() const {
+            return sources.size() > 0;
+        }
+
+        void setLibraryPaths(const std::vector<boost::filesystem::path> &libraryPaths);
+
+        std::vector<boost::filesystem::path> getLibraryPaths() const {
+            return libraryPaths;
+        }
+
+        void setLibraries(const std::vector<std::string> &libraries);
+
+        std::vector<std::string> getLibraries() const {
+            return libraries;
+        }
+
     private:
         Package *package = nullptr;
         std::string name;
@@ -112,6 +128,9 @@ namespace borc {
         std::vector<boost::filesystem::path> includePaths;
 
         std::vector<std::unique_ptr<Source>> sources;
+
+        std::vector<boost::filesystem::path> libraryPaths;
+        std::vector<std::string> libraries;
     };
 }
 

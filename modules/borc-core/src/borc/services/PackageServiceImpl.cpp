@@ -51,12 +51,33 @@ namespace borc {
             for (const auto modulePackage : packageEntity.modules) {
                 auto module = package->createModule<Module>();
 
+                // module name
                 module->setName(modulePackage.name);
-                /*
-                module->setIncludePaths();
-                module->setLibraryPaths();
-                module->setLibrary();
-                */
+
+                // include paths
+                std::vector<boost::filesystem::path> includePaths;
+                std::transform(
+                    modulePackage.includePath.begin(), 
+                    modulePackage.includePath.end(), 
+                    std::back_inserter(includePaths), [](const std::string &includePath) {
+                        return boost::filesystem::path(includePath);
+                });
+
+                module->setIncludePaths(includePaths);
+
+                // library path
+                std::vector<boost::filesystem::path> libraryPaths;
+                std::transform(
+                    modulePackage.libraryPath.begin(), 
+                    modulePackage.libraryPath.end(), 
+                    std::back_inserter(libraryPaths), [](const PackageEntity::LibraryPath &libraryPath) {
+                        return boost::filesystem::path(libraryPath.path);
+                });
+
+                module->setLibraryPaths(libraryPaths);
+
+                // import library
+                module->setLibraries(modulePackage.library);
             }
 
             return package;

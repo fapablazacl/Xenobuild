@@ -86,4 +86,12 @@ namespace borc {
 
         return result;
     }
+
+    void Module::setLibraryPaths(const std::vector<boost::filesystem::path> &libraryPaths) {
+        this->libraryPaths = libraryPaths;
+    }
+
+    void Module::setLibraries(const std::vector<std::string> &libraries) {
+        this->libraries = libraries;
+    }
 }
