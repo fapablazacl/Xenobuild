@@ -1,22 +1,27 @@
 
 #include "ConfigureControllerOptions.hpp"
 
+#include <iostream>
 #include <boost/program_options.hpp>
+#include <boost/algorithm/string.hpp>
 
 namespace borc {
     ConfigureControllerOptions ConfigureControllerOptions::parse(int argc, char **argv) {
-        boost::program_options::options_description desc("Allowed options for Configure subcommand");
+        namespace po = boost::program_options;
+
+        po::options_description desc("Allowed options for Configure subcommand");
 
         desc.add_options()
             ("help", "produce this message")
-            ("build-type", boost::program_options::value<std::string>(), "set build type (debug, release, all)")
-            ("toolchain", boost::program_options::value<std::string>(), "set toolchain (gcc, vc, clang)")
-            ("search-path", boost::program_options::value<std::string>(), "set current search path directory")
+            ("build-type", po::value<std::string>(), "set build type (debug, release, all)")
+            ("toolchain", po::value<std::string>(), "set toolchain (gcc, vc, clang)")
+            ("search-path", po::value<std::string>(), "set current search path directory")
+            ("var", po::value<std::vector<std::string>>(), "define required variable used by some packages")
         ;
 
-        boost::program_options::variables_map vm;
-        boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
-        boost::program_options::notify(vm);
+        po::variables_map vm;
+        po::store(parse_command_line(argc, argv, desc), vm);
+        po::notify(vm);
 
         ConfigureControllerOptions options;
 
@@ -41,6 +46,17 @@ namespace borc {
 
         if (vm.count("search-path")) {
             options.searchPaths.push_back(vm["search-path"].as<std::string>());
+        }
+
+        if (vm.count("var")) {
+            auto vars = vm["var"].as<std::vector<std::string>>();
+
+            for (const auto &var : vars) {
+                std::vector<std::string> keyValue;
+                boost::split(keyValue, var, boost::is_any_of(":"));
+
+                options.variables.insert({keyValue[0], keyValue[1]});
+            }
         }
 
         return options;
