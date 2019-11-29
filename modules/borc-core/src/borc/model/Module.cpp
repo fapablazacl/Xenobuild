@@ -11,39 +11,49 @@ namespace borc {
         this->package = package;
     }
 
+
     Module::~Module() {}
+
 
     void Module::setName(const std::string &name) {
         this->name = name;
     }
 
+
     void Module::setPath(const boost::filesystem::path &path) {
         this->path = path;
     }
+
 
     void Module::setType(const Module::Type type) {
         this->type = type;
     }
 
+
     void Module::setVersion(const Version &version) {
         this->version = version;
     }
+
 
     void Module::setSourcePaths(const std::vector<boost::filesystem::path> &sourcePaths) {
         this->sourcePaths = sourcePaths;
     }
 
+
     void Module::setIncludePaths(const std::vector<boost::filesystem::path> &includePaths) {
         this->includePaths = includePaths;
     }
+
 
     void Module::setDependencies(const std::vector<const Module*> &dependentModules) {
         dependencies = dependentModules; 
     }
 
+
     void Module::setLanguage(const Language &lang) {
         language = lang;
     }
+
 
     void Module::rescanSources(const boost::filesystem::path &baseFolder) {
         sources.clear();
@@ -77,6 +87,7 @@ namespace borc {
         }
     }
 
+
     std::vector<Source*> Module::getSources() const {
         std::vector<Source*> result;
 
@@ -87,9 +98,11 @@ namespace borc {
         return result;
     }
 
+
     void Module::setLibraryPaths(const std::vector<boost::filesystem::path> &libraryPaths) {
         this->libraryPaths = libraryPaths;
     }
+
 
     void Module::setLibraries(const std::vector<std::string> &libraries) {
         this->libraries = libraries;
@@ -108,19 +121,7 @@ namespace borc {
             libraryPaths.end(), 
             std::back_inserter(result),
             [this, &variableMap](const auto &path) {
-                std::string pathString = path.string();
-
-                for (const std::string variable: this->getPackage()->getVariables()) {
-                    if (auto it = variableMap.find(variable); it != variableMap.end()) {
-                        const std::string key = "${" + variable + "}";
-                        const std::string value = variableMap[variable];
-
-                        boost::replace_all(pathString, key, value);    
-                    } else {
-                        throw std::runtime_error("Required variable " + variable + " not found in the definition list.")
-                    }
-                }
-
+                const std::string pathString = this->solveVariable(path.string(), variableMap);
                 return boost::filesystem::path(pathString);
             }
         );
@@ -140,16 +141,8 @@ namespace borc {
             includePaths.begin(),
             includePaths.end(), 
             std::back_inserter(result),
-            [this](const auto &path) {
-                std::string pathString = path.string();
-
-                for (const std::string variable: this->getPackage()->getVariables()) {
-                    const std::string key = "${" + variable + "}";
-                    const std::string value = variableMap[variable];
-
-                    boost::replace_all(pathString, key, value);
-                }
-
+            [this, &variableMap](const auto &path) {
+                const std::string pathString = this->solveVariable(path.string(), variableMap);
                 return boost::filesystem::path(pathString);
             }
         );
@@ -169,19 +162,28 @@ namespace borc {
             libraries.begin(),
             libraries.end(), 
             std::back_inserter(result),
-            [this](const auto &library) {
-                std::string libraryString = library;
-
-                for (const std::string variable: this->getPackage()->getVariables()) {
-                    const std::string key = "${" + variable + "}";
-                    const std::string value = variableMap[variable];
-
-                    boost::replace_all(libraryString, key, value);
-                }
-
-                return libraryString;
+            [this, &variableMap](const auto &library) {
+                return this->solveVariable(library, variableMap);
             }
         );
+
+        return result;
+    }
+
+
+    std::string Module::solveVariable(const std::string &variableTemplate, const std::map<std::string, std::string> &variableMap) const {
+        std::string result = variableTemplate;
+
+        for (const PackageVariable variable: this->getPackage()->getVariables()) {
+            if (auto it = variableMap.find(variable.name); it != variableMap.end()) {
+                const std::string key = "${" + variable.name + "}";
+                const std::string value = it->second;
+
+                boost::replace_all(result, key, value);    
+            } else {
+                throw std::runtime_error("Required variable " + variable.name + " not found in the definition list.");
+            }
+        }
 
         return result;
     }

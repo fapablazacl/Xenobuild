@@ -123,6 +123,10 @@ namespace borc {
         std::vector<std::string> solveLibraries(const std::map<std::string, std::string> &variableMap) const;
 
     private:
+        std::string solveVariable(const std::string &variableTemplate, const std::map<std::string, std::string> &variableMap) const;
+
+
+    private:
         Package *package = nullptr;
         std::string name;
         boost::filesystem::path path;
