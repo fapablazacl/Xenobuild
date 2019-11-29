@@ -1,10 +1,10 @@
 
-#include <borc/model/Module.hpp>
+#include "Module.hpp"
 
 #include <boost/filesystem.hpp>
+#include <boost/algorithm/string.hpp>
 #include <borc/model/Package.hpp>
 #include <borc/model/Source.hpp>
-
 
 namespace borc {
     Module::Module(Package *package) {
@@ -93,5 +93,96 @@ namespace borc {
 
     void Module::setLibraries(const std::vector<std::string> &libraries) {
         this->libraries = libraries;
+    }
+
+
+    std::vector<boost::filesystem::path> Module::solveLibraryPaths(const std::map<std::string, std::string> &variableMap) const {
+        if (! this->getPackage()->validateVariableMap(variableMap)) {
+            throw std::runtime_error("Missing definition variables, required for the current Module");
+        }
+
+        std::vector<boost::filesystem::path> result;
+
+        std::transform(
+            libraryPaths.begin(),
+            libraryPaths.end(), 
+            std::back_inserter(result),
+            [this, &variableMap](const auto &path) {
+                std::string pathString = path.string();
+
+                for (const std::string variable: this->getPackage()->getVariables()) {
+                    if (auto it = variableMap.find(variable); it != variableMap.end()) {
+                        const std::string key = "${" + variable + "}";
+                        const std::string value = variableMap[variable];
+
+                        boost::replace_all(pathString, key, value);    
+                    } else {
+                        throw std::runtime_error("Required variable " + variable + " not found in the definition list.")
+                    }
+                }
+
+                return boost::filesystem::path(pathString);
+            }
+        );
+
+        return result;
+    }
+
+
+    std::vector<boost::filesystem::path> Module::solveIncludePaths(const std::map<std::string, std::string> &variableMap) const {
+        if (! this->getPackage()->validateVariableMap(variableMap)) {
+            throw std::runtime_error("Missing definition variables, required for the current Module");
+        }
+
+        std::vector<boost::filesystem::path> result;
+
+        std::transform(
+            includePaths.begin(),
+            includePaths.end(), 
+            std::back_inserter(result),
+            [this](const auto &path) {
+                std::string pathString = path.string();
+
+                for (const std::string variable: this->getPackage()->getVariables()) {
+                    const std::string key = "${" + variable + "}";
+                    const std::string value = variableMap[variable];
+
+                    boost::replace_all(pathString, key, value);
+                }
+
+                return boost::filesystem::path(pathString);
+            }
+        );
+
+        return result;
+    }
+
+
+    std::vector<std::string> Module::solveLibraries(const std::map<std::string, std::string> &variableMap) const {
+        if (! this->getPackage()->validateVariableMap(variableMap)) {
+            throw std::runtime_error("Missing definition variables, required for the current Module");
+        }
+
+        std::vector<std::string> result;
+
+        std::transform(
+            libraries.begin(),
+            libraries.end(), 
+            std::back_inserter(result),
+            [this](const auto &library) {
+                std::string libraryString = library;
+
+                for (const std::string variable: this->getPackage()->getVariables()) {
+                    const std::string key = "${" + variable + "}";
+                    const std::string value = variableMap[variable];
+
+                    boost::replace_all(libraryString, key, value);
+                }
+
+                return libraryString;
+            }
+        );
+
+        return result;
     }
 }

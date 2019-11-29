@@ -2,6 +2,7 @@
 #ifndef __BORC_MODEL_MODULE_HPP__
 #define __BORC_MODEL_MODULE_HPP__
 
+#include <map>
 #include <string>
 #include <vector>
 #include <boost/filesystem/path.hpp>
@@ -114,6 +115,12 @@ namespace borc {
         std::vector<std::string> getLibraries() const {
             return libraries;
         }
+
+        std::vector<boost::filesystem::path> solveLibraryPaths(const std::map<std::string, std::string> &variableMap) const;
+
+        std::vector<boost::filesystem::path> solveIncludePaths(const std::map<std::string, std::string> &variableMap) const;
+
+        std::vector<std::string> solveLibraries(const std::map<std::string, std::string> &variableMap) const;
 
     private:
         Package *package = nullptr;
