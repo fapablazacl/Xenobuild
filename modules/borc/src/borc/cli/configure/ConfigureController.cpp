@@ -4,6 +4,7 @@
 
 #include <boost/process.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/range/algorithm/find.hpp>
 #include <borc/model/Version.hpp>
 #include <borc/toolchain/Toolchain.hpp>
 #include <borc/toolchain/ToolchainFactoryImpl.hpp>
@@ -77,6 +78,23 @@ namespace borc {
         auto packageService = std::make_unique<PackageServiceImpl>(&fileService);
         auto packageRegistry = this->createPackageRegistry(packageService.get(), PACKAGE_SEARCH_PATH);
         auto package = packageService->createPackage(basePackagePath, packageRegistry.get());
+
+        // validate required variables for dependencies againts supplied ones
+        for (const Module *module : package->getModules()) {
+            for (const Module *dependency : module->getDependencies()) {
+                std::vector<PackageVariable> variables = dependency->getPackage()->getVariables();
+
+                // std::cout << variables.size() << " variables for dependent package " << dependency->getPackage()->getName() << std::endl;
+
+                for (const PackageVariable &variable : variables) {
+                    if (options.variables.find(variable.name) == options.variables.end()) {
+                        throw std::runtime_error("Required variable " + variable.name + " for dependent package " + dependency->getPackage()->getName() + " isn't defined. Use the --var=Name:Value configure option to set it.");
+                    } else {
+                        // TODO: Put the supplied location inside the configuration
+                    }
+                }
+            }
+        }
 
         configurationService.saveAllBuildConfigurations();
     }

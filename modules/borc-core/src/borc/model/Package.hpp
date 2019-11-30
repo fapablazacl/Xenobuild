@@ -12,6 +12,14 @@
 namespace borc {
     struct PackageVariable {
         std::string name;
+
+        bool operator== (const PackageVariable &other) const {
+            return name == other.name;
+        }
+
+        bool operator!= (const PackageVariable &other) const {
+            return name != other.name;
+        }
     };
 
     class Module;

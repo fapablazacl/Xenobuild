@@ -3,6 +3,7 @@
 
 #include <map>
 #include <iostream>
+#include <boost/range/algorithm/transform.hpp>
 #include <boost/filesystem.hpp>
 #include <borc/model/Package.hpp>
 #include <borc/model/PackageRegistry.hpp>
@@ -47,6 +48,13 @@ namespace borc {
             */
 
             auto package = std::make_unique<Package>(packageEntity.name);
+
+            std::vector<PackageVariable> variables;
+            boost::range::transform(packageEntity.required, std::back_inserter(variables), [](const auto &required) {
+                return PackageVariable{required.name};
+            });
+
+            package->setVariables(variables);
 
             for (const auto modulePackage : packageEntity.modules) {
                 // TODO: Process "common" modules (serves as a set of base definitions)
