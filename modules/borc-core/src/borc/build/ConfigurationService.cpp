@@ -1,5 +1,5 @@
 
-#include <borc/build/ConfigurationService.hpp>
+#include "ConfigurationService.hpp"
 
 #include <boost/filesystem.hpp>
 #include <boost/hana.hpp>
