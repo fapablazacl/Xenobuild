@@ -6,18 +6,14 @@
             "name": "BoostPath",
             "type": "folderPath",
             "desc": "Boost base installation path"
-        }, {
-            "name": "BoostVersion",
-            "type": "folderPath",
-            "desc": "Boost version"
         }
     ], 
     "modules": [
         {
             "common": true,
             "prebuilt": true,
-            "includePath": ["${BoostPath}/${BoostVersion}/include"],
-            "libraryPath": ["${BoostPath}/${BoostVersion}/lib"]
+            "includePath": ["${BoostPath}/include"],
+            "libraryPath": ["${BoostPath}/lib"]
         },
         { "name": "filesystem", "library": ["boost_filesystem"]}, 
         { "name": "system", "library": ["boost_system"] }, 
