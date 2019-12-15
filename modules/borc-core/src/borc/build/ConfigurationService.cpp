@@ -10,7 +10,7 @@
 #include "BuildCacheImpl.hpp"
 
 BOOST_HANA_ADAPT_STRUCT(borc::Version, major, minor, revision);
-BOOST_HANA_ADAPT_STRUCT(borc::BuildConfiguration, toolchainId, arch, version, buildTypes);
+BOOST_HANA_ADAPT_STRUCT(borc::BuildConfiguration, toolchainId, arch, version, buildTypes, variables);
 BOOST_HANA_ADAPT_STRUCT(borc::BuildType, type);
 
 namespace borc {
@@ -59,7 +59,7 @@ namespace borc {
 
     void ConfigurationService::saveConfigurations() {
         if (!boost::filesystem::exists(outputPath) && ! boost::filesystem::create_directory(outputPath) ) {
-            throw std::runtime_error("Couldn't create the '" + outputPath.string() +  "' directory. Please check user/group/folder permissions");
+            throw std::runtime_error("Couldn't create the '" + outputPath.string() +  "' directory. Please check user/group/folder permissions.");
         }
 
         const auto configFilePath = outputPath / "configuration.json";

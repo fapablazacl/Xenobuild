@@ -35,7 +35,6 @@ namespace borc {
 
     /**
      * @brief A build configuration description
-     * @todo Transform into a std::map representation
      */
     struct BuildConfiguration {
         // The following types are considered a composed identifier for the operator< implementation
@@ -48,6 +47,9 @@ namespace borc {
 
         //! target architecture 
         std::string arch;
+
+        //! User-supplied variables
+        mutable std::map<std::string, std::string> variables;
 
         //! build types associated to this build configuration
         mutable std::set<BuildType> buildTypes;

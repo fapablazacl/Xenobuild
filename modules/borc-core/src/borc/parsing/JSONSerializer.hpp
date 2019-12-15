@@ -2,6 +2,7 @@
 #ifndef __BORC_PARSING_JSONSERIALIZER_HPP__
 #define __BORC_PARSING_JSONSERIALIZER_HPP__
 
+#include <map>
 #include <vector>
 #include <set>
 #include <boost/hana.hpp>
@@ -42,6 +43,25 @@ namespace borc {
             }
         }
     }
+
+
+    /**
+     * @brief Deserializes the supplied JSON array into a map of values
+     */
+    template<typename Type>
+    void serialize(nlohmann::json &model, const std::map<std::string, Type> &values) {
+        for (auto& pair : values) {
+            if constexpr (IsSimple<Type>::value) {
+                model[pair.first] = pair.second;
+            } else {
+                nlohmann::json submodel;
+                serialize(submodel, pair.second);
+                
+                model[pair.first] = submodel;
+            }
+        }
+    }
+
 
     /**
      * @brief Deserielizes the supplied JSON object into a boost.hana structure value

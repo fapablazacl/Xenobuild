@@ -2,6 +2,7 @@
 #ifndef __BORC_PARSING_JSONDESERIALIZER_HPP__
 #define __BORC_PARSING_JSONDESERIALIZER_HPP__
 
+#include <map>
 #include <vector>
 #include <set>
 #include <stdexcept>
@@ -24,6 +25,21 @@ namespace borc {
                 values[i] = model[i].template get<Type>();
             } else {
                 deserialize(values[i], model[i]);
+            }
+        }
+    }
+
+
+    /**
+     * @brief Deserializes the supplied JSON array into a map of values
+     */
+    template<typename Type>
+    void deserialize(std::map<std::string, Type> &values, const nlohmann::json &model) {
+        for (auto& pair : values) {
+            if constexpr (IsSimple<Type>::value) {
+                pair.second = model[pair.first].template get<Type>();
+            } else {
+                deserialize(pair.second, model[pair.first]);
             }
         }
     }

@@ -71,8 +71,6 @@ namespace borc {
 
         std::cout << "Detected compiler version: " << std::string(config.version) << std::endl;
 
-        configurationService.addBuildConfiguration(config);
-
         // construct the package with the current toolchain, in order grab dependency information
         const FileServiceImpl fileService;
         auto packageService = std::make_unique<PackageServiceImpl>(&fileService);
@@ -84,17 +82,17 @@ namespace borc {
             for (const Module *dependency : module->getDependencies()) {
                 std::vector<PackageVariable> variables = dependency->getPackage()->getVariables();
 
-                // std::cout << variables.size() << " variables for dependent package " << dependency->getPackage()->getName() << std::endl;
-
                 for (const PackageVariable &variable : variables) {
-                    if (options.variables.find(variable.name) == options.variables.end()) {
-                        throw std::runtime_error("Required variable " + variable.name + " for dependent package " + dependency->getPackage()->getName() + " isn't defined. Use the --var=Name:Value configure option to set it.");
+                    if (auto varIt = options.variables.find(variable.name); varIt != options.variables.end()) {
+                        config.variables.insert({varIt->first, varIt->second});
                     } else {
-                        // TODO: Put the supplied location inside the configuration
+                        throw std::runtime_error("Required variable " + variable.name + " for dependent package " + dependency->getPackage()->getName() + " isn't defined. Use the --var=Name:Value configure option to set it.");
                     }
                 }
             }
         }
+
+        configurationService.addBuildConfiguration(config);
 
         configurationService.saveAllBuildConfigurations();
     }

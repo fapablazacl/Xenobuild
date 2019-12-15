@@ -15,8 +15,9 @@ namespace borc {
 
         std::string buildType;
         boost::optional<std::string> toolchain;
+        boost::optional<std::string> toolchainPath;
 
-        //! additional search path for package dependencies        
+        //! additional search path for package dependencies
         std::vector<std::string> searchPaths;
 
         boost::optional<boost::filesystem::path> sourcePath;

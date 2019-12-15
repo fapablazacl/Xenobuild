@@ -15,7 +15,8 @@ namespace borc {
             ("help", "produce this message")
             ("build-type", po::value<std::string>(), "set build type (debug, release, all)")
             ("toolchain", po::value<std::string>(), "set toolchain (gcc, vc, clang)")
-            ("search-path", po::value<std::string>(), "set current search path directory")
+            ("toolchain-path", po::value<std::string>(), "set toolchain installation path")
+            ("search-path", po::value<std::string>(), "set current search path directory for packages(?)")
             ("var", po::value<std::vector<std::string>>(), "define required variable used by some packages")
         ;
 
@@ -42,6 +43,10 @@ namespace borc {
 
         if (vm.count("toolchain")) {
             options.toolchain = vm["toolchain"].as<std::string>();
+        }
+
+        if (vm.count("toolchain-path")) {
+            options.toolchainPath = vm["toolchain-path"].as<std::string>();
         }
 
         if (vm.count("search-path")) {

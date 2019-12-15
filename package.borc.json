@@ -1,6 +1,6 @@
 {
-    "name": "felide",
-    "description": "A modern IDE built on C++ & <3",
+    "name": "borc",
+    "description": "Build system for C++ focused on software modularity",
     "modulePaths": [
         "modules/borc-core",
         "modules/borc"
