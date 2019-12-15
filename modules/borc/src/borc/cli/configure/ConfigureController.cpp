@@ -59,13 +59,13 @@ namespace borc {
 
         std::cout << "Configuring build: type=" << options.buildType << ", toolchain=" << options.toolchain.get() << std::endl;
 
-        auto factory = std::make_unique<ToolchainFactoryImpl>("toolchain");
+        auto factory = std::make_unique<ToolchainFactoryImpl>("./toolchain/");
         auto toolchain = factory->createToolchain(options.toolchain.get());
 
         // setup the configuration requested by the user
         auto config = BuildConfiguration{};
         config.toolchainId = options.toolchain.get();
-        config.arch = this->detectArchitecture();
+        config.arch = this->detectTargetArchitecture();
         config.buildTypes = this->generateBuildTypes(toolchain, options.buildType);
         config.version = this->detectToolchainVersion();
 
@@ -160,7 +160,7 @@ namespace borc {
      * @brief Detect the current (native) architecture. 
      * @todo This information can be computed from a preprocessor directive.
      */
-    std::string ConfigureController::detectArchitecture() const {
+    std::string ConfigureController::detectTargetArchitecture() const {
         return "x86_64";
     }
 

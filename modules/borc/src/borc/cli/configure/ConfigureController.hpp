@@ -25,7 +25,7 @@ namespace borc {
     private:
         Version detectToolchainVersion() const;
 
-        std::string detectArchitecture() const;
+        std::string detectTargetArchitecture() const;
 
         std::set<BuildType> generateBuildTypes(const Toolchain *, const std::string &buildTypeValue) const;
 
