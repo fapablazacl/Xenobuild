@@ -13,11 +13,13 @@
 #include <borc/model/Package.hpp>
 #include <borc/model/PackageRegistry.hpp>
 #include <borc/model/Module.hpp>
+#include <borc/model/PackageRegistryFactory.hpp>
 #include <borc/services/FileServiceImpl.hpp>
 #include <borc/services/PackageServiceImpl.hpp>
 
+
 namespace borc {
-    const std::string PACKAGE_SEARCH_PATH = "./etc/borc/packages";
+    static const std::string PACKAGE_SEARCH_PATH = "./etc/borc/packages";
     
     ConfigureController::~ConfigureController() {}
 
@@ -164,22 +166,8 @@ namespace borc {
 
 
     std::unique_ptr<PackageRegistry> ConfigureController::createPackageRegistry(PackageService *packageService, const boost::filesystem::path &packageRegistryPath) const {
-        using boost::filesystem::directory_entry;
-        using boost::filesystem::directory_iterator;
-        using boost::filesystem::is_directory;
+        PackageRegistryFactory factory;
 
-        auto packageRegistry = std::make_unique<PackageRegistry>();
-
-        for (directory_entry &entry : directory_iterator{packageRegistryPath}) {
-            if (! is_directory(entry.path())) {
-                continue;
-            }
-
-            auto package = packageService->createPackage(entry.path(), nullptr);
-
-            packageRegistry->registerPackage(std::move(package));
-        }
-
-        return packageRegistry;
+        return factory.createPackageRegistry(packageService, packageRegistryPath);
     }
 }

@@ -32,6 +32,8 @@ set (src_borc_model
     "src/borc/model/Package.cpp"
     "src/borc/model/PackageRegistry.hpp"
     "src/borc/model/PackageRegistry.cpp"
+    "src/borc/model/PackageRegistryFactory.hpp"
+    "src/borc/model/PackageRegistryFactory.cpp"
     "src/borc/model/Command.hpp"
     "src/borc/model/CommandFactory.hpp"
     "src/borc/model/ModuleLinkerMatcher.cpp"

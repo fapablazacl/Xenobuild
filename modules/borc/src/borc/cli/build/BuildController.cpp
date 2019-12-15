@@ -8,6 +8,7 @@
 #include <borc/model/Module.hpp>
 #include <borc/model/Package.hpp>
 #include <borc/model/PackageRegistry.hpp>
+#include <borc/model/PackageRegistryFactory.hpp>
 #include <borc/services/FileServiceImpl.hpp>
 #include <borc/services/BuildServiceImpl.hpp>
 #include <borc/services/LoggingServiceImpl.hpp>
@@ -23,6 +24,8 @@
 #include "BuildControllerOptions.hpp"
 
 namespace borc {
+    static const std::string PACKAGE_SEARCH_PATH = "./etc/borc/packages";
+
     BuildController::~BuildController() {}
 
 
@@ -32,7 +35,6 @@ namespace borc {
             return;
         }
 
-        PackageRegistry packageRegistry;
 
         const boost::filesystem::path baseFolderPath = options.sourcePath 
             ? options.sourcePath.get()
@@ -45,7 +47,9 @@ namespace borc {
         const FileServiceImpl fileService;
 
         auto packageService = std::make_unique<PackageServiceImpl>(&fileService);
-        auto package = packageService->createPackage(baseFolderPath, &packageRegistry);
+        auto packageRegistryFactory = std::make_unique<PackageRegistryFactory>();
+        auto packageRegistry = packageRegistryFactory->createPackageRegistry(packageService.get(), PACKAGE_SEARCH_PATH);
+        auto package = packageService->createPackage(baseFolderPath, packageRegistry.get());
 
         LoggingServiceImpl loggingService {"BuildServiceImpl"};
 
