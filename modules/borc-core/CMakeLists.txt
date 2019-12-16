@@ -59,6 +59,7 @@ set (src_borc_entity
 )
 
 set (src_borc_parsing
+    "src/borc/parsing/JSONCommon.hpp"
     "src/borc/parsing/JSONDeserializer.hpp"
     "src/borc/parsing/JSONSerializer.hpp"
 )

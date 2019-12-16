@@ -5,6 +5,7 @@
 #include <map>
 #include <vector>
 #include <set>
+#include <iostream>
 #include <boost/hana.hpp>
 #include <nlohmann/json.hpp>
 
@@ -50,7 +51,11 @@ namespace borc {
      */
     template<typename Type>
     void serialize(nlohmann::json &model, const std::map<std::string, Type> &values) {
+        std::cout << "Serializing " << typeid(Type).name() << " ..." << std::endl;
+
         for (auto& pair : values) {
+            std::cout << "    Iteraring in " << pair.first << " = " << pair.second << std::endl;
+
             if constexpr (IsSimple<Type>::value) {
                 model[pair.first] = pair.second;
             } else {

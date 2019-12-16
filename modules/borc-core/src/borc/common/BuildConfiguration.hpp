@@ -2,6 +2,7 @@
 #ifndef __BORC_COMMON_BUILDCONFIGURATION_HPP__
 #define __BORC_COMMON_BUILDCONFIGURATION_HPP__
 
+#include <map>
 #include <string>
 #include <vector>
 #include <set>
