@@ -17,6 +17,15 @@ namespace borc {
     LinkerImpl::~LinkerImpl() {}
 
 
+    bool LinkerImpl::isModuleLinkable(const Module *module) const {
+        if (auto buildRule = this->matchBuildRule(module); buildRule) {
+            return true;
+        }
+
+        return false;
+    }
+
+
     LinkOutput LinkerImpl::link(const boost::filesystem::path &outputPath, const Package *package, const Module *module, const std::vector<boost::filesystem::path> &objectFiles) const {
         boost::optional<LinkerImplBuildRule> buildRule = this->matchBuildRule(module);
 

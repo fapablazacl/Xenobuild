@@ -101,4 +101,8 @@ namespace borc {
         DagVisitor dagVisitor;
         dagVisitor.visit(dag.get());
     }
+
+    static void buildImpl() {
+        
+    }
 }

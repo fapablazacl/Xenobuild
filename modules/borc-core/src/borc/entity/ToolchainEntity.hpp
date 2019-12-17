@@ -35,6 +35,7 @@ namespace borc {
 
         struct BuildRuleInput {
             std::string fileType;
+            std::vector<std::string> moduleTypes;
 
             typedef void DefaultType;
         };

@@ -5,7 +5,9 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <iostream>
 #include <boost/filesystem/path.hpp>
+#include <boost/optional.hpp>
 
 #include <borc/model/Version.hpp>
 #include <borc/model/Language.hpp>
@@ -33,6 +35,21 @@ namespace borc {
                 }
 
                 return subTag < other.subTag;
+            }
+
+            static boost::optional<Type> parse(const std::string &moduleTypeStr) {
+                if (auto pos = moduleTypeStr.find('/'); pos != std::string::npos) {
+
+                    std::cout << "parsing " << moduleTypeStr << std::endl;
+                    std::cout << "result: " << moduleTypeStr.substr(0, pos) << " / " << moduleTypeStr.substr(pos) << std::endl;
+
+                    return Type {
+                        moduleTypeStr.substr(0, pos),
+                        moduleTypeStr.substr(pos + 1)
+                    };
+                }
+
+                return {};
             }
         };
 

@@ -73,7 +73,7 @@
             "buildRules": [
                 {
                     "input": {
-                        "moduleType": "library/static",
+                        "moduleTypes": ["library/static"],
                         "fileType": "native/object"
                     },
                     "flags": ["rcs"],

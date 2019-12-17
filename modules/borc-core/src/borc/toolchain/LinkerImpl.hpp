@@ -40,6 +40,8 @@ namespace borc {
 
         virtual ~LinkerImpl();
 
+        virtual bool isModuleLinkable(const Module *module) const override;
+
         virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Module *module, const std::vector<boost::filesystem::path> &objectFiles) const override;
 
 

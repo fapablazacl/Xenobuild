@@ -1,6 +1,7 @@
 
 #include "ManagedToolchainImpl.hpp"
 
+#include <boost/filesystem.hpp>
 #include <borc/model/Command.hpp>
 #include <borc/entity/ToolchainEntity.hpp>
 #include <borc/model/Module.hpp>
@@ -8,6 +9,9 @@
 #include <borc/toolchain/SourceChecker.hpp>
 #include <borc/toolchain/ModuleChecker.hpp>
 #include <borc/toolchain/CompilerImpl.hpp>
+#include <borc/toolchain/LinkerImpl.hpp>
+
+/* deprecated */
 #include <borc/toolchain/ModuleLinker.hpp>
 #include <borc/toolchain/ArchiveLinker.hpp>
 
@@ -26,6 +30,7 @@ namespace borc {
     static std::initializer_list<Module::Type> archiveLinkerModuleTypes ({
         Module::Type{"library", "static"}
     });
+
 
     ManagedToolchainImpl::ManagedToolchainImpl(const ToolchainEntity &entity) {
         for (const ToolchainEntity::Tool &tool : entity.tools) {
@@ -46,7 +51,42 @@ namespace borc {
                 );
 
             } else if (tool.type == "linker") {
+                LinkerImplSwitches switches;
+
+                switches.importLibrary = tool.switches.importLibrary;
+                switches.outputFile = tool.switches.outputFile;
+                switches.libraryPath = tool.switches.libraryPath;
+
+                std::vector<LinkerImplBuildRule> buildRules;
+                for (const ToolchainEntity::BuildRule &buildRuleEntity : tool.buildRules) {
+                    LinkerImplBuildRule buildRule;
+
+                    buildRule = {};
+                    buildRule.flags = buildRuleEntity.flags;
+
+                    buildRule.input.fileType = buildRuleEntity.input.fileType;
+
+                    std::transform(
+                            buildRuleEntity.input.moduleTypes.begin(),
+                            buildRuleEntity.input.moduleTypes.end(), 
+                            std::back_inserter(buildRule.input.moduleTypes),
+                        [](const std::string &moduleTypeStr) {
+                            return *Module::Type::parse(moduleTypeStr);
+                    });
+
+                    buildRule.output.fileType = buildRuleEntity.output.fileType;
+                    buildRule.output.fileName = buildRuleEntity.output.fileName;
+
+                    buildRules.push_back(buildRule);
+                }
                 
+                linkers.emplace_back(new LinkerImpl{
+                    &commandFactory,
+                    boost::filesystem::current_path(),
+                    tool.command,
+                    switches,
+                    buildRules
+                });
             }
         }
     }
@@ -67,9 +107,9 @@ namespace borc {
 
 
     const Linker* ManagedToolchainImpl::selectLinker(const Module *module) const {
-        for (auto &pair : linkers) {
-            if (pair.first->check(module)) {
-                return pair.second.get();
+        for (const auto &linker : linkers) {
+            if (linker->isModuleLinkable(module)) {
+                return linker.get();
             }
         }
 
