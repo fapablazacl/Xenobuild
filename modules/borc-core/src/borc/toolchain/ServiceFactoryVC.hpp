@@ -5,7 +5,6 @@
 #include "ServiceFactoryStub.hpp"
 
 namespace borc {
-    [[deprecated]]
     class ServiceFactoryVC : public ServiceFactoryStub {
     public:
         ServiceFactoryVC(const std::string &installationPath, const std::string &windowsKitPath);

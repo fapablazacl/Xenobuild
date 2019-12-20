@@ -2,14 +2,17 @@
 #include "ManagedToolchainImpl.hpp"
 
 #include <boost/filesystem.hpp>
-#include <borc/model/Command.hpp>
-#include <borc/entity/ToolchainEntity.hpp>
+#include <boost/process.hpp>
 #include <borc/model/Module.hpp>
 #include <borc/model/Source.hpp>
+#include <borc/model/Version.hpp>
+#include <borc/model/Command.hpp>
+#include <borc/entity/ToolchainEntity.hpp>
 #include <borc/toolchain/SourceChecker.hpp>
 #include <borc/toolchain/ModuleChecker.hpp>
 #include <borc/toolchain/CompilerImpl.hpp>
 #include <borc/toolchain/LinkerImpl.hpp>
+
 
 namespace borc {
     // TODO: Grab them from a service
@@ -27,6 +30,12 @@ namespace borc {
         Module::Type{"library", "static"}
     });
     
+
+    struct ToolchainDetectorInfo {
+        std::string commandTemplate;
+        std::string executableFilePath;
+    };
+
 
     struct ManagedToolchainImpl::Private {
         std::vector<std::unique_ptr<Compiler>> compilers;
@@ -103,6 +112,57 @@ namespace borc {
                 buildRules
             });
         }
+
+
+        ToolchainDetectorInfo getToolchainDetectorInfo() const {
+            return {
+                "gcc other/CXXCompilerVersionDetector.cpp -O0 -o${ExecutablePath}",
+                "other/CXXCompilerVersionDetector"
+            };
+        }
+
+
+        Version detectToolchainVersion(const ToolchainDetectorInfo &info) const {
+            // 1. Compile C++ version detector
+            // TODO: Use a internally-generated
+            if (std::system("gcc other/CXXCompilerVersionDetector.cpp -O0 -oother/CXXCompilerVersionDetector") != 0) {
+                throw std::runtime_error("Failed CXXCompilerVersionDetector compilation.");
+            }
+
+            // 2. Execute it, and grab the output
+            boost::filesystem::path compilerPath = boost::filesystem::path("./other/CXXCompilerVersionDetector");
+
+            if (! boost::filesystem::exists(compilerPath)) {
+                throw std::runtime_error("Compiler detector not found in path '" + compilerPath.string() + "'.");
+            }
+
+            boost::process::ipstream pipeStream;
+            boost::process::child childProcess {compilerPath, boost::process::std_out > pipeStream};
+        
+            std::string line;
+            std::vector<std::string> specs;
+
+            while (pipeStream && std::getline(pipeStream, line) && !line.empty()) {
+                specs.push_back(line);
+            }
+
+            childProcess.wait();
+
+            if (specs.size() != 1) {
+                throw std::runtime_error("Couldn't detect compiler type and version (unexpected output)");
+            }
+
+            std::vector<std::string> compilerDetectorOutput;
+
+            boost::algorithm::split(compilerDetectorOutput, specs[0], boost::is_any_of("-"));
+
+            if (compilerDetectorOutput.size() != 2) {
+                throw std::runtime_error("Couldn't detect compiler type and version (unexpected output)");
+            }
+
+            // 3. Parse the output and return the result.
+            return Version::parse(compilerDetectorOutput[1]);
+        }
     };
 
 
@@ -143,5 +203,9 @@ namespace borc {
         }
 
         return nullptr;
+    }
+
+    Version ManagedToolchainImpl::detectVersion() const {
+        return {0, 0, 0};
     }
 }

@@ -18,10 +18,12 @@ namespace borc {
         virtual Toolchain* createToolchain(const std::string &toolchainId) override;
 
     private:
+        std::vector<std::string> detectAvailableToolchainIds() const;
+
+    private:
         boost::filesystem::path toolchainDefinitionPath;
         std::map<std::string, std::unique_ptr<Toolchain>> toolchainMap;
     };
 }
-
 
 #endif

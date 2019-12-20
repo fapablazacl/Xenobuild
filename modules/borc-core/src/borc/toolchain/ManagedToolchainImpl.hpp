@@ -28,6 +28,8 @@ namespace borc {
 
         virtual const Linker* selectLinker(const Module *module) const override;
 
+        virtual Version detectVersion() const override;
+
     private:
         struct Private;
         Private *m_pimpl = nullptr;

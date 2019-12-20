@@ -60,7 +60,18 @@ namespace borc {
                 std::vector<std::string> keyValue;
                 boost::split(keyValue, var, boost::is_any_of(":"));
 
-                options.variables.insert({keyValue[0], keyValue[1]});
+                const size_t size = keyValue.size();
+
+                switch (size) {
+
+                case 2:
+                    options.variables.insert({keyValue[0], keyValue[1]});
+                    break;
+
+                case 3:
+                    options.variables.insert({keyValue[0], keyValue[1] + ":" + keyValue[2]});
+                    break;
+                }
             }
         }
 

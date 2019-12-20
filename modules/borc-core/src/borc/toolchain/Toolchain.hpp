@@ -8,6 +8,8 @@ namespace borc {
     class Source;
     class Module;
 
+    struct Version;
+
     class Toolchain {
     public:
         virtual ~Toolchain();
@@ -15,6 +17,8 @@ namespace borc {
         virtual const Compiler* selectCompiler(const Source *source) const = 0;
 
         virtual const Linker* selectLinker(const Module *module) const = 0;
+
+        virtual Version detectVersion() const = 0;
     };
 }
 

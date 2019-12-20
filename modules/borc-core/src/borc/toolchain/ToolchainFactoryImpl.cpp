@@ -19,9 +19,7 @@ namespace borc {
         ToolchainServiceImpl toolchainService(&fileService);
 
         // TODO: Add auto discovery via reading the borc.json
-        const std::vector<std::string> toolchainIds = {
-            "vc", "gcc"
-        };
+        const std::vector<std::string> toolchainIds = this->detectAvailableToolchainIds();
 
         for (const std::string &toolchainId : toolchainIds) {
             const auto toolchainPath = TOOLCHAIN_PATH_PREFIX / toolchainDefinitionPath / toolchainId;
@@ -40,5 +38,10 @@ namespace borc {
         }  
 
         throw std::runtime_error("Unknown toolchain: " + toolchainId);
+    }
+
+
+    std::vector<std::string> ToolchainFactoryImpl::detectAvailableToolchainIds() const {
+        return { "vc", "gcc" };
     }
 }

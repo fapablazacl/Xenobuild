@@ -2,7 +2,6 @@
 #include "ConfigureController.hpp"
 #include <iostream>
 
-#include <boost/process.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/range/algorithm/find.hpp>
 #include <borc/model/Version.hpp>
@@ -20,8 +19,45 @@
 
 namespace borc {
     static const std::string PACKAGE_SEARCH_PATH = "./etc/borc/packages";
-    
-    ConfigureController::~ConfigureController() {}
+
+    struct ConfigureController::Private {
+        /**
+         * @brief Determine all the build types from the parameter, specially when "All is used".
+         * @todo: The values generated should come from the currently selected toolchain
+         */
+        std::set<BuildType> generateBuildTypes(const Toolchain *, const std::string &buildTypeValue) const {
+            if (buildTypeValue == "all") {
+                return { BuildType{"Debug"}, BuildType{"Release"} };
+            } else {
+                return { BuildType{buildTypeValue} };
+            }
+        }
+
+
+        /**
+         * @brief Detect the current (native) architecture. 
+         * @todo This information can be computed from a preprocessor directive.
+         */
+        std::string detectTargetArchitecture() const {
+            return "x86_64";
+        }
+
+
+        std::unique_ptr<PackageRegistry> createPackageRegistry(PackageService *packageService, const boost::filesystem::path &packageRegistryPath) const {
+            PackageRegistryFactory factory;
+
+            return factory.createPackageRegistry(packageService, packageRegistryPath);
+        }
+    };
+
+
+    ConfigureController::ConfigureController() : m_impl(new ConfigureController::Private()) {
+
+    }
+
+    ConfigureController::~ConfigureController() {
+        delete m_impl;
+    }
 
 
     void ConfigureController::perform(const ConfigureControllerOptions &options) {
@@ -67,16 +103,16 @@ namespace borc {
         // setup the configuration requested by the user
         auto config = BuildConfiguration{};
         config.toolchainId = options.toolchain.get();
-        config.arch = this->detectTargetArchitecture();
-        config.buildTypes = this->generateBuildTypes(toolchain, options.buildType);
-        config.version = this->detectToolchainVersion();
+        config.arch = m_impl->detectTargetArchitecture();
+        config.buildTypes = m_impl->generateBuildTypes(toolchain, options.buildType);
+        config.version = toolchain->detectVersion();
 
         std::cout << "Detected compiler version: " << std::string(config.version) << std::endl;
 
         // construct the package with the current toolchain, in order grab dependency information
         const FileServiceImpl fileService;
         auto packageService = std::make_unique<PackageServiceImpl>(&fileService);
-        auto packageRegistry = this->createPackageRegistry(packageService.get(), PACKAGE_SEARCH_PATH);
+        auto packageRegistry = m_impl->createPackageRegistry(packageService.get(), PACKAGE_SEARCH_PATH);
         auto package = packageService->createPackage(basePackagePath, packageRegistry.get());
 
         // validate required variables for dependencies againts supplied ones
@@ -97,77 +133,7 @@ namespace borc {
         configurationService.addBuildConfiguration(config);
 
         configurationService.saveAllBuildConfigurations();
-    }
 
-
-    Version ConfigureController::detectToolchainVersion() const {
-        // 1. Compile C++ version detector
-        // TODO: Use a internally-generated
-        if (std::system("gcc other/CXXCompilerVersionDetector.cpp -O0 -oother/CXXCompilerVersionDetector") != 0) {
-            throw std::runtime_error("Failed CXXCompilerVersionDetector compilation.");
-        }
-
-        // 2. Execute it, and grab the output
-        boost::filesystem::path compilerPath = boost::filesystem::path("./other/CXXCompilerVersionDetector");
-
-        if (! boost::filesystem::exists(compilerPath)) {
-            throw std::runtime_error("Compiler detector not found in path '" + compilerPath.string() + "'.");
-        }
-
-        boost::process::ipstream pipeStream;
-        boost::process::child childProcess {compilerPath, boost::process::std_out > pipeStream};
-        
-        std::string line;
-        std::vector<std::string> specs;
-
-        while (pipeStream && std::getline(pipeStream, line) && !line.empty()) {
-            specs.push_back(line);
-        }
-
-        childProcess.wait();
-
-        if (specs.size() != 1) {
-            throw std::runtime_error("Couldn't detect compiler type and version (unexpected output)");
-        }
-
-        std::vector<std::string> compilerDetectorOutput;
-
-        boost::algorithm::split(compilerDetectorOutput, specs[0], boost::is_any_of("-"));
-
-        if (compilerDetectorOutput.size() != 2) {
-            throw std::runtime_error("Couldn't detect compiler type and version (unexpected output)");
-        }
-
-        // 3. Parse the output and return the result.
-        return Version::parse(compilerDetectorOutput[1]);
-    }
-
-
-    /**
-     * @brief Determine all the build types from the parameter, specially when "All is used".
-     * @todo: The values generated should come from the currently selected toolchain
-     */
-    std::set<BuildType> ConfigureController::generateBuildTypes(const Toolchain *, const std::string &buildTypeValue) const {
-        if (buildTypeValue == "all") {
-            return { BuildType{"Debug"}, BuildType{"Release"} };
-        } else {
-            return { BuildType{buildTypeValue} };
-        }
-    }
-
-
-    /**
-     * @brief Detect the current (native) architecture. 
-     * @todo This information can be computed from a preprocessor directive.
-     */
-    std::string ConfigureController::detectTargetArchitecture() const {
-        return "x86_64";
-    }
-
-
-    std::unique_ptr<PackageRegistry> ConfigureController::createPackageRegistry(PackageService *packageService, const boost::filesystem::path &packageRegistryPath) const {
-        PackageRegistryFactory factory;
-
-        return factory.createPackageRegistry(packageService, packageRegistryPath);
+        std::cout << "Configuration done. " << std::endl;
     }
 }
