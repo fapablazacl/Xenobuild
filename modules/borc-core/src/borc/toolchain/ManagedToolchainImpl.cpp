@@ -96,7 +96,8 @@ namespace borc {
             
             linkers.emplace_back(new LinkerImpl {
                 &commandFactory,
-                boost::filesystem::current_path(),
+                /*boost::filesystem::current_path(),*/
+                "",
                 tool.command,
                 switches,
                 buildRules

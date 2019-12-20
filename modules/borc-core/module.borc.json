@@ -3,11 +3,11 @@
     "name": "borc-core",
     "description": "Build orchrestation system based on modularity and reusability",
     "version": "1.0.0",
-    "type": "library/static",
+    "type": "library/dynamic",
     "language": "c++/17",
     "sources": [
         {
-            "path": "include",
+            "path": "src",
             "public_": true
         },
         "src"

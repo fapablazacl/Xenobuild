@@ -2,7 +2,7 @@
 #ifndef __BORC_BUILD_BUILDCACHEIMPL_HPP__
 #define __BORC_BUILD_BUILDCACHEIMPL_HPP__
 
-#include <borc/build/BuildCache.hpp>
+#include "BuildCache.hpp"
 
 #include <ctime>
 #include <map>
