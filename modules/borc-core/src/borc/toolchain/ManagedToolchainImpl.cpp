@@ -124,7 +124,7 @@ namespace borc {
 
         Version detectToolchainVersion(const ToolchainDetectorInfo &info) const {
             // 1. Compile C++ version detector
-            // TODO: Use a internally-generated
+            // TODO: Use a internally-generated command line template
             if (std::system("gcc other/CXXCompilerVersionDetector.cpp -O0 -oother/CXXCompilerVersionDetector") != 0) {
                 throw std::runtime_error("Failed CXXCompilerVersionDetector compilation.");
             }
@@ -167,25 +167,25 @@ namespace borc {
 
 
     ManagedToolchainImpl::ManagedToolchainImpl(const ToolchainEntity &entity) {
-        m_pimpl = new ManagedToolchainImpl::Private();
+        m_impl = new ManagedToolchainImpl::Private();
 
         for (const ToolchainEntity::Tool &tool : entity.tools) {
             if (tool.type == "compiler") {
-                m_pimpl->appendCompiler(tool);
+                m_impl->appendCompiler(tool);
             } else if (tool.type == "linker") {
-                m_pimpl->appendLinker(tool);
+                m_impl->appendLinker(tool);
             }
         }
     }
 
 
     ManagedToolchainImpl::~ManagedToolchainImpl() {
-        delete m_pimpl;
+        delete m_impl;
     }
 
 
     const Compiler* ManagedToolchainImpl::selectCompiler(const Source *source) const {
-        for (const auto &compiler : m_pimpl->compilers) {
+        for (const auto &compiler : m_impl->compilers) {
             if (compiler->isSourceLinkable(source)) {
                 return compiler.get();
             }
@@ -196,7 +196,7 @@ namespace borc {
 
 
     const Linker* ManagedToolchainImpl::selectLinker(const Module *module) const {
-        for (const auto &linker : m_pimpl->linkers) {
+        for (const auto &linker : m_impl->linkers) {
             if (linker->isModuleLinkable(module)) {
                 return linker.get();
             }
@@ -204,6 +204,7 @@ namespace borc {
 
         return nullptr;
     }
+
 
     Version ManagedToolchainImpl::detectVersion() const {
         return {0, 0, 0};

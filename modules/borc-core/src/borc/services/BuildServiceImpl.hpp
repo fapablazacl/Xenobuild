@@ -27,18 +27,8 @@ namespace borc {
         virtual DependencyGraph computeDependencyGraph(Module *module) const override;
 
     private:
-        CompileOptions computeCompileOptions(const Module *module) const;
-
-        Command* createBuildCacheUpdateCommand(const boost::filesystem::path &filePath);
-
-    private:
-        boost::filesystem::path basePath;
-        boost::filesystem::path outputPath;
-        Toolchain *toolchain = nullptr;
-        BuildCache *buildCache = nullptr;
-        LoggingService *logger = nullptr;
-
-        std::vector<std::unique_ptr<Command>> commandStorage;
+        struct Private;
+        Private* m_impl = nullptr;
     };
 }
 

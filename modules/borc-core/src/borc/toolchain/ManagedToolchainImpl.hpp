@@ -32,7 +32,7 @@ namespace borc {
 
     private:
         struct Private;
-        Private *m_pimpl = nullptr;
+        Private *m_impl = nullptr;
     };
 }
 

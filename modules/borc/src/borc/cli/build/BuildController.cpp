@@ -35,7 +35,6 @@ namespace borc {
             return;
         }
 
-
         const boost::filesystem::path baseFolderPath = options.sourcePath 
             ? options.sourcePath.get()
             : boost::filesystem::current_path();
@@ -69,7 +68,7 @@ namespace borc {
 
         std::cout << "Building configuration " << configurationData.currentBuildConfiguration.get().computeIdentifier() << " ..." << std::endl;
 
-        auto toolchainFactory = std::make_unique<ToolchainFactoryImpl>("toolchain");
+        auto toolchainFactory = std::make_unique<ToolchainFactoryImpl>("./toolchain/");
         auto toolchain = toolchainFactory->createToolchain(configurationData.currentBuildConfiguration.get().toolchainId);
 
         BuildServiceImpl buildService {
@@ -100,9 +99,5 @@ namespace borc {
         auto dag = buildService.createBuildDag(package.get());
         DagVisitor dagVisitor;
         dagVisitor.visit(dag.get());
-    }
-
-    static void buildImpl() {
-        
     }
 }
