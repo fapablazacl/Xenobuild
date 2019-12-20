@@ -38,17 +38,19 @@ namespace borc {
     ServiceFactoryGCC::~ServiceFactoryGCC() {}
 
     std::unique_ptr<Compiler> ServiceFactoryGCC::createCompiler() {
-        CompilerSwitches switches;
-        switches.compile = "-std=c++17 -c";
-        switches.includeDebug = "-g";
-        switches.zeroOptimization = "-O0";
-        switches.objectFileOutput = "-o";
-        switches.includePath = "-I";
-        switches.generateDependencies = "-MM -MG";
+        // CompilerSwitches switches;
+        // switches.compile = "-std=c++17 -c";
+        // switches.includeDebug = "-g";
+        // switches.zeroOptimization = "-O0";
+        // switches.objectFileOutput = "-o";
+        // switches.includePath = "-I";
+        // switches.generateDependencies = "-MM -MG";
+        // 
+        // CompilerConfiguration configuration;
+        // 
+        // return std::make_unique<CompilerImpl> (&commandFactory, commandBase, switches, configuration);
 
-        CompilerConfiguration configuration;
-
-        return std::make_unique<CompilerImpl> (&commandFactory, commandBase, switches, configuration);
+        return {};
     }
 
     std::unique_ptr<Linker> ServiceFactoryGCC::createLinker() {

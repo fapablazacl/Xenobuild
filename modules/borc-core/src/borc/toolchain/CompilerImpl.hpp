@@ -15,34 +15,59 @@ namespace borc {
     class Command;
     class CommandFactory;
 
-    struct CompilerSwitches {
-        std::string compile;
-        std::string objectFileOutput;
-        std::string includeDebug;
-        std::string zeroOptimization;
-        std::string includePath;
-        std::string generateDependencies;
-
-        CompilerSwitches() {}
-    };
-
-    //! Compiler default configuration
-    struct CompilerConfiguration {
-        std::vector<std::string> flags;
-        std::vector<std::string> systemIncludePaths;
-    };
-
     class Source;
     class Dag;
     class DagNode;
     class CompilerImpl : public Compiler {
     public:
+        /*
+        struct LanguageDialectSwitch {
+            std::string name;
+            std::string flag;
+        };
+
+
+        struct OptimizationLevelSwitch {
+            std::string name;
+            std::string flag;
+        };
+        */
+
+        struct Switches {
+            std::string compile;
+            std::string objectFileOutput;
+            std::string includeDebug;
+            std::string zeroOptimization;
+            std::string includePath;
+            std::string generateDependencies;
+
+            // std::vector<LanguageDialectSwitch> dialects;
+            // std::vector<OptimizationLeve
+        };
+
+        struct BuildRuleInput {
+            std::string fileType;
+        };
+
+        struct BuildRuleOutput {
+            std::string fileType;
+            std::string fileName;
+        };
+
+        struct BuildRule {
+            BuildRuleInput input;
+            BuildRuleOutput output;
+        };
+        
+    public:
         explicit CompilerImpl(
             CommandFactory *commandFactory, 
             const std::string &commandPath, 
-            const CompilerSwitches &switches, 
-            const CompilerConfiguration &configuration
+            const Switches &switches,
+            const std::vector<BuildRule> &buildRules
         );
+
+        virtual bool isSourceLinkable(const Source *source) const override;
 
         virtual CompileOutput compile(Dag *dag, const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const override;
 
@@ -60,8 +85,8 @@ namespace borc {
     private:
         CommandFactory *commandFactory = nullptr;
         std::string commandPath;
-        CompilerSwitches switches;
-        CompilerConfiguration configuration;
+        Switches switches;
+        std::vector<BuildRule> buildRules;
     };
 }
 

@@ -8,7 +8,9 @@
 #include <tuple>
 #include <memory>
 
+#include <boost/core/noncopyable.hpp>
 #include <borc/model/CommandFactory.hpp>
+
 
 namespace borc {
     struct ToolchainEntity;
@@ -16,7 +18,7 @@ namespace borc {
     class SourceChecker;
     class ModuleChecker;
 
-    class ManagedToolchainImpl : public Toolchain {
+    class ManagedToolchainImpl : public Toolchain, private boost::noncopyable {
     public:
         explicit ManagedToolchainImpl(const ToolchainEntity &entity);
 
@@ -27,10 +29,8 @@ namespace borc {
         virtual const Linker* selectLinker(const Module *module) const override;
 
     private:
-        std::vector<std::pair<std::unique_ptr<SourceChecker>, std::unique_ptr<Compiler>>> compilers;
-        std::vector<std::unique_ptr<Linker>> linkers;
-
-        CommandFactory commandFactory;
+        struct Private;
+        Private *m_pimpl = nullptr;
     };
 }
 

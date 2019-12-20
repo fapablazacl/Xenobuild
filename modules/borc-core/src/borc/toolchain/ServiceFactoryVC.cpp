@@ -32,31 +32,33 @@ namespace borc {
     ServiceFactoryVC::~ServiceFactoryVC() {}
 
     std::unique_ptr<Compiler> ServiceFactoryVC::createCompiler(const std::string &compilerCommand, const std::string &installationPath, const std::string &windowsKitPath) {
-        const std::string standardIncludePath = installationPath + "include";
-        const std::string ucrtIncludePath = windowsKitPath + "Include\\10.0.17763.0\\ucrt";
-        const std::string umIncludePath = windowsKitPath + "Include\\10.0.17763.0\\um";
+        // const std::string standardIncludePath = installationPath + "include";
+        // const std::string ucrtIncludePath = windowsKitPath + "Include\\10.0.17763.0\\ucrt";
+        // const std::string umIncludePath = windowsKitPath + "Include\\10.0.17763.0\\um";
+        // 
+        // const std::string sharedIncludePath = windowsKitPath + "Include\\10.0.17763.0\\shared";
+        // 
+        // CompilerSwitches compilerSwitches;
+        // compilerSwitches.compile = "/c";
+        // compilerSwitches.objectFileOutput = "/Fo";
+        // compilerSwitches.zeroOptimization = "/Od";
+        // compilerSwitches.includePath = "/I";
+        // compilerSwitches.includeDebug = "/DEBUG:FULL";
+        // 
+        // return std::make_unique<CompilerImpl> (
+        //     &commandFactory, compilerCommand, compilerSwitches,
+        //     CompilerConfiguration { 
+        //         {"/EHsc", "/std:c++17"}, 
+        //         { 
+        //             "\"" + standardIncludePath + "\"", 
+        //             "\"" + ucrtIncludePath + "\"",
+        //             "\"" + umIncludePath + "\"",
+        //             "\"" + sharedIncludePath + "\""
+        //         }
+        //     }
+        // );
 
-        const std::string sharedIncludePath = windowsKitPath + "Include\\10.0.17763.0\\shared";
-
-        CompilerSwitches compilerSwitches;
-        compilerSwitches.compile = "/c";
-        compilerSwitches.objectFileOutput = "/Fo";
-        compilerSwitches.zeroOptimization = "/Od";
-        compilerSwitches.includePath = "/I";
-        compilerSwitches.includeDebug = "/DEBUG:FULL";
-
-        return std::make_unique<CompilerImpl> (
-            &commandFactory, compilerCommand, compilerSwitches,
-            CompilerConfiguration { 
-                {"/EHsc", "/std:c++17"}, 
-                { 
-                    "\"" + standardIncludePath + "\"", 
-                    "\"" + ucrtIncludePath + "\"",
-                    "\"" + umIncludePath + "\"",
-                    "\"" + sharedIncludePath + "\""
-                }
-            }
-        );
+        return {};
     }
 
     std::unique_ptr<Linker> ServiceFactoryVC::createLinker(const std::string &linkerCommand, const std::string &installationPath, const std::string &windowsKitPath) {

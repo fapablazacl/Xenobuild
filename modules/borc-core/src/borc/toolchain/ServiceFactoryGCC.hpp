@@ -5,6 +5,7 @@
 #include "ServiceFactoryStub.hpp"
 
 namespace borc {
+    [[deprecated]]
     class ServiceFactoryGCC : public ServiceFactoryStub {
     public:
         explicit ServiceFactoryGCC(const std::string &commandBase);

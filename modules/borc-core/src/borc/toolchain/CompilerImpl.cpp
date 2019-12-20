@@ -14,12 +14,18 @@
 
 
 namespace borc {
-    CompilerImpl::CompilerImpl(CommandFactory *commandFactory, const std::string &commandPath, const CompilerSwitches &switches, const CompilerConfiguration &configuration) {
+    CompilerImpl::CompilerImpl(CommandFactory *commandFactory, const std::string &commandPath, const CompilerImpl::Switches &switches, const std::vector<CompilerImpl::BuildRule> &buildRules) {
         this->commandFactory = commandFactory;
         this->commandPath = commandPath;
         this->switches = switches;
-        this->configuration = configuration;
+        this->buildRules = buildRules;
     }
+
+
+    bool CompilerImpl::isSourceLinkable(const Source *source) const {
+        return true;
+    }
+
 
     boost::filesystem::path CompilerImpl::getObjectFilePath(const boost::filesystem::path &outputPath, const Source *source) const {
         const boost::filesystem::path objectFileName = source->getFilePath().filename().string() + ".obj";
@@ -31,6 +37,7 @@ namespace borc {
         
         return objectFilePath;
     }
+
 
     Command* CompilerImpl::createCompileCommand(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const {
         const auto sourceFilePath = source->getFilePath();
@@ -46,11 +53,11 @@ namespace borc {
         };
 
         // compute system include directories
-        for (const std::string &path : configuration.systemIncludePaths) {
-            const std::string includeOption = switches.includePath + path;
-
-            commandOptions.push_back(includeOption);
-        }
+        // for (const std::string &path : configuration.systemIncludePaths) {
+        //     const std::string includeOption = switches.includePath + path;
+        // 
+        //     commandOptions.push_back(includeOption);
+        // }
 
         // compute additional include directories
         for (const std::string &path : options.includePaths) {
@@ -67,10 +74,11 @@ namespace borc {
         }
 
         // add additional compiler options
-        commandOptions.insert(commandOptions.end(), std::begin(configuration.flags), std::end(configuration.flags));
+        // commandOptions.insert(commandOptions.end(), std::begin(configuration.flags), std::end(configuration.flags));
 
         return commandFactory->createCommand(commandPath, commandOptions);
     }
+
 
     CompileOutput CompilerImpl::compile(Dag *dag, const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const {
         // ******************
@@ -87,6 +95,7 @@ namespace borc {
         return CompileOutput{outputFileRelativePath, node};
     }
 
+
     std::vector<boost::filesystem::path> CompilerImpl::computeFileDependencies(const Source *source, const CompileOptions &options) const {
         const auto sourceFilePath = source->getFilePath();
 
@@ -97,11 +106,11 @@ namespace borc {
         commandOptions.push_back(sourceFilePath.string());
 
         // compute system include directories
-        for (const std::string &path : configuration.systemIncludePaths) {
-            const std::string includeOption = switches.includePath + path;
-
-            commandOptions.push_back(includeOption);
-        }
+        // for (const std::string &path : configuration.systemIncludePaths) {
+        //     const std::string includeOption = switches.includePath + path;
+        // 
+        //     commandOptions.push_back(includeOption);
+        // }
 
         // compute additional include directories
         for (const std::string &path : options.includePaths) {
@@ -111,7 +120,7 @@ namespace borc {
         }
 
         // add additional compiler options
-        commandOptions.insert(commandOptions.end(), std::begin(configuration.flags), std::end(configuration.flags));
+        // commandOptions.insert(commandOptions.end(), std::begin(configuration.flags), std::end(configuration.flags));
 
         boost::filesystem::path compilerPath = boost::process::search_path(commandPath);
         boost::process::ipstream pipeStream;
@@ -140,9 +149,11 @@ namespace borc {
         return dependencies;
     }
 
+
     std::vector<boost::filesystem::path> CompilerImpl::computeDependencies(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const {
         return this->computeFileDependencies(source, options);
     }
+
 
     boost::filesystem::path CompilerImpl::compileOutputFile(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const {
         return this->getObjectFilePath(outputPath, source);
