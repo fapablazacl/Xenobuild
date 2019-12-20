@@ -1,6 +1,7 @@
 
 #include "ToolchainServiceImpl.hpp"
 
+#include <boost/optional/optional.hpp>
 #include <boost/hana.hpp>
 #include <nlohmann/json.hpp>
 #include <borc/toolchain/ManagedToolchainImpl.hpp>
@@ -22,8 +23,8 @@ namespace borc {
     }
 
 
-    std::unique_ptr<Toolchain> ToolchainServiceImpl::createToolchain(const boost::filesystem::path &toolchainFolder) const {
-        const auto toolchainFilePath = toolchainFolder / "toolchain.borc.json";
+    std::unique_ptr<Toolchain> ToolchainServiceImpl::createToolchain(const boost::filesystem::path &definitionFullPath, boost::optional<boost::filesystem::path> installationPath) const {
+        const auto toolchainFilePath = definitionFullPath / "toolchain.borc.json";
         const auto toolchainJsonContent = fileService->load(toolchainFilePath.string());
         const auto toolchainJson = nlohmann::json::parse(toolchainJsonContent);
 
@@ -31,6 +32,6 @@ namespace borc {
 
         deserialize(toolchainEntity, toolchainJson);
 
-        return std::make_unique<ManagedToolchainImpl>(toolchainEntity);
+        return std::make_unique<ManagedToolchainImpl>(toolchainEntity, installationPath);
     }
 }

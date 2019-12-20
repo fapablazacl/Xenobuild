@@ -96,7 +96,13 @@ namespace borc {
 
         std::cout << "Configuring build: type=" << options.buildType << ", toolchain=" << options.toolchain.get() << std::endl;
 
-        auto factory = std::make_unique<ToolchainFactoryImpl>("./toolchain/");
+        boost::optional<boost::filesystem::path> installationPath;
+
+        if (options.toolchainPath) {
+            installationPath = boost::filesystem::path{ options.toolchainPath.get() };
+        }
+
+        auto factory = std::make_unique<ToolchainFactoryImpl>("./toolchain/", installationPath);
         auto toolchain = factory->createToolchain(options.toolchain.get());
 
         // setup the configuration requested by the user
@@ -106,6 +112,10 @@ namespace borc {
         config.buildTypes = m_impl->generateBuildTypes(toolchain, options.buildType);
         config.version = toolchain->detectVersion();
 
+        if (installationPath) {
+            config.toolchainPath = installationPath.get().string();
+        }
+        
         std::cout << "Detected compiler version: " << std::string(config.version) << std::endl;
 
         // construct the package with the current toolchain, in order grab dependency information

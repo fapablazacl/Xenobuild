@@ -17,7 +17,7 @@ namespace borc {
     struct CompilerImpl::Private {
     public:
         CommandFactory *commandFactory = nullptr;
-        std::string commandPath;
+        boost::filesystem::path commandPath;
         Switches switches;
         std::vector<BuildRule> buildRules;
 
@@ -117,7 +117,7 @@ namespace borc {
             // add additional compiler options
             // commandOptions.insert(commandOptions.end(), std::begin(configuration.flags), std::end(configuration.flags));
 
-            return commandFactory->createCommand(commandPath, commandOptions);
+            return commandFactory->createCommand(commandPath.string(), commandOptions);
         }
 
 
@@ -132,9 +132,9 @@ namespace borc {
             return objectFilePath;
         }
     };
+    
 
-
-    CompilerImpl::CompilerImpl(CommandFactory *commandFactory, const std::string &commandPath, const CompilerImpl::Switches &switches, const std::vector<CompilerImpl::BuildRule> &buildRules) : m_impl(new CompilerImpl::Private{}) {
+    CompilerImpl::CompilerImpl(CommandFactory *commandFactory, const boost::filesystem::path &commandPath, const CompilerImpl::Switches &switches, const std::vector<CompilerImpl::BuildRule> &buildRules) : m_impl(new CompilerImpl::Private{}) {
         m_impl->commandFactory = commandFactory;
         m_impl->commandPath = commandPath;
         m_impl->switches = switches;

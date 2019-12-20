@@ -40,7 +40,7 @@ namespace borc {
     struct ManagedToolchainImpl::Private {
         std::vector<std::unique_ptr<Compiler>> compilers;
         std::vector<std::unique_ptr<Linker>> linkers;
-
+        boost::optional<boost::filesystem::path> installationPath;
         CommandFactory commandFactory;
 
         void appendCompiler(const ToolchainEntity::Tool &tool) {
@@ -48,7 +48,6 @@ namespace borc {
 
             switches.compile = tool.switches.compile;
             switches.objectFileOutput = tool.switches.outputFile;
-            // compilerSwitches.zeroOptimization = "/Od";
             switches.includePath = tool.switches.includePath;
             switches.includeDebug = tool.switches.debugInformation;
 
@@ -64,12 +63,22 @@ namespace borc {
                 return buildRule;
             });
 
-            compilers.emplace_back(new CompilerImpl {
-                &commandFactory, 
-                tool.command, 
-                switches,
-                buildRules
-            });
+
+            if (installationPath) {
+                compilers.emplace_back(new CompilerImpl {
+                    &commandFactory, 
+                    installationPath.get() / tool.command,
+                    switches,
+                    buildRules
+                });
+            } else {
+                compilers.emplace_back(new CompilerImpl {
+                    &commandFactory, 
+                    tool.command,
+                    switches,
+                    buildRules
+                });
+            }
         }
 
 
@@ -105,8 +114,7 @@ namespace borc {
             
             linkers.emplace_back(new LinkerImpl {
                 &commandFactory,
-                /*boost::filesystem::current_path(),*/
-                "",
+                installationPath ? installationPath->string() : "",
                 tool.command,
                 switches,
                 buildRules
@@ -166,8 +174,9 @@ namespace borc {
     };
 
 
-    ManagedToolchainImpl::ManagedToolchainImpl(const ToolchainEntity &entity) {
+    ManagedToolchainImpl::ManagedToolchainImpl(const ToolchainEntity &entity, boost::optional<boost::filesystem::path> installationPath) {
         m_impl = new ManagedToolchainImpl::Private();
+        m_impl->installationPath = installationPath;
 
         for (const ToolchainEntity::Tool &tool : entity.tools) {
             if (tool.type == "compiler") {

@@ -11,7 +11,7 @@ namespace borc {
     public:
         explicit ToolchainServiceImpl(const FileService *fileService);
 
-        std::unique_ptr<Toolchain> createToolchain(const boost::filesystem::path &toolchainFolder) const override;
+        std::unique_ptr<Toolchain> createToolchain(const boost::filesystem::path &toolchainFolder, boost::optional<boost::filesystem::path> installationPath) const override;
 
     private:
         const FileService *fileService = nullptr;

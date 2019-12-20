@@ -55,6 +55,8 @@ namespace borc {
         //! build types associated to this build configuration
         mutable std::set<BuildType> buildTypes;
 
+        mutable std::string toolchainPath;
+
         bool operator< (const BuildConfiguration &other) const;
 
         bool operator== (const BuildConfiguration &rhs) const;

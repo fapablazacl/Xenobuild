@@ -8,9 +8,10 @@
 #include <tuple>
 #include <memory>
 
+#include <boost/optional/optional_fwd.hpp>
+#include <boost/filesystem/path.hpp>
 #include <boost/core/noncopyable.hpp>
 #include <borc/model/CommandFactory.hpp>
-
 
 namespace borc {
     struct ToolchainEntity;
@@ -20,7 +21,7 @@ namespace borc {
 
     class ManagedToolchainImpl : public Toolchain, private boost::noncopyable {
     public:
-        explicit ManagedToolchainImpl(const ToolchainEntity &entity);
+        explicit ManagedToolchainImpl(const ToolchainEntity &entity, boost::optional<boost::filesystem::path> installationPath);
 
         virtual ~ManagedToolchainImpl();
 

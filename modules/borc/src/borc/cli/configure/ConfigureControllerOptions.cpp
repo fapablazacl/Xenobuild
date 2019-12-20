@@ -14,7 +14,7 @@ namespace borc {
         desc.add_options()
             ("help", "produce this message")
             ("build-type", po::value<std::string>(), "set build type (debug, release, all)")
-            ("toolchain", po::value<std::string>(), "set toolchain (gcc, vc, clang)")
+            ("toolchain", po::value<std::string>(), "set toolchain (gcc, vc)")
             ("toolchain-path", po::value<std::string>(), "set toolchain installation path")
             ("search-path", po::value<std::string>(), "set current search path directory for packages(?)")
             ("var", po::value<std::vector<std::string>>(), "define required variable used by some packages")

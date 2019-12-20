@@ -10,7 +10,7 @@
 #include "BuildCacheImpl.hpp"
 
 BOOST_HANA_ADAPT_STRUCT(borc::Version, major, minor, revision);
-BOOST_HANA_ADAPT_STRUCT(borc::BuildConfiguration, toolchainId, arch, version, buildTypes, variables);
+BOOST_HANA_ADAPT_STRUCT(borc::BuildConfiguration, toolchainId, arch, version, buildTypes, variables, toolchainPath);
 BOOST_HANA_ADAPT_STRUCT(borc::BuildType, type);
 
 namespace borc {
@@ -34,6 +34,8 @@ namespace borc {
                 for (const auto &pair : newConfig.variables) {
                     it->variables.insert(pair);
                 }
+
+                it->toolchainPath = newConfig.toolchainPath;
             }
         }
     }
@@ -63,7 +65,7 @@ namespace borc {
     }
 
     void ConfigurationService::saveConfigurations() {
-        if (!boost::filesystem::exists(outputPath) && ! boost::filesystem::create_directory(outputPath) ) {
+        if (!boost::filesystem::exists(outputPath) && !boost::filesystem::create_directory(outputPath) ) {
             throw std::runtime_error("Couldn't create the '" + outputPath.string() +  "' directory. Please check user/group/folder permissions.");
         }
 
@@ -77,6 +79,7 @@ namespace borc {
 
         fileService.save(configFilePath.string(), configurationJsonContent);
     }
+
 
     std::unique_ptr<BuildCache> ConfigurationService::createBuildCache(const BuildConfiguration &config) {
         return std::make_unique<BuildCacheImpl>(outputPath / config.computeIdentifier());

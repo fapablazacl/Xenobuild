@@ -62,7 +62,7 @@ namespace borc {
     public:
         explicit CompilerImpl(
             CommandFactory *commandFactory, 
-            const std::string &commandPath, 
+            const boost::filesystem::path &commandPath, 
             const Switches &switches,
             const std::vector<BuildRule> &buildRules
         );

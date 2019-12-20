@@ -6,12 +6,13 @@
 
 #include <memory>
 #include <map>
+#include <boost/optional/optional_fwd.hpp>
 #include <boost/filesystem/path.hpp>
 
 namespace borc {
     class ToolchainFactoryImpl : public ToolchainFactory {
     public:
-        explicit ToolchainFactoryImpl(const boost::filesystem::path &toolchainDefinitionPath);
+        explicit ToolchainFactoryImpl(const boost::filesystem::path &definitionPath, boost::optional<boost::filesystem::path> installationPath);
 
         virtual ~ToolchainFactoryImpl();
 
@@ -21,7 +22,7 @@ namespace borc {
         std::vector<std::string> detectAvailableToolchainIds() const;
 
     private:
-        boost::filesystem::path toolchainDefinitionPath;
+        boost::filesystem::path definitionPath;
         std::map<std::string, std::unique_ptr<Toolchain>> toolchainMap;
     };
 }
