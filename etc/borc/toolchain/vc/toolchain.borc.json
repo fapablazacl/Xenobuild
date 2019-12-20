@@ -42,7 +42,7 @@
             "buildRules": [
                 {
                     "input": {
-                        "moduleType": ["application/gui", "application/cli"],
+                        "moduleTypes": ["application/gui", "application/cli"],
                         "fileType": "native/object"
                     },
                     "output": {
@@ -52,7 +52,7 @@
                 }, 
                 {
                     "input": {
-                        "moduleType": "library/dynamic",
+                        "moduleTypes": ["library/dynamic"],
                         "fileType": "native/object"
                     },
                     "flags": ["/DLL"],

@@ -116,9 +116,9 @@ namespace borc {
         for (Module *module : package->getModules()) {
             const Linker *linker = m_impl->toolchain->selectLinker(module);
 
-            if (!linker) {
+            if (! linker) {
                 if (m_impl->logger) {
-                    m_impl->logger->warn("Couldn't find a linker using the current toolchain");
+                    m_impl->logger->warn("Couldn't find a linker for module " + module->getName() + " using the current toolchain");
                 }
 
                 continue;
@@ -135,12 +135,16 @@ namespace borc {
             for (Source *source : module->getSources()) {
                 const Compiler *compiler = m_impl->toolchain->selectCompiler(source);
 
-                if (!compiler || !m_impl->buildCache->needsRebuild(source->getFilePath())) {
+                if (! compiler) {
                     continue;
                 }
-
+                
                 CompileOutput compileOutput = compiler->compile(dag.get(), m_impl->outputPath, source, compileOptions);
                 objectFiles.push_back(compileOutput.outputFileRelativePath);
+
+                if (! m_impl->buildCache->needsRebuild(source->getFilePath())) {
+                    continue;
+                }
 
                 Command *buildCacheUpdateCommand = m_impl->createBuildCacheUpdateCommand(source->getFilePath());
                 DagNode *buildCacheUpdate = dag->createNode(buildCacheUpdateCommand);

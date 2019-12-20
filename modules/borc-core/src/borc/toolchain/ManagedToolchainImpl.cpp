@@ -81,24 +81,24 @@ namespace borc {
             switches.libraryPath = tool.switches.libraryPath;
 
             std::vector<LinkerImpl::BuildRule> buildRules;
-            for (const ToolchainEntity::BuildRule &buildRuleEntity : tool.buildRules) {
+            for (const ToolchainEntity::BuildRule &buildRuleDef : tool.buildRules) {
                 LinkerImpl::BuildRule buildRule;
 
                 buildRule = {};
-                buildRule.flags = buildRuleEntity.flags;
+                buildRule.flags = buildRuleDef.flags;
 
-                buildRule.input.fileType = buildRuleEntity.input.fileType;
+                buildRule.input.fileType = buildRuleDef.input.fileType;
 
                 std::transform(
-                        buildRuleEntity.input.moduleTypes.begin(),
-                        buildRuleEntity.input.moduleTypes.end(), 
+                        buildRuleDef.input.moduleTypes.begin(),
+                        buildRuleDef.input.moduleTypes.end(), 
                         std::back_inserter(buildRule.input.moduleTypes),
                     [](const std::string &moduleTypeStr) {
                         return *Module::Type::parse(moduleTypeStr);
                 });
 
-                buildRule.output.fileType = buildRuleEntity.output.fileType;
-                buildRule.output.fileName = buildRuleEntity.output.fileName;
+                buildRule.output.fileType = buildRuleDef.output.fileType;
+                buildRule.output.fileName = buildRuleDef.output.fileName;
 
                 buildRules.push_back(buildRule);
             }

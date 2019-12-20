@@ -23,6 +23,10 @@ namespace borc {
 
     public:
         std::vector<boost::filesystem::path> computeFileDependencies(const Source *source, const CompileOptions &options) const {
+            if (switches.generateDependencies == "") {
+                return {};
+            }
+
             const auto sourceFilePath = source->getFilePath();
 
             std::vector<std::string> commandOptions;
