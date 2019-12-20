@@ -67,6 +67,8 @@ namespace borc {
             const std::vector<BuildRule> &buildRules
         );
 
+        virtual ~CompilerImpl();
+
         virtual bool isSourceLinkable(const Source *source) const override;
 
         virtual CompileOutput compile(Dag *dag, const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const override;
@@ -76,17 +78,8 @@ namespace borc {
         virtual boost::filesystem::path compileOutputFile(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const override;
 
     private:
-        Command* createCompileCommand(const boost::filesystem::path &outputPath, const Source *source, const CompileOptions &options) const;
-
-        boost::filesystem::path getObjectFilePath(const boost::filesystem::path &outputPath, const Source *source) const;
-
-        std::vector<boost::filesystem::path> computeFileDependencies(const Source *source, const CompileOptions &options) const;
-
-    private:
-        CommandFactory *commandFactory = nullptr;
-        std::string commandPath;
-        Switches switches;
-        std::vector<BuildRule> buildRules;
+        struct Private;
+        Private *m_impl = nullptr;
     };
 }
 
