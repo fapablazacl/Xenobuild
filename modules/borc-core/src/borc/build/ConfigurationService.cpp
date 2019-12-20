@@ -29,6 +29,11 @@ namespace borc {
         } else {
             for (auto buildType : newConfig.buildTypes) {
                 it->buildTypes.insert(buildType);
+
+                // merge the variables
+                for (const auto &pair : newConfig.variables) {
+                    it->variables.insert(pair);
+                }
             }
         }
     }

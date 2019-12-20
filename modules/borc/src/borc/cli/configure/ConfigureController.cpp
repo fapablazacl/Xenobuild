@@ -51,9 +51,8 @@ namespace borc {
     };
 
 
-    ConfigureController::ConfigureController() : m_impl(new ConfigureController::Private()) {
-
-    }
+    ConfigureController::ConfigureController() 
+        : m_impl(new ConfigureController::Private()) {}
 
     ConfigureController::~ConfigureController() {
         delete m_impl;
