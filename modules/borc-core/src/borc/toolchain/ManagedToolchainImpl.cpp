@@ -65,15 +65,15 @@ namespace borc {
 
 
         void appendLinker(const ToolchainEntity::Tool &tool) {
-            LinkerImplSwitches switches;
+            LinkerImpl::Switches switches;
 
             switches.importLibrary = tool.switches.importLibrary;
             switches.outputFile = tool.switches.outputFile;
             switches.libraryPath = tool.switches.libraryPath;
 
-            std::vector<LinkerImplBuildRule> buildRules;
+            std::vector<LinkerImpl::BuildRule> buildRules;
             for (const ToolchainEntity::BuildRule &buildRuleEntity : tool.buildRules) {
-                LinkerImplBuildRule buildRule;
+                LinkerImpl::BuildRule buildRule;
 
                 buildRule = {};
                 buildRule.flags = buildRuleEntity.flags;
