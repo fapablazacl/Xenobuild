@@ -31,6 +31,8 @@ int main(int argc, char **argv) {
 }
 */
 
+// configure --toolchain=vc --build-type=all --var=BoostPath:C:\Boost --var=BoostVersion:1.7.1
+
 
 int main(int argc, char **argv) {
     if (argc < 2) {
