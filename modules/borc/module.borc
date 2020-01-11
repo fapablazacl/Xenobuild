@@ -4,8 +4,8 @@ type: "application/console"
 languages: 
   - "c++/17"
 sources:
-  - "include/**"
   - "src/**"
 dependencies:
   - "borc/core"
   - "boost@>=1.70.0/[filesystem, system, process, program_options]"
+  - "jbeder/yaml-cpp"
