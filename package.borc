@@ -6,4 +6,4 @@ author: "Felipe Apablaza"
 email: "ing.apablaza@gmail.com"
 definition_files: 
   - "modules/borc/module.borc"
-  - "modules/core/module.borc"
+  

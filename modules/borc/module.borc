@@ -6,6 +6,5 @@ languages:
 sources:
   - "src/**"
 dependencies:
-  - "borc/core"
-  - "boost@>=1.70.0/[filesystem, system, process, program_options]"
+  - "boost>=1.70.0/[filesystem, system, process, program_options]"
   - "jbeder/yaml-cpp"
