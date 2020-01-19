@@ -11,7 +11,7 @@ include_directories(
 
 link_directories(${Boost_LIBRARY_DIRS})
 
-find_package(nlohmann_json REQUIRED)
+find_package(nlohmann_json)
 
 set (src "src/Main.cpp")
 
