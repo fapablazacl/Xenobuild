@@ -4,3 +4,4 @@
 src/*
 docs/borc.vpp.*
 output.dot
+docs/*.jpg
