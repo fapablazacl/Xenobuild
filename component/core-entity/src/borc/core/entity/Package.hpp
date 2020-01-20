@@ -7,7 +7,7 @@
 #include "Version.hpp"
 
 namespace borc::core::entity {
-	struct Component {
+	struct Package {
 		std::string name;
 		std::string description;
         Version version;
