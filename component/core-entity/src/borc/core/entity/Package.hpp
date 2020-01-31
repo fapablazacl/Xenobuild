@@ -15,5 +15,7 @@ namespace borc::core::entity {
         std::string author;
         std::string email;
         std::vector<std::string> definitionFiles;
+
+        ~Package();
 	};
 }
