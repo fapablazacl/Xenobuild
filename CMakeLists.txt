@@ -8,5 +8,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_subdirectory("component/borc")
 add_subdirectory("component/core")
+add_subdirectory("component/core-test")
 add_subdirectory("component/core-entity")
 add_subdirectory("component/core-entity-test")
