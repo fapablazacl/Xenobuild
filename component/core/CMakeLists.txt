@@ -1,6 +1,11 @@
 
 set (target core)
 
+set (src_core
+	"borc/core/Command.hpp"	
+	"borc/core/Command.cpp"	
+)
+
 set (src_core_build 
 	
 )
@@ -34,12 +39,14 @@ set (src_core_package
 	"borc/core/package/Version.cpp"
 )
 
+source_group ("borc\\core" FILES ${src_core})
 source_group ("borc\\core\\build" FILES ${src_core_build})
 source_group ("borc\\core\\pipeline" FILES ${src_core_pipeline})
 source_group ("borc\\core\\toolchain" FILES ${src_core_toolchain})
 source_group ("borc\\core\\package" FILES ${src_core_package})
 
 add_library (${target} 
+	${src_core}
 	${src_core_build} 
 	${src_core_pipeline} 
 	${src_core_toolchain}

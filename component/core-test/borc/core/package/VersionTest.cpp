@@ -2,7 +2,7 @@
 #include <catch2/catch.hpp>
 #include <borc/core/package/Version.hpp>
 
-TEST_CASE("Constructor correctly initialize the values", "[borc.core.package.Version]" ) {
+TEST_CASE("borc::Version class: Constructor correctly initialize the values", "[borc.core.package.Version]" ) {
     const auto v1 = borc::Version{1, 2, 3};
     REQUIRE(v1.major == 1);
     REQUIRE(v1.minor == 2);

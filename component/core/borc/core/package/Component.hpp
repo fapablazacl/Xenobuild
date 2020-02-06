@@ -11,6 +11,10 @@ namespace borc {
         struct Type {
             std::string category;
             std::string subCategory;
+
+            bool operator== (const Type &other) const {
+                return std::tuple(category, subCategory) == std::tuple(other.category, other.subCategory);
+            }
         };
 
         explicit Component(Package *parentPackage);

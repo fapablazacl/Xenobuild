@@ -3,7 +3,7 @@
 #include <borc/core/package/Package.hpp>
 
 
-TEST_CASE("Setters and getters in general behave correctly", "[borc.core.package.Package]" ) {
+TEST_CASE("borc::Package class: Setters and getters in general behave correctly", "[borc.core.package.Package]" ) {
     auto package = borc::Package();
 
     REQUIRE(package.setName("borc")->getName() == "borc");
