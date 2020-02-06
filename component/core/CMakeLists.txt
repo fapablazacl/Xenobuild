@@ -30,6 +30,8 @@ set (src_core_package
 	"borc/core/package/Package.cpp"
 	"borc/core/package/Component.hpp"
 	"borc/core/package/Component.cpp"
+	"borc/core/package/Version.hpp"
+	"borc/core/package/Version.cpp"
 )
 
 source_group ("borc\\core\\build" FILES ${src_core_build})
