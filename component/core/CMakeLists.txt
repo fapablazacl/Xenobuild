@@ -2,12 +2,12 @@
 set (target core)
 
 set (src_core
-	"borc/core/Command.hpp"	
-	"borc/core/Command.cpp"	
+
 )
 
 set (src_core_build 
-	
+	"borc/core/build/Command.hpp"	
+	"borc/core/build/Command.cpp"	
 )
 
 set (src_core_pipeline 

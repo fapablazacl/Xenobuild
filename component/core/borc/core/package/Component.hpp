@@ -17,6 +17,15 @@ namespace borc {
             }
         };
 
+        struct Language {
+            std::string name;
+            std::string dialect;
+
+            bool operator== (const Language &other) const {
+                return std::tuple(name, dialect) == std::tuple(other.name, other.dialect);
+            }
+        };
+
         explicit Component(Package *parentPackage);
 
         ~Component();
@@ -28,6 +37,8 @@ namespace borc {
         Component* setType(const Type &value);
 
         Component* setFiles(const std::vector<std::string> &values);
+
+        Component* setLanguage(const Language &value);
 
         const Package* getPackage() const {
             return package;
@@ -48,12 +59,17 @@ namespace borc {
         std::vector<std::string> getFiles() const {
             return files;
         }
+        
+        Language getLanguage() const {
+            return language;
+        }
 
     private:
         Package *package = nullptr;
         std::string name;
         std::string description;
         Type type;
+        Language language;
 
         std::vector<std::string> files;
     };

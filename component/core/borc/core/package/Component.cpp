@@ -30,4 +30,10 @@ namespace borc {
 
         return this;
     }
+
+    Component* Component::setLanguage(const Component::Language &value) {
+        language = value;
+
+        return this;
+    }
 }

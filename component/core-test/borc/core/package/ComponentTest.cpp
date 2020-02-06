@@ -8,6 +8,7 @@ TEST_CASE("borc::Component class: Setters and getters in general behave correctl
     component->setName("core")
         ->setDescription("Central logic for building systems!")
         ->setType({"library", "static"})
+        ->setLanguage({"c++", "17"})
         ->setFiles({
             "borc/core/Component.cpp",
             "borc/core/Package.cpp",
@@ -17,6 +18,7 @@ TEST_CASE("borc::Component class: Setters and getters in general behave correctl
     REQUIRE(component->getName() == "core");
     REQUIRE(component->getDescription() == "Central logic for building systems!");
     REQUIRE(component->getType() == borc::Component::Type{"library", "static"});
+    REQUIRE(component->getLanguage() == borc::Component::Language{"c++", "17"});
     REQUIRE(component->getFiles() == std::vector<std::string>{
            "borc/core/Component.cpp",
            "borc/core/Package.cpp"
