@@ -11,5 +11,9 @@ namespace borc {
         int revision = 0;
 
         Version();
+
+        Version(const int major, const int minor, const int revision);
+
+        bool operator== (const Version &rhs) const;
     };
 }

@@ -1,6 +1,6 @@
 
 include_directories("../../dependencies/Catch2/single_include")
-include_directories("../core/src")
+include_directories("../core/")
 
 set (target core-test)
 

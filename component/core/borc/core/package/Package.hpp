@@ -7,6 +7,7 @@
 #include <map>
 
 #include "Version.hpp"
+#include "Component.hpp"
 
 namespace borc {
     class Component;
@@ -46,7 +47,7 @@ namespace borc {
             auto component = new ComponentImpl(this);
             component->setName(name);
 
-            this->addComponent(name, component);
+            this->addComponent(component);
 
             return component;
         }

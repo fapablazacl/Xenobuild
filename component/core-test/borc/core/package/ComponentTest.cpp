@@ -1,3 +1,3 @@
 
 #include <catch2/catch.hpp>
-#include <borc/core/entity/Component.hpp>
+#include <borc/core/package/Component.hpp>

@@ -25,7 +25,7 @@ namespace borc {
 
         Component* setFiles(const std::vector<std::string> &values);
 
-        Package* getPackage() const {
+        const Package* getPackage() const {
             return package;
         }
 
