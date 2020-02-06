@@ -25,8 +25,21 @@ set (src_core_toolchain
 	"borc/core/toolchain/ToolArgument.cpp"
 )
 
+set (src_core_package
+	"borc/core/package/Package.hpp"
+	"borc/core/package/Package.cpp"
+	"borc/core/package/Component.hpp"
+	"borc/core/package/Component.cpp"
+)
+
 source_group ("borc\\core\\build" FILES ${src_core_build})
 source_group ("borc\\core\\pipeline" FILES ${src_core_pipeline})
 source_group ("borc\\core\\toolchain" FILES ${src_core_toolchain})
+source_group ("borc\\core\\package" FILES ${src_core_package})
 
-add_library (${target} ${src_core_build} ${src_core_pipeline} ${src_core_toolchain} )
+add_library (${target} 
+	${src_core_build} 
+	${src_core_pipeline} 
+	${src_core_toolchain}
+	${src_core_package}
+)
