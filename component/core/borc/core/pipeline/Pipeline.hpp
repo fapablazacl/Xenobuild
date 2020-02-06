@@ -3,6 +3,8 @@
 
 #include <memory>
 #include <vector>
+#include <string>
+#include <map>
 
 namespace borc {
     class Pipe;
@@ -12,8 +14,28 @@ namespace borc {
     public:
         ~Pipeline();
 
+        Pipe* createPipe(const std::string &toolName);
+        
+        int getPipeCount() const;
+
+        template<typename MatcherImpl>
+        Matcher* createMatcher(const std::string &fileTypeId) {
+            auto matcher = new MatcherImpl(this, fileTypeId);
+
+            this->addMatcher(matcher);
+
+            return matcher;
+        }
+
+        const Matcher* getMatcher(const std::string &fileTypeId) const;
+
+        int getMatcherCount() const;
+
+    private:
+        void addMatcher(Matcher *matcher);
+
     private:
         std::vector<std::unique_ptr<Pipe>> pipes;
-        std::vector<std::unique_ptr<Matcher>> matchers;
+        std::map<std::string, std::unique_ptr<Matcher>> matchers;
     };
 }

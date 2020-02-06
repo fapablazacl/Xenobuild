@@ -6,14 +6,19 @@
 namespace borc {
     class RegexMatcher : public Matcher {
     public:
-        explicit RegexMatcher(const std::string &name, const std::string &regexPattern);
+        explicit RegexMatcher(const Pipeline *pipeline, const std::string &fileTypeId);
 
         virtual ~RegexMatcher();
 
         virtual bool match(const std::string &fileName) override;
 
+        void setPattern(const std::string &value);
+
+        std::string getPattern() const {
+            return regexPattern;
+        }
+
     private:
-        std::string name;
         std::string regexPattern;
     };
 }
