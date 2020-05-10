@@ -9,6 +9,8 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
 )
 
+include_directories("../core/")
+
 link_directories(${Boost_LIBRARY_DIRS})
 
 find_package(nlohmann_json)
@@ -226,7 +228,7 @@ else()
     set (PTHREAD_LIB pthread)
 endif()
 
-target_link_libraries(borc ${Boost_LIBRARIES} ${PTHREAD_LIB})
+target_link_libraries(borc core ${Boost_LIBRARIES} ${PTHREAD_LIB})
 
 install(TARGETS borc
         RUNTIME DESTINATION bin
