@@ -52,3 +52,5 @@ add_library (${target}
 	${src_core_toolchain}
 	${src_core_package}
 )
+
+target_link_libraries(${target} yaml-cpp)

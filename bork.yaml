@@ -3,7 +3,10 @@ description: "Build System for C++ focused on software modularity and scalabilit
 version: "1.0.0"
 license: "MIT"
 author: "Felipe Apablaza"
-email: "ing.apablaza@gmail.com"
-definition_files: 
-  - "modules/borc/module.borc"
-  
+email: "fapablaza@protonmail.com"
+definition_path: 
+  - "component/borc"
+  - "component/core"
+  - "component/core-entity"
+  - "component/core-entity-test"
+  - "component/core-test"
