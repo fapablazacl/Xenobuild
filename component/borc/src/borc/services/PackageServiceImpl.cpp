@@ -11,7 +11,12 @@
 #include <borc/model/PackageRegistry.hpp>
 #include <borc/model/Module.hpp>
 #include <borc/model/Package.hpp>
-#include <borc/parsing/json/DeserializerJSON.hpp>
+
+#include <borc/parsing/EntityMapper.hpp>
+#include <nlohmann/json.hpp>
+// #include <borc/parsing/json/DeserializerJSON.hpp>
+// #include <borc/parsing/yaml/DeserializerYAML.hpp>
+
 #include <borc/services/FileServiceImpl.hpp>
 #include <borc/entity/PackageEntity.hpp>
 #include <borc/entity/LanguageEntity.hpp>
@@ -211,7 +216,9 @@ namespace borc {
         auto packageJson = nlohmann::json::parse(packageJsonContent);
 
         PackageEntity packageEntity;
-        deserialize(packageEntity, packageJson);
+        EntityMapper<nlohmann::json>{}.deserialize(packageEntity, packageJson);
+
+        // deserialize(packageEntity, packageJson);
 
         return packageEntity;
     }
@@ -231,7 +238,7 @@ namespace borc {
             auto moduleJson = nlohmann::json::parse(moduleJsonContent);
 
             ModuleEntity moduleEntity;
-            deserialize(moduleEntity, moduleJson);
+            EntityMapper<nlohmann::json>{}.deserialize(moduleEntity, moduleJson);
 
             moduleEntities.push_back(moduleEntity);
         }

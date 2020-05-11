@@ -16,16 +16,22 @@ namespace borc {
     /**
      * @brief Deserializes the supplied JSON array into a vector of boost.hana structure values
      */
-    template<typename Type>
-    void deserialize(std::vector<Type> &values, const nlohmann::json &model) {
-        values.resize(model.size());
+    template<typename T>
+    void deserialize(std::vector<T> &values, const YAML::Node &node) {
+        values.resize(0);
 
-        for (int i=0; i<model.size(); i++) {
-            if constexpr (IsSimple<Type>::value) {
-                values[i] = model[i].template get<Type>();
+        int i = 0;
+
+        for (const auto &child : node) {
+            if constexpr (IsSimple<T>::value) {
+                values.push_back( child.template as<T>() );
+                
             } else {
-                deserialize(values[i], model[i]);
+                values.push_back({});
+                deserialize(values[i], child);
             }
+
+            i++;
         }
     }
 
@@ -33,53 +39,55 @@ namespace borc {
     /**
      * @brief Deserializes the supplied JSON array into a map of values
      */
-    template<typename Type>
-    void deserialize(std::map<std::string, Type> &values, const nlohmann::json &model) {
+    template<typename T>
+    void deserialize(std::map<std::string, T> &values, const YAML::Node &node) {
         for (auto& pair : values) {
-            if constexpr (IsSimple<Type>::value) {
-                pair.second = model[pair.first].template get<Type>();
+            if constexpr (IsSimple<T>::value) {
+                pair.second = node[pair.first].template as<T>();
             } else {
-                deserialize(pair.second, model[pair.first]);
+                deserialize(pair.second, node[pair.first]);
             }
         }
     }
 
+
     /**
      * @brief Deserializes the supplied JSON array into a vector of boost.hana structure values
      */
-    template<typename Type>
-    void deserialize(std::set<Type> &values, const nlohmann::json &model) {
-        for (int i=0; i<model.size(); i++) {
-            if constexpr (IsSimple<Type>::value) {
-                values.insert(model[i].template get<Type>());
+    template<typename T>
+    void deserialize(std::set<T> &values, const YAML::Node &node) {
+        for (int i=0; i<node.size(); i++) {
+            if constexpr (IsSimple<T>::value) {
+                values.insert(node[i].template as<T>());
             } else {
-                Type subvalue;
+                T subvalue;
 
-                deserialize(subvalue, model[i]);
+                deserialize(subvalue, node[i]);
 
                 values.insert(subvalue);
             }
         }
     }
 
+
     /**
      * @brief Deserielizes the supplied JSON object into a boost.hana structure value
      */    
     template<typename Entity>
-    void deserialize(Entity &entity, const nlohmann::json &model) {
-        if (model.is_object()) {
+    void deserialize(Entity &entity, const YAML::Node &node) {
+        if (node.IsDefined()) {
             boost::hana::for_each(boost::hana::accessors<Entity>(), [&](auto pair) {
                 auto fieldName = boost::hana::to<const char*>(boost::hana::first(pair));
                 auto fieldValue = boost::hana::second(pair)(entity);
 
                 typedef decltype(fieldValue) Type;
 
-                if (const auto it = model.find(fieldName); it != model.end()) {
+                if (node.IsDefined(fieldName)) {
                     // check if current property is a simple type or a string one...
                     if constexpr (IsSimple<Type>::value) {
-                        boost::hana::second(pair)(entity) = model[fieldName].template get<Type>();
+                        boost::hana::second(pair)(entity) = node[fieldName].template as<Type>();
                     } else {
-                        deserialize(boost::hana::second(pair)(entity), model[fieldName]);
+                        deserialize(boost::hana::second(pair)(entity), node[fieldName]);
                     }
                 } else {
                     // Property fieldName wasn't found in the JSON.
@@ -90,7 +98,7 @@ namespace borc {
             using Type = typename Entity::DefaultType;
 
             if constexpr (! std::is_same<Type, void>::value) {
-                entity = Entity( (model.template get<Type>()) );
+                entity = Entity( (node.template as<Type>()) );
             } else {
                 std::string msg =
                     "Don't know how to deserialize the entity, because is represented by a single value, and the entity doesn't have a default property to use that single value";

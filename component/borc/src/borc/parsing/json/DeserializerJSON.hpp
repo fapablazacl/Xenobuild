@@ -62,6 +62,7 @@ namespace borc {
         }
     }
 
+
     /**
      * @brief Deserielizes the supplied JSON object into a boost.hana structure value
      */    
