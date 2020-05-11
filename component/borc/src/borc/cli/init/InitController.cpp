@@ -4,11 +4,12 @@
 #include <iomanip>
 
 #include <boost/filesystem.hpp>
+#include <borc/common/Constants.hpp>
 #include <borc/model/Version.hpp>
 #include <borc/entity/PackageEntity.hpp>
 #include <borc/entity/ModuleEntity.hpp>
 #include <borc/services/FileServiceImpl.hpp>
-#include <borc/parsing/JSONSerializer.hpp>
+#include <borc/parsing/json/SerializerJSON.hpp>
 
 namespace borc {
     InitController::~InitController() {}
@@ -21,7 +22,7 @@ namespace borc {
 
         const auto packagePath = options.path / options.packageName;
 
-        if (boost::filesystem::exists(packagePath / "package.borc.json")) {
+        if (boost::filesystem::exists(packagePath / DEFINITION_FILENAME)) {
             throw std::runtime_error("A package already exists in the folder '" + packagePath.string() + "'");
         }
 
@@ -46,7 +47,7 @@ namespace borc {
         // save package to file
         nlohmann::json packageJson;
         serialize(packageJson, packageEntity);
-        std::ofstream packageFileStream((packagePath / "package.borc.json").string());
+        std::ofstream packageFileStream((packagePath / DEFINITION_FILENAME).string());
         packageFileStream << std::setw(4) << packageJson << std::endl;
 
         // create the package structure

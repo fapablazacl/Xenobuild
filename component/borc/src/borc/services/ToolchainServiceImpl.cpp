@@ -7,7 +7,7 @@
 #include <borc/toolchain/ManagedToolchainImpl.hpp>
 #include <borc/services/FileService.hpp>
 #include <borc/entity/ToolchainEntity.hpp>
-#include <borc/parsing/JSONDeserializer.hpp>
+#include <borc/parsing/json/DeserializerJSON.hpp>
 
 BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::EnumeratedOption, name, flag);
 BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::Switches, dialects, optimizationLevels, debugInformation, includePath, compile, outputFile, generateBuildDependencies, importLibrary, libraryPath);

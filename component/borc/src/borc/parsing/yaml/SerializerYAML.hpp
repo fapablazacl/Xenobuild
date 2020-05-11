@@ -1,14 +1,14 @@
 
-#ifndef __BORC_PARSING_JSONSERIALIZER_HPP__
-#define __BORC_PARSING_JSONSERIALIZER_HPP__
+#ifndef __BORC_PARSING_SERIALIZERYAML_HPP__
+#define __BORC_PARSING_SERIALIZERYAML_HPP__
 
 #include <map>
 #include <vector>
 #include <set>
 #include <boost/hana.hpp>
-#include <nlohmann/json.hpp>
+#include <yaml-cpp/yaml.h>
 
-#include "JSONCommon.hpp"
+#include <borc/parsing/Common.hpp>
 
 namespace borc {
     /**

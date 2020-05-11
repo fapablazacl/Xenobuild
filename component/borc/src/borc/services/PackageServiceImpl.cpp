@@ -5,11 +5,13 @@
 #include <iostream>
 #include <boost/range/algorithm/transform.hpp>
 #include <boost/filesystem.hpp>
+
+#include <borc/common/Constants.hpp>
 #include <borc/model/Package.hpp>
 #include <borc/model/PackageRegistry.hpp>
 #include <borc/model/Module.hpp>
 #include <borc/model/Package.hpp>
-#include <borc/parsing/JSONDeserializer.hpp>
+#include <borc/parsing/json/DeserializerJSON.hpp>
 #include <borc/services/FileServiceImpl.hpp>
 #include <borc/entity/PackageEntity.hpp>
 #include <borc/entity/LanguageEntity.hpp>
@@ -199,7 +201,7 @@ namespace borc {
 
 
     PackageEntity PackageServiceImpl::loadPackageEntity(const boost::filesystem::path &packagePath) const {
-        const auto packageFilePath = packagePath / "package.borc.json";
+        const auto packageFilePath = packagePath / DEFINITION_FILENAME;
 
         if (! checkValidBorcFile(packageFilePath)) {
             throw std::runtime_error("There is no package build file on the folder '" + packageFilePath.string() + "'");

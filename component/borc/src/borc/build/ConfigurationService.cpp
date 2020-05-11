@@ -4,8 +4,8 @@
 #include <boost/filesystem.hpp>
 #include <boost/hana.hpp>
 #include <borc/services/FileServiceImpl.hpp>
-#include <borc/parsing/JSONDeserializer.hpp>
-#include <borc/parsing/JSONSerializer.hpp>
+#include <borc/parsing/json/DeserializerJSON.hpp>
+#include <borc/parsing/json/SerializerJSON.hpp>
 
 #include "BuildCacheImpl.hpp"
 

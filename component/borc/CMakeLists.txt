@@ -13,6 +13,8 @@ link_directories(${Boost_LIBRARY_DIRS})
 
 find_package(nlohmann_json)
 
+set (target bork)
+
 set (src "src/Main.cpp")
 
 set (src_borc_cli 
@@ -51,6 +53,7 @@ set (src_borc_core
 )
 
 set (src_borc_common
+    "src/borc/common/Constants.hpp"
     "src/borc/common/BuildConfiguration.hpp"
     "src/borc/common/BuildConfiguration.cpp"
 )
@@ -95,9 +98,11 @@ set (src_borc_entity
 )
 
 set (src_borc_parsing
-    "src/borc/parsing/JSONCommon.hpp"
-    "src/borc/parsing/JSONDeserializer.hpp"
-    "src/borc/parsing/JSONSerializer.hpp"
+    "src/borc/parsing/Common.hpp"
+    "src/borc/parsing/json/DeserializerJSON.hpp"
+    "src/borc/parsing/json/SerializerJSON.hpp"
+    "src/borc/parsing/yaml/DeserializerYAML.hpp"
+    "src/borc/parsing/yaml/SerializerYAML.hpp"
 )
 
 set (src_borc_services
@@ -202,7 +207,7 @@ source_group ("\\src\\borc\\utility" FILES ${src_borc_utility})
 source_group ("\\src\\borc\\toolchain" FILES ${src_borc_toolchain})
 source_group ("\\src\\borc\\build" FILES ${src_borc_build})
 
-add_executable(borc 
+add_executable(${target} 
     ${src}
     ${src_borc_cli}
     ${src_borc_cli_init}
@@ -226,9 +231,9 @@ else()
     set (PTHREAD_LIB pthread)
 endif()
 
-target_link_libraries(borc ${Boost_LIBRARIES} ${PTHREAD_LIB})
+target_link_libraries(${target} ${Boost_LIBRARIES} ${PTHREAD_LIB})
 
-install(TARGETS borc
+install(TARGETS ${target}
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
