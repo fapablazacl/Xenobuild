@@ -10,18 +10,30 @@
 #include <typeinfo>
 #include <boost/hana.hpp>
 
-#include "Common.hpp"
 
 namespace borc {
-    template<typename Model>
-    class EntityMapper {
+    template<typename Model, typename Entity>
+    class Decoder {
     public:
+        explicit Decoder(Model model) : root(model) {}
+
+
+        Entity deserialize() const {
+            Entity entity;
+
+            deserialize(entity, root);
+
+            return entity;
+        }
+
+
+    protected:
         template<typename Type>
-        void deserialize(std::vector<Type> &values, const Model &model) {
+        static void deserialize(std::vector<Type> &values, const Model &model) {
             values.resize(model.size());
 
             for (int i=0; i<model.size(); i++) {
-                if constexpr (IsSimple<Type>::value) {
+                if constexpr (isSimple<Type>()) {
                     values[i] = model[i].template get<Type>();
                 } else {
                     deserialize(values[i], model[i]);
@@ -29,13 +41,14 @@ namespace borc {
             }
         }
 
+
         /**
-         * @brief Deserializes the supplied JSON array into a map of values
+         * @brief Deserializes the supplied model array into a map of values
          */
         template<typename Type>
-        void deserialize(std::map<std::string, Type> &values, const Model &model) {
+        static void deserialize(std::map<std::string, Type> &values, const Model &model) {
             for (auto& pair : values) {
-                if constexpr (IsSimple<Type>::value) {
+                if constexpr (isSimple<Type>()) {
                     pair.second = model[pair.first].template get<Type>();
                 } else {
                     deserialize(pair.second, model[pair.first]);
@@ -43,13 +56,14 @@ namespace borc {
             }
         }
 
+
         /**
-         * @brief Deserializes the supplied JSON array into a vector of boost.hana structure values
+         * @brief Deserializes the supplied model array into a vector of boost.hana structure values
          */
         template<typename Type>
-        void deserialize(std::set<Type> &values, const Model &model) {
+        static void deserialize(std::set<Type> &values, const Model &model) {
             for (int i=0; i<model.size(); i++) {
-                if constexpr (IsSimple<Type>::value) {
+                if constexpr (isSimple<Type>()) {
                     values.insert(model[i].template get<Type>());
                 } else {
                     Type subvalue;
@@ -63,12 +77,12 @@ namespace borc {
 
 
         /**
-         * @brief Deserielizes the supplied JSON object into a boost.hana structure value
-         */    
-        template<typename Entity>
-        void deserialize(Entity &entity, const Model &model) {
+         * @brief Deserielizes the supplied model object into a boost.hana structure value
+         */
+        template<typename SubEntity>
+        static void deserialize(SubEntity &entity, const Model &model) {
             if (model.is_object()) {
-                boost::hana::for_each(boost::hana::accessors<Entity>(), [&](auto pair) {
+                boost::hana::for_each(boost::hana::accessors<SubEntity>(), [&](auto pair) {
                     auto fieldName = boost::hana::to<const char*>(boost::hana::first(pair));
                     auto fieldValue = boost::hana::second(pair)(entity);
 
@@ -76,7 +90,7 @@ namespace borc {
 
                     if (const auto it = model.find(fieldName); it != model.end()) {
                         // check if current property is a simple type or a string one...
-                        if constexpr (IsSimple<Type>::value) {
+                        if constexpr (isSimple<Type>()) {
                             boost::hana::second(pair)(entity) = model[fieldName].template get<Type>();
                         } else {
                             deserialize(boost::hana::second(pair)(entity), model[fieldName]);
@@ -87,10 +101,10 @@ namespace borc {
                     }
                 });
             } else {
-                using Type = typename Entity::DefaultType;
+                using Type = typename SubEntity::DefaultType;
 
                 if constexpr (! std::is_same<Type, void>::value) {
-                    entity = Entity( (model.template get<Type>()) );
+                    entity = SubEntity{ (model.template get<Type>()) };
                 } else {
                     std::string msg =
                         "Don't know how to deserialize the entity, because is represented by a single value, and the entity doesn't have a default property to use that single value";
@@ -99,13 +113,13 @@ namespace borc {
                 }
             }
         }
-        
-        /*
-    protected:
+
+
         template<typename T>
         static constexpr bool isSimple() {
             return !std::is_class<T>::value || std::is_same<T, std::string>::value;
         }
-        */
+    protected:
+        Model root;
     };
 }

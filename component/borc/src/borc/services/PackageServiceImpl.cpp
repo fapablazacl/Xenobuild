@@ -12,8 +12,8 @@
 #include <borc/model/Module.hpp>
 #include <borc/model/Package.hpp>
 
-#include <borc/parsing/EntityMapper.hpp>
-#include <nlohmann/json.hpp>
+#include <borc/parsing/JsonModel.hpp>
+#include <borc/parsing/Decoder.hpp>
 // #include <borc/parsing/json/DeserializerJSON.hpp>
 // #include <borc/parsing/yaml/DeserializerYAML.hpp>
 
@@ -215,12 +215,7 @@ namespace borc {
         auto packageJsonContent = fileService->load(packageFilePath.string());
         auto packageJson = nlohmann::json::parse(packageJsonContent);
 
-        PackageEntity packageEntity;
-        EntityMapper<nlohmann::json>{}.deserialize(packageEntity, packageJson);
-
-        // deserialize(packageEntity, packageJson);
-
-        return packageEntity;
+        return Decoder<JsonModel, PackageEntity>{packageJson}.deserialize();
     }
 
 
@@ -237,8 +232,7 @@ namespace borc {
             auto moduleJsonContent = fileService->load(moduleFilePath.string());
             auto moduleJson = nlohmann::json::parse(moduleJsonContent);
 
-            ModuleEntity moduleEntity;
-            EntityMapper<nlohmann::json>{}.deserialize(moduleEntity, moduleJson);
+            ModuleEntity moduleEntity = Decoder<JsonModel, ModuleEntity>{moduleJson}.deserialize();
 
             moduleEntities.push_back(moduleEntity);
         }
