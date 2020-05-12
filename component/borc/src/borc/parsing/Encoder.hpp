@@ -18,10 +18,10 @@ namespace borc {
         explicit Encoder(Entity entity_) : entity(entity_) {}
 
 
-        Model serialize() const {
+        Model encode() const {
             Model model;
 
-            serialize(model, entity);
+            encode(model, entity);
 
             return model;
         }
@@ -31,14 +31,14 @@ namespace borc {
          * @brief Serializes the supplied boost.hana vector structure values to a JSON array
          */
         template<typename Type>
-        static void serialize(Model &model, const std::vector<Type> &values) {
+        static void encode(Model &model, const std::vector<Type> &values) {
             for (const Type &value : values) {
                 if constexpr (isSimple<Type>()) {
                     model.push_back(value);
                 } else {
                     Model submodel;
 
-                    serialize(submodel, value);
+                    encode(submodel, value);
 
                     model.push_back(submodel);
                 }
@@ -47,14 +47,14 @@ namespace borc {
 
 
         template<typename Type>
-        static void serialize(Model &model, const std::set<Type> &values) {
+        static void encode(Model &model, const std::set<Type> &values) {
             for (const Type &value : values) {
                 if constexpr (isSimple<Type>()) {
                     model.push_back(value);
                 } else {
                     Model submodel;
 
-                    serialize(submodel, value);
+                    encode(submodel, value);
 
                     model.push_back(submodel);
                 }
@@ -66,13 +66,13 @@ namespace borc {
          * @brief Deserializes the supplied JSON array into a map of values
          */
         template<typename Type>
-        static void serialize(Model &model, const std::map<std::string, Type> &values) {
+        static void encode(Model &model, const std::map<std::string, Type> &values) {
             for (auto& pair : values) {
                 if constexpr (isSimple<Type>()) {
                     model[pair.first] = pair.second;
                 } else {
                     Model submodel;
-                    serialize(submodel, pair.second);
+                    encode(submodel, pair.second);
                     
                     model[pair.first] = submodel;
                 }
@@ -84,7 +84,7 @@ namespace borc {
          * @brief Deserielizes the supplied JSON object into a boost.hana structure value
          */    
         template<typename SubEntity>
-        static void serialize(Model &model, const SubEntity &entity) {
+        static void encode(Model &model, const SubEntity &entity) {
             boost::hana::for_each(boost::hana::accessors<SubEntity>(), [&](auto pair) {
                 auto fieldName = boost::hana::to<const char*>(boost::hana::first(pair));
                 auto fieldValue = boost::hana::second(pair)(entity);
@@ -97,7 +97,7 @@ namespace borc {
                 } else {
                     Model submodel;
 
-                    serialize(submodel, fieldValue);
+                    encode(submodel, fieldValue);
 
                     model[fieldName] = submodel;
                 }

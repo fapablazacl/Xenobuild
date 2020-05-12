@@ -46,7 +46,7 @@ namespace borc {
         };
 
         // save package to file
-        nlohmann::json packageJson = Encoder<JsonModel, PackageEntity>{packageEntity}.serialize();
+        nlohmann::json packageJson = Encoder<JsonModel, PackageEntity>{packageEntity}.encode();
         std::ofstream packageFileStream((packagePath / BORC_DEFINITION_FILENAME).string());
         packageFileStream << std::setw(4) << packageJson << std::endl;
 
@@ -58,7 +58,7 @@ namespace borc {
             boost::filesystem::create_directories(modulePath);
 
             // save module to file
-            nlohmann::json moduleJson = Encoder<JsonModel, ModuleEntity>{moduleEntity}.serialize();
+            nlohmann::json moduleJson = Encoder<JsonModel, ModuleEntity>{moduleEntity}.encode();
             std::ofstream moduleFileStream((modulePath / "module.borc.json").string());
             moduleFileStream << std::setw(4) << moduleJson << std::endl;
 

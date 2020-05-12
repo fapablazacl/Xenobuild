@@ -215,7 +215,7 @@ namespace borc {
         // auto packageJson = nlohmann::json::parse(packageJsonContent);
         auto packageModel = YamlModel{};
 
-        return Decoder<YamlModel, PackageEntity>{packageModel}.deserialize();
+        return Decoder<YamlModel, PackageEntity>{packageModel}.decode();
     }
 
 
@@ -232,7 +232,7 @@ namespace borc {
             auto moduleJsonContent = fileService->load(moduleFilePath.string());
             auto moduleJson = nlohmann::json::parse(moduleJsonContent);
 
-            ModuleEntity moduleEntity = Decoder<JsonModel, ModuleEntity>{moduleJson}.deserialize();
+            ModuleEntity moduleEntity = Decoder<JsonModel, ModuleEntity>{moduleJson}.decode();
 
             moduleEntities.push_back(moduleEntity);
         }

@@ -61,7 +61,7 @@ namespace borc {
             const std::string configurationJsonContent = fileService.load(configFilePath.string());
             const nlohmann::json configurationJson = nlohmann::json::parse(configurationJsonContent);
 
-            configurationData.buildConfigurations = Decoder<JsonModel, std::set<BuildConfiguration>>{configurationJson}.deserialize();
+            configurationData.buildConfigurations = Decoder<JsonModel, std::set<BuildConfiguration>>{configurationJson}.decode();
         }
     }
 
@@ -72,7 +72,7 @@ namespace borc {
 
         const auto configFilePath = outputPath / "configuration.json";
 
-        JsonModel configurationJson = Encoder<JsonModel, std::set<BuildConfiguration>>{configurationData.buildConfigurations}.serialize();
+        JsonModel configurationJson = Encoder<JsonModel, std::set<BuildConfiguration>>{configurationData.buildConfigurations}.encode();
 
         const std::string configurationJsonContent = configurationJson.dump(4);
 

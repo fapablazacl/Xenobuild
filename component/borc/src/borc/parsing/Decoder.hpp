@@ -18,10 +18,10 @@ namespace borc {
         explicit Decoder(Model model) : root(model) {}
 
 
-        Entity deserialize() const {
+        Entity decode() const {
             Entity entity;
 
-            deserialize(entity, root);
+            decode(entity, root);
 
             return entity;
         }
@@ -29,14 +29,14 @@ namespace borc {
 
     protected:
         template<typename Type>
-        static void deserialize(std::vector<Type> &values, const Model &model) {
+        static void decode(std::vector<Type> &values, const Model &model) {
             values.resize(model.size());
 
             for (int i=0; i<model.size(); i++) {
                 if constexpr (isSimple<Type>()) {
                     values[i] = model_get<Type>(model[i]);
                 } else {
-                    deserialize(values[i], model[i]);
+                    decode(values[i], model[i]);
                 }
             }
         }
@@ -46,12 +46,12 @@ namespace borc {
          * @brief Deserializes the supplied model array into a map of values
          */
         template<typename Type>
-        static void deserialize(std::map<std::string, Type> &values, const Model &model) {
+        static void decode(std::map<std::string, Type> &values, const Model &model) {
             for (auto& pair : values) {
                 if constexpr (isSimple<Type>()) {
                     pair.second = model[pair.first].template get<Type>();
                 } else {
-                    deserialize(pair.second, model[pair.first]);
+                    decode(pair.second, model[pair.first]);
                 }
             }
         }
@@ -61,14 +61,14 @@ namespace borc {
          * @brief Deserializes the supplied model array into a vector of boost.hana structure values
          */
         template<typename Type>
-        static void deserialize(std::set<Type> &values, const Model &model) {
+        static void decode(std::set<Type> &values, const Model &model) {
             for (int i=0; i<model.size(); i++) {
                 if constexpr (isSimple<Type>()) {
                     values.insert(model[i].template get<Type>());
                 } else {
                     Type subvalue;
 
-                    deserialize(subvalue, model[i]);
+                    decode(subvalue, model[i]);
 
                     values.insert(subvalue);
                 }
@@ -80,7 +80,7 @@ namespace borc {
          * @brief Deserielizes the supplied model object into a boost.hana structure value
          */
         template<typename SubEntity>
-        static void deserialize(SubEntity &entity, const Model &model) {
+        static void decode(SubEntity &entity, const Model &model) {
             if (model_is_object(model)) {
                 boost::hana::for_each(boost::hana::accessors<SubEntity>(), [&](auto pair) {
                     auto fieldName = boost::hana::to<const char*>(boost::hana::first(pair));
@@ -93,7 +93,7 @@ namespace borc {
                         if constexpr (isSimple<Type>()) {
                             boost::hana::second(pair)(entity) = model_get<Type>(model[fieldName]);
                         } else {
-                            deserialize(boost::hana::second(pair)(entity), model[fieldName]);
+                            decode(boost::hana::second(pair)(entity), model[fieldName]);
                         }
                     } else {
                         // Property fieldName wasn't found in the JSON.
@@ -107,7 +107,7 @@ namespace borc {
                     entity = SubEntity{ (model_get<Type>(model)) };
                 } else {
                     std::string msg =
-                        "Don't know how to deserialize the entity, because is represented by a single value, and the entity doesn't have a default property to use that single value";
+                        "Don't know how to decode the entity, because is represented by a single value, and the entity doesn't have a default property to use that single value";
 
                     throw std::runtime_error(msg.c_str());
                 }

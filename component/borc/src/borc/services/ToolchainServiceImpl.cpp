@@ -29,7 +29,7 @@ namespace borc {
         const auto toolchainJsonContent = fileService->load(toolchainFilePath.string());
         const auto toolchainJson = nlohmann::json::parse(toolchainJsonContent);
 
-        const auto toolchainEntity = Decoder<JsonModel, ToolchainEntity>{toolchainJson}.deserialize();
+        const auto toolchainEntity = Decoder<JsonModel, ToolchainEntity>{toolchainJson}.decode();
 
         return std::make_unique<ManagedToolchainImpl>(toolchainEntity, installationPath);
     }
