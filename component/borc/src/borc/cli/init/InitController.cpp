@@ -8,9 +8,9 @@
 #include <borc/model/Version.hpp>
 #include <borc/entity/PackageEntity.hpp>
 #include <borc/entity/ModuleEntity.hpp>
+#include <borc/entity/JsonModel.hpp>
+#include <borc/entity/Encoder.hpp>
 #include <borc/services/FileServiceImpl.hpp>
-#include <borc/parsing/JsonModel.hpp>
-#include <borc/parsing/Encoder.hpp>
 
 namespace borc {
     InitController::~InitController() {}

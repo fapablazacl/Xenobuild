@@ -11,16 +11,13 @@
 #include <borc/model/PackageRegistry.hpp>
 #include <borc/model/Module.hpp>
 #include <borc/model/Package.hpp>
-
-#include <borc/parsing/JsonModel.hpp>
-#include <borc/parsing/YamlModel.hpp>
-#include <borc/parsing/Decoder.hpp>
-
-#include <borc/services/FileServiceImpl.hpp>
 #include <borc/entity/PackageEntity.hpp>
 #include <borc/entity/LanguageEntity.hpp>
 #include <borc/entity/ModuleEntity.hpp>
-
+#include <borc/entity/JsonModel.hpp>
+#include <borc/entity/YamlModel.hpp>
+#include <borc/entity/Decoder.hpp>
+#include <borc/services/FileServiceImpl.hpp>
 
 namespace borc {
     PackageServiceImpl::PackageServiceImpl(const FileService *fileService) {

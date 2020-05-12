@@ -133,8 +133,7 @@ std::unique_ptr<borc::Package> setupMockPackage() {
         ->setDescription("A simple hello world application");
 
     package->addComponent<borc::Component>("helloWorld")
-        ->setLanguage(borc::Component::Language{"c++", "17"})
-        ->set
+        ->setLanguage(borc::Component::Language{"c++", "17"});
 
     return package;
 }

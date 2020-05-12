@@ -93,17 +93,14 @@ set (src_borc_model_command
 )
 
 set (src_borc_entity
+    "src/borc/entity/Decoder.hpp"
+    "src/borc/entity/Encoder.hpp"
+    "src/borc/entity/JsonModel.hpp"
+    "src/borc/entity/YamlModel.hpp"
     "src/borc/entity/LanguageEntity.hpp"
     "src/borc/entity/ModuleEntity.hpp"
     "src/borc/entity/PackageEntity.hpp"
     "src/borc/entity/ToolchainEntity.hpp"
-)
-
-set (src_borc_parsing
-    "src/borc/parsing/Decoder.hpp"
-    "src/borc/parsing/Encoder.hpp"
-    "src/borc/parsing/JsonModel.hpp"
-    "src/borc/parsing/YamlModel.hpp"
 )
 
 set (src_borc_services
