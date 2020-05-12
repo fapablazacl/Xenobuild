@@ -2,16 +2,14 @@
 #include "ToolchainFactoryImpl.hpp"
 
 #include <stdexcept>
+
+#include <borc/common/Constants.hpp>
 #include <borc/services/FileServiceImpl.hpp>
 #include <borc/services/ToolchainServiceImpl.hpp>
 
 #include "ToolchainImpl.hpp"
 
-
 namespace borc {
-    static const std::string TOOLCHAIN_PATH_PREFIX = "./etc/borc";
-
-
     ToolchainFactoryImpl::ToolchainFactoryImpl(const boost::filesystem::path &definitionPath, boost::optional<boost::filesystem::path> installationPath) {
         this->definitionPath = definitionPath;
 
@@ -22,7 +20,7 @@ namespace borc {
         const std::vector<std::string> toolchainIds = this->detectAvailableToolchainIds();
 
         for (const std::string &toolchainId : toolchainIds) {
-            const auto definitionFullPath = TOOLCHAIN_PATH_PREFIX / definitionPath / toolchainId;
+            const auto definitionFullPath = BORC_TOOLCHAIN_PATH_PREFIX / definitionPath / toolchainId;
 
             // TODO: Each toolchain should have a different installation path
             toolchainMap.insert({toolchainId, toolchainService.createToolchain(definitionFullPath, installationPath)});

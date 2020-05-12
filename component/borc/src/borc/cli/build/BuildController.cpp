@@ -3,14 +3,18 @@
 
 #include <iostream>
 #include <sstream>
+
 #include <boost/filesystem.hpp>
 #include <boost/graph/graphviz.hpp>
+
+#include <borc/common/Constants.hpp>
 #include <borc/model/Module.hpp>
 #include <borc/model/Package.hpp>
 #include <borc/model/PackageRegistry.hpp>
 #include <borc/model/PackageRegistryFactory.hpp>
 #include <borc/services/FileServiceImpl.hpp>
 #include <borc/services/BuildServiceImpl.hpp>
+#include <borc/services/PackageServiceImpl.hpp>
 #include <borc/services/LoggingServiceImpl.hpp>
 #include <borc/toolchain/ToolchainFactoryImpl.hpp>
 #include <borc/toolchain/Toolchain.hpp>
@@ -19,13 +23,10 @@
 #include <borc/utility/DagNode.hpp>
 #include <borc/utility/Dag.hpp>
 #include <borc/utility/DagVisitor.hpp>
-#include <borc/services/PackageServiceImpl.hpp>
 
 #include "BuildControllerOptions.hpp"
 
 namespace borc {
-    static const std::string PACKAGE_SEARCH_PATH = "./etc/borc/packages";
-
     BuildController::~BuildController() {}
 
 
@@ -47,7 +48,7 @@ namespace borc {
 
         auto packageService = std::make_unique<PackageServiceImpl>(&fileService);
         auto packageRegistryFactory = std::make_unique<PackageRegistryFactory>();
-        auto packageRegistry = packageRegistryFactory->createPackageRegistry(packageService.get(), PACKAGE_SEARCH_PATH);
+        auto packageRegistry = packageRegistryFactory->createPackageRegistry(packageService.get(), BORC_PACKAGE_SEARCH_PATH);
         auto package = packageService->createPackage(baseFolderPath, packageRegistry.get());
 
         LoggingServiceImpl loggingService {"BuildServiceImpl"};

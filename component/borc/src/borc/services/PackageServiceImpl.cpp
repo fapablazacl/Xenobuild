@@ -14,7 +14,6 @@
 #include <borc/entity/PackageEntity.hpp>
 #include <borc/entity/LanguageEntity.hpp>
 #include <borc/entity/ModuleEntity.hpp>
-#include <borc/entity/JsonModel.hpp>
 #include <borc/entity/YamlModel.hpp>
 #include <borc/entity/Decoder.hpp>
 #include <borc/services/FileServiceImpl.hpp>
@@ -226,10 +225,8 @@ namespace borc {
                 throw std::runtime_error("There is no module build file on this folder '" + (packagePath / modulePartialPath).string() + "'");
             }
 
-            auto moduleJsonContent = fileService->load(moduleFilePath.string());
-            auto moduleJson = nlohmann::json::parse(moduleJsonContent);
-
-            ModuleEntity moduleEntity = Decoder<JsonModel, ModuleEntity>{moduleJson}.decode();
+            auto moduleYaml = YAML::Load(moduleFilePath.string());
+            ModuleEntity moduleEntity = Decoder<YamlModel, ModuleEntity>{moduleYaml}.decode();
 
             moduleEntities.push_back(moduleEntity);
         }

@@ -4,11 +4,13 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/range/algorithm/find.hpp>
-#include <borc/model/Version.hpp>
+
+#include <borc/common/Constants.hpp>
 #include <borc/toolchain/Toolchain.hpp>
 #include <borc/toolchain/ToolchainFactoryImpl.hpp>
 #include <borc/build/BuildCache.hpp>
 #include <borc/build/ConfigurationService.hpp>
+#include <borc/model/Version.hpp>
 #include <borc/model/Package.hpp>
 #include <borc/model/PackageRegistry.hpp>
 #include <borc/model/Module.hpp>
@@ -18,8 +20,6 @@
 
 
 namespace borc {
-    static const std::string PACKAGE_SEARCH_PATH = "./etc/borc/packages";
-
     struct ConfigureController::Private {
         /**
          * @brief Determine all the build types from the parameter, specially when "All is used".
@@ -121,7 +121,7 @@ namespace borc {
         // construct the package with the current toolchain, in order grab dependency information
         const FileServiceImpl fileService;
         auto packageService = std::make_unique<PackageServiceImpl>(&fileService);
-        auto packageRegistry = m_impl->createPackageRegistry(packageService.get(), PACKAGE_SEARCH_PATH);
+        auto packageRegistry = m_impl->createPackageRegistry(packageService.get(), BORC_PACKAGE_SEARCH_PATH);
         auto package = packageService->createPackage(basePackagePath, packageRegistry.get());
 
         // validate required variables for dependencies againts supplied ones
