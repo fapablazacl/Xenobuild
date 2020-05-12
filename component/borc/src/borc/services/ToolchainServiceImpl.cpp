@@ -7,7 +7,8 @@
 #include <borc/toolchain/ManagedToolchainImpl.hpp>
 #include <borc/services/FileService.hpp>
 #include <borc/entity/ToolchainEntity.hpp>
-#include <borc/parsing/json/DeserializerJSON.hpp>
+#include <borc/parsing/JsonModel.hpp>
+#include <borc/parsing/Decoder.hpp>
 
 BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::EnumeratedOption, name, flag);
 BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::Switches, dialects, optimizationLevels, debugInformation, includePath, compile, outputFile, generateBuildDependencies, importLibrary, libraryPath);
@@ -28,9 +29,7 @@ namespace borc {
         const auto toolchainJsonContent = fileService->load(toolchainFilePath.string());
         const auto toolchainJson = nlohmann::json::parse(toolchainJsonContent);
 
-        ToolchainEntity toolchainEntity;
-
-        deserialize(toolchainEntity, toolchainJson);
+        const auto toolchainEntity = Decoder<JsonModel, ToolchainEntity>{toolchainJson}.deserialize();
 
         return std::make_unique<ManagedToolchainImpl>(toolchainEntity, installationPath);
     }

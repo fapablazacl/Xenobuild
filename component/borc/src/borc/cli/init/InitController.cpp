@@ -9,7 +9,8 @@
 #include <borc/entity/PackageEntity.hpp>
 #include <borc/entity/ModuleEntity.hpp>
 #include <borc/services/FileServiceImpl.hpp>
-#include <borc/parsing/json/SerializerJSON.hpp>
+#include <borc/parsing/JsonModel.hpp>
+#include <borc/parsing/Encoder.hpp>
 
 namespace borc {
     InitController::~InitController() {}
@@ -45,8 +46,7 @@ namespace borc {
         };
 
         // save package to file
-        nlohmann::json packageJson;
-        serialize(packageJson, packageEntity);
+        nlohmann::json packageJson = Encoder<JsonModel, PackageEntity>{packageEntity}.serialize();
         std::ofstream packageFileStream((packagePath / BORC_DEFINITION_FILENAME).string());
         packageFileStream << std::setw(4) << packageJson << std::endl;
 
@@ -58,8 +58,7 @@ namespace borc {
             boost::filesystem::create_directories(modulePath);
 
             // save module to file
-            nlohmann::json moduleJson;
-            serialize(moduleJson, moduleEntity);
+            nlohmann::json moduleJson = Encoder<JsonModel, ModuleEntity>{moduleEntity}.serialize();
             std::ofstream moduleFileStream((modulePath / "module.borc.json").string());
             moduleFileStream << std::setw(4) << moduleJson << std::endl;
 

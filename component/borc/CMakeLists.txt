@@ -98,11 +98,10 @@ set (src_borc_entity
 )
 
 set (src_borc_parsing
-    "src/borc/parsing/Common.hpp"
-    "src/borc/parsing/json/DeserializerJSON.hpp"
-    "src/borc/parsing/json/SerializerJSON.hpp"
-    "src/borc/parsing/yaml/DeserializerYAML.hpp"
-    "src/borc/parsing/yaml/SerializerYAML.hpp"
+    "src/borc/parsing/Decoder.hpp"
+    "src/borc/parsing/Encoder.hpp"
+    "src/borc/parsing/JsonModel.hpp"
+    "src/borc/parsing/YamlModel.hpp"
 )
 
 set (src_borc_services
@@ -231,7 +230,7 @@ else()
     set (PTHREAD_LIB pthread)
 endif()
 
-target_link_libraries(${target} ${Boost_LIBRARIES} ${PTHREAD_LIB} yaml-cpp)
+target_link_libraries(${target} ${Boost_LIBRARIES} ${PTHREAD_LIB} yaml-cpp nlohmann_json)
 
 install(TARGETS ${target}
         RUNTIME DESTINATION bin

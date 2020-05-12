@@ -15,7 +15,7 @@ namespace borc {
     template<typename Model, typename Entity>
     class Encoder {
     public:
-        Encoder(Entity entity_) : entity(entity_) {}
+        explicit Encoder(Entity entity_) : entity(entity_) {}
 
 
         Model serialize() const {
@@ -85,7 +85,7 @@ namespace borc {
          */    
         template<typename SubEntity>
         static void serialize(Model &model, const SubEntity &entity) {
-            boost::hana::for_each(boost::hana::accessors<Entity>(), [&](auto pair) {
+            boost::hana::for_each(boost::hana::accessors<SubEntity>(), [&](auto pair) {
                 auto fieldName = boost::hana::to<const char*>(boost::hana::first(pair));
                 auto fieldValue = boost::hana::second(pair)(entity);
 

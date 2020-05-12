@@ -4,8 +4,9 @@
 #include <boost/filesystem.hpp>
 #include <boost/hana.hpp>
 #include <borc/services/FileServiceImpl.hpp>
-#include <borc/parsing/json/DeserializerJSON.hpp>
-#include <borc/parsing/json/SerializerJSON.hpp>
+#include <borc/parsing/JsonModel.hpp>
+#include <borc/parsing/Decoder.hpp>
+#include <borc/parsing/Encoder.hpp>
 
 #include "BuildCacheImpl.hpp"
 
@@ -60,7 +61,7 @@ namespace borc {
             const std::string configurationJsonContent = fileService.load(configFilePath.string());
             const nlohmann::json configurationJson = nlohmann::json::parse(configurationJsonContent);
 
-            deserialize(configurationData.buildConfigurations, configurationJson);
+            configurationData.buildConfigurations = Decoder<JsonModel, std::set<BuildConfiguration>>{configurationJson}.deserialize();
         }
     }
 
@@ -71,8 +72,8 @@ namespace borc {
 
         const auto configFilePath = outputPath / "configuration.json";
 
-        nlohmann::json configurationJson;
-        serialize(configurationJson, configurationData.buildConfigurations);
+        JsonModel configurationJson = Encoder<JsonModel, std::set<BuildConfiguration>>{configurationData.buildConfigurations}.serialize();
+
         const std::string configurationJsonContent = configurationJson.dump(4);
 
         auto fileService = FileServiceImpl{};
