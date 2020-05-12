@@ -231,7 +231,7 @@ else()
     set (PTHREAD_LIB pthread)
 endif()
 
-target_link_libraries(${target} ${Boost_LIBRARIES} ${PTHREAD_LIB})
+target_link_libraries(${target} ${Boost_LIBRARIES} ${PTHREAD_LIB} yaml-cpp)
 
 install(TARGETS ${target}
         RUNTIME DESTINATION bin

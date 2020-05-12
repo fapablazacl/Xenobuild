@@ -34,7 +34,7 @@ namespace borc {
 
             for (int i=0; i<model.size(); i++) {
                 if constexpr (isSimple<Type>()) {
-                    values[i] = model[i].template get<Type>();
+                    values[i] = model_get<Type>(model[i]);
                 } else {
                     deserialize(values[i], model[i]);
                 }
@@ -81,17 +81,17 @@ namespace borc {
          */
         template<typename SubEntity>
         static void deserialize(SubEntity &entity, const Model &model) {
-            if (model.is_object()) {
+            if (model_is_object(model)) {
                 boost::hana::for_each(boost::hana::accessors<SubEntity>(), [&](auto pair) {
                     auto fieldName = boost::hana::to<const char*>(boost::hana::first(pair));
                     auto fieldValue = boost::hana::second(pair)(entity);
 
                     typedef decltype(fieldValue) Type;
 
-                    if (const auto it = model.find(fieldName); it != model.end()) {
+                    if (model_exist_key(model, fieldName)) {
                         // check if current property is a simple type or a string one...
                         if constexpr (isSimple<Type>()) {
-                            boost::hana::second(pair)(entity) = model[fieldName].template get<Type>();
+                            boost::hana::second(pair)(entity) = model_get<Type>(model[fieldName]);
                         } else {
                             deserialize(boost::hana::second(pair)(entity), model[fieldName]);
                         }
@@ -104,7 +104,7 @@ namespace borc {
                 using Type = typename SubEntity::DefaultType;
 
                 if constexpr (! std::is_same<Type, void>::value) {
-                    entity = SubEntity{ (model.template get<Type>()) };
+                    entity = SubEntity{ (model_get<Type>(model)) };
                 } else {
                     std::string msg =
                         "Don't know how to deserialize the entity, because is represented by a single value, and the entity doesn't have a default property to use that single value";
@@ -119,6 +119,7 @@ namespace borc {
         static constexpr bool isSimple() {
             return !std::is_class<T>::value || std::is_same<T, std::string>::value;
         }
+        
     protected:
         Model root;
     };

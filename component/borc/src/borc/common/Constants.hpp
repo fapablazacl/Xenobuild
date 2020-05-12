@@ -3,7 +3,7 @@
 #define __BORK_COMMON_CONSTANTS_HPP__
 
 namespace borc {
-    constexpr const char* DEFINITION_FILENAME = "bork.yaml";
+    constexpr const char* BORC_DEFINITION_FILENAME = "bork.yaml";
 }
 
 #endif

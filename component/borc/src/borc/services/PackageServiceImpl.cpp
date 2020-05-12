@@ -13,9 +13,8 @@
 #include <borc/model/Package.hpp>
 
 #include <borc/parsing/JsonModel.hpp>
+#include <borc/parsing/YamlModel.hpp>
 #include <borc/parsing/Decoder.hpp>
-// #include <borc/parsing/json/DeserializerJSON.hpp>
-// #include <borc/parsing/yaml/DeserializerYAML.hpp>
 
 #include <borc/services/FileServiceImpl.hpp>
 #include <borc/entity/PackageEntity.hpp>
@@ -206,16 +205,17 @@ namespace borc {
 
 
     PackageEntity PackageServiceImpl::loadPackageEntity(const boost::filesystem::path &packagePath) const {
-        const auto packageFilePath = packagePath / DEFINITION_FILENAME;
+        const auto packageFilePath = packagePath / BORC_DEFINITION_FILENAME;
 
         if (! checkValidBorcFile(packageFilePath)) {
             throw std::runtime_error("There is no package build file on the folder '" + packageFilePath.string() + "'");
         }
 
         auto packageJsonContent = fileService->load(packageFilePath.string());
-        auto packageJson = nlohmann::json::parse(packageJsonContent);
+        // auto packageJson = nlohmann::json::parse(packageJsonContent);
+        auto packageModel = YamlModel{};
 
-        return Decoder<JsonModel, PackageEntity>{packageJson}.deserialize();
+        return Decoder<YamlModel, PackageEntity>{packageModel}.deserialize();
     }
 
 
@@ -223,7 +223,7 @@ namespace borc {
         std::vector<ModuleEntity> moduleEntities;
 
         for (const std::string &modulePartialPath : packageEntity.modulePaths) {
-            const boost::filesystem::path moduleFilePath = packagePath / modulePartialPath / "module.borc.json";
+            const boost::filesystem::path moduleFilePath = packagePath / modulePartialPath / BORC_DEFINITION_FILENAME;
 
             if (! checkValidBorcFile(moduleFilePath)) {
                 throw std::runtime_error("There is no module build file on this folder '" + (packagePath / modulePartialPath).string() + "'");
