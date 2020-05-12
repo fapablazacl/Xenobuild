@@ -1,7 +1,0 @@
-name: "core-entity"
-description: "Build Orchestration Command Line Interface"
-type: "application/library"
-languages: 
-  - "c++/17"
-sources:
-  - "src/**"

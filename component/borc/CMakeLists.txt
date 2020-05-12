@@ -229,9 +229,11 @@ else()
     set (PTHREAD_LIB pthread)
 endif()
 
-target_link_libraries(${target} ${Boost_LIBRARIES} ${PTHREAD_LIB} core yaml-cpp nlohmann_json)
+target_link_libraries(${target} ${Boost_LIBRARIES} ${PTHREAD_LIB} yaml-cpp nlohmann_json)
 
-install(TARGETS ${target}
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib)
+install(
+    TARGETS ${target}
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+)

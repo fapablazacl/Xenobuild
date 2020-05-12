@@ -17,7 +17,3 @@ add_subdirectory("dependencies/yaml-cpp")
 include_directories("dependencies/yaml-cpp/include")
 
 add_subdirectory("component/borc")
-add_subdirectory("component/core")
-add_subdirectory("component/core-test")
-add_subdirectory("component/core-entity")
-add_subdirectory("component/core-entity-test")
