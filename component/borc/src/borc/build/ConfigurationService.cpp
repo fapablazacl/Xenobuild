@@ -8,7 +8,7 @@
 #include <borc/entity/Decoder.hpp>
 #include <borc/entity/Encoder.hpp>
 
-#include "BuildCacheImpl.hpp"
+#include "BuildCacheTxt.hpp"
 
 BOOST_HANA_ADAPT_STRUCT(borc::Version, major, minor, revision);
 BOOST_HANA_ADAPT_STRUCT(borc::BuildConfiguration, toolchainId, arch, version, buildTypes, variables, toolchainPath);
@@ -83,6 +83,6 @@ namespace borc {
 
 
     std::unique_ptr<BuildCache> ConfigurationService::createBuildCache(const BuildConfiguration &config) {
-        return std::make_unique<BuildCacheImpl>(outputPath / config.computeIdentifier());
+        return std::make_unique<BuildCacheTxt>(outputPath / config.computeIdentifier());
     }
 }

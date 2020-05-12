@@ -8,11 +8,11 @@
 #include <map>
 
 namespace borc {
-    class BuildCacheImpl : public BuildCache {
+    class BuildCacheTxt : public BuildCache {
     public:
-        BuildCacheImpl(const boost::filesystem::path &outputPath);
+        BuildCacheTxt(const boost::filesystem::path &outputPath);
 
-        virtual ~BuildCacheImpl();
+        virtual ~BuildCacheTxt();
 
         virtual bool needsRebuild(const boost::filesystem::path &path) const override;
 

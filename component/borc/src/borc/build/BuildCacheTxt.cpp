@@ -1,24 +1,24 @@
 
-#include "BuildCacheImpl.hpp"
+#include "BuildCacheTxt.hpp"
 
 #include <fstream>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
 
 namespace borc {
-    BuildCacheImpl::BuildCacheImpl(const boost::filesystem::path &outputPath) {
+    BuildCacheTxt::BuildCacheTxt(const boost::filesystem::path &outputPath) {
         this->outputPath = outputPath;
         this->loadCache();
         
     }
 
-    BuildCacheImpl::~BuildCacheImpl() {}
+    BuildCacheTxt::~BuildCacheTxt() {}
 
-    std::string BuildCacheImpl::getCacheFileName() const {
+    std::string BuildCacheTxt::getCacheFileName() const {
         return (outputPath / "buildCache.txt").string();
     }
 
-    void BuildCacheImpl::loadCache() {
+    void BuildCacheTxt::loadCache() {
         const std::string cacheFileName = this->getCacheFileName();
 
         std::fstream fs;
@@ -41,7 +41,7 @@ namespace borc {
         }
     }
 
-    void BuildCacheImpl::saveCache() {
+    void BuildCacheTxt::saveCache() {
         const std::string cacheFileName = this->getCacheFileName();
 
         std::fstream fs;
@@ -56,7 +56,7 @@ namespace borc {
         }
     }
 
-    bool BuildCacheImpl::needsRebuild(const boost::filesystem::path &path) const {
+    bool BuildCacheTxt::needsRebuild(const boost::filesystem::path &path) const {
         bool modified = true;
 
         const auto timestamp = this->computeMark(path);
@@ -68,7 +68,7 @@ namespace borc {
         return modified;
     }
 
-    void BuildCacheImpl::markAsBuilt(const boost::filesystem::path &path) {
+    void BuildCacheTxt::markAsBuilt(const boost::filesystem::path &path) {
         const auto timestamp = this->computeMark(path);
 
         pathTimeMap.insert({path, timestamp});
@@ -76,7 +76,7 @@ namespace borc {
         this->saveCache();
     }
 
-    std::time_t BuildCacheImpl::computeMark(const boost::filesystem::path &path) const {
+    std::time_t BuildCacheTxt::computeMark(const boost::filesystem::path &path) const {
         return boost::filesystem::last_write_time(path);
     }
 

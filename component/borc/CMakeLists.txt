@@ -186,8 +186,8 @@ set (src_borc_build
     "src/borc/build/BuildCache.hpp"
     "src/borc/build/ConfigurationService.cpp"
     "src/borc/build/BuildCache.cpp"
-    "src/borc/build/BuildCacheImpl.cpp"
-    "src/borc/build/BuildCacheImpl.hpp"
+    "src/borc/build/BuildCacheTxt.cpp"
+    "src/borc/build/BuildCacheTxt.hpp"
 )
 
 source_group ("\\src" FILES ${src})
