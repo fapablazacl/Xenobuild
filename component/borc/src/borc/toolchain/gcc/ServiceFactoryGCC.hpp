@@ -2,7 +2,7 @@
 #ifndef __BORC_CORE_SERVICEFACTORYGCC_HPP__
 #define __BORC_CORE_SERVICEFACTORYGCC_HPP__
 
-#include "ServiceFactoryStub.hpp"
+#include <borc/toolchain/ServiceFactoryStub.hpp>
 
 namespace borc {
     class ServiceFactoryGCC : public ServiceFactoryStub {

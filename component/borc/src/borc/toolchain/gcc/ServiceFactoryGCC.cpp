@@ -4,10 +4,10 @@
 #include <borc/model/Command.hpp>
 #include <borc/toolchain/SourceChecker.hpp>
 
-#include "ModuleTypeChecker.hpp"
-#include "CompilerImpl.hpp"
-#include "ModuleLinker.hpp"
-#include "ArchiveLinker.hpp"
+#include <borc/toolchain/ModuleTypeChecker.hpp>
+#include <borc/toolchain/CompilerImpl.hpp>
+#include <borc/toolchain/ModuleLinker.hpp>
+#include <borc/toolchain/ArchiveLinker.hpp>
 
 namespace borc {
     ServiceFactoryGCC::ServiceFactoryGCC(const std::string &commandBase) {

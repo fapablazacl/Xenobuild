@@ -15,7 +15,7 @@ link_directories(${Boost_LIBRARY_DIRS})
 
 find_package(nlohmann_json)
 
-set (target bork)
+set (target bok)
 
 set (src "src/Main.cpp")
 
@@ -56,6 +56,7 @@ set (src_borc_core
 
 set (src_borc_common
     "src/borc/common/Constants.hpp"
+    "src/borc/common/Constants.cpp"
     "src/borc/common/BuildConfiguration.hpp"
     "src/borc/common/BuildConfiguration.cpp"
 )
@@ -150,8 +151,6 @@ set (src_borc_toolchain
     "src/borc/toolchain/CompileOptions.cpp"
     "src/borc/toolchain/Compiler.cpp"
     "src/borc/toolchain/CompilerVersionDetector.cpp"
-    "src/borc/toolchain/GCCCompilerVersionDetector.hpp"
-    "src/borc/toolchain/GCCCompilerVersionDetector.cpp"
     "src/borc/toolchain/CompilerImpl.hpp"
     "src/borc/toolchain/CompilerImpl.cpp"
     "src/borc/toolchain/Linker.hpp"
@@ -168,16 +167,18 @@ set (src_borc_toolchain
     "src/borc/toolchain/ServiceFactory.cpp"
     "src/borc/toolchain/ServiceFactoryStub.hpp"
     "src/borc/toolchain/ServiceFactoryStub.cpp"
-    "src/borc/toolchain/ServiceFactoryGCC.hpp"
-    "src/borc/toolchain/ServiceFactoryGCC.cpp"
-    "src/borc/toolchain/ServiceFactoryVC.hpp"
-    "src/borc/toolchain/ServiceFactoryVC.cpp"
     "src/borc/toolchain/ModuleChecker.cpp"
     "src/borc/toolchain/SourceChecker.cpp"
     "src/borc/toolchain/ModuleTypeChecker.hpp"
     "src/borc/toolchain/ModuleTypeChecker.cpp"
     "src/borc/toolchain/ManagedToolchainImpl.cpp"
     "src/borc/toolchain/ManagedToolchainImpl.hpp"
+    "src/borc/toolchain/gcc/GCCCompilerVersionDetector.hpp"
+    "src/borc/toolchain/gcc/GCCCompilerVersionDetector.cpp"
+    "src/borc/toolchain/gcc/ServiceFactoryGCC.hpp"
+    "src/borc/toolchain/gcc/ServiceFactoryGCC.cpp"
+    "src/borc/toolchain/vc/ServiceFactoryVC.hpp"
+    "src/borc/toolchain/vc/ServiceFactoryVC.cpp"
 )
 
 set (src_borc_build

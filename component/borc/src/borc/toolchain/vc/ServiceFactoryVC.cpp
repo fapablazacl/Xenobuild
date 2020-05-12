@@ -4,9 +4,9 @@
 #include <borc/model/Command.hpp>
 #include <borc/toolchain/SourceChecker.hpp>
 
-#include "ModuleTypeChecker.hpp"
-#include "CompilerImpl.hpp"
-#include "ModuleLinker.hpp"
+#include <borc/toolchain/ModuleTypeChecker.hpp>
+#include <borc/toolchain/CompilerImpl.hpp>
+#include <borc/toolchain/ModuleLinker.hpp>
 
 namespace borc {
     ServiceFactoryVC::ServiceFactoryVC(const std::string &installationPath, const std::string &windowsKitPath) {
