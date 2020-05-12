@@ -19,7 +19,7 @@ namespace borc {
         int getPipeCount() const;
 
         template<typename MatcherImpl>
-        Matcher* createMatcher(const std::string &fileTypeId) {
+        MatcherImpl* createMatcher(const std::string &fileTypeId) {
             auto matcher = new MatcherImpl(this, fileTypeId);
 
             this->addMatcher(matcher);

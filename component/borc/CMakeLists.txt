@@ -9,6 +9,8 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
 )
 
+include_directories("../core/")
+
 link_directories(${Boost_LIBRARY_DIRS})
 
 find_package(nlohmann_json)
@@ -230,7 +232,7 @@ else()
     set (PTHREAD_LIB pthread)
 endif()
 
-target_link_libraries(${target} ${Boost_LIBRARIES} ${PTHREAD_LIB} yaml-cpp nlohmann_json)
+target_link_libraries(${target} ${Boost_LIBRARIES} ${PTHREAD_LIB} core yaml-cpp nlohmann_json)
 
 install(TARGETS ${target}
         RUNTIME DESTINATION bin
