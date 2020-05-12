@@ -53,7 +53,7 @@ namespace borc {
 
         LoggingServiceImpl loggingService {"BuildServiceImpl"};
 
-        ConfigurationService configurationService {outputPath};
+        ConfigurationService configurationService {outputPath, baseFolderPath};
         ConfigurationData configurationData = configurationService.getData();
 
         if (configurationData.buildConfigurations.size() == 0) {

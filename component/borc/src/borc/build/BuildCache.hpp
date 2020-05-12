@@ -6,7 +6,8 @@
 #include <set>
 #include <map>
 #include <boost/optional.hpp>
-#include <boost/filesystem/path.hpp>
+
+#include <borc/common/Types.hpp>
 #include <borc/common/BuildConfiguration.hpp>
 
 namespace borc {
@@ -22,9 +23,9 @@ namespace borc {
         /**
          * @brief Check if the current timestamp in the filesystem is different against the registered one
          */
-        virtual bool needsRebuild(const boost::filesystem::path &path) const = 0;
+        virtual bool needsRebuild(const path &path) const = 0;
 
-        virtual void markAsBuilt(const boost::filesystem::path &path) = 0;
+        virtual void markAsBuilt(const path &path) = 0;
     };
 }
 

@@ -10,13 +10,13 @@
 namespace borc {
     class BuildCacheTxt : public BuildCache {
     public:
-        BuildCacheTxt(const boost::filesystem::path &outputPath);
+        explicit BuildCacheTxt(const path &outputPath, const path &prefixPath);
 
         virtual ~BuildCacheTxt();
 
-        virtual bool needsRebuild(const boost::filesystem::path &path) const override;
+        virtual bool needsRebuild(const path &path) const override;
 
-        virtual void markAsBuilt(const boost::filesystem::path &path) override;
+        virtual void markAsBuilt(const path &path) override;
 
     private:
         void loadCache();
@@ -25,11 +25,12 @@ namespace borc {
 
         std::string getCacheFileName() const;
 
-        std::time_t computeMark(const boost::filesystem::path &path) const;
+        std::time_t computeMark(const path &path) const;
 
     private:
-        boost::filesystem::path outputPath;
-        std::map<boost::filesystem::path, std::time_t> pathTimeMap;
+        path outputPath;
+        path prefixPath;
+        std::map<path, std::time_t> pathTimeMap;
     };
 }
 

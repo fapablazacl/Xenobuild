@@ -74,7 +74,7 @@ namespace borc {
             ? options.outputPath.get()
             : basePackagePath / ".borc";
 
-        auto configurationService = ConfigurationService{outputPath};
+        auto configurationService = ConfigurationService{outputPath, basePackagePath};
         auto configurationData = configurationService.getData();
 
         if (configurationData.buildConfigurations.size() == 0 && !options.toolchain) {

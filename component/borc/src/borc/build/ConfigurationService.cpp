@@ -15,8 +15,9 @@ BOOST_HANA_ADAPT_STRUCT(borc::BuildConfiguration, toolchainId, arch, version, bu
 BOOST_HANA_ADAPT_STRUCT(borc::BuildType, type);
 
 namespace borc {
-    ConfigurationService::ConfigurationService(const boost::filesystem::path &outputPath) {
+    ConfigurationService::ConfigurationService(const boost::filesystem::path &outputPath, const path &prefixPath) {
         this->outputPath = outputPath;
+        this->prefixPath = prefixPath;
 
         this->loadConfigurations();
     }
@@ -83,6 +84,6 @@ namespace borc {
 
 
     std::unique_ptr<BuildCache> ConfigurationService::createBuildCache(const BuildConfiguration &config) {
-        return std::make_unique<BuildCacheTxt>(outputPath / config.computeIdentifier());
+        return std::make_unique<BuildCacheTxt>(outputPath / config.computeIdentifier(), prefixPath);
     }
 }

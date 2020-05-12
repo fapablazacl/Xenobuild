@@ -38,7 +38,7 @@ namespace borc {
      */
     class ConfigurationService {
     public:
-        ConfigurationService(const boost::filesystem::path &outputPath);
+        ConfigurationService(const boost::filesystem::path &outputPath, const boost::filesystem::path &prefixPath);
 
         /**
          * @brief Retrieves the currently associated build-cached metadata
@@ -70,6 +70,7 @@ namespace borc {
 
     private:
         boost::filesystem::path outputPath;
+        boost::filesystem::path prefixPath;
         ConfigurationData configurationData;
     };
 }

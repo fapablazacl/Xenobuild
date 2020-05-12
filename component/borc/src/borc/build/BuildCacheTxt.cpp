@@ -4,19 +4,23 @@
 #include <fstream>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
+#include <borc/common/Constants.hpp>
 
 namespace borc {
-    BuildCacheTxt::BuildCacheTxt(const boost::filesystem::path &outputPath) {
+    BuildCacheTxt::BuildCacheTxt(const path &outputPath, const path &prefixPath) {
         this->outputPath = outputPath;
+        this->prefixPath = prefixPath;
         this->loadCache();
-        
     }
+
 
     BuildCacheTxt::~BuildCacheTxt() {}
 
+
     std::string BuildCacheTxt::getCacheFileName() const {
-        return (outputPath / "buildCache.txt").string();
+        return (outputPath / BORC_BUILD_CACHE_FILENAME).string();
     }
+
 
     void BuildCacheTxt::loadCache() {
         const std::string cacheFileName = this->getCacheFileName();
@@ -41,6 +45,7 @@ namespace borc {
         }
     }
 
+
     void BuildCacheTxt::saveCache() {
         const std::string cacheFileName = this->getCacheFileName();
 
@@ -56,28 +61,32 @@ namespace borc {
         }
     }
 
+
     bool BuildCacheTxt::needsRebuild(const boost::filesystem::path &path) const {
         bool modified = true;
 
         const auto timestamp = this->computeMark(path);
+        const auto relativePath = boost::filesystem::relative(path, prefixPath);
 
-        if (auto it = pathTimeMap.find(path); it != pathTimeMap.end()) {
+        if (auto it = pathTimeMap.find(relativePath); it != pathTimeMap.end()) {
             return timestamp != it->second;
         } 
 
         return modified;
     }
 
+
     void BuildCacheTxt::markAsBuilt(const boost::filesystem::path &path) {
         const auto timestamp = this->computeMark(path);
+        const auto relativePath = boost::filesystem::relative(path, prefixPath);
 
-        pathTimeMap.insert({path, timestamp});
+        pathTimeMap.insert({relativePath, timestamp});
 
         this->saveCache();
     }
 
+
     std::time_t BuildCacheTxt::computeMark(const boost::filesystem::path &path) const {
         return boost::filesystem::last_write_time(path);
     }
-
 }
