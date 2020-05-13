@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
     
         return 0;
     } catch (const std::exception &exp) {
-        std::cout << "ERROR: " << exp.what() << std::endl;
+        std::cout << "Exception caught:\n" << exp.what() << std::endl;
 
         return 1;
     }

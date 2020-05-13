@@ -7,9 +7,8 @@
 #include <vector>
 #include <set>
 #include <stdexcept>
-#include <typeinfo>
+#include <boost/type_index.hpp>
 #include <boost/hana.hpp>
-
 
 namespace borc {
     template<typename Model, typename Entity>
@@ -106,8 +105,14 @@ namespace borc {
                 if constexpr (! std::is_same<Type, void>::value) {
                     entity = SubEntity{ (model_get<Type>(model)) };
                 } else {
-                    std::string msg =
-                        "Don't know how to decode the entity, because is represented by a single value, and the entity doesn't have a default property to use that single value";
+                    using boost::typeindex::type_id;
+                    
+                    const std::string modelTypeName = type_id<Model>().pretty_name();
+                    const std::string entityTypeName = type_id<Entity>().pretty_name();
+                    const std::string subEntityTypeName = type_id<SubEntity>().pretty_name();
+
+                    const std::string msg =
+                        "Decoder<" + modelTypeName + ", " + entityTypeName + ">::decode<" + subEntityTypeName + ">: Don't know how to decode the entity, because is represented by a single value, and the entity doesn't have a default property to use that single value";
 
                     throw std::runtime_error(msg.c_str());
                 }

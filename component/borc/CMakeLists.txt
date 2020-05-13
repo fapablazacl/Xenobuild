@@ -62,6 +62,8 @@ set (src_borc_common
 )
 
 set (src_borc_model
+    "src/borc/model/Context.hpp"
+    "src/borc/model/Context.cpp"
     "src/borc/model/Version.hpp"
     "src/borc/model/Source.hpp"
     "src/borc/model/Module.hpp"
@@ -101,6 +103,7 @@ set (src_borc_entity
     "src/borc/entity/LanguageEntity.hpp"
     "src/borc/entity/ModuleEntity.hpp"
     "src/borc/entity/PackageEntity.hpp"
+    "src/borc/entity/PackageEntity2.hpp"
     "src/borc/entity/ToolchainEntity.hpp"
 )
 

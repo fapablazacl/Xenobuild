@@ -14,6 +14,7 @@ namespace borc {
 
         auto packageRegistry = std::make_unique<PackageRegistry>();
 
+        /*
         for (directory_entry &entry : directory_iterator{packageRegistryPath}) {
             if (! is_directory(entry.path())) {
                 continue;
@@ -23,6 +24,7 @@ namespace borc {
 
             packageRegistry->registerPackage(std::move(package));
         }
+        */
 
         return packageRegistry;
     }
