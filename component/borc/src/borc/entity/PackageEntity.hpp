@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "LanguageEntity.hpp"
-#include "ModuleEntity.hpp"
+#include "ComponentEntity.hpp"
 
 #include <boost/hana.hpp>
 

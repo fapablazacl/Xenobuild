@@ -7,7 +7,7 @@
 #include <borc/common/Constants.hpp>
 #include <borc/model/Version.hpp>
 #include <borc/entity/PackageEntity.hpp>
-#include <borc/entity/ModuleEntity.hpp>
+#include <borc/entity/ComponentEntity.hpp>
 #include <borc/entity/JsonModel.hpp>
 #include <borc/entity/Encoder.hpp>
 #include <borc/services/FileServiceImpl.hpp>
@@ -27,22 +27,22 @@ namespace bok {
             throw std::runtime_error("A package already exists in the folder '" + packagePath.string() + "'");
         }
 
-        ModuleEntity moduleEntity;
-        moduleEntity.name = options.packageName;
-        moduleEntity.type = options.moduleType;
-        moduleEntity.version = {1, 0, 0};
-        moduleEntity.sources = {
-            ModuleSourceEntity{"src", false},
-            // ModuleSourceEntity{"include", true}, // TODO: Consider multiple package structures per module type
+        ComponentEntity componentEntity;
+        componentEntity.name = options.packageName;
+        componentEntity.type = options.moduleType;
+        componentEntity.version = {1, 0, 0};
+        componentEntity.sources = {
+            ComponentSourceEntity{"src", false},
+            // ComponentSourceEntity{"include", true}, // TODO: Consider multiple package structures per module type
         };
 
-        std::vector<ModuleEntity> moduleEntities = { moduleEntity };
+        std::vector<ComponentEntity> moduleEntities = { componentEntity };
 
         PackageEntity packageEntity;
         packageEntity.name = options.packageName;
         packageEntity.description = "TODO: Add the description of the " + options.packageName + " package.";
         packageEntity.modulePaths = {
-            "modules/" + moduleEntity.name
+            "modules/" + componentEntity.name
         };
 
         // save package to file
@@ -52,17 +52,17 @@ namespace bok {
 
         // create the package structure
         boost::filesystem::create_directories(packagePath);
-        for (const auto &moduleEntity : moduleEntities) {
-            const boost::filesystem::path modulePath = packagePath / "modules" / moduleEntity.name;
+        for (const auto &componentEntity : moduleEntities) {
+            const boost::filesystem::path modulePath = packagePath / "modules" / componentEntity.name;
 
             boost::filesystem::create_directories(modulePath);
 
             // save module to file
-            nlohmann::json moduleJson = Encoder<JsonModel, ModuleEntity>{moduleEntity}.encode();
+            nlohmann::json moduleJson = Encoder<JsonModel, ComponentEntity>{componentEntity}.encode();
             std::ofstream moduleFileStream((modulePath / "module.borc.json").string());
             moduleFileStream << std::setw(4) << moduleJson << std::endl;
 
-            for (const auto sourcePath : moduleEntity.sources) {
+            for (const auto sourcePath : componentEntity.sources) {
                 boost::filesystem::create_directories(modulePath / sourcePath.path);
 
                 // create the sample file

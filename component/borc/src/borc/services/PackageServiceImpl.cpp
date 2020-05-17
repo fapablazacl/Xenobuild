@@ -13,7 +13,7 @@
 #include <borc/model/Package.hpp>
 #include <borc/entity/PackageEntity.hpp>
 #include <borc/entity/LanguageEntity.hpp>
-#include <borc/entity/ModuleEntity.hpp>
+#include <borc/entity/ComponentEntity.hpp>
 #include <borc/entity/JsonModel.hpp>
 #include <borc/entity/Decoder.hpp>
 #include <borc/services/FileServiceImpl.hpp>
@@ -30,7 +30,7 @@ namespace bok {
         if (packageEntity.modulePaths.size() > 0) {
             std::cout << "Creating package " << packageEntity.name << " ..." << std::endl;
 
-            const std::vector<ModuleEntity> moduleEntities = this->loadModuleEntities(packageBaseFolder, packageEntity);
+            const std::vector<ComponentEntity> moduleEntities = this->loadModuleEntities(packageBaseFolder, packageEntity);
             std::unique_ptr<Package> package = this->createPackageImpl(packageEntity, moduleEntities, packageRegistry);
 
             return package;
@@ -96,7 +96,7 @@ namespace bok {
     }
 
 
-    std::unique_ptr<Package> PackageServiceImpl::createPackageImpl(const PackageEntity &packageEntity, const std::vector<ModuleEntity> &moduleEntities, const PackageRegistry *packageRegistry) const {
+    std::unique_ptr<Package> PackageServiceImpl::createPackageImpl(const PackageEntity &packageEntity, const std::vector<ComponentEntity> &moduleEntities, const PackageRegistry *packageRegistry) const {
         // now we are ready to create the package and modules instances
         auto package = std::make_unique<Package>(packageEntity.name);
 
@@ -109,23 +109,23 @@ namespace bok {
         };
 
         for (int i=0; i<moduleEntities.size(); i++) {
-            const ModuleEntity &moduleEntity = moduleEntities[i];
+            const ComponentEntity &componentEntity = moduleEntities[i];
 
             auto module = package->createModule<Module>();
 
-            module->setName(moduleEntity.name);
+            module->setName(componentEntity.name);
 
-            if (auto moduleTypeIt = moduleTypeMap.find(moduleEntity.type); moduleTypeIt != moduleTypeMap.end()) {
+            if (auto moduleTypeIt = moduleTypeMap.find(componentEntity.type); moduleTypeIt != moduleTypeMap.end()) {
                 module->setType(moduleTypeIt->second);
             } else {
                 std::string msg;
 
                 msg += "Invalid module type";
-                msg += " '" + moduleEntity.type + "' ";
+                msg += " '" + componentEntity.type + "' ";
                 msg += "for the";
-                msg += " '" + moduleEntity.language + "' ";
+                msg += " '" + componentEntity.language + "' ";
                 msg += "programming language specified in the";
-                msg += " '" + moduleEntity.name + "' ";
+                msg += " '" + componentEntity.name + "' ";
                 msg += "module.";
 
                 throw std::runtime_error(msg.c_str());
@@ -136,7 +136,7 @@ namespace bok {
             std::vector<boost::filesystem::path> includePaths;
             std::vector<boost::filesystem::path> sourcePaths;
 
-            for (const ModuleSourceEntity &moduleSourceEntity : moduleEntity.sources) {
+            for (const ComponentSourceEntity &moduleSourceEntity : componentEntity.sources) {
                 if (moduleSourceEntity.public_) {
                     includePaths.push_back(moduleSourceEntity.path);
                 } else {
@@ -152,10 +152,10 @@ namespace bok {
         std::vector<Module*> modules = package->getModules();
 
         for (int i=0; i<moduleEntities.size(); i++) {
-            const ModuleEntity &moduleEntity = moduleEntities[i];
+            const ComponentEntity &componentEntity = moduleEntities[i];
             Module *module = modules[i];
 
-            for (const std::string dependency : moduleEntity.dependencies) {
+            for (const std::string dependency : componentEntity.dependencies) {
                 // Solve the dependency with the modules inside the package
                 bool found = false;
                 for (const Module *dependentModule : modules) {
@@ -214,8 +214,8 @@ namespace bok {
     }
 
 
-    std::vector<ModuleEntity> PackageServiceImpl::loadModuleEntities(const boost::filesystem::path &packagePath, const PackageEntity &packageEntity) const {
-        std::vector<ModuleEntity> moduleEntities;
+    std::vector<ComponentEntity> PackageServiceImpl::loadModuleEntities(const boost::filesystem::path &packagePath, const PackageEntity &packageEntity) const {
+        std::vector<ComponentEntity> moduleEntities;
 
         for (const std::string &modulePartialPath : packageEntity.modulePaths) {
             const boost::filesystem::path moduleFilePath = packagePath / modulePartialPath / BOK_COMPONENT_DEFINITION_FILENAME;
@@ -227,9 +227,9 @@ namespace bok {
             auto moduleJsonContent = fileService->load(moduleFilePath.string());
             auto moduleJson = nlohmann::json::parse(moduleJsonContent);
 
-            ModuleEntity moduleEntity = Decoder<JsonModel, ModuleEntity>{moduleJson}.decode();
+            ComponentEntity componentEntity = Decoder<JsonModel, ComponentEntity>{moduleJson}.decode();
 
-            moduleEntities.push_back(moduleEntity);
+            moduleEntities.push_back(componentEntity);
         }
 
         return moduleEntities;

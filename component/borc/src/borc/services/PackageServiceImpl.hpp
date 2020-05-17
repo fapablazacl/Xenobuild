@@ -8,7 +8,7 @@
 
 namespace bok {
     struct PackageEntity;
-    struct ModuleEntity;
+    struct ComponentEntity;
 
     class FileService;
 
@@ -19,11 +19,11 @@ namespace bok {
         virtual std::unique_ptr<Package> createPackage(const boost::filesystem::path &packageFilePath, const PackageRegistry *packageRegistry) const override;
 
     private:
-        std::unique_ptr<Package> createPackageImpl(const PackageEntity &packageEntity, const std::vector<ModuleEntity> &moduleEntities, const PackageRegistry *packageRegistry) const;
+        std::unique_ptr<Package> createPackageImpl(const PackageEntity &packageEntity, const std::vector<ComponentEntity> &moduleEntities, const PackageRegistry *packageRegistry) const;
 
         PackageEntity loadPackageEntity(const boost::filesystem::path &packagePath) const;
 
-        std::vector<ModuleEntity> loadModuleEntities(const boost::filesystem::path &packagePath, const PackageEntity &packageEntity) const;
+        std::vector<ComponentEntity> loadModuleEntities(const boost::filesystem::path &packagePath, const PackageEntity &packageEntity) const;
 
         bool checkValidBorcFile(const boost::filesystem::path &filePath) const;
 
