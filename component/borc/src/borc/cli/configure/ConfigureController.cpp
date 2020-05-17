@@ -7,7 +7,7 @@
 
 #include <borc/common/Constants.hpp>
 #include <borc/toolchain/Toolchain.hpp>
-#include <borc/toolchain/ToolchainFactoryImpl.hpp>
+#include <borc/toolchain/ToolchainFactoryFS.hpp>
 #include <borc/build/BuildCache.hpp>
 #include <borc/build/ConfigurationService.hpp>
 #include <borc/model/Version.hpp>
@@ -102,7 +102,7 @@ namespace borc {
             installationPath = boost::filesystem::path{ options.toolchainPath.get() };
         }
 
-        auto factory = std::make_unique<ToolchainFactoryImpl>("./toolchain/", installationPath);
+        auto factory = std::make_unique<ToolchainFactoryFS>("./toolchain/", installationPath);
         auto toolchain = factory->createToolchain(options.toolchain.get());
 
         // setup the configuration requested by the user

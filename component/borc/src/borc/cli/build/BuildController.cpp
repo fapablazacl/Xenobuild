@@ -16,8 +16,9 @@
 #include <borc/services/BuildServiceImpl.hpp>
 #include <borc/services/PackageServiceImpl.hpp>
 #include <borc/services/LoggingServiceImpl.hpp>
-#include <borc/toolchain/ToolchainFactoryImpl.hpp>
+#include <borc/toolchain/ToolchainFactoryFS.hpp>
 #include <borc/toolchain/Toolchain.hpp>
+
 #include <borc/build/BuildCache.hpp>
 #include <borc/build/ConfigurationService.hpp>
 #include <borc/utility/DagNode.hpp>
@@ -69,7 +70,8 @@ namespace borc {
 
         std::cout << "Building configuration " << configurationData.currentBuildConfiguration.get().computeIdentifier() << " ..." << std::endl;
 
-        auto toolchainFactory = std::make_unique<ToolchainFactoryImpl>("./toolchain/", boost::filesystem::path{configurationData.currentBuildConfiguration->toolchainPath});
+        auto toolchainFactory = std::make_unique<ToolchainFactoryFS>("./toolchain/", boost::filesystem::path{configurationData.currentBuildConfiguration->toolchainPath});
+
         auto toolchain = toolchainFactory->createToolchain(configurationData.currentBuildConfiguration.get().toolchainId);
 
         BuildServiceImpl buildService {

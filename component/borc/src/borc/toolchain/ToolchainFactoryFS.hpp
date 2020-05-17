@@ -1,6 +1,6 @@
 
-#ifndef __BORC_TOOLCHAIN_TOOLCHAINFACTORYIMPL_HPP__
-#define __BORC_TOOLCHAIN_TOOLCHAINFACTORYIMPL_HPP__
+#ifndef __BORC_TOOLCHAIN_TOOLCHAINFACTORYFS_HPP__
+#define __BORC_TOOLCHAIN_TOOLCHAINFACTORYFS_HPP__
 
 #include "ToolchainFactory.hpp"
 
@@ -10,11 +10,14 @@
 #include <boost/filesystem/path.hpp>
 
 namespace borc {
-    class ToolchainFactoryImpl : public ToolchainFactory {
+    /**
+     * @brief Toolchain Factory that loads the requested toolchain from the filesystem.
+     */
+    class ToolchainFactoryFS : public ToolchainFactory {
     public:
-        explicit ToolchainFactoryImpl(const boost::filesystem::path &definitionPath, boost::optional<boost::filesystem::path> installationPath);
+        explicit ToolchainFactoryFS(const boost::filesystem::path &definitionPath, boost::optional<boost::filesystem::path> installationPath);
 
-        virtual ~ToolchainFactoryImpl();
+        virtual ~ToolchainFactoryFS();
 
         virtual Toolchain* createToolchain(const std::string &toolchainId) override;
 

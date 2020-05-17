@@ -1,5 +1,5 @@
 
-#include "ToolchainFactoryImpl.hpp"
+#include "ToolchainFactoryFS.hpp"
 
 #include <stdexcept>
 
@@ -10,7 +10,7 @@
 #include "ToolchainImpl.hpp"
 
 namespace borc {
-    ToolchainFactoryImpl::ToolchainFactoryImpl(const boost::filesystem::path &definitionPath, boost::optional<boost::filesystem::path> installationPath) {
+    ToolchainFactoryFS::ToolchainFactoryFS(const boost::filesystem::path &definitionPath, boost::optional<boost::filesystem::path> installationPath) {
         this->definitionPath = definitionPath;
 
         FileServiceImpl fileService;
@@ -28,10 +28,10 @@ namespace borc {
     }
 
 
-    ToolchainFactoryImpl::~ToolchainFactoryImpl() {}
+    ToolchainFactoryFS::~ToolchainFactoryFS() {}
 
 
-    Toolchain* ToolchainFactoryImpl::createToolchain(const std::string &toolchainId) {
+    Toolchain* ToolchainFactoryFS::createToolchain(const std::string &toolchainId) {
         if (auto toolchainIt = toolchainMap.find(toolchainId); toolchainIt != toolchainMap.end()) {
             return toolchainIt->second.get();
         }  
@@ -40,7 +40,7 @@ namespace borc {
     }
 
 
-    std::vector<std::string> ToolchainFactoryImpl::detectAvailableToolchainIds() const {
+    std::vector<std::string> ToolchainFactoryFS::detectAvailableToolchainIds() const {
         return { "vc", "gcc" };
     }
 }
