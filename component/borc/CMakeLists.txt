@@ -147,6 +147,8 @@ set (src_borc_toolchain
     "src/borc/toolchain/ToolchainFactory.cpp"
     "src/borc/toolchain/ToolchainFactoryFS.hpp"
     "src/borc/toolchain/ToolchainFactoryFS.cpp"
+    "src/borc/toolchain/ToolchainFactoryHardcoded.hpp"
+    "src/borc/toolchain/ToolchainFactoryHardcoded.cpp"
     "src/borc/toolchain/ServiceFactory.hpp"
     "src/borc/toolchain/ModuleChecker.hpp"
     "src/borc/toolchain/SourceChecker.hpp"
