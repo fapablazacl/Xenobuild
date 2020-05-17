@@ -5,7 +5,7 @@
 #include <memory>
 #include <boost/filesystem/path.hpp>
 
-namespace borc {
+namespace bok {
     class ToolchainFactory;
     class ToolchainService;
 

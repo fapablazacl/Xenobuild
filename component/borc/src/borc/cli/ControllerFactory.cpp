@@ -6,7 +6,7 @@
 #include <borc/cli/build/BuildController.hpp>
 #include <borc/cli/configure/ConfigureController.hpp>
 
-namespace borc {
+namespace bok {
     template<typename ControllerImpl>
     class ControllerMakerImpl : public ControllerMaker {
     public:

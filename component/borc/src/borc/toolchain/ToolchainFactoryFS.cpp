@@ -9,7 +9,7 @@
 
 #include "ToolchainImpl.hpp"
 
-namespace borc {
+namespace bok {
     ToolchainFactoryFS::ToolchainFactoryFS(const boost::filesystem::path &definitionPath, boost::optional<boost::filesystem::path> installationPath) {
         this->definitionPath = definitionPath;
 

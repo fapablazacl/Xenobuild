@@ -13,7 +13,7 @@
 #include <boost/core/noncopyable.hpp>
 #include <borc/model/CommandFactory.hpp>
 
-namespace borc {
+namespace bok {
     struct ToolchainEntity;
 
     class SourceChecker;

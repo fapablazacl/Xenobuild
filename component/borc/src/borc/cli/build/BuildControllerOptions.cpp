@@ -3,7 +3,7 @@
 
 #include <boost/program_options.hpp>
 
-namespace borc {
+namespace bok {
     BuildControllerOptions BuildControllerOptions::parse(int argc, char **argv) {
         boost::program_options::options_description desc("Allowed options for Configure subcommand");
 

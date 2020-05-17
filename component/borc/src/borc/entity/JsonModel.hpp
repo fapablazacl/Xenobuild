@@ -3,7 +3,7 @@
 
 #include <nlohmann/json.hpp>
 
-namespace borc {
+namespace bok {
     typedef nlohmann::json JsonModel;
 
     inline bool model_exist_key(const JsonModel &model, const std::string key) {

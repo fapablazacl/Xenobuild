@@ -4,7 +4,7 @@
 
 #include <borc/toolchain/ServiceFactoryStub.hpp>
 
-namespace borc {
+namespace bok {
     class ServiceFactoryGCC : public ServiceFactoryStub {
     public:
         explicit ServiceFactoryGCC(const std::string &commandBase);

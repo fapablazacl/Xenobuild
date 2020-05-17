@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-namespace borc {
+namespace bok {
     struct ToolchainEntity {
         struct EnumeratedOption {
             std::string name;

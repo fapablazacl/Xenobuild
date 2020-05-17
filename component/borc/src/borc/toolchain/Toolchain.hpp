@@ -2,7 +2,7 @@
 #ifndef __BORC_CORE_TOOLCHAIN_HPP__
 #define __BORC_CORE_TOOLCHAIN_HPP__
 
-namespace borc {
+namespace bok {
     class Compiler;
     class Linker;
     class Source;

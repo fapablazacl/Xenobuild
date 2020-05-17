@@ -4,7 +4,7 @@
 
 #include <string>
 
-namespace borc {
+namespace bok {
     struct Language {
         std::string name;
         std::string dialect;

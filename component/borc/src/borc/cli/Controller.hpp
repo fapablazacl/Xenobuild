@@ -2,7 +2,7 @@
 #ifndef __BORC_CLI_CONTROLLER_HPP__
 #define __BORC_CLI_CONTROLLER_HPP__
 
-namespace borc {
+namespace bok {
     class Controller {
     public:
         virtual ~Controller();

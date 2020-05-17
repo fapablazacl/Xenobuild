@@ -2,7 +2,7 @@
 #ifndef __BORK_COMMON_CONSTANTS_HPP__
 #define __BORK_COMMON_CONSTANTS_HPP__
 
-namespace borc {
+namespace bok {
     extern const char* BORC_PACKAGE_DEFINITION_FILENAME;
     extern const char* BORC_MODULE_DEFINITION_FILENAME;
     extern const char* BORC_PACKAGE_SEARCH_PATH;

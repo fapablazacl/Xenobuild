@@ -5,7 +5,7 @@
 #include <string>
 #include <ostream>
 
-namespace borc {
+namespace bok {
     struct Version {
         int major = 0;
         int minor = 0;
@@ -43,7 +43,7 @@ namespace borc {
     };    
 }
 
-inline std::ostream& operator << (std::ostream &os, const borc::Version &version) {
+inline std::ostream& operator << (std::ostream &os, const bok::Version &version) {
     return os << static_cast<std::string>(version);
 }
 

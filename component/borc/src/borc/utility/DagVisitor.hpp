@@ -2,7 +2,7 @@
 #ifndef __BORC_UTILITY_DAGVISITOR_HPP__
 #define __BORC_UTILITY_DAGVISITOR_HPP__
 
-namespace borc {
+namespace bok {
     class Dag;
     class DagNode;
     class DagVisitor {

@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-namespace borc {
+namespace bok {
     struct CompileOptions {
         std::vector<std::string> includePaths;
 

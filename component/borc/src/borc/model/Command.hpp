@@ -4,7 +4,7 @@
 
 #include <string>
 
-namespace borc {
+namespace bok {
     class Command {
     public:
         virtual ~Command();

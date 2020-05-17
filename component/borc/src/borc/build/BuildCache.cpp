@@ -1,6 +1,6 @@
 
 #include <borc/build/BuildCache.hpp>
 
-namespace borc {
+namespace bok {
     BuildCache::~BuildCache() {}
 }

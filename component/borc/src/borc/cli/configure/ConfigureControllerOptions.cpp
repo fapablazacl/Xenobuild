@@ -5,7 +5,7 @@
 #include <boost/program_options.hpp>
 #include <boost/algorithm/string.hpp>
 
-namespace borc {
+namespace bok {
     ConfigureControllerOptions ConfigureControllerOptions::parse(int argc, char **argv) {
         namespace po = boost::program_options;
 

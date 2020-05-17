@@ -13,7 +13,7 @@
 #include <borc/utility/DagNode.hpp>
 
 
-namespace borc {
+namespace bok {
     struct CompilerImpl::Private {
     public:
         CommandFactory *commandFactory = nullptr;

@@ -2,7 +2,7 @@
 #include <borc/utility/DagNode.hpp>
 #include <borc/utility/Dag.hpp>
 
-namespace borc {
+namespace bok {
     DagNode::DagNode(Dag *dag, Command *command) {
         this->dag = dag;
         this->command = command;

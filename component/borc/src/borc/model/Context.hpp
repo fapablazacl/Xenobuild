@@ -7,7 +7,7 @@
 #include <borc/toolchain/Toolchain.hpp>
 #include <borc/common/Types.hpp>
 
-namespace borc {
+namespace bok {
     struct Context {
         Package *mainPackage = nullptr;
         std::vector<std::unique_ptr<Package>> packages;

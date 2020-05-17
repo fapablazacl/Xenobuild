@@ -10,7 +10,7 @@
 
 #include <boost/hana.hpp>
 
-namespace borc {
+namespace bok {
     struct PackageEntity {
         struct Required {
             std::string name;
@@ -58,9 +58,9 @@ namespace borc {
     };
 }
 
-BOOST_HANA_ADAPT_STRUCT(borc::PackageEntity::LibraryPath, arch, path);
-BOOST_HANA_ADAPT_STRUCT(borc::PackageEntity::Required, name, type, desc);
-BOOST_HANA_ADAPT_STRUCT(borc::PackageEntity::Module, common, prebuilt, includePath, libraryPath, name, library);
-BOOST_HANA_ADAPT_STRUCT(borc::PackageEntity, name, description, required, language, modulePaths, packageSearchPaths, modules);
+BOOST_HANA_ADAPT_STRUCT(bok::PackageEntity::LibraryPath, arch, path);
+BOOST_HANA_ADAPT_STRUCT(bok::PackageEntity::Required, name, type, desc);
+BOOST_HANA_ADAPT_STRUCT(bok::PackageEntity::Module, common, prebuilt, includePath, libraryPath, name, library);
+BOOST_HANA_ADAPT_STRUCT(bok::PackageEntity, name, description, required, language, modulePaths, packageSearchPaths, modules);
 
 #endif

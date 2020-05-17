@@ -7,7 +7,7 @@
 #include <initializer_list>
 #include <boost/filesystem/path.hpp>
 
-namespace borc {
+namespace bok {
     class SourceChecker {
     public:
         SourceChecker(const std::initializer_list<std::string> &wildcards);

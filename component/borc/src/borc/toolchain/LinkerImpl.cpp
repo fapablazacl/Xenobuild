@@ -4,7 +4,7 @@
 #include <boost/optional.hpp>
 #include <borc/model/CommandFactory.hpp>
 
-namespace borc {
+namespace bok {
     struct LinkerImpl::Private {
     public:
 		CommandFactory *commandFactory = nullptr;

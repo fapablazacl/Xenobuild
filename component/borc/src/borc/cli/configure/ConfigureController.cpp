@@ -19,7 +19,7 @@
 #include <borc/services/PackageServiceImpl.hpp>
 
 
-namespace borc {
+namespace bok {
     struct ConfigureController::Private {
         /**
          * @brief Determine all the build types from the parameter, specially when "All is used".

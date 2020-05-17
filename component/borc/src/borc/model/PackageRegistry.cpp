@@ -5,7 +5,7 @@
 #include <borc/model/Module.hpp>
 #include <borc/model/Package.hpp>
 
-namespace borc {
+namespace bok {
     PackageRegistry::PackageRegistry() {}
 
     PackageRegistry::~PackageRegistry() {}

@@ -7,7 +7,7 @@
 #include <borc/model/Command.hpp>
 #include <borc/model/CommandFactory.hpp>
 
-namespace borc {
+namespace bok {
     ModuleLinker::ModuleLinker(CommandFactory *commandFactory, const std::string &commandPath, const LinkerSwitches &switches, const LinkerConfiguration &configuration) {
         this->commandFactory = commandFactory;
         this->commandPath = commandPath;

@@ -7,7 +7,7 @@
 
 #include <boost/hana.hpp>
 
-namespace borc {
+namespace bok {
     struct LanguageEntity {
         std::string name;
         std::vector<std::string> dialects;
@@ -16,6 +16,6 @@ namespace borc {
     };
 }
 
-BOOST_HANA_ADAPT_STRUCT(borc::LanguageEntity, name, dialects);
+BOOST_HANA_ADAPT_STRUCT(bok::LanguageEntity, name, dialects);
 
 #endif

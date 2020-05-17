@@ -8,7 +8,7 @@
 #include <set>
 #include <borc/model/Version.hpp>
 
-namespace borc {
+namespace bok {
     /**
      * @brief Abstracts the concrete compiler and linker flags used to build object files and binaries.
      * 

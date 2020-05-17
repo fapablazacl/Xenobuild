@@ -6,7 +6,7 @@
 #include <borc/model/Package.hpp>
 #include <borc/model/Source.hpp>
 
-namespace borc {
+namespace bok {
     Module::Module(Package *package) {
         this->package = package;
     }

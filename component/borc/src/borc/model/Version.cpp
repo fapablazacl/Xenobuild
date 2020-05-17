@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <boost/algorithm/string.hpp>
 
-namespace borc {
+namespace bok {
     Version Version::parse(const std::string &str) {
         std::vector<std::string> results;
         boost::split(results, str, boost::is_any_of("."));

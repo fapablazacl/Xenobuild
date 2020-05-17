@@ -10,7 +10,7 @@
 #include <borc/common/Types.hpp>
 #include <borc/common/BuildConfiguration.hpp>
 
-namespace borc {
+namespace bok {
     /**
      * @brief Provides storage to all the build cache metadata for the current borc package.
      * 

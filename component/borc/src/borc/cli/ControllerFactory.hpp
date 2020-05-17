@@ -6,7 +6,7 @@
 #include <map>
 #include <memory>
 
-namespace borc {
+namespace bok {
     class Controller;
 
     class ControllerMaker {

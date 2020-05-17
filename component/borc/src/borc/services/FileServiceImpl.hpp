@@ -6,7 +6,7 @@
 
 #include "FileService.hpp"
 
-namespace borc {
+namespace bok {
     class FileServiceImpl : public FileService {
     public:
         virtual ~FileServiceImpl();

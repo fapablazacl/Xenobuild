@@ -3,7 +3,7 @@
 
 #include <yaml-cpp/yaml.h>
 
-namespace borc {
+namespace bok {
     typedef YAML::Node YamlModel;
 
     inline bool model_exist_key(const YamlModel &model, const std::string key) {

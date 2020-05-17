@@ -6,7 +6,7 @@
 #include <boost/algorithm/string.hpp>
 #include <borc/common/Constants.hpp>
 
-namespace borc {
+namespace bok {
     BuildCacheTxt::BuildCacheTxt(const path &outputPath, const path &prefixPath) {
         this->outputPath = outputPath;
         this->prefixPath = prefixPath;

@@ -3,7 +3,7 @@
 
 #include <borc/toolchain/ToolchainFactory.hpp>
 
-namespace borc {
+namespace bok {
     /*
     Core::Core(const boost::filesystem::path &toolchainDefinitionPath) {
         this->toolchainDefinitionPath = toolchainDefinitionPath;

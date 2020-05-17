@@ -4,7 +4,7 @@
 
 #include <borc/toolchain/ServiceFactoryStub.hpp>
 
-namespace borc {
+namespace bok {
     class ServiceFactoryVC : public ServiceFactoryStub {
     public:
         ServiceFactoryVC(const std::string &installationPath, const std::string &windowsKitPath);

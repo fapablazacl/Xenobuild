@@ -5,7 +5,7 @@
 #include <borc/cli/ControllerStub.hpp>
 #include "BuildControllerOptions.hpp"
 
-namespace borc {
+namespace bok {
     class BuildController : public ControllerStub<BuildControllerOptions> {
     public:
         virtual ~BuildController();

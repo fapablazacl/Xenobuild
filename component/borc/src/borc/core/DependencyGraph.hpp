@@ -6,7 +6,7 @@
 #include <vector>
 #include <memory>
 
-namespace borc {
+namespace bok {
     template<typename ValueType>
     class DependencyGraph;
 

@@ -3,7 +3,7 @@
 
 #include <boost/filesystem.hpp>
 
-namespace borc {
+namespace bok {
     FolderCommand::FolderCommand(const boost::filesystem::path &path, const PathCommand pathCommand) {
         this->path = path;
         this->pathCommand = pathCommand;

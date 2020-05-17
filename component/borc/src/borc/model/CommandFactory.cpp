@@ -7,7 +7,7 @@
 #include "command/SystemCommand.hpp"
 #include "command/FolderCommand.hpp"
 
-namespace borc {
+namespace bok {
     CommandFactory::~CommandFactory() {}
 
 

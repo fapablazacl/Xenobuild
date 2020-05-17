@@ -5,7 +5,7 @@
 #include <borc/cli/ControllerStub.hpp>
 #include "InitControllerOptions.hpp"
 
-namespace borc {
+namespace bok {
     struct Version;
 
     /**

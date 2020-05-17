@@ -2,7 +2,7 @@
 #ifndef __BORC_TOOLCHAIN_MODULECHECKER_HPP__
 #define __BORC_TOOLCHAIN_MODULECHECKER_HPP__
 
-namespace borc {
+namespace bok {
     class Module;
     class ModuleChecker {
     public:

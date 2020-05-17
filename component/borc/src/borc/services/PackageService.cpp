@@ -1,6 +1,6 @@
 
 #include "PackageService.hpp"
 
-namespace borc {
+namespace bok {
     PackageService::~PackageService() {}
 }

@@ -1,6 +1,6 @@
 
 #include "ToolchainFactory.hpp"
 
-namespace borc {
+namespace bok {
     ToolchainFactory::~ToolchainFactory() {}
 }

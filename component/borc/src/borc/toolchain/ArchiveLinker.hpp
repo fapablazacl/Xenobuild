@@ -4,7 +4,7 @@
 
 #include <borc/toolchain/Linker.hpp>
 
-namespace borc {
+namespace bok {
     class CommandFactory;
 
     class ArchiveLinker : public Linker {

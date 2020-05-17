@@ -6,7 +6,7 @@
 #include <borc/toolchain/SourceChecker.hpp>
 #include <borc/toolchain/ModuleChecker.hpp>
 
-namespace borc {
+namespace bok {
     ServiceFactoryStub::~ServiceFactoryStub() {}
 
     const std::vector<std::pair<SourceChecker*, const Compiler*>> ServiceFactoryStub::getCompilers() const {

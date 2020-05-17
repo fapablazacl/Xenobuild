@@ -6,7 +6,7 @@
 
 #include <borc/model/CommandFactory.hpp>
 
-namespace borc {
+namespace bok {
     class ServiceFactoryStub : public ServiceFactory {
     public:
         virtual ~ServiceFactoryStub();

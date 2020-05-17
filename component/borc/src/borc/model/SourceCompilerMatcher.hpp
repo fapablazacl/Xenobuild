@@ -5,7 +5,7 @@
 #include <set>
 #include <boost/filesystem/path.hpp>
 
-namespace borc {
+namespace bok {
     class Source;
     class Compiler;
     class SourceCompilerMatcher {

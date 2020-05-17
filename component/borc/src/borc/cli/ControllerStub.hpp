@@ -4,7 +4,7 @@
 
 #include "Controller.hpp"
 
-namespace borc {
+namespace bok {
     template<typename ControllerOptions>
     class ControllerStub : public Controller {
     public:

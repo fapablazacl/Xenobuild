@@ -6,7 +6,7 @@
 
 #include <vector>
 
-namespace borc {
+namespace bok {
     struct PackageEntity;
     struct ModuleEntity;
 

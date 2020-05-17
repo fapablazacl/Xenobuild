@@ -6,7 +6,7 @@
 #include <iostream>
 #include <boost/filesystem/path.hpp>
 
-namespace borc {
+namespace bok {
     class Dag;
     class DagNode;
 

@@ -8,7 +8,7 @@
 #include <borc/toolchain/CompilerImpl.hpp>
 #include <borc/toolchain/ModuleLinker.hpp>
 
-namespace borc {
+namespace bok {
     ServiceFactoryVC::ServiceFactoryVC(const std::string &installationPath, const std::string &windowsKitPath) {
         const std::string commandBasePath = installationPath + "bin\\Hostx64\\x64\\";
         const std::string compilerCommand = commandBasePath + "cl.exe";

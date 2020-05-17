@@ -9,7 +9,7 @@
 #include <boost/filesystem/path.hpp>
 #include <borc/common/BuildConfiguration.hpp>
 
-namespace borc {
+namespace bok {
     /**
      * @brief Accesible representation of a package complete build configuration
      */

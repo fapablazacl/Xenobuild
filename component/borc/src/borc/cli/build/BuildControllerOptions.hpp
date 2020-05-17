@@ -6,7 +6,7 @@
 #include <boost/optional.hpp>
 #include <boost/filesystem/path.hpp>
 
-namespace borc {
+namespace bok {
     struct BuildControllerOptions {
         bool force = false;
         bool showHelp = false;

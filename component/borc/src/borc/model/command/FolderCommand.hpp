@@ -6,7 +6,7 @@
 #include <borc/model/CommandFactory.hpp>
 #include <boost/filesystem/path.hpp>
 
-namespace borc {
+namespace bok {
     class FolderCommand : public Command {
     public:
         explicit FolderCommand(const boost::filesystem::path &path, const PathCommand pathCommand);

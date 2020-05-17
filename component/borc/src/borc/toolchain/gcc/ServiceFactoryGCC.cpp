@@ -9,7 +9,7 @@
 #include <borc/toolchain/ModuleLinker.hpp>
 #include <borc/toolchain/ArchiveLinker.hpp>
 
-namespace borc {
+namespace bok {
     ServiceFactoryGCC::ServiceFactoryGCC(const std::string &commandBase) {
         this->commandBase = commandBase;
 

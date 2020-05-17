@@ -5,7 +5,7 @@
 #include <vector>
 #include <memory>
 
-namespace borc {
+namespace bok {
     class Compiler;
     class Linker;
     class SourceChecker;

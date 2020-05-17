@@ -7,7 +7,7 @@
 #include <borc/model/Command.hpp>
 #include <borc/model/CommandFactory.hpp>
 
-namespace borc {
+namespace bok {
     ArchiveLinker::ArchiveLinker(CommandFactory *commandFactory, const std::string &commandPath, const ArchiveLinker::Switches &switches) {
         this->commandFactory = commandFactory;
         this->commandPath = commandPath;

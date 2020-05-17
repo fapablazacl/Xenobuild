@@ -4,7 +4,7 @@
 
 #include <boost/filesystem/path.hpp>
 
-namespace borc {
+namespace bok {
     class ModuleBuildRule {
     public:
 

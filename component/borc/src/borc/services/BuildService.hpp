@@ -7,7 +7,7 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/graph/adjacency_list.hpp>
 
-namespace borc {
+namespace bok {
     struct DependencyGraphVertexData {
         std::string label;
         boost::filesystem::path filePath;

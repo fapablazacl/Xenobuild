@@ -9,7 +9,7 @@
 
 #include "Language.hpp"
 
-namespace borc {
+namespace bok {
     struct PackageVariable {
         std::string name;
 

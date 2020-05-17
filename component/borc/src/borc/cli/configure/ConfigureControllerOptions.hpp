@@ -8,7 +8,7 @@
 #include <boost/optional.hpp>
 #include <boost/filesystem/path.hpp>
 
-namespace borc {
+namespace bok {
     struct ConfigureControllerOptions {
         bool showHelp = false;
         std::string helpMessage;

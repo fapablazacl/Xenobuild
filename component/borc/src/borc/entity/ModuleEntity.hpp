@@ -7,7 +7,7 @@
 
 #include <boost/hana.hpp>
 
-namespace borc {
+namespace bok {
     struct ModuleSourceEntity {
         std::string path;
         bool public_ = false;
@@ -35,7 +35,7 @@ namespace borc {
     };
 }
 
-BOOST_HANA_ADAPT_STRUCT(borc::ModuleSourceEntity, path, public_);
-BOOST_HANA_ADAPT_STRUCT(borc::ModuleEntity, name, description, version, type, language, sources, dependencies);
+BOOST_HANA_ADAPT_STRUCT(bok::ModuleSourceEntity, path, public_);
+BOOST_HANA_ADAPT_STRUCT(bok::ModuleEntity, name, description, version, type, language, sources, dependencies);
 
 #endif

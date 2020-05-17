@@ -7,7 +7,7 @@
 #include <boost/optional/optional_fwd.hpp>
 #include <borc/model/Module.hpp>
 
-namespace borc {
+namespace bok {
 	class CommandFactory;
 
     class LinkerImpl : public Linker {

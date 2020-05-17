@@ -6,7 +6,7 @@
 #include "Package.hpp"
 #include "PackageRegistry.hpp"
 
-namespace borc {
+namespace bok {
     std::unique_ptr<PackageRegistry> PackageRegistryFactory::createPackageRegistry(PackageService *packageService, const boost::filesystem::path &packageRegistryPath) const {
         using boost::filesystem::directory_entry;
         using boost::filesystem::directory_iterator;

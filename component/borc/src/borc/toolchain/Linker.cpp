@@ -1,7 +1,7 @@
 
 #include <borc/toolchain/Linker.hpp>
 
-namespace borc {
+namespace bok {
     Linker::~Linker() {}
 }
 

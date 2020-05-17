@@ -1,6 +1,6 @@
 
 #include <borc/services/LoggingService.hpp>
 
-namespace borc {
+namespace bok {
     LoggingService::~LoggingService() {}
 }

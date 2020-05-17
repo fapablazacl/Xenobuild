@@ -1,6 +1,6 @@
 
 #include <borc/toolchain/Toolchain.hpp>
 
-namespace borc {
+namespace bok {
     Toolchain::~Toolchain() {}
 }

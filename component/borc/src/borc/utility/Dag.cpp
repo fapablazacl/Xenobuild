@@ -2,7 +2,7 @@
 #include <borc/utility/Dag.hpp>
 #include <borc/utility/DagNode.hpp>
 
-namespace borc {
+namespace bok {
     Dag::Dag() {
         root = this->createNode();
     }

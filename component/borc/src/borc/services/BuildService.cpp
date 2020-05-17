@@ -1,6 +1,6 @@
 
 #include <borc/services/BuildService.hpp>
 
-namespace borc {
+namespace bok {
     BuildService::~BuildService() {}
 }

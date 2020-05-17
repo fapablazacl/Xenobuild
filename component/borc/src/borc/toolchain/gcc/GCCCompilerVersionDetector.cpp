@@ -4,7 +4,7 @@
 #include <boost/process.hpp>
 #include <boost/algorithm/string.hpp>
 
-namespace borc {
+namespace bok {
     GCCCompilerVersionDetector::~GCCCompilerVersionDetector() {}
 
     Version GCCCompilerVersionDetector::detectVersion() const {

@@ -27,7 +27,7 @@
 
 #include "BuildControllerOptions.hpp"
 
-namespace borc {
+namespace bok {
     BuildController::~BuildController() {}
 
 

@@ -1,6 +1,6 @@
 
 #include <borc/toolchain/CompilerVersionDetector.hpp>
 
-namespace borc {
+namespace bok {
     CompilerVersionDetector::~CompilerVersionDetector() {}
 }

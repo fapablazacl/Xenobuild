@@ -1,6 +1,6 @@
 
 #include <borc/toolchain/Compiler.hpp>
 
-namespace borc {
+namespace bok {
     Compiler::~Compiler() {}
 }

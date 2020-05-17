@@ -2,7 +2,7 @@
 #ifndef __BORC_TOOLCHAIN_COMPILERVERSIONDETECTOR_HPP__
 #define __BORC_TOOLCHAIN_COMPILERVERSIONDETECTOR_HPP__
 
-namespace borc {
+namespace bok {
     struct Version;
     
     class CompilerVersionDetector {

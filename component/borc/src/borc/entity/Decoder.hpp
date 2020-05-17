@@ -10,7 +10,7 @@
 #include <boost/type_index.hpp>
 #include <boost/hana.hpp>
 
-namespace borc {
+namespace bok {
     template<typename Model, typename Entity>
     class Decoder {
     public:

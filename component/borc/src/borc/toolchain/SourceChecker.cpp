@@ -2,7 +2,7 @@
 #include <borc/toolchain/SourceChecker.hpp>
 #include <algorithm>
 
-namespace borc {
+namespace bok {
     SourceChecker::SourceChecker(const std::initializer_list<std::string> &wildcards) {
         this->wildcards = wildcards;
     }

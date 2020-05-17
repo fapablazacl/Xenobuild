@@ -5,7 +5,7 @@
 #include <borc/utility/DagNode.hpp>
 #include <borc/model/Command.hpp>
 
-namespace borc {    
+namespace bok {    
     void DagVisitor::visit(Dag *dag) {
         this->visitNode(dag->getRoot());
     }

@@ -8,7 +8,7 @@
 #include <vector>
 #include <boost/filesystem/path.hpp>
 
-namespace borc {
+namespace bok {
     class Command;
     class CommandFactory;
     class Package;

@@ -1,6 +1,6 @@
 
 #include <borc/toolchain/ServiceFactory.hpp>
 
-namespace borc {
+namespace bok {
     ServiceFactory::~ServiceFactory() {}
 }

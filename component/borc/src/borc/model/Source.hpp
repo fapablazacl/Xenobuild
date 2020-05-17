@@ -6,7 +6,7 @@
 #include <vector>
 #include <boost/filesystem/path.hpp>
 
-namespace borc {
+namespace bok {
     class Module;
 
     class Source {

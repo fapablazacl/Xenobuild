@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <boost/algorithm/string/join.hpp>
 
-namespace borc {
+namespace bok {
     SystemCommand::SystemCommand(const std::string &base)
         : _base(base) {}
 

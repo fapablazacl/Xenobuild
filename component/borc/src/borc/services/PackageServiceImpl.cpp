@@ -18,7 +18,7 @@
 #include <borc/entity/Decoder.hpp>
 #include <borc/services/FileServiceImpl.hpp>
 
-namespace borc {
+namespace bok {
     PackageServiceImpl::PackageServiceImpl(const FileService *fileService) {
         this->fileService = fileService;
     }

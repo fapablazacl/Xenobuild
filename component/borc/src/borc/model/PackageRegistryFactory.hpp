@@ -5,7 +5,7 @@
 #include <memory>
 #include <boost/filesystem/path.hpp>
 
-namespace borc {
+namespace bok {
     class PackageService;
     class PackageRegistry;
     class PackageRegistryFactory {

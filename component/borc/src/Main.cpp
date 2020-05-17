@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
 
         std::vector<char*> args = {argv + 1, argv + argc};
 
-        borc::ControllerFactory controllerFactory;
+        bok::ControllerFactory controllerFactory;
         auto controller = controllerFactory.create(args[0]);
 
         controller->perform(args.size(), args.data());

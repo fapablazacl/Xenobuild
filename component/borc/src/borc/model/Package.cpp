@@ -2,7 +2,7 @@
 #include <borc/model/Package.hpp>
 #include <borc/model/Module.hpp>
 
-namespace borc {
+namespace bok {
     Package::Package(const std::string &name) {
         this->name = name;
     }

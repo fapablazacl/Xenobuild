@@ -4,7 +4,7 @@
 #include <iostream>
 #include <borc/model/Source.hpp>
 
-namespace borc {
+namespace bok {
     BuildPipeline::BuildPipeline() {
         
     }

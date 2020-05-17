@@ -4,7 +4,7 @@
 
 #include <string>
 
-namespace borc {
+namespace bok {
     class Toolchain;
     class ToolchainFactory {
     public:

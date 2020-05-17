@@ -11,7 +11,7 @@
 #include <borc/model/Version.hpp>
 #include <borc/model/Language.hpp>
 
-namespace borc {
+namespace bok {
     class Package;
     class Source;
     class Module {

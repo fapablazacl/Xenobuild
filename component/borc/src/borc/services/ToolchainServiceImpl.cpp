@@ -10,15 +10,15 @@
 #include <borc/entity/JsonModel.hpp>
 #include <borc/entity/Decoder.hpp>
 
-BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::EnumeratedOption, name, flag);
-BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::Switches, dialects, optimizationLevels, debugInformation, includePath, compile, outputFile, generateBuildDependencies, importLibrary, libraryPath);
-BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::BuildRuleInput, fileType, moduleTypes);
-BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::BuildRuleOutput, fileType, fileName);
-BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::BuildRule, input, flags, output);
-BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity::Tool, type, command, buildRules, switches);
-BOOST_HANA_ADAPT_STRUCT(borc::ToolchainEntity, name, tools);
+BOOST_HANA_ADAPT_STRUCT(bok::ToolchainEntity::EnumeratedOption, name, flag);
+BOOST_HANA_ADAPT_STRUCT(bok::ToolchainEntity::Switches, dialects, optimizationLevels, debugInformation, includePath, compile, outputFile, generateBuildDependencies, importLibrary, libraryPath);
+BOOST_HANA_ADAPT_STRUCT(bok::ToolchainEntity::BuildRuleInput, fileType, moduleTypes);
+BOOST_HANA_ADAPT_STRUCT(bok::ToolchainEntity::BuildRuleOutput, fileType, fileName);
+BOOST_HANA_ADAPT_STRUCT(bok::ToolchainEntity::BuildRule, input, flags, output);
+BOOST_HANA_ADAPT_STRUCT(bok::ToolchainEntity::Tool, type, command, buildRules, switches);
+BOOST_HANA_ADAPT_STRUCT(bok::ToolchainEntity, name, tools);
 
-namespace borc {
+namespace bok {
     ToolchainServiceImpl::ToolchainServiceImpl(const FileService *fileService) {
         this->fileService = fileService;
     }

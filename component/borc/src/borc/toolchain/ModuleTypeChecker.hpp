@@ -8,7 +8,7 @@
 #include <set>
 #include <initializer_list>
 
-namespace borc {
+namespace bok {
     class ModuleTypeChecker : public ModuleChecker {
     public:
         ModuleTypeChecker(const std::initializer_list<Module::Type> &types);

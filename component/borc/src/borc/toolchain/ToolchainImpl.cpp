@@ -6,7 +6,7 @@
 #include <borc/toolchain/SourceChecker.hpp>
 #include <borc/toolchain/ModuleChecker.hpp>
 
-namespace borc {
+namespace bok {
     ToolchainImpl::ToolchainImpl(const std::vector<std::pair<SourceChecker*, const Compiler*>> &compilers, const std::vector<std::pair<ModuleChecker*, const Linker*>> &linkers) {
         this->compilers = compilers;
         this->linkers = linkers;

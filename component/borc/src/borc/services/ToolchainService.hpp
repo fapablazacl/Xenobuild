@@ -6,7 +6,7 @@
 #include <boost/optional/optional_fwd.hpp>
 #include <boost/filesystem/path.hpp>
 
-namespace borc {
+namespace bok {
     class Toolchain;
 
     class ToolchainService {

@@ -12,7 +12,7 @@
 #include <borc/entity/Encoder.hpp>
 #include <borc/services/FileServiceImpl.hpp>
 
-namespace borc {
+namespace bok {
     InitController::~InitController() {}
 
     void InitController::perform(const InitControllerOptions &options) {

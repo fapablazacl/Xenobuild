@@ -5,7 +5,7 @@
 #include <vector>
 #include <boost/hana.hpp>
 
-namespace borc {
+namespace bok {
     struct PackageEntity2 {
         std::string name;
         std::string description;
@@ -17,4 +17,4 @@ namespace borc {
     }:
 }
 
-BOOST_HANA_ADAPT_STRUCT(borc::PackageEntity2, name, description, version, license, author, email, definition_path);
+BOOST_HANA_ADAPT_STRUCT(bok::PackageEntity2, name, description, version, license, author, email, definition_path);

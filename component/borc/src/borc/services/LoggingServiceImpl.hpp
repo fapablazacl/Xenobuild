@@ -4,7 +4,7 @@
 
 #include "LoggingService.hpp"
 
-namespace borc {
+namespace bok {
     class LoggingServiceImpl : public LoggingService {
     public:
         explicit LoggingServiceImpl(const std::string &name);

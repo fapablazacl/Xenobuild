@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <boost/filesystem.hpp>
 
-namespace borc {
+namespace bok {
     Source::Source(const Module *module, const boost::filesystem::path &filePath, const boost::filesystem::path &relativeFilePath) {
         if (! filePath.is_absolute()) {
             throw std::runtime_error("Source::Source: 'filePath' must be an absolute path.");

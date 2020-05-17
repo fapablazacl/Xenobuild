@@ -7,7 +7,7 @@
 #include <string>
 #include <memory>
 
-namespace borc {
+namespace bok {
     class Package;
     class Module;
 

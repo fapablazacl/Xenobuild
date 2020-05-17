@@ -7,7 +7,7 @@
 #include <ctime>
 #include <map>
 
-namespace borc {
+namespace bok {
     class BuildCacheTxt : public BuildCache {
     public:
         explicit BuildCacheTxt(const path &outputPath, const path &prefixPath);

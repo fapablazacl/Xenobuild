@@ -1,6 +1,6 @@
 
 #include <borc/toolchain/ModuleChecker.hpp>
 
-namespace borc {
+namespace bok {
     ModuleChecker::~ModuleChecker() {}
 }

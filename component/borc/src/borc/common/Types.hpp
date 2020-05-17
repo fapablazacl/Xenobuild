@@ -3,6 +3,6 @@
 
 #include <boost/filesystem/path.hpp>
 
-namespace borc {
+namespace bok {
     typedef boost::filesystem::path path;
 }

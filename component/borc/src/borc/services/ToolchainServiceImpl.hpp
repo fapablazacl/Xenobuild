@@ -4,7 +4,7 @@
 
 #include "ToolchainService.hpp"
 
-namespace borc {
+namespace bok {
     class FileService;
 
     class ToolchainServiceImpl : public ToolchainService {

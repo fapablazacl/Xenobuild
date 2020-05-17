@@ -7,7 +7,7 @@
 #include <vector>
 #include <boost/filesystem/path.hpp>
 
-namespace borc {
+namespace bok {
     class Toolchain;
     class LoggingService;
     class Module;

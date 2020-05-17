@@ -14,7 +14,7 @@
 #include <borc/toolchain/LinkerImpl.hpp>
 
 
-namespace borc {
+namespace bok {
     // TODO: Grab them from a service
     static std::initializer_list<std::string> cppSourceFiles = {
         "*.cpp", "*.cxx", "*.c++", "*.cc"

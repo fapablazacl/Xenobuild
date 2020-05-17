@@ -7,7 +7,7 @@
 #include <borc/toolchain/Toolchain.hpp>
 #include <borc/model/Module.hpp>
 
-namespace borc {
+namespace bok {
     class Compiler;
     class Linker;
     class Source;

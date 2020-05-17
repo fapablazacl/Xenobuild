@@ -10,11 +10,11 @@
 
 #include "BuildCacheTxt.hpp"
 
-BOOST_HANA_ADAPT_STRUCT(borc::Version, major, minor, revision);
-BOOST_HANA_ADAPT_STRUCT(borc::BuildConfiguration, toolchainId, arch, version, buildTypes, variables, toolchainPath);
-BOOST_HANA_ADAPT_STRUCT(borc::BuildType, type);
+BOOST_HANA_ADAPT_STRUCT(bok::Version, major, minor, revision);
+BOOST_HANA_ADAPT_STRUCT(bok::BuildConfiguration, toolchainId, arch, version, buildTypes, variables, toolchainPath);
+BOOST_HANA_ADAPT_STRUCT(bok::BuildType, type);
 
-namespace borc {
+namespace bok {
     ConfigurationService::ConfigurationService(const boost::filesystem::path &outputPath, const path &prefixPath) {
         this->outputPath = outputPath;
         this->prefixPath = prefixPath;

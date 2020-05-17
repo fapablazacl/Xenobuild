@@ -15,7 +15,7 @@
 #include <borc/services/LoggingService.hpp>
 #include <borc/build/BuildCache.hpp>
 
-namespace borc {
+namespace bok {
     class BuildCacheUpdateCommand : public Command {
     public:
         BuildCacheUpdateCommand(BuildCache *buildCache, const boost::filesystem::path &sourceFilePath) {

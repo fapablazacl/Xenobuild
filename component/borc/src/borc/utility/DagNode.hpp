@@ -4,7 +4,7 @@
 
 #include <vector>
 
-namespace borc {
+namespace bok {
     class Command;
 
     class Dag;

@@ -7,7 +7,7 @@
 #include <memory>
 #include <boost/filesystem/path.hpp>
 
-namespace borc {
+namespace bok {
     enum class PathCommand {
         Create,
         Delete

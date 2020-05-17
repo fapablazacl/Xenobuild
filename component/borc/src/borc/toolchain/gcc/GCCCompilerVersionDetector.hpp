@@ -6,7 +6,7 @@
 #include <borc/model/Version.hpp>
 #include <borc/toolchain/CompilerVersionDetector.hpp>
 
-namespace borc {
+namespace bok {
     class GCCCompilerVersionDetector : public CompilerVersionDetector {
     public:
         virtual ~GCCCompilerVersionDetector();

@@ -2,7 +2,7 @@
 #include <borc/common/BuildConfiguration.hpp>
 #include <tuple>
 
-namespace borc {
+namespace bok {
     bool BuildConfiguration::operator< (const BuildConfiguration &other) const {
         if (toolchainId >= other.toolchainId) {
             return false;

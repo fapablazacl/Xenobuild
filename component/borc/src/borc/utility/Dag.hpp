@@ -6,7 +6,7 @@
 #include <memory>
 #include <boost/optional.hpp>
 
-namespace borc {
+namespace bok {
     class Command;
     class DagNode;
 

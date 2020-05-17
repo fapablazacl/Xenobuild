@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-namespace borc {
+namespace bok {
     LoggingServiceImpl::LoggingServiceImpl(const std::string &name) {
         this->name = name;
     }
