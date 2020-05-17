@@ -218,7 +218,7 @@ namespace bok {
         std::vector<ModuleEntity> moduleEntities;
 
         for (const std::string &modulePartialPath : packageEntity.modulePaths) {
-            const boost::filesystem::path moduleFilePath = packagePath / modulePartialPath / BOK_MODULE_DEFINITION_FILENAME;
+            const boost::filesystem::path moduleFilePath = packagePath / modulePartialPath / BOK_COMPONENT_DEFINITION_FILENAME;
 
             if (! checkValidBorcFile(moduleFilePath)) {
                 throw std::runtime_error("There is no module build file on this folder '" + (packagePath / modulePartialPath).string() + "'");
