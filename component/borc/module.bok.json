@@ -12,7 +12,5 @@
         },
         "src"
     ],
-    "dependencies": [
-        "borc-core"
-    ]
+    "dependencies": []
 }

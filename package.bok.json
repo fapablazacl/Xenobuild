@@ -2,8 +2,7 @@
     "name": "borc",
     "description": "Build system for C++ focused on software modularity",
     "modulePaths": [
-        "modules/borc-core",
-        "modules/borc"
+        "component/borc"
     ],
     "packageSearchPaths": [
         "packages"

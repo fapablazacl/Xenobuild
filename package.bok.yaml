@@ -4,9 +4,7 @@ version: "1.0.0"
 license: "MIT"
 author: "Felipe Apablaza"
 email: "fapablaza@protonmail.com"
-definition_path: 
+module_paths:
   - "component/borc"
-  - "component/core"
-  - "component/core-entity"
-  - "component/core-entity-test"
-  - "component/core-test"
+package_searc_paths:
+  - "./share/borc/packages/"

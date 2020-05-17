@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include "Package.hpp"
-#include "Toolchain.hpp"
+#include <borc/toolchain/Toolchain.hpp>
 #include <borc/common/Types.hpp>
 
 namespace borc {

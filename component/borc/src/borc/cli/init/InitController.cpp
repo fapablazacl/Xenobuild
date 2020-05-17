@@ -23,7 +23,7 @@ namespace borc {
 
         const auto packagePath = options.path / options.packageName;
 
-        if (boost::filesystem::exists(packagePath / BORC_DEFINITION_FILENAME)) {
+        if (boost::filesystem::exists(packagePath / BORC_PACKAGE_DEFINITION_FILENAME)) {
             throw std::runtime_error("A package already exists in the folder '" + packagePath.string() + "'");
         }
 
@@ -47,7 +47,7 @@ namespace borc {
 
         // save package to file
         nlohmann::json packageJson = Encoder<JsonModel, PackageEntity>{packageEntity}.encode();
-        std::ofstream packageFileStream((packagePath / BORC_DEFINITION_FILENAME).string());
+        std::ofstream packageFileStream((packagePath / BORC_PACKAGE_DEFINITION_FILENAME).string());
         packageFileStream << std::setw(4) << packageJson << std::endl;
 
         // create the package structure

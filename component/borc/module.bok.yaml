@@ -1,6 +1,6 @@
 name: "borc"
 description: "Build Orchestration Command Line Interface"
-type: "application/console"
+type: "application/cli"
 languages: 
   - "c++/17"
 sources:
