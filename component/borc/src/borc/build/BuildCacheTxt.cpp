@@ -18,7 +18,7 @@ namespace bok {
 
 
     std::string BuildCacheTxt::getCacheFileName() const {
-        return (outputPath / BORC_BUILD_CACHE_FILENAME).string();
+        return (outputPath / BOK_BUILD_CACHE_FILENAME).string();
     }
 
 

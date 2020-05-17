@@ -121,7 +121,7 @@ namespace bok {
         // construct the package with the current toolchain, in order grab dependency information
         const FileServiceImpl fileService;
         auto packageService = std::make_unique<PackageServiceImpl>(&fileService);
-        auto packageRegistry = m_impl->createPackageRegistry(packageService.get(), BORC_PACKAGE_SEARCH_PATH);
+        auto packageRegistry = m_impl->createPackageRegistry(packageService.get(), BOK_PACKAGE_SEARCH_PATH);
         auto package = packageService->createPackage(basePackagePath, packageRegistry.get());
 
         // validate required variables for dependencies againts supplied ones

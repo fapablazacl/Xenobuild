@@ -1,6 +1,6 @@
 
-#ifndef __BORC_ENTITY_PACKAGE_HPP__
-#define __BORC_ENTITY_PACKAGE_HPP__
+#ifndef __BOK_ENTITY_PACKAGE_HPP__
+#define __BOK_ENTITY_PACKAGE_HPP__
 
 #include <string>
 #include <vector>

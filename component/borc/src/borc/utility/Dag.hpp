@@ -1,6 +1,6 @@
 
-#ifndef __BORC_UTILITY_DAG_HPP__
-#define __BORC_UTILITY_DAG_HPP__
+#ifndef __BOK_UTILITY_DAG_HPP__
+#define __BOK_UTILITY_DAG_HPP__
 
 #include <vector>
 #include <memory>

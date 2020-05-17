@@ -1,6 +1,6 @@
 
-#ifndef __BORC_BUILD_BUILDCACHEIMPL_HPP__
-#define __BORC_BUILD_BUILDCACHEIMPL_HPP__
+#ifndef __BOK_BUILD_BUILDCACHEIMPL_HPP__
+#define __BOK_BUILD_BUILDCACHEIMPL_HPP__
 
 #include "BuildCache.hpp"
 

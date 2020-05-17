@@ -1,6 +1,6 @@
 
-#ifndef __BORC_TOOLCHAIN_MODULECHECKER_HPP__
-#define __BORC_TOOLCHAIN_MODULECHECKER_HPP__
+#ifndef __BOK_TOOLCHAIN_MODULECHECKER_HPP__
+#define __BOK_TOOLCHAIN_MODULECHECKER_HPP__
 
 namespace bok {
     class Module;

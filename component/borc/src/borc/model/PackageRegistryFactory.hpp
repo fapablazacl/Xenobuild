@@ -1,6 +1,6 @@
 
-#ifndef __BORC_MODEL_PACKAGEREGISTRYFACTORY_HPP__
-#define __BORC_MODEL_PACKAGEREGISTRYFACTORY_HPP__
+#ifndef __BOK_MODEL_PACKAGEREGISTRYFACTORY_HPP__
+#define __BOK_MODEL_PACKAGEREGISTRYFACTORY_HPP__
 
 #include <memory>
 #include <boost/filesystem/path.hpp>

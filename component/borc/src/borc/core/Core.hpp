@@ -1,6 +1,6 @@
 
-#ifndef __BORC_CORE_CORE_HPP__
-#define __BORC_CORE_CORE_HPP__
+#ifndef __BOK_CORE_CORE_HPP__
+#define __BOK_CORE_CORE_HPP__
 
 #include <memory>
 #include <boost/filesystem/path.hpp>

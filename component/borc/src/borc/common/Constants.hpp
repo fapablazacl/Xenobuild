@@ -1,13 +1,13 @@
 
-#ifndef __BORK_COMMON_CONSTANTS_HPP__
-#define __BORK_COMMON_CONSTANTS_HPP__
+#ifndef __BOK__COMMON_CONSTANTS_HPP__
+#define __BOK__COMMON_CONSTANTS_HPP__
 
 namespace bok {
-    extern const char* BORC_PACKAGE_DEFINITION_FILENAME;
-    extern const char* BORC_MODULE_DEFINITION_FILENAME;
-    extern const char* BORC_PACKAGE_SEARCH_PATH;
-    extern const char* BORC_TOOLCHAIN_PATH_PREFIX;
-    extern const char* BORC_BUILD_CACHE_FILENAME;
+    extern const char* BOK_PACKAGE_DEFINITION_FILENAME;
+    extern const char* BOK_MODULE_DEFINITION_FILENAME;
+    extern const char* BOK_PACKAGE_SEARCH_PATH;
+    extern const char* BOK_TOOLCHAIN_PATH_PREFIX;
+    extern const char* BOK_BUILD_CACHE_FILENAME;
 }
 
 #endif

@@ -1,6 +1,6 @@
 
-#ifndef __BORC_MODEL_MODULE_HPP__
-#define __BORC_MODEL_MODULE_HPP__
+#ifndef __BOK_MODEL_MODULE_HPP__
+#define __BOK_MODEL_MODULE_HPP__
 
 #include <map>
 #include <string>

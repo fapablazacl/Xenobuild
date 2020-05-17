@@ -1,6 +1,6 @@
 
-#ifndef __BORC_CLI_CONTROLLER_HPP__
-#define __BORC_CLI_CONTROLLER_HPP__
+#ifndef __BOK_CLI_CONTROLLER_HPP__
+#define __BOK_CLI_CONTROLLER_HPP__
 
 namespace bok {
     class Controller {

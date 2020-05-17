@@ -1,6 +1,6 @@
 
-#ifndef __BORC_MODEL_COMMAND_COMMAND_HPP__
-#define __BORC_MODEL_COMMAND_COMMAND_HPP__
+#ifndef __BOK_MODEL_COMMAND_COMMAND_HPP__
+#define __BOK_MODEL_COMMAND_COMMAND_HPP__
 
 #include <string>
 

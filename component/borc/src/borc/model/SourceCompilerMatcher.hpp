@@ -1,6 +1,6 @@
 
-#ifndef __BORC_MODEL_SOURCEBUILDRULE_HPP__
-#define __BORC_MODEL_SOURCEBUILDRULE_HPP__
+#ifndef __BOK_MODEL_SOURCEBUILDRULE_HPP__
+#define __BOK_MODEL_SOURCEBUILDRULE_HPP__
 
 #include <set>
 #include <boost/filesystem/path.hpp>

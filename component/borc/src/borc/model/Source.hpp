@@ -1,6 +1,6 @@
 
-#ifndef __BORC_MODEL_SOURCE_HPP__
-#define __BORC_MODEL_SOURCE_HPP__
+#ifndef __BOK_MODEL_SOURCE_HPP__
+#define __BOK_MODEL_SOURCE_HPP__
 
 #include <string>
 #include <vector>

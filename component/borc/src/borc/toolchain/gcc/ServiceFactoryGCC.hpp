@@ -1,6 +1,6 @@
 
-#ifndef __BORC_CORE_SERVICEFACTORYGCC_HPP__
-#define __BORC_CORE_SERVICEFACTORYGCC_HPP__
+#ifndef __BOK_CORE_SERVICEFACTORYGCC_HPP__
+#define __BOK_CORE_SERVICEFACTORYGCC_HPP__
 
 #include <borc/toolchain/ServiceFactoryStub.hpp>
 

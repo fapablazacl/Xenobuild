@@ -1,6 +1,6 @@
 
-#ifndef __BORC_SERVICES_BUILDSERVICE_HPP__
-#define __BORC_SERVICES_BUILDSERVICE_HPP__
+#ifndef __BOK_SERVICES_BUILDSERVICE_HPP__
+#define __BOK_SERVICES_BUILDSERVICE_HPP__
 
 #include <string>
 #include <memory>

@@ -1,7 +1,7 @@
 
 
-#ifndef __BORC_TOOLCHAIN_COMPILEOPTIONS_HPP__
-#define __BORC_TOOLCHAIN_COMPILEOPTIONS_HPP__
+#ifndef __BOK_TOOLCHAIN_COMPILEOPTIONS_HPP__
+#define __BOK_TOOLCHAIN_COMPILEOPTIONS_HPP__
 
 #include <vector>
 #include <string>

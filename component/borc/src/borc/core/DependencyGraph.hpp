@@ -1,6 +1,6 @@
 
-#ifndef __BORC_CORE_DEPENDENCYGRAPH_HPP__
-#define __BORC_CORE_DEPENDENCYGRAPH_HPP__
+#ifndef __BOK_CORE_DEPENDENCYGRAPH_HPP__
+#define __BOK_CORE_DEPENDENCYGRAPH_HPP__
 
 #include <map>
 #include <vector>

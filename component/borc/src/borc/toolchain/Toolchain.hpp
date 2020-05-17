@@ -1,6 +1,6 @@
 
-#ifndef __BORC_CORE_TOOLCHAIN_HPP__
-#define __BORC_CORE_TOOLCHAIN_HPP__
+#ifndef __BOK_CORE_TOOLCHAIN_HPP__
+#define __BOK_CORE_TOOLCHAIN_HPP__
 
 namespace bok {
     class Compiler;

@@ -20,7 +20,7 @@ namespace bok {
         const std::vector<std::string> toolchainIds = this->detectAvailableToolchainIds();
 
         for (const std::string &toolchainId : toolchainIds) {
-            const auto definitionFullPath = BORC_TOOLCHAIN_PATH_PREFIX / definitionPath / toolchainId;
+            const auto definitionFullPath = BOK_TOOLCHAIN_PATH_PREFIX / definitionPath / toolchainId;
 
             // TODO: Each toolchain should have a different installation path
             toolchainMap.insert({toolchainId, toolchainService.createToolchain(definitionFullPath, installationPath)});

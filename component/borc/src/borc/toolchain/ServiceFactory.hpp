@@ -1,6 +1,6 @@
 
-#ifndef __BORC_CORE_SERVICEFACTORY_HPP__
-#define __BORC_CORE_SERVICEFACTORY_HPP__
+#ifndef __BOK_CORE_SERVICEFACTORY_HPP__
+#define __BOK_CORE_SERVICEFACTORY_HPP__
 
 #include <vector>
 #include <memory>

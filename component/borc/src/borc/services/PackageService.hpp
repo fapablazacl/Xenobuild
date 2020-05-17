@@ -1,6 +1,6 @@
 
-#ifndef __BORC_SERVICES_PACKAGESERVICE_HPP__
-#define __BORC_SERVICES_PACKAGESERVICE_HPP__
+#ifndef __BOK_SERVICES_PACKAGESERVICE_HPP__
+#define __BOK_SERVICES_PACKAGESERVICE_HPP__
 
 #include <memory>
 #include <boost/filesystem/path.hpp>

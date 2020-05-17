@@ -1,6 +1,6 @@
 
-#ifndef __BORC_BUILD_BUILDCACHE_HPP__
-#define __BORC_BUILD_BUILDCACHE_HPP__
+#ifndef __BOK_BUILD_BUILDCACHE_HPP__
+#define __BOK_BUILD_BUILDCACHE_HPP__
 
 #include <vector>
 #include <set>

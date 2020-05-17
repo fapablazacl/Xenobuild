@@ -1,6 +1,6 @@
 
-#ifndef __BORC_TOOLCHAIN_LINKERIMPL_HPP__
-#define __BORC_TOOLCHAIN_LINKERIMPL_HPP__
+#ifndef __BOK_TOOLCHAIN_LINKERIMPL_HPP__
+#define __BOK_TOOLCHAIN_LINKERIMPL_HPP__
 
 #include "Linker.hpp"
 

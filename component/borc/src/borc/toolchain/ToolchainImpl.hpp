@@ -1,6 +1,6 @@
 
-#ifndef __BORC_CORE_TOOLCHAINIMPL_HPP__
-#define __BORC_CORE_TOOLCHAINIMPL_HPP__
+#ifndef __BOK_CORE_TOOLCHAINIMPL_HPP__
+#define __BOK_CORE_TOOLCHAINIMPL_HPP__
 
 #include <set>
 #include <boost/filesystem.hpp>

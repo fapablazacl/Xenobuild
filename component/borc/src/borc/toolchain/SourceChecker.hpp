@@ -1,6 +1,6 @@
 
-#ifndef __BORC_TOOLCHAIN_SOURCECHECKER_HPP__
-#define __BORC_TOOLCHAIN_SOURCECHECKER_HPP__
+#ifndef __BOK_TOOLCHAIN_SOURCECHECKER_HPP__
+#define __BOK_TOOLCHAIN_SOURCECHECKER_HPP__
 
 #include <string>
 #include <set>

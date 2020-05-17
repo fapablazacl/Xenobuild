@@ -201,7 +201,7 @@ namespace bok {
 
 
     PackageEntity PackageServiceImpl::loadPackageEntity(const boost::filesystem::path &packagePath) const {
-        const auto packageFilePath = packagePath / BORC_PACKAGE_DEFINITION_FILENAME;
+        const auto packageFilePath = packagePath / BOK_PACKAGE_DEFINITION_FILENAME;
 
         if (! checkValidBorcFile(packageFilePath)) {
             throw std::runtime_error("There is no package build file on the folder '" + packageFilePath.string() + "'");
@@ -218,7 +218,7 @@ namespace bok {
         std::vector<ModuleEntity> moduleEntities;
 
         for (const std::string &modulePartialPath : packageEntity.modulePaths) {
-            const boost::filesystem::path moduleFilePath = packagePath / modulePartialPath / BORC_MODULE_DEFINITION_FILENAME;
+            const boost::filesystem::path moduleFilePath = packagePath / modulePartialPath / BOK_MODULE_DEFINITION_FILENAME;
 
             if (! checkValidBorcFile(moduleFilePath)) {
                 throw std::runtime_error("There is no module build file on this folder '" + (packagePath / modulePartialPath).string() + "'");

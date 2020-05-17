@@ -1,6 +1,6 @@
 
-#ifndef __BORC_UTILITY_DAGNODE_HPP__
-#define __BORC_UTILITY_DAGNODE_HPP__
+#ifndef __BOK_UTILITY_DAGNODE_HPP__
+#define __BOK_UTILITY_DAGNODE_HPP__
 
 #include <vector>
 

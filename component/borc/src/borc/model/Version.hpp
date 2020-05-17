@@ -1,6 +1,6 @@
 
-#ifndef __BORC_MODEL_VERSION_HPP__
-#define __BORC_MODEL_VERSION_HPP__
+#ifndef __BOK_MODEL_VERSION_HPP__
+#define __BOK_MODEL_VERSION_HPP__
 
 #include <string>
 #include <ostream>

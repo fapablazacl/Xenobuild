@@ -1,19 +1,19 @@
 
-#ifndef __BORC_PREDEF_H__
-#define __BORC_PREDEF_H__
+#ifndef __BOK_PREDEF_H__
+#define __BOK_PREDEF_H__
 
-#if defined(BORC_DYNAMIC)
-#define BORC_API_EXPORT __declspec(dllexport)
-#define BORC_API_IMPORT __declspec(dllimport)
+#if defined(BOK_DYNAMIC)
+#define BOK_API_EXPORT __declspec(dllexport)
+#define BOK_API_IMPORT __declspec(dllimport)
 #else 
-#define BORC_API_EXPORT
-#define BORC_API_IMPORT
+#define BOK_API_EXPORT
+#define BOK_API_IMPORT
 #endif
 
-#if defined(BORC_BUILD)
-#define BORC_API BORC_API_EXPORT
+#if defined(BOK_BUILD)
+#define BOK_API BOK_API_EXPORT
 #else
-#define BORC_API BORC_API_IMPORT
+#define BOK_API BOK_API_IMPORT
 #endif
 
 #endif

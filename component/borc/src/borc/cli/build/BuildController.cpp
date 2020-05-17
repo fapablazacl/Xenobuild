@@ -49,7 +49,7 @@ namespace bok {
 
         auto packageService = std::make_unique<PackageServiceImpl>(&fileService);
         auto packageRegistryFactory = std::make_unique<PackageRegistryFactory>();
-        auto packageRegistry = packageRegistryFactory->createPackageRegistry(packageService.get(), BORC_PACKAGE_SEARCH_PATH);
+        auto packageRegistry = packageRegistryFactory->createPackageRegistry(packageService.get(), BOK_PACKAGE_SEARCH_PATH);
         auto package = packageService->createPackage(baseFolderPath, packageRegistry.get());
 
         LoggingServiceImpl loggingService {"BuildServiceImpl"};

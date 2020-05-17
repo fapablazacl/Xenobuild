@@ -1,6 +1,6 @@
 
-#ifndef __BORC_CLI_INITCONTROLLER_HPP__
-#define __BORC_CLI_INITCONTROLLER_HPP__
+#ifndef __BOK_CLI_INITCONTROLLER_HPP__
+#define __BOK_CLI_INITCONTROLLER_HPP__
 
 #include <borc/cli/ControllerStub.hpp>
 #include "InitControllerOptions.hpp"

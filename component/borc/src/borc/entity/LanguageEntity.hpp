@@ -1,6 +1,6 @@
 
-#ifndef __BORC_ENTITY_LANGUAGEENTITY_HPP__
-#define __BORC_ENTITY_LANGUAGEENTITY_HPP__
+#ifndef __BOK_ENTITY_LANGUAGEENTITY_HPP__
+#define __BOK_ENTITY_LANGUAGEENTITY_HPP__
 
 #include <string>
 #include <vector>

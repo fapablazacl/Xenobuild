@@ -1,6 +1,6 @@
 
-#ifndef __BORC_SERVICES_TOOLCHAINSERVICE_HPP__
-#define __BORC_SERVICES_TOOLCHAINSERVICE_HPP__
+#ifndef __BOK_SERVICES_TOOLCHAINSERVICE_HPP__
+#define __BOK_SERVICES_TOOLCHAINSERVICE_HPP__
 
 #include <memory>
 #include <boost/optional/optional_fwd.hpp>
