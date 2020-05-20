@@ -1,6 +1,6 @@
 
 {
-    "name": "borc",
+    "name": "bok",
     "description": "Build orchrestation system based on modularity and reusability",
     "version": "1.0.0",
     "type": "application/cli",

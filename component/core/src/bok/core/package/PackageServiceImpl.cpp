@@ -6,17 +6,17 @@
 #include <boost/range/algorithm/transform.hpp>
 #include <boost/filesystem.hpp>
 
-#include <borc/common/Constants.hpp>
-#include <borc/model/Package.hpp>
-#include <borc/model/PackageRegistry.hpp>
-#include <borc/model/Module.hpp>
-#include <borc/model/Package.hpp>
-#include <borc/entity/PackageEntity.hpp>
-#include <borc/entity/LanguageEntity.hpp>
-#include <borc/entity/ComponentEntity.hpp>
-#include <borc/entity/JsonModel.hpp>
-#include <borc/entity/Decoder.hpp>
-#include <borc/services/FileServiceImpl.hpp>
+#include <bok/common/Constants.hpp>
+#include <bok/model/Package.hpp>
+#include <bok/model/PackageRegistry.hpp>
+#include <bok/model/Module.hpp>
+#include <bok/model/Package.hpp>
+#include <bok/entity/PackageEntity.hpp>
+#include <bok/entity/LanguageEntity.hpp>
+#include <bok/entity/ComponentEntity.hpp>
+#include <bok/entity/JsonModel.hpp>
+#include <bok/entity/Decoder.hpp>
+#include <bok/services/FileServiceImpl.hpp>
 
 namespace bok {
     PackageServiceImpl::PackageServiceImpl(const FileService *fileService) {

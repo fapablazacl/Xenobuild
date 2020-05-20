@@ -1,12 +1,12 @@
 
 #include "ServiceFactoryVC.hpp"
 
-#include <borc/model/Command.hpp>
-#include <borc/toolchain/SourceChecker.hpp>
+#include <bok/model/Command.hpp>
+#include <bok/toolchain/SourceChecker.hpp>
 
-#include <borc/toolchain/ModuleTypeChecker.hpp>
-#include <borc/toolchain/CompilerImpl.hpp>
-#include <borc/toolchain/ModuleLinker.hpp>
+#include <bok/toolchain/ModuleTypeChecker.hpp>
+#include <bok/toolchain/CompilerImpl.hpp>
+#include <bok/toolchain/ModuleLinker.hpp>
 
 namespace bok {
     ServiceFactoryVC::ServiceFactoryVC(const std::string &installationPath, const std::string &windowsKitPath) {

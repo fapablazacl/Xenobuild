@@ -3,7 +3,7 @@
 #define __BOK_CLI_CONFIGURECONTROLLER_HPP__
 
 #include <set>
-#include <borc/cli/ControllerStub.hpp>
+#include <bok/cli/ControllerStub.hpp>
 #include "ConfigureControllerOptions.hpp"
 
 namespace bok {

@@ -3,8 +3,8 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
-#include <borc/model/Package.hpp>
-#include <borc/model/Source.hpp>
+#include <bok/model/Package.hpp>
+#include <bok/model/Source.hpp>
 
 namespace bok {
     Module::Module(Package *package) {

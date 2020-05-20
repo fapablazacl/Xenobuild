@@ -2,7 +2,7 @@
 #ifndef __BOK_CORE_SERVICEFACTORYVC_HPP__
 #define __BOK_CORE_SERVICEFACTORYVC_HPP__
 
-#include <borc/toolchain/ServiceFactoryStub.hpp>
+#include <bok/toolchain/ServiceFactoryStub.hpp>
 
 namespace bok {
     class ServiceFactoryVC : public ServiceFactoryStub {

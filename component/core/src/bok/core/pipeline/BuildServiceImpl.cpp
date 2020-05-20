@@ -1,19 +1,19 @@
 
-#include <borc/services/BuildServiceImpl.hpp>
+#include <bok/services/BuildServiceImpl.hpp>
 
 #include <iostream>
-#include <borc/utility/Dag.hpp>
-#include <borc/utility/DagNode.hpp>
-#include <borc/model/Package.hpp>
-#include <borc/model/Module.hpp>
-#include <borc/model/Source.hpp>
-#include <borc/model/Command.hpp>
-#include <borc/toolchain/Toolchain.hpp>
-#include <borc/toolchain/Compiler.hpp>
-#include <borc/toolchain/CompileOptions.hpp>
-#include <borc/toolchain/Linker.hpp>
-#include <borc/services/LoggingService.hpp>
-#include <borc/build/BuildCache.hpp>
+#include <bok/utility/Dag.hpp>
+#include <bok/utility/DagNode.hpp>
+#include <bok/model/Package.hpp>
+#include <bok/model/Module.hpp>
+#include <bok/model/Source.hpp>
+#include <bok/model/Command.hpp>
+#include <bok/toolchain/Toolchain.hpp>
+#include <bok/toolchain/Compiler.hpp>
+#include <bok/toolchain/CompileOptions.hpp>
+#include <bok/toolchain/Linker.hpp>
+#include <bok/services/LoggingService.hpp>
+#include <bok/build/BuildCache.hpp>
 
 namespace bok {
     class BuildCacheUpdateCommand : public Command {

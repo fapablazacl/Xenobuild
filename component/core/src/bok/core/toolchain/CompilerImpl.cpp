@@ -3,14 +3,14 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/process.hpp>
-#include <borc/model/Source.hpp>
-#include <borc/model/Module.hpp>
-#include <borc/model/Package.hpp>
-#include <borc/model/Command.hpp>
-#include <borc/model/CommandFactory.hpp>
-#include <borc/toolchain/CompileOptions.hpp>
-#include <borc/utility/Dag.hpp>
-#include <borc/utility/DagNode.hpp>
+#include <bok/model/Source.hpp>
+#include <bok/model/Module.hpp>
+#include <bok/model/Package.hpp>
+#include <bok/model/Command.hpp>
+#include <bok/model/CommandFactory.hpp>
+#include <bok/toolchain/CompileOptions.hpp>
+#include <bok/utility/Dag.hpp>
+#include <bok/utility/DagNode.hpp>
 
 
 namespace bok {

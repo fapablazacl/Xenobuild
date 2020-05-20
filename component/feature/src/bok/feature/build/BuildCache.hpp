@@ -7,12 +7,12 @@
 #include <map>
 #include <boost/optional.hpp>
 
-#include <borc/common/Types.hpp>
-#include <borc/common/BuildConfiguration.hpp>
+#include <bok/core/common/Types.hpp>
+#include <bok/core/pipeline/BuildConfiguration.hpp>
 
 namespace bok {
     /**
-     * @brief Provides storage to all the build cache metadata for the current borc package.
+     * @brief Provides storage to all the build cache metadata for the current bok package.
      * 
      * This metadata is used later for configuring builds
      */

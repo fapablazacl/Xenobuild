@@ -1,6 +1,6 @@
 
-#include <borc/utility/DagNode.hpp>
-#include <borc/utility/Dag.hpp>
+#include <bok/utility/DagNode.hpp>
+#include <bok/utility/Dag.hpp>
 
 namespace bok {
     DagNode::DagNode(Dag *dag, Command *command) {

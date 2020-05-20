@@ -3,9 +3,9 @@
 
 #include <stdexcept>
 
-#include <borc/common/Constants.hpp>
-#include <borc/services/FileServiceImpl.hpp>
-#include <borc/services/ToolchainServiceImpl.hpp>
+#include <bok/common/Constants.hpp>
+#include <bok/services/FileServiceImpl.hpp>
+#include <bok/services/ToolchainServiceImpl.hpp>
 
 #include "ToolchainImpl.hpp"
 
@@ -16,7 +16,7 @@ namespace bok {
         FileServiceImpl fileService;
         ToolchainServiceImpl toolchainService(&fileService);
 
-        // TODO: Add auto discovery via reading the borc.json
+        // TODO: Add auto discovery via reading the bok.json
         const std::vector<std::string> toolchainIds = this->detectAvailableToolchainIds();
 
         for (const std::string &toolchainId : toolchainIds) {

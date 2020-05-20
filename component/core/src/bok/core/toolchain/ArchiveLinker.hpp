@@ -2,7 +2,7 @@
 #ifndef __BOK_TOOLCHAIN_ARCHIVELINKER_HPP__
 #define __BOK_TOOLCHAIN_ARCHIVELINKER_HPP__
 
-#include <borc/toolchain/Linker.hpp>
+#include <bok/toolchain/Linker.hpp>
 
 namespace bok {
     class CommandFactory;

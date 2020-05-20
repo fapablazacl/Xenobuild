@@ -2,9 +2,9 @@
 #ifndef __BOK_TOOLCHAIN_MODULETYPECHECKER_HPP__
 #define __BOK_TOOLCHAIN_MODULETYPECHECKER_HPP__
 
-#include <borc/toolchain/ModuleChecker.hpp>
+#include <bok/toolchain/ModuleChecker.hpp>
 
-#include <borc/model/Module.hpp>
+#include <bok/model/Module.hpp>
 #include <set>
 #include <initializer_list>
 

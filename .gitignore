@@ -1,8 +1,11 @@
 .cmake/*
 .vscode/*
+.bok/*
 .borc/*
 src/*
-docs/borc.vpp.*
+docs/bok.vpp.*
 output.dot
 docs/*.jpg
 docs/*.lck
+docs/*.vpp.b*
+

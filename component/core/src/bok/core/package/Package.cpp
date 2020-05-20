@@ -1,6 +1,6 @@
 
-#include <borc/model/Package.hpp>
-#include <borc/model/Module.hpp>
+#include <bok/model/Package.hpp>
+#include <bok/model/Module.hpp>
 
 namespace bok {
     Package::Package(const std::string &name) {

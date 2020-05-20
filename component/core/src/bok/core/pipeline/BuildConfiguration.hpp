@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 #include <set>
-#include <borc/model/Version.hpp>
+#include <bok/core/common/Version.hpp>
 
 namespace bok {
     /**

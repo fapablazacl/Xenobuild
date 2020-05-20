@@ -4,13 +4,14 @@
 #include <iomanip>
 
 #include <boost/filesystem.hpp>
-#include <borc/common/Constants.hpp>
-#include <borc/model/Version.hpp>
-#include <borc/entity/PackageEntity.hpp>
-#include <borc/entity/ComponentEntity.hpp>
-#include <borc/entity/JsonModel.hpp>
-#include <borc/entity/Encoder.hpp>
-#include <borc/services/FileServiceImpl.hpp>
+
+#include <bok/common/Constants.hpp>
+#include <bok/model/Version.hpp>
+#include <bok/entity/PackageEntity.hpp>
+#include <bok/entity/ComponentEntity.hpp>
+#include <bok/entity/JsonModel.hpp>
+#include <bok/entity/Encoder.hpp>
+#include <bok/services/FileServiceImpl.hpp>
 
 namespace bok {
     InitController::~InitController() {}
@@ -59,7 +60,7 @@ namespace bok {
 
             // save module to file
             nlohmann::json moduleJson = Encoder<JsonModel, ComponentEntity>{componentEntity}.encode();
-            std::ofstream moduleFileStream((modulePath / "module.borc.json").string());
+            std::ofstream moduleFileStream((modulePath / "module.bok.json").string());
             moduleFileStream << std::setw(4) << moduleJson << std::endl;
 
             for (const auto sourcePath : componentEntity.sources) {

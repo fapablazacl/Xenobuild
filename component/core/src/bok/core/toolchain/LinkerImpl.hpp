@@ -5,7 +5,7 @@
 #include "Linker.hpp"
 
 #include <boost/optional/optional_fwd.hpp>
-#include <borc/model/Module.hpp>
+#include <bok/model/Module.hpp>
 
 namespace bok {
 	class CommandFactory;

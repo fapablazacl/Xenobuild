@@ -1,10 +1,10 @@
 
 #include "ServiceFactoryStub.hpp"
 
-#include <borc/toolchain/Compiler.hpp>
-#include <borc/toolchain/Linker.hpp>
-#include <borc/toolchain/SourceChecker.hpp>
-#include <borc/toolchain/ModuleChecker.hpp>
+#include <bok/toolchain/Compiler.hpp>
+#include <bok/toolchain/Linker.hpp>
+#include <bok/toolchain/SourceChecker.hpp>
+#include <bok/toolchain/ModuleChecker.hpp>
 
 namespace bok {
     ServiceFactoryStub::~ServiceFactoryStub() {}

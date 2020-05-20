@@ -3,8 +3,8 @@
 #define __BOK_TOOLCHAIN_GCCCOMPILERVERSIONDETECTOR_HPP__
 
 #include <vector>
-#include <borc/model/Version.hpp>
-#include <borc/toolchain/CompilerVersionDetector.hpp>
+#include <bok/model/Version.hpp>
+#include <bok/toolchain/CompilerVersionDetector.hpp>
 
 namespace bok {
     class GCCCompilerVersionDetector : public CompilerVersionDetector {

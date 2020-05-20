@@ -7,23 +7,25 @@
 #include <boost/filesystem.hpp>
 #include <boost/graph/graphviz.hpp>
 
-#include <borc/common/Constants.hpp>
-#include <borc/model/Module.hpp>
-#include <borc/model/Package.hpp>
-#include <borc/model/PackageRegistry.hpp>
-#include <borc/model/PackageRegistryFactory.hpp>
-#include <borc/services/FileServiceImpl.hpp>
-#include <borc/services/BuildServiceImpl.hpp>
-#include <borc/services/PackageServiceImpl.hpp>
-#include <borc/services/LoggingServiceImpl.hpp>
-#include <borc/toolchain/ToolchainFactoryFS.hpp>
-#include <borc/toolchain/Toolchain.hpp>
+#include <bok/core/common/Constants.hpp>
+#include <bok/core/common/FileServiceImpl.hpp>
+#include <bok/core/pipeline/BuildServiceImpl.hpp>
+#include <bok/core/package/PackageServiceImpl.hpp>
+#include <bok/core/package/Module.hpp>
+#include <bok/core/package/Package.hpp>
+#include <bok/core/package/PackageRegistry.hpp>
+#include <bok/core/package/PackageRegistryFactory.hpp>
+#include <bok/core/common/LoggingServiceImpl.hpp>
+#include <bok/core/toolchain/ToolchainFactoryFS.hpp>
+#include <bok/core/toolchain/Toolchain.hpp>
 
-#include <borc/build/BuildCache.hpp>
-#include <borc/build/ConfigurationService.hpp>
-#include <borc/utility/DagNode.hpp>
-#include <borc/utility/Dag.hpp>
-#include <borc/utility/DagVisitor.hpp>
+#include <bok/feature/build/BuildCache.hpp>
+#include <bok/feature/build/ConfigurationService.hpp>
+
+
+#include <bok/utility/DagNode.hpp>
+#include <bok/utility/Dag.hpp>
+#include <bok/utility/DagVisitor.hpp>
 
 #include "BuildControllerOptions.hpp"
 
@@ -43,7 +45,7 @@ namespace bok {
 
         const boost::filesystem::path outputPath = options.outputPath
             ? options.outputPath.get()
-            : baseFolderPath / ".borc";
+            : baseFolderPath / ".bok";
 
         const FileServiceImpl fileService;
 
@@ -58,7 +60,7 @@ namespace bok {
         ConfigurationData configurationData = configurationService.getData();
 
         if (configurationData.buildConfigurations.size() == 0) {
-            throw std::runtime_error("No configurations detected. Please, run 'borc configure --help' for details");
+            throw std::runtime_error("No configurations detected. Please, run 'bok configure --help' for details");
         }
 
         if (! configurationData.currentBuildConfiguration) {

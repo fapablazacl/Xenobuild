@@ -2,9 +2,9 @@
 #include "ToolchainImpl.hpp"
 
 #include <algorithm>
-#include <borc/model/Source.hpp>
-#include <borc/toolchain/SourceChecker.hpp>
-#include <borc/toolchain/ModuleChecker.hpp>
+#include <bok/model/Source.hpp>
+#include <bok/toolchain/SourceChecker.hpp>
+#include <bok/toolchain/ModuleChecker.hpp>
 
 namespace bok {
     ToolchainImpl::ToolchainImpl(const std::vector<std::pair<SourceChecker*, const Compiler*>> &compilers, const std::vector<std::pair<ModuleChecker*, const Linker*>> &linkers) {

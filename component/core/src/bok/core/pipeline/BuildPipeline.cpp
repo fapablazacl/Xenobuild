@@ -1,8 +1,8 @@
 
-#include <borc/model/BuildPipeline.hpp>
+#include <bok/model/BuildPipeline.hpp>
 
 #include <iostream>
-#include <borc/model/Source.hpp>
+#include <bok/model/Source.hpp>
 
 namespace bok {
     BuildPipeline::BuildPipeline() {

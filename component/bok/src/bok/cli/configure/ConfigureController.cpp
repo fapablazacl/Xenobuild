@@ -5,19 +5,18 @@
 #include <boost/filesystem.hpp>
 #include <boost/range/algorithm/find.hpp>
 
-#include <borc/common/Constants.hpp>
-#include <borc/toolchain/Toolchain.hpp>
-#include <borc/toolchain/ToolchainFactoryFS.hpp>
-#include <borc/build/BuildCache.hpp>
-#include <borc/build/ConfigurationService.hpp>
-#include <borc/model/Version.hpp>
-#include <borc/model/Package.hpp>
-#include <borc/model/PackageRegistry.hpp>
-#include <borc/model/Module.hpp>
-#include <borc/model/PackageRegistryFactory.hpp>
-#include <borc/services/FileServiceImpl.hpp>
-#include <borc/services/PackageServiceImpl.hpp>
+#include <bok/core/common/Constants.hpp>
+#include <bok/core/common/FileServiceImpl.hpp>
+#include <bok/core/toolchain/Toolchain.hpp>
+#include <bok/core/toolchain/ToolchainFactoryFS.hpp>
+#include <bok/core/package/Package.hpp>
+#include <bok/core/package/PackageRegistry.hpp>
+#include <bok/core/package/Module.hpp>
+#include <bok/core/package/PackageRegistryFactory.hpp>
+#include <bok/core/package/PackageServiceImpl.hpp>
 
+#include <bok/feature/build/ConfigurationService.hpp>
+#include <bok/feature/build/BuildCache.hpp>
 
 namespace bok {
     struct ConfigureController::Private {
@@ -72,7 +71,7 @@ namespace bok {
 
         const boost::filesystem::path outputPath = options.outputPath
             ? options.outputPath.get()
-            : basePackagePath / ".borc";
+            : basePackagePath / ".bok";
 
         auto configurationService = ConfigurationService{outputPath, basePackagePath};
         auto configurationData = configurationService.getData();
@@ -80,7 +79,7 @@ namespace bok {
         if (configurationData.buildConfigurations.size() == 0 && !options.toolchain) {
             throw std::runtime_error(
                 "There is no configurations associated. Must select a build type and a toolchain.\n"
-                "See 'borc configure --help' for details."
+                "See 'bok configure --help' for details."
             );
         }
 

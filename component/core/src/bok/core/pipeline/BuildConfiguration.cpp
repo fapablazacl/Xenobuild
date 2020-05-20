@@ -1,5 +1,5 @@
 
-#include <borc/common/BuildConfiguration.hpp>
+#include <bok/common/BuildConfiguration.hpp>
 #include <tuple>
 
 namespace bok {

@@ -4,8 +4,8 @@
 #include <vector>
 #include <algorithm>
 
-#include "borc/cli/Controller.hpp"
-#include "borc/cli/ControllerFactory.hpp"
+#include <bok/cli/Controller.hpp>
+#include <bok/cli/ControllerFactory.hpp>
 
 
 int main(int argc, char **argv) {

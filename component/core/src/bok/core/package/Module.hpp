@@ -8,8 +8,8 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/optional.hpp>
 
-#include <borc/model/Version.hpp>
-#include <borc/model/Language.hpp>
+#include <bok/core/common/Version.hpp>
+#include <bok/core/package/Language.hpp>
 
 namespace bok {
     class Package;

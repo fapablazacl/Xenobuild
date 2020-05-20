@@ -4,11 +4,11 @@
 #include <boost/optional/optional.hpp>
 #include <boost/hana.hpp>
 #include <nlohmann/json.hpp>
-#include <borc/toolchain/ManagedToolchainImpl.hpp>
-#include <borc/services/FileService.hpp>
-#include <borc/entity/ToolchainEntity.hpp>
-#include <borc/entity/JsonModel.hpp>
-#include <borc/entity/Decoder.hpp>
+#include <bok/toolchain/ManagedToolchainImpl.hpp>
+#include <bok/services/FileService.hpp>
+#include <bok/entity/ToolchainEntity.hpp>
+#include <bok/entity/JsonModel.hpp>
+#include <bok/entity/Decoder.hpp>
 
 BOOST_HANA_ADAPT_STRUCT(bok::ToolchainEntity::EnumeratedOption, name, flag);
 BOOST_HANA_ADAPT_STRUCT(bok::ToolchainEntity::Switches, dialects, optimizationLevels, debugInformation, includePath, compile, outputFile, generateBuildDependencies, importLibrary, libraryPath);
@@ -25,7 +25,7 @@ namespace bok {
 
 
     std::unique_ptr<Toolchain> ToolchainServiceImpl::createToolchain(const boost::filesystem::path &definitionFullPath, boost::optional<boost::filesystem::path> installationPath) const {
-        const auto toolchainFilePath = definitionFullPath / "toolchain.borc.json";
+        const auto toolchainFilePath = definitionFullPath / "toolchain.bok.json";
         const auto toolchainJsonContent = fileService->load(toolchainFilePath.string());
         const auto toolchainJson = nlohmann::json::parse(toolchainJsonContent);
 

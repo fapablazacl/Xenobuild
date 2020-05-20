@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 #include "Package.hpp"
-#include <borc/toolchain/Toolchain.hpp>
-#include <borc/common/Types.hpp>
+#include <bok/toolchain/Toolchain.hpp>
+#include <bok/common/Types.hpp>
 
 namespace bok {
     struct Context {

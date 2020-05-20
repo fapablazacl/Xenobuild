@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include <borc/model/Command.hpp>
+#include <bok/model/Command.hpp>
 
 namespace bok {
     class SystemCommand : public Command {

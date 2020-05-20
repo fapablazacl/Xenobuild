@@ -4,8 +4,8 @@
 
 #include <set>
 #include <boost/filesystem.hpp>
-#include <borc/toolchain/Toolchain.hpp>
-#include <borc/model/Module.hpp>
+#include <bok/toolchain/Toolchain.hpp>
+#include <bok/model/Module.hpp>
 
 namespace bok {
     class Compiler;

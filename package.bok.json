@@ -1,8 +1,8 @@
 {
-    "name": "borc",
+    "name": "bok",
     "description": "Build system for C++ focused on software modularity",
     "modulePaths": [
-        "component/borc"
+        "component/bok"
     ],
     "packageSearchPaths": [
         "packages"

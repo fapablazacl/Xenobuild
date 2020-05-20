@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project (borc)
+project (bok)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -16,8 +16,12 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_subdirectory("dependencies/yaml-cpp")
 include_directories("dependencies/yaml-cpp/include")
 
+include_directories("component/core/src")
+include_directories("component/feature/src")
+include_directories("component/utility/src")
+include_directories("component/bok/src")
+
 add_subdirectory("component/bok")
-add_subdirectory("component/cli-shell")
 add_subdirectory("component/core")
 add_subdirectory("component/feature")
 add_subdirectory("component/utility")

@@ -1,10 +1,10 @@
-name: "borc"
+name: "bok"
 description: "Build System for C++ focused on software modularity and scalability"
 version: "1.0.0"
 license: "MIT"
 author: "Felipe Apablaza"
 email: "fapablaza@protonmail.com"
 module_paths:
-  - "component/borc"
+  - "component/bok"
 package_searc_paths:
-  - "./share/borc/packages/"
+  - "./share/bok/packages/"
