@@ -183,6 +183,12 @@ set (src_borc_toolchain
     "src/borc/toolchain/gcc/ServiceFactoryGCC.cpp"
     "src/borc/toolchain/vc/ServiceFactoryVC.hpp"
     "src/borc/toolchain/vc/ServiceFactoryVC.cpp"
+    "src/borc/toolchain/clang/ClangArchiver.hpp"
+    "src/borc/toolchain/clang/ClangArchiver.cpp"
+    "src/borc/toolchain/clang/ClangCompiler.hpp"
+    "src/borc/toolchain/clang/ClangCompiler.cpp"
+    "src/borc/toolchain/clang/ClangLinker.hpp"
+    "src/borc/toolchain/clang/ClangLinker.cpp"
 )
 
 set (src_borc_build

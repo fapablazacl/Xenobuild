@@ -11,6 +11,7 @@
 #include "gcc/ServiceFactoryGCC.hpp"
 
 namespace bok {
+    /*
     class ToolchainGCC : public Toolchain {
     protected:
         class CompilerGCC : public Compiler {
@@ -48,6 +49,7 @@ namespace bok {
 
 
     };
+    */
 
 
     struct ToolchainFactoryHardcoded::Impl {
