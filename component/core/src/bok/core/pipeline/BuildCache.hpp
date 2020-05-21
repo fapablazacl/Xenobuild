@@ -7,7 +7,7 @@
 #include <map>
 #include <boost/optional.hpp>
 
-#include <bok/core/common/Types.hpp>
+#include <bok/core/Types.hpp>
 #include <bok/core/pipeline/BuildConfiguration.hpp>
 
 namespace bok {

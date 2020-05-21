@@ -6,8 +6,8 @@
 #include <boost/range/algorithm/transform.hpp>
 #include <boost/filesystem.hpp>
 
-#include <bok/core/common/Constants.hpp>
-#include <bok/core/common/FileServiceImpl.hpp>
+#include <bok/core/Constants.hpp>
+#include <bok/core/FileServiceImpl.hpp>
 #include <bok/core/package/Package.hpp>
 #include <bok/core/package/PackageRegistry.hpp>
 #include <bok/core/package/Module.hpp>

@@ -1,5 +1,5 @@
 
-#include <bok/core/common/LoggingServiceImpl.hpp>
+#include <bok/core/LoggingServiceImpl.hpp>
 
 #include <iostream>
 

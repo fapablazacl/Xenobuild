@@ -3,8 +3,8 @@
 
 #include <iostream>
 
-#include <bok/core/common/Command.hpp>
-#include <bok/core/common/CommandFactory.hpp>
+#include <bok/core/Command.hpp>
+#include <bok/core/CommandFactory.hpp>
 #include <bok/core/package/Package.hpp>
 #include <bok/core/package/Module.hpp>
 

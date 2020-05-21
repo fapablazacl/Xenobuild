@@ -3,7 +3,7 @@
 #define __BOK_CORE_SERVICEFACTORYSTUB_HPP__
 
 #include <bok/core/toolchain/ServiceFactory.hpp>
-#include <bok/core/common/CommandFactory.hpp>
+#include <bok/core/CommandFactory.hpp>
 
 namespace bok {
     class ServiceFactoryStub : public ServiceFactory {

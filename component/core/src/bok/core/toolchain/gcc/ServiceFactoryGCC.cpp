@@ -1,7 +1,7 @@
 
 #include "ServiceFactoryGCC.hpp"
 
-#include <bok/core/common/Command.hpp>
+#include <bok/core/Command.hpp>
 #include <bok/core/toolchain/SourceChecker.hpp>
 #include <bok/core/toolchain/ModuleTypeChecker.hpp>
 #include <bok/core/toolchain/CompilerImpl.hpp>

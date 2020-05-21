@@ -19,35 +19,35 @@ set (target core)
 
 set (sources 
     ./src/bok/core/Predef.h
-    ./src/bok/core/common/DagNode.hpp
-    ./src/bok/core/common/Dag.hpp
-    ./src/bok/core/common/DagVisitor.hpp
-    ./src/bok/core/common/Dag.cpp
-    ./src/bok/core/common/DagVisitor.cpp
-    ./src/bok/core/common/DagNode.cpp
-    ./src/bok/core/common/Constants.hpp
-    ./src/bok/core/common/LoggingService.hpp
-    ./src/bok/core/common/FileService.cpp
-    ./src/bok/core/common/LoggingServiceImpl.hpp
-    ./src/bok/core/common/FileTypeService.hpp
-    ./src/bok/core/common/LoggingServiceImpl.cpp
-    ./src/bok/core/common/Version.cpp
-    ./src/bok/core/common/CommandFactory.cpp
-    ./src/bok/core/common/FileServiceImpl.hpp
-    ./src/bok/core/common/CommandFactory.hpp
-    ./src/bok/core/common/Command.cpp
-    ./src/bok/core/common/Command.hpp
-    ./src/bok/core/common/Version.hpp
-    ./src/bok/core/common/FileService.hpp
-    ./src/bok/core/common/Constants.cpp
-    ./src/bok/core/common/FileTypeService.cpp
-    ./src/bok/core/common/LoggingService.cpp
-    ./src/bok/core/common/Types.hpp
-    ./src/bok/core/common/FileServiceImpl.cpp
-    ./src/bok/core/common/command/FolderCommand.cpp
-    ./src/bok/core/common/command/FolderCommand.hpp
-    ./src/bok/core/common/command/SystemCommand.cpp
-    ./src/bok/core/common/command/SystemCommand.hpp
+    ./src/bok/core/DagNode.hpp
+    ./src/bok/core/Dag.hpp
+    ./src/bok/core/DagVisitor.hpp
+    ./src/bok/core/Dag.cpp
+    ./src/bok/core/DagVisitor.cpp
+    ./src/bok/core/DagNode.cpp
+    ./src/bok/core/Constants.hpp
+    ./src/bok/core/LoggingService.hpp
+    ./src/bok/core/FileService.cpp
+    ./src/bok/core/LoggingServiceImpl.hpp
+    ./src/bok/core/FileTypeService.hpp
+    ./src/bok/core/LoggingServiceImpl.cpp
+    ./src/bok/core/Version.cpp
+    ./src/bok/core/CommandFactory.cpp
+    ./src/bok/core/FileServiceImpl.hpp
+    ./src/bok/core/CommandFactory.hpp
+    ./src/bok/core/Command.cpp
+    ./src/bok/core/Command.hpp
+    ./src/bok/core/Version.hpp
+    ./src/bok/core/FileService.hpp
+    ./src/bok/core/Constants.cpp
+    ./src/bok/core/FileTypeService.cpp
+    ./src/bok/core/LoggingService.cpp
+    ./src/bok/core/Types.hpp
+    ./src/bok/core/FileServiceImpl.cpp
+    ./src/bok/core/FolderCommand.cpp
+    ./src/bok/core/FolderCommand.hpp
+    ./src/bok/core/SystemCommand.cpp
+    ./src/bok/core/SystemCommand.hpp
     ./src/bok/core/toolchain/ServiceFactoryStub.hpp
     ./src/bok/core/toolchain/ArchiveLinker.hpp
     ./src/bok/core/toolchain/gcc/ServiceFactoryGCC.hpp

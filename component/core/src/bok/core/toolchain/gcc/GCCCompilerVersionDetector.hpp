@@ -3,7 +3,7 @@
 #define __BOK_TOOLCHAIN_GCCCOMPILERVERSIONDETECTOR_HPP__
 
 #include <vector>
-#include <bok/core/common/Version.hpp>
+#include <bok/core/Version.hpp>
 #include <bok/core/toolchain/CompilerVersionDetector.hpp>
 
 namespace bok {

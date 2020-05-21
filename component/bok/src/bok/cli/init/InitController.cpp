@@ -5,9 +5,9 @@
 
 #include <boost/filesystem.hpp>
 
-#include <bok/core/common/Constants.hpp>
-#include <bok/core/common/Version.hpp>
-#include <bok/core/common/FileServiceImpl.hpp>
+#include <bok/core/Constants.hpp>
+#include <bok/core/Version.hpp>
+#include <bok/core/FileServiceImpl.hpp>
 #include <bok/core/io/PackageEntity.hpp>
 #include <bok/core/io/ComponentEntity.hpp>
 #include <bok/core/io/JsonModel.hpp>

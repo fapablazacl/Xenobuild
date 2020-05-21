@@ -7,12 +7,12 @@
 #include <boost/filesystem.hpp>
 #include <boost/graph/graphviz.hpp>
 
-#include <bok/core/common/DagNode.hpp>
-#include <bok/core/common/Dag.hpp>
-#include <bok/core/common/DagVisitor.hpp>
-#include <bok/core/common/Constants.hpp>
-#include <bok/core/common/FileServiceImpl.hpp>
-#include <bok/core/common/LoggingServiceImpl.hpp>
+#include <bok/core/DagNode.hpp>
+#include <bok/core/Dag.hpp>
+#include <bok/core/DagVisitor.hpp>
+#include <bok/core/Constants.hpp>
+#include <bok/core/FileServiceImpl.hpp>
+#include <bok/core/LoggingServiceImpl.hpp>
 #include <bok/core/pipeline/BuildServiceImpl.hpp>
 #include <bok/core/pipeline/BuildCache.hpp>
 #include <bok/core/package/PackageServiceImpl.hpp>

@@ -3,7 +3,7 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/hana.hpp>
-#include <bok/core/common/FileServiceImpl.hpp>
+#include <bok/core/FileServiceImpl.hpp>
 #include <bok/core/io/JsonModel.hpp>
 #include <bok/core/io/Decoder.hpp>
 #include <bok/core/io/Encoder.hpp>

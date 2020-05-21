@@ -1,11 +1,11 @@
 
-#include <bok/core/common/CommandFactory.hpp>
+#include <bok/core/CommandFactory.hpp>
 
 #include <iostream>
 #include <boost/filesystem.hpp>
 
-#include "command/SystemCommand.hpp"
-#include "command/FolderCommand.hpp"
+#include "SystemCommand.hpp"
+#include "FolderCommand.hpp"
 
 namespace bok {
     CommandFactory::~CommandFactory() {}

@@ -1,6 +1,6 @@
 
-#include <bok/core/common/Dag.hpp>
-#include <bok/core/common/DagNode.hpp>
+#include <bok/core/Dag.hpp>
+#include <bok/core/DagNode.hpp>
 
 namespace bok {
     Dag::Dag() {

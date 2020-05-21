@@ -2,10 +2,10 @@
 #include <bok/core/pipeline/BuildServiceImpl.hpp>
 
 #include <iostream>
-#include <bok/core/common/Dag.hpp>
-#include <bok/core/common/DagNode.hpp>
-#include <bok/core/common/Command.hpp>
-#include <bok/core/common/LoggingService.hpp>
+#include <bok/core/Dag.hpp>
+#include <bok/core/DagNode.hpp>
+#include <bok/core/Command.hpp>
+#include <bok/core/LoggingService.hpp>
 #include <bok/core/package/Package.hpp>
 #include <bok/core/package/Module.hpp>
 #include <bok/core/package/Source.hpp>

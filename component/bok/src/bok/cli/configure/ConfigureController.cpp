@@ -5,8 +5,8 @@
 #include <boost/filesystem.hpp>
 #include <boost/range/algorithm/find.hpp>
 
-#include <bok/core/common/Constants.hpp>
-#include <bok/core/common/FileServiceImpl.hpp>
+#include <bok/core/Constants.hpp>
+#include <bok/core/FileServiceImpl.hpp>
 #include <bok/core/toolchain/Toolchain.hpp>
 #include <bok/core/toolchain/ToolchainFactoryFS.hpp>
 #include <bok/core/package/Package.hpp>

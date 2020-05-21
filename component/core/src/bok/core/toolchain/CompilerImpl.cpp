@@ -7,10 +7,10 @@
 #include <bok/core/package/Module.hpp>
 #include <bok/core/package/Package.hpp>
 #include <bok/core/toolchain/CompileOptions.hpp>
-#include <bok/core/common/Command.hpp>
-#include <bok/core/common/CommandFactory.hpp>
-#include <bok/core/common/Dag.hpp>
-#include <bok/core/common/DagNode.hpp>
+#include <bok/core/Command.hpp>
+#include <bok/core/CommandFactory.hpp>
+#include <bok/core/Dag.hpp>
+#include <bok/core/DagNode.hpp>
 
 
 namespace bok {

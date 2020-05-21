@@ -4,8 +4,8 @@
 #include <iostream>
 #include <bok/core/package/Package.hpp>
 #include <bok/core/package/Module.hpp>
-#include <bok/core/common/Command.hpp>
-#include <bok/core/common/CommandFactory.hpp>
+#include <bok/core/Command.hpp>
+#include <bok/core/CommandFactory.hpp>
 
 namespace bok {
     ModuleLinker::ModuleLinker(CommandFactory *commandFactory, const std::string &commandPath, const LinkerSwitches &switches, const LinkerConfiguration &configuration) {

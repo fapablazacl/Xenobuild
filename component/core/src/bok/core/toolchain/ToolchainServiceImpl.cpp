@@ -6,7 +6,7 @@
 
 #include <nlohmann/json.hpp>
 
-#include <bok/core/common/FileService.hpp>
+#include <bok/core/FileService.hpp>
 #include <bok/core/toolchain/ManagedToolchainImpl.hpp>
 #include <bok/core/io/ToolchainEntity.hpp>
 #include <bok/core/io/JsonModel.hpp>

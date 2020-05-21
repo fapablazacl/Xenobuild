@@ -5,8 +5,8 @@
 #include <boost/process.hpp>
 #include <bok/core/package/Module.hpp>
 #include <bok/core/package/Source.hpp>
-#include <bok/core/common/Version.hpp>
-#include <bok/core/common/Command.hpp>
+#include <bok/core/Version.hpp>
+#include <bok/core/Command.hpp>
 #include <bok/core/io/ToolchainEntity.hpp>
 #include <bok/core/toolchain/SourceChecker.hpp>
 #include <bok/core/toolchain/ModuleChecker.hpp>
