@@ -24,9 +24,9 @@ namespace bok {
 
         std::unique_ptr<Dag> createBuildDag(Package *package) override;
 
-        DependencyGraph generate(Component *component) const override;
+        TaskGraph generate(Component *component) const override;
 
-        DependencyGraph generate(Package *package) const override;
+        TaskGraph generate(Package *package) const override;
 
     private:
         struct Private;
