@@ -26,14 +26,16 @@ namespace bok {
     class Dag;
     class Package;
     class Component;
-    class BuildService {
+    class DependencyGraphGenerator {
     public:
-        virtual ~BuildService();
+        virtual ~DependencyGraphGenerator();
 
         [[deprecated]]
         virtual std::unique_ptr<Dag> createBuildDag(Package *package) = 0;
 
-        virtual DependencyGraph computeDependencyGraph(Component *component) const = 0;
+        virtual DependencyGraph generate(Component *component) const = 0;
+
+        virtual DependencyGraph generate(Package *package) const = 0;
     };
 }
 

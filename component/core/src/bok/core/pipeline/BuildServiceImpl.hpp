@@ -16,15 +16,17 @@ namespace bok {
 
     struct CompileOptions;
 
-    class BuildServiceImpl : public BuildService {
+    class BuildServiceImpl : public DependencyGraphGenerator {
     public:
         BuildServiceImpl(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, BuildCache* buildCache, LoggingService *logger);
 
         virtual ~BuildServiceImpl();
 
-        virtual std::unique_ptr<Dag> createBuildDag(Package *package) override;
+        std::unique_ptr<Dag> createBuildDag(Package *package) override;
 
-        virtual DependencyGraph computeDependencyGraph(Component *component) const override;
+        DependencyGraph generate(Component *component) const override;
+
+        DependencyGraph generate(Package *package) const override;
 
     private:
         struct Private;

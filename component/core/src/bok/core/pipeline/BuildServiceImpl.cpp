@@ -1,6 +1,7 @@
 
 #include <bok/core/pipeline/BuildServiceImpl.hpp>
 
+#include <cassert>
 #include <iostream>
 #include <bok/core/Dag.hpp>
 #include <bok/core/DagNode.hpp>
@@ -164,10 +165,8 @@ namespace bok {
     }
 
 
-    DependencyGraph BuildServiceImpl::computeDependencyGraph(Component *component) const {
-        if (!component) {
-            throw std::runtime_error("Supplied component object is a null pointer.");
-        }
+    DependencyGraph BuildServiceImpl::generate(Component *component) const {
+        assert(component);
 
         const Linker *linker = m_impl->toolchain->selectLinker(component);
         if (!linker) {
@@ -213,5 +212,12 @@ namespace bok {
         }
 
         return graph;
+    }
+
+
+    DependencyGraph BuildServiceImpl::generate(Package *package) const {
+        assert(package);
+
+        return {};
     }
 }

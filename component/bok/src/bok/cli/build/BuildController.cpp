@@ -88,7 +88,7 @@ namespace bok {
             throw std::runtime_error("No modules detected for package '" + package->getName() + "'.");
         }
 
-        auto dependencyGraph = buildService.computeDependencyGraph(package->getModules()[0]);
+        auto dependencyGraph = buildService.generate(package->getModules()[0]);
         
         std::fstream fs;
         fs.open("output.dot", std::ios_base::out);
