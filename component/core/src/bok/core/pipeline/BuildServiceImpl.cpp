@@ -57,7 +57,7 @@ namespace bok {
     };
 
 
-    struct BuildServiceImpl::Private {
+    struct BuildTaskGraphGenerator::Private {
         boost::filesystem::path basePath;
         boost::filesystem::path outputPath;
         Toolchain *toolchain = nullptr;
@@ -96,8 +96,8 @@ namespace bok {
     };
 
 
-    BuildServiceImpl::BuildServiceImpl(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, BuildCache* buildCache, LoggingService *logger) 
-            : m_impl(new BuildServiceImpl::Private()) {
+    BuildTaskGraphGenerator::BuildTaskGraphGenerator(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, BuildCache* buildCache, LoggingService *logger) 
+            : m_impl(new BuildTaskGraphGenerator::Private()) {
         m_impl->basePath = basePath;
         m_impl->outputPath = outputPath;
         m_impl->toolchain = toolchain;
@@ -106,12 +106,12 @@ namespace bok {
     }
 
 
-    BuildServiceImpl::~BuildServiceImpl() {
+    BuildTaskGraphGenerator::~BuildTaskGraphGenerator() {
         delete m_impl;
     }
 
 
-    std::unique_ptr<Dag> BuildServiceImpl::createBuildDag(Package *package) {
+    std::unique_ptr<Dag> BuildTaskGraphGenerator::createBuildDag(Package *package) {
         auto dag = std::make_unique<Dag>();
 
         for (Component *component : package->getModules()) {
@@ -165,7 +165,7 @@ namespace bok {
     }
 
 
-    TaskGraph BuildServiceImpl::generate(Component *component) const {
+    TaskGraph BuildTaskGraphGenerator::generate(Component *component) const {
         assert(component);
 
         const Linker *linker = m_impl->toolchain->selectLinker(component);
@@ -215,7 +215,7 @@ namespace bok {
     }
 
 
-    TaskGraph BuildServiceImpl::generate(Package *package) const {
+    TaskGraph BuildTaskGraphGenerator::generate(Package *package) const {
         assert(package);
 
         return {};

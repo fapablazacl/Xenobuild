@@ -51,7 +51,7 @@ namespace bok {
         auto packageRegistry = packageRegistryFactory->createPackageRegistry(packageService.get(), BOK_PACKAGE_SEARCH_PATH);
         auto package = packageService->createPackage(baseFolderPath, packageRegistry.get());
 
-        LoggingServiceImpl loggingService {"BuildServiceImpl"};
+        LoggingServiceImpl loggingService {"BuildTaskGraphGenerator"};
 
         ConfigurationService configurationService {outputPath, baseFolderPath};
         ConfigurationData configurationData = configurationService.getData();
@@ -73,7 +73,7 @@ namespace bok {
 
         auto toolchain = toolchainFactory->createToolchain(configurationData.currentBuildConfiguration.get().toolchainId);
 
-        BuildServiceImpl buildService {
+        BuildTaskGraphGenerator buildService {
             baseFolderPath, 
             outputPath / configurationData.currentBuildConfiguration.get().computeIdentifier(), 
             toolchain, 

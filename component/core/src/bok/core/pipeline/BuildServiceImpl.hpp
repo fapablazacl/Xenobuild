@@ -16,11 +16,11 @@ namespace bok {
 
     struct CompileOptions;
 
-    class BuildServiceImpl : public TaskGraphGenerator {
+    class BuildTaskGraphGenerator : public TaskGraphGenerator {
     public:
-        BuildServiceImpl(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, BuildCache* buildCache, LoggingService *logger);
+        BuildTaskGraphGenerator(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, BuildCache* buildCache, LoggingService *logger);
 
-        virtual ~BuildServiceImpl();
+        virtual ~BuildTaskGraphGenerator();
 
         std::unique_ptr<Dag> createBuildDag(Package *package) override;
 
