@@ -102,8 +102,8 @@ set (sources
     ./src/bok/core/toolchain/ToolchainFactoryHardcoded.hpp
     ./src/bok/core/toolchain/Toolchain.cpp
     ./src/bok/core/toolchain/ManagedToolchainImpl.cpp
-    ./src/bok/core/pipeline/BuildCacheTxt.cpp
-    ./src/bok/core/pipeline/BuildCacheTxt.hpp
+    ./src/bok/core/pipeline/BuildCacheFileSystem.cpp
+    ./src/bok/core/pipeline/BuildCacheFileSystem.hpp
     ./src/bok/core/pipeline/BuildCache.cpp
     ./src/bok/core/pipeline/BuildCache.hpp
     ./src/bok/core/pipeline/BuildServiceImpl.cpp

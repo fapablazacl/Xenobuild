@@ -12,7 +12,7 @@ namespace bok {
             ("help", "produce this message")
             ("path", boost::program_options::value<std::string>(), "Configuration path. Defaults to the current folder")
             ("name", boost::program_options::value<std::string>(), "The package name to be created. By default")
-            ("type", boost::program_options::value<std::string>(), "The default module type to be created. Can be application/cli, application/gui, library/static or library/dynamic")
+            ("type", boost::program_options::value<std::string>(), "The default component type to be created. Can be application/cli, application/gui, library/static or library/dynamic")
         ;
 
         boost::program_options::variables_map vm;

@@ -11,7 +11,7 @@ namespace bok {
     class Compiler;
     class Linker;
     class Source;
-    class Module;
+    class Component;
     class SourceChecker;
     class ModuleChecker;
 
@@ -23,7 +23,7 @@ namespace bok {
 
         virtual const Compiler* selectCompiler(const Source *source) const override;
 
-        virtual const Linker* selectLinker(const Module *module) const override;
+        virtual const Linker* selectLinker(const Component *component) const override;
 
     private:
         std::vector<std::pair<SourceChecker*, const Compiler*>> compilers;

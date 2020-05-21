@@ -35,7 +35,7 @@ namespace bok {
         componentEntity.version = {1, 0, 0};
         componentEntity.sources = {
             ComponentSourceEntity{"src", false},
-            // ComponentSourceEntity{"include", true}, // TODO: Consider multiple package structures per module type
+            // ComponentSourceEntity{"include", true}, // TODO: Consider multiple package structures per component type
         };
 
         std::vector<ComponentEntity> moduleEntities = { componentEntity };
@@ -59,9 +59,9 @@ namespace bok {
 
             boost::filesystem::create_directories(modulePath);
 
-            // save module to file
+            // save component to file
             nlohmann::json moduleJson = Encoder<JsonModel, ComponentEntity>{componentEntity}.encode();
-            std::ofstream moduleFileStream((modulePath / "module.bok.json").string());
+            std::ofstream moduleFileStream((modulePath / "component.bok.json").string());
             moduleFileStream << std::setw(4) << moduleJson << std::endl;
 
             for (const auto sourcePath : componentEntity.sources) {

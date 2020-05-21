@@ -10,14 +10,14 @@
 namespace bok {
     class ModuleTypeChecker : public ModuleChecker {
     public:
-        ModuleTypeChecker(const std::initializer_list<Module::Type> &types);
+        ModuleTypeChecker(const std::initializer_list<Component::Type> &types);
 
         virtual ~ModuleTypeChecker();
 
-        virtual bool check(const Module *module) const override;
+        virtual bool check(const Component *component) const override;
 
     private:
-        std::set<Module::Type> types;
+        std::set<Component::Type> types;
     };
 }
 

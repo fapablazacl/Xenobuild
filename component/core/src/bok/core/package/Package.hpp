@@ -22,7 +22,7 @@ namespace bok {
         }
     };
 
-    class Module;
+    class Component;
     class Package {
     public:
         Package(const std::string &name);
@@ -33,15 +33,15 @@ namespace bok {
             return name;
         }
 
-        std::vector<Module*> getModules() const;
+        std::vector<Component*> getModules() const;
 
         template<typename ModuleImpl>
         ModuleImpl* createModule() {
-            auto module = new ModuleImpl(this);
+            auto component = new ModuleImpl(this);
 
-            modules.emplace_back(module);
+            modules.emplace_back(component);
 
-            return module;
+            return component;
         }
 
         void setVariables(const std::vector<PackageVariable> &variables);
@@ -56,7 +56,7 @@ namespace bok {
 
     private:
         std::string name;
-        std::vector<std::unique_ptr<Module>> modules;
+        std::vector<std::unique_ptr<Component>> modules;
         std::vector<PackageVariable> variables;
     };
 }

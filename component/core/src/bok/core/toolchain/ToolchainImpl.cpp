@@ -24,9 +24,9 @@ namespace bok {
         return nullptr;
     }
     
-    const Linker* ToolchainImpl::selectLinker(const Module *module) const {
+    const Linker* ToolchainImpl::selectLinker(const Component *component) const {
         for (auto &pair : linkers) {
-            if (pair.first->check(module)) {
+            if (pair.first->check(component)) {
                 return pair.second;
             }
         }

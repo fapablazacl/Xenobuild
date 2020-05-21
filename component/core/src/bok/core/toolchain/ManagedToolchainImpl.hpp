@@ -27,7 +27,7 @@ namespace bok {
 
         virtual const Compiler* selectCompiler(const Source *source) const override;
 
-        virtual const Linker* selectLinker(const Module *module) const override;
+        virtual const Linker* selectLinker(const Component *component) const override;
 
         virtual Version detectVersion() const override;
 

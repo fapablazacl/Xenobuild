@@ -9,7 +9,7 @@
 namespace bok {
     class Command;
     class Package;
-    class Module;
+    class Component;
 
     struct LinkOutput {
         boost::filesystem::path outputModuleRelativePath;
@@ -20,11 +20,11 @@ namespace bok {
     public:
         virtual ~Linker();
 
-        virtual bool isModuleLinkable(const Module *module) const {
+        virtual bool isModuleLinkable(const Component *component) const {
             return false;
         }
 
-        virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Module *module, const std::vector<boost::filesystem::path> &objectFiles) const = 0;
+        virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Component *component, const std::vector<boost::filesystem::path> &objectFiles) const = 0;
     };
 }
 

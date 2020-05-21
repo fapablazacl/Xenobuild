@@ -6,7 +6,7 @@ namespace bok {
     class Compiler;
     class Linker;
     class Source;
-    class Module;
+    class Component;
 
     struct Version;
 
@@ -16,7 +16,7 @@ namespace bok {
 
         virtual const Compiler* selectCompiler(const Source *source) const = 0;
 
-        virtual const Linker* selectLinker(const Module *module) const = 0;
+        virtual const Linker* selectLinker(const Component *component) const = 0;
 
         virtual Version detectVersion() const = 0;
     };

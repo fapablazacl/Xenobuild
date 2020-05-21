@@ -14,12 +14,12 @@ namespace bok {
         std::vector<LinkerImpl::BuildRule> buildRules;
 
 	public:
-        boost::optional<LinkerImpl::BuildRule> matchBuildRule(const Module *module) const {
-            auto matchedBuildRule = std::find_if(buildRules.begin(), buildRules.end(), [module] (const LinkerImpl::BuildRule &buildRule) {
+        boost::optional<LinkerImpl::BuildRule> matchBuildRule(const Component *component) const {
+            auto matchedBuildRule = std::find_if(buildRules.begin(), buildRules.end(), [component] (const LinkerImpl::BuildRule &buildRule) {
                 const auto &moduleTypes = buildRule.input.moduleTypes;
 
-                auto foundType = std::find_if(moduleTypes.begin(), moduleTypes.end(), [module] (const Module::Type &type) {
-                    return module->getType() == type;
+                auto foundType = std::find_if(moduleTypes.begin(), moduleTypes.end(), [component] (const Component::Type &type) {
+                    return component->getType() == type;
                 });
 
                 return foundType != moduleTypes.end();
@@ -33,21 +33,21 @@ namespace bok {
         }
 
 
-        Command* buildLinkCommand(const boost::filesystem::path &outputPath, const Package *package, const Module *module, const std::vector<boost::filesystem::path> &objectFiles, const LinkerImpl::BuildRule &buildRule) const {
+        Command* buildLinkCommand(const boost::filesystem::path &outputPath, const Package *package, const Component *component, const std::vector<boost::filesystem::path> &objectFiles, const LinkerImpl::BuildRule &buildRule) const {
             std::vector<std::string> commandOptions;
 
-            // options for module output
-            const boost::filesystem::path moduleName = module->getName();
-            const boost::filesystem::path moduleOutputPath = outputPath / module->getPath() / moduleName;
+            // options for component output
+            const boost::filesystem::path moduleName = component->getName();
+            const boost::filesystem::path moduleOutputPath = outputPath / component->getPath() / moduleName;
 
             commandOptions.push_back(switches.outputFile + moduleOutputPath.string());
 
             // miscelaneous flags
             commandOptions.insert(commandOptions.end(), buildRule.flags.begin(), buildRule.flags.end());
 
-            // options for module dependencies
-            for (const Module *moduleDependency : module->getDependencies()) {
-                const std::vector<std::string> options = this->buildModuleDependencyOptions(outputPath, package, module);
+            // options for component dependencies
+            for (const Component *moduleDependency : component->getDependencies()) {
+                const std::vector<std::string> options = this->buildModuleDependencyOptions(outputPath, package, component);
 
                 commandOptions.insert(commandOptions.end(), options.begin(), options.end());
             }
@@ -66,7 +66,7 @@ namespace bok {
         }
 
 
-        std::vector<std::string> buildModuleDependencyOptions(const boost::filesystem::path &outputPath, const Package *package, const Module *dependency) const {        
+        std::vector<std::string> buildModuleDependencyOptions(const boost::filesystem::path &outputPath, const Package *package, const Component *dependency) const {        
             const std::string library = switches.importLibrary + dependency->getName();
             const std::string libraryPath = switches.libraryPath + (outputPath / dependency->getPath()).string();
 
@@ -74,8 +74,8 @@ namespace bok {
         }
 
 
-        boost::filesystem::path buildOuputPath(const boost::filesystem::path &outputPath, const Package *package, const Module *module) const {
-            const boost::filesystem::path moduleOutputPath = outputPath / module->getPath() / module->getName();
+        boost::filesystem::path buildOuputPath(const boost::filesystem::path &outputPath, const Package *package, const Component *component) const {
+            const boost::filesystem::path moduleOutputPath = outputPath / component->getPath() / component->getName();
 
             return moduleOutputPath;
         }
@@ -101,8 +101,8 @@ namespace bok {
     }
 
 
-    bool LinkerImpl::isModuleLinkable(const Module *module) const {
-        if (auto buildRule = m_impl->matchBuildRule(module); buildRule) {
+    bool LinkerImpl::isModuleLinkable(const Component *component) const {
+        if (auto buildRule = m_impl->matchBuildRule(component); buildRule) {
             return true;
         }
 
@@ -110,15 +110,15 @@ namespace bok {
     }
 
 
-    LinkOutput LinkerImpl::link(const boost::filesystem::path &outputPath, const Package *package, const Module *module, const std::vector<boost::filesystem::path> &objectFiles) const {
-        boost::optional<LinkerImpl::BuildRule> buildRule = m_impl->matchBuildRule(module);
+    LinkOutput LinkerImpl::link(const boost::filesystem::path &outputPath, const Package *package, const Component *component, const std::vector<boost::filesystem::path> &objectFiles) const {
+        boost::optional<LinkerImpl::BuildRule> buildRule = m_impl->matchBuildRule(component);
 
         if (! buildRule) {
-            throw std::runtime_error("The current toolchain can't build the current module");
+            throw std::runtime_error("The current toolchain can't build the current component");
         }
 
-        boost::filesystem::path moduleOutputPath = m_impl->buildOuputPath(outputPath, package, module);
-        Command *command = m_impl->buildLinkCommand(outputPath, package, module, objectFiles, buildRule.get());
+        boost::filesystem::path moduleOutputPath = m_impl->buildOuputPath(outputPath, package, component);
+        Command *command = m_impl->buildLinkCommand(outputPath, package, component, objectFiles, buildRule.get());
 
         return { moduleOutputPath, command };
     }

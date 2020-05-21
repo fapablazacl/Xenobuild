@@ -11,7 +11,7 @@
 namespace bok {
     class DagNode;
     class Package;
-    class Module;
+    class Component;
     class Command;
     class CommandFactory;
 

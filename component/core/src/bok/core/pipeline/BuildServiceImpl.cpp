@@ -65,17 +65,17 @@ namespace bok {
         std::vector<std::unique_ptr<Command>> commandStorage;
 
 
-        CompileOptions computeCompileOptions(const Module *module) const {
+        CompileOptions computeCompileOptions(const Component *component) const {
             CompileOptions options;
 
-            for (const boost::filesystem::path &includePath : module->getIncludePaths()) {
-                const auto resolvedIncludePath = basePath / module->getPath() / includePath;
+            for (const boost::filesystem::path &includePath : component->getIncludePaths()) {
+                const auto resolvedIncludePath = basePath / component->getPath() / includePath;
                 options.includePaths.push_back(resolvedIncludePath.string());
             }
 
             // TODO: Compute this recursively
             // compute include paths for dependent modules
-            for (const Module *dependentModule : module->getDependencies()) {
+            for (const Component *dependentModule : component->getDependencies()) {
                 CompileOptions dependentOptions = this->computeCompileOptions(dependentModule);
 
                 options.mergeWith(dependentOptions);
@@ -113,26 +113,26 @@ namespace bok {
     std::unique_ptr<Dag> BuildServiceImpl::createBuildDag(Package *package) {
         auto dag = std::make_unique<Dag>();
 
-        for (Module *module : package->getModules()) {
-            const Linker *linker = m_impl->toolchain->selectLinker(module);
+        for (Component *component : package->getModules()) {
+            const Linker *linker = m_impl->toolchain->selectLinker(component);
 
             if (! linker) {
                 if (m_impl->logger) {
-                    m_impl->logger->warn("Couldn't find a linker for module " + module->getName() + " using the current toolchain");
+                    m_impl->logger->warn("Couldn't find a linker for component " + component->getName() + " using the current toolchain");
                 }
 
                 continue;
             }
 
-            module->rescanSources(m_impl->basePath);
+            component->rescanSources(m_impl->basePath);
 
-            const CompileOptions compileOptions = m_impl->computeCompileOptions(module);
+            const CompileOptions compileOptions = m_impl->computeCompileOptions(component);
 
             DagNode *moduleDagNode = dag->createNode();
 
             std::vector<boost::filesystem::path> objectFiles;
 
-            for (Source *source : module->getSources()) {
+            for (Source *source : component->getSources()) {
                 const Compiler *compiler = m_impl->toolchain->selectCompiler(source);
 
                 if (! compiler) {
@@ -153,7 +153,7 @@ namespace bok {
                 moduleDagNode->appendDependency(buildCacheUpdate);
             }
 
-            LinkOutput linkOutput = linker->link(m_impl->outputPath, package, module, objectFiles);
+            LinkOutput linkOutput = linker->link(m_impl->outputPath, package, component, objectFiles);
             
             moduleDagNode->setCommand(linkOutput.command);
 
@@ -164,26 +164,26 @@ namespace bok {
     }
 
 
-    DependencyGraph BuildServiceImpl::computeDependencyGraph(Module *module) const {
-        if (!module) {
-            throw std::runtime_error("Supplied module object is a null pointer.");
+    DependencyGraph BuildServiceImpl::computeDependencyGraph(Component *component) const {
+        if (!component) {
+            throw std::runtime_error("Supplied component object is a null pointer.");
         }
 
-        const Linker *linker = m_impl->toolchain->selectLinker(module);
+        const Linker *linker = m_impl->toolchain->selectLinker(component);
         if (!linker) {
-            throw std::runtime_error("There is no linker for the supplied module.");
+            throw std::runtime_error("There is no linker for the supplied component.");
         }
 
         DependencyGraph graph;
         PathVertexMapper mapper {graph};
 
-        const auto moduleVD = mapper.getVD(module->getPath() / module->getName());
+        const auto moduleVD = mapper.getVD(component->getPath() / component->getName());
         graph[moduleVD].label = graph[moduleVD].filePath.filename().string();
 
-        const CompileOptions compileOptions = m_impl->computeCompileOptions(module);
-        module->rescanSources(m_impl->basePath);
+        const CompileOptions compileOptions = m_impl->computeCompileOptions(component);
+        component->rescanSources(m_impl->basePath);
 
-        for (Source *source : module->getSources()) {
+        for (Source *source : component->getSources()) {
             const Compiler *compiler = m_impl->toolchain->selectCompiler(source);
 
             if (!compiler) {

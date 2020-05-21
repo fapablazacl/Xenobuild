@@ -60,10 +60,10 @@ namespace bok {
 
             for (const auto modulePackage : packageEntity.modules) {
                 // TODO: Process "common" modules (serves as a set of base definitions)
-                auto module = package->createModule<Module>();
+                auto component = package->createModule<Component>();
 
-                // module name
-                module->setName(modulePackage.name);
+                // component name
+                component->setName(modulePackage.name);
 
                 // include paths
                 std::vector<boost::filesystem::path> includePaths;
@@ -74,7 +74,7 @@ namespace bok {
                         return boost::filesystem::path(includePath);
                 });
 
-                module->setIncludePaths(includePaths);
+                component->setIncludePaths(includePaths);
 
                 // library path
                 std::vector<boost::filesystem::path> libraryPaths;
@@ -85,10 +85,10 @@ namespace bok {
                         return boost::filesystem::path(libraryPath.path);
                 });
 
-                module->setLibraryPaths(libraryPaths);
+                component->setLibraryPaths(libraryPaths);
 
                 // import library
-                module->setLibraries(modulePackage.library);
+                component->setLibraries(modulePackage.library);
             }
 
             return package;
@@ -100,38 +100,38 @@ namespace bok {
         // now we are ready to create the package and modules instances
         auto package = std::make_unique<Package>(packageEntity.name);
 
-        // available module types for C/C++ projects
-        const std::map<std::string, Module::Type> moduleTypeMap = {
-            { "application/cli", Module::Type{"application", "cli"} },
-            { "application/gui", Module::Type{"application", "gui"} },
-            { "library/static", Module::Type{"library", "static"} },
-            { "library/dynamic", Module::Type{"library", "dynamic"} }
+        // available component types for C/C++ projects
+        const std::map<std::string, Component::Type> moduleTypeMap = {
+            { "application/cli", Component::Type{"application", "cli"} },
+            { "application/gui", Component::Type{"application", "gui"} },
+            { "library/static", Component::Type{"library", "static"} },
+            { "library/dynamic", Component::Type{"library", "dynamic"} }
         };
 
         for (int i=0; i<moduleEntities.size(); i++) {
             const ComponentEntity &componentEntity = moduleEntities[i];
 
-            auto module = package->createModule<Module>();
+            auto component = package->createModule<Component>();
 
-            module->setName(componentEntity.name);
+            component->setName(componentEntity.name);
 
             if (auto moduleTypeIt = moduleTypeMap.find(componentEntity.type); moduleTypeIt != moduleTypeMap.end()) {
-                module->setType(moduleTypeIt->second);
+                component->setType(moduleTypeIt->second);
             } else {
                 std::string msg;
 
-                msg += "Invalid module type";
+                msg += "Invalid component type";
                 msg += " '" + componentEntity.type + "' ";
                 msg += "for the";
                 msg += " '" + componentEntity.language + "' ";
                 msg += "programming language specified in the";
                 msg += " '" + componentEntity.name + "' ";
-                msg += "module.";
+                msg += "component.";
 
                 throw std::runtime_error(msg.c_str());
             }
 
-            module->setPath(boost::filesystem::path{packageEntity.modulePaths[i]});
+            component->setPath(boost::filesystem::path{packageEntity.modulePaths[i]});
 
             std::vector<boost::filesystem::path> includePaths;
             std::vector<boost::filesystem::path> sourcePaths;
@@ -144,25 +144,25 @@ namespace bok {
                 }
             }
 
-            module->setIncludePaths(includePaths);
-            module->setSourcePaths(sourcePaths);
+            component->setIncludePaths(includePaths);
+            component->setSourcePaths(sourcePaths);
         }
 
-        // solve module dependencies
-        std::vector<Module*> modules = package->getModules();
+        // solve component dependencies
+        std::vector<Component*> modules = package->getModules();
 
         for (int i=0; i<moduleEntities.size(); i++) {
             const ComponentEntity &componentEntity = moduleEntities[i];
-            Module *module = modules[i];
+            Component *component = modules[i];
 
             for (const std::string dependency : componentEntity.dependencies) {
                 // Solve the dependency with the modules inside the package
                 bool found = false;
-                for (const Module *dependentModule : modules) {
+                for (const Component *dependentModule : modules) {
                     if (dependency == dependentModule->getName()) {
-                        auto dependencies = module->getDependencies();
+                        auto dependencies = component->getDependencies();
                         dependencies.push_back(dependentModule);
-                        module->setDependencies(dependencies);
+                        component->setDependencies(dependencies);
 
                         found = true;
                         break;
@@ -174,9 +174,9 @@ namespace bok {
                     auto dependentModule = packageRegistry->findModule(dependency);
 
                     if (dependentModule) {
-                        auto dependencies = module->getDependencies();
+                        auto dependencies = component->getDependencies();
                         dependencies.push_back(dependentModule);
-                        module->setDependencies(dependencies);
+                        component->setDependencies(dependencies);
 
                         found = true;
                     }
@@ -187,8 +187,8 @@ namespace bok {
 
                     msg += "Required dependency ";
                     msg += dependency;
-                    msg += " for module ";
-                    msg += module->getName();
+                    msg += " for component ";
+                    msg += component->getName();
                     msg += " couldn't be found.";
 
                     throw std::runtime_error(msg);
@@ -221,7 +221,7 @@ namespace bok {
             const boost::filesystem::path moduleFilePath = packagePath / modulePartialPath / BOK_COMPONENT_DEFINITION_FILENAME;
 
             if (! checkValidBorcFile(moduleFilePath)) {
-                throw std::runtime_error("There is no module build file on this folder '" + (packagePath / modulePartialPath).string() + "'");
+                throw std::runtime_error("There is no component build file on this folder '" + (packagePath / modulePartialPath).string() + "'");
             }
 
             auto moduleJsonContent = fileService->load(moduleFilePath.string());

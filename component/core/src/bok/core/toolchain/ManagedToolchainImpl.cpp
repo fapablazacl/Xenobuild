@@ -20,14 +20,14 @@ namespace bok {
         "*.cpp", "*.cxx", "*.c++", "*.cc"
     };
 
-    static std::initializer_list<Module::Type> moduleLinkerModuleTypes ({
-        Module::Type{"application", "cli"},
-        Module::Type{"application", "gui"},
-        Module::Type{"library", "dynamic"}
+    static std::initializer_list<Component::Type> moduleLinkerModuleTypes ({
+        Component::Type{"application", "cli"},
+        Component::Type{"application", "gui"},
+        Component::Type{"library", "dynamic"}
     });
 
-    static std::initializer_list<Module::Type> archiveLinkerModuleTypes ({
-        Module::Type{"library", "static"}
+    static std::initializer_list<Component::Type> archiveLinkerModuleTypes ({
+        Component::Type{"library", "static"}
     });
     
 
@@ -103,7 +103,7 @@ namespace bok {
                         buildRuleDef.input.moduleTypes.end(), 
                         std::back_inserter(buildRule.input.moduleTypes),
                     [](const std::string &moduleTypeStr) {
-                        return *Module::Type::parse(moduleTypeStr);
+                        return *Component::Type::parse(moduleTypeStr);
                 });
 
                 buildRule.output.fileType = buildRuleDef.output.fileType;
@@ -204,9 +204,9 @@ namespace bok {
     }
 
 
-    const Linker* ManagedToolchainImpl::selectLinker(const Module *module) const {
+    const Linker* ManagedToolchainImpl::selectLinker(const Component *component) const {
         for (const auto &linker : m_impl->linkers) {
-            if (linker->isModuleLinkable(module)) {
+            if (linker->isModuleLinkable(component)) {
                 return linker.get();
             }
         }

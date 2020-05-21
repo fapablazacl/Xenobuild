@@ -20,7 +20,7 @@ namespace bok {
 
         struct BuildRule {
             struct Input {
-                std::vector<Module::Type> moduleTypes;
+                std::vector<Component::Type> moduleTypes;
                 std::string fileType;
             };
 
@@ -40,9 +40,9 @@ namespace bok {
 
         virtual ~LinkerImpl();
 
-        virtual bool isModuleLinkable(const Module *module) const override;
+        virtual bool isModuleLinkable(const Component *component) const override;
 
-        virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Module *module, const std::vector<boost::filesystem::path> &objectFiles) const override;
+        virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Component *component, const std::vector<boost::filesystem::path> &objectFiles) const override;
 
     private:
         struct Private;

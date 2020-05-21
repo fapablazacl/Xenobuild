@@ -25,14 +25,15 @@ namespace bok {
 
     class Dag;
     class Package;
-    class Module;
+    class Component;
     class BuildService {
     public:
         virtual ~BuildService();
 
+        [[deprecated]]
         virtual std::unique_ptr<Dag> createBuildDag(Package *package) = 0;
 
-        virtual DependencyGraph computeDependencyGraph(Module *module) const = 0;
+        virtual DependencyGraph computeDependencyGraph(Component *component) const = 0;
     };
 }
 

@@ -11,11 +11,11 @@ namespace bok {
     Package::~Package() {}
 
 
-    std::vector<Module*> Package::getModules() const {
-        std::vector<Module*> result;
+    std::vector<Component*> Package::getModules() const {
+        std::vector<Component*> result;
 
-        for (auto &module : modules) {
-            result.push_back(module.get());
+        for (auto &component : modules) {
+            result.push_back(component.get());
         }
 
         return result;

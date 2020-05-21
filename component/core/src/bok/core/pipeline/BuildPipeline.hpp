@@ -9,10 +9,7 @@ namespace bok {
 
     class BuildPipeline {
     public:
-        BuildPipeline();
-        ~BuildPipeline();
-
-        void build(const Source *source);
+        
     };
 }
 

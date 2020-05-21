@@ -10,7 +10,7 @@
 namespace bok {
     class Toolchain;
     class LoggingService;
-    class Module;
+    class Component;
     class BuildCache;
     class Command;
 
@@ -24,7 +24,7 @@ namespace bok {
 
         virtual std::unique_ptr<Dag> createBuildDag(Package *package) override;
 
-        virtual DependencyGraph computeDependencyGraph(Module *module) const override;
+        virtual DependencyGraph computeDependencyGraph(Component *component) const override;
 
     private:
         struct Private;

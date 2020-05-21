@@ -107,7 +107,7 @@ namespace bok {
                 commandOptions.push_back(includeOption);
             }
 
-            // compute include paths from the module
+            // compute include paths from the component
             for (const boost::filesystem::path &includePath : source->getModule()->getIncludePaths()) {
                 const std::string includeOption = switches.includePath + includePath.string();
 

@@ -18,17 +18,17 @@ namespace bok {
         });
 
         linkers.push_back({
-            std::make_unique<ModuleTypeChecker>(std::initializer_list<Module::Type>({
-                Module::Type{"application", "cli"},
-                Module::Type{"application", "gui"},
-                Module::Type{"library", "dynamic"}
+            std::make_unique<ModuleTypeChecker>(std::initializer_list<Component::Type>({
+                Component::Type{"application", "cli"},
+                Component::Type{"application", "gui"},
+                Component::Type{"library", "dynamic"}
             })), 
             this->createLinker()
         });
 
         linkers.push_back({
-            std::make_unique<ModuleTypeChecker>(std::initializer_list<Module::Type>({
-                Module::Type{"library", "static"}
+            std::make_unique<ModuleTypeChecker>(std::initializer_list<Component::Type>({
+                Component::Type{"library", "static"}
             })), 
             this->createStaticLinker()
         });

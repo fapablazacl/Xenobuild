@@ -9,13 +9,13 @@
 
 namespace bok {
     class Package;
-    class Module;
+    class Component;
 
     /**
      * @brief Contains a package registry, for storing all the stock packages offered by BORC.
-     * @todo Add support for package and module versioning
+     * @todo Add support for package and component versioning
      * 
-     * Has all the supplemental data needed to build the current module, like the currently parsed and referenced software modules.
+     * Has all the supplemental data needed to build the current component, like the currently parsed and referenced software modules.
      */
     class PackageRegistry {
     public:
@@ -25,14 +25,14 @@ namespace bok {
 
         void registerPackage(std::unique_ptr<Package> package);
 
-        const Module* findModule(const std::string &identifier) const;
+        const Component* findModule(const std::string &identifier) const;
 
     private:
-        std::string getModuleIdentifier(const Module *module) const;
+        std::string getModuleIdentifier(const Component *component) const;
 
     private:
         std::vector<std::unique_ptr<Package>> packages;
-        std::map<std::string, const Module*> moduleMap;
+        std::map<std::string, const Component*> moduleMap;
     };
 }
 

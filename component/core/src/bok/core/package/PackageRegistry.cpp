@@ -11,33 +11,33 @@ namespace bok {
     PackageRegistry::~PackageRegistry() {}
 
     void PackageRegistry::registerPackage(std::unique_ptr<Package> package) {
-        for (const Module *module : package->getModules()) {
-            const std::string key = this->getModuleIdentifier(module);
+        for (const Component *component : package->getModules()) {
+            const std::string key = this->getModuleIdentifier(component);
 
-            std::cout << "Registered " << key << " module." << std::endl;
+            std::cout << "Registered " << key << " component." << std::endl;
 
-            moduleMap.insert({key, module});
+            moduleMap.insert({key, component});
         }
 
         packages.push_back(std::move(package));
     }
 
 
-    std::string PackageRegistry::getModuleIdentifier(const Module *module) const {
-        return module->getPackage()->getName() + "/" + module->getName();
+    std::string PackageRegistry::getModuleIdentifier(const Component *component) const {
+        return component->getPackage()->getName() + "/" + component->getName();
     }
 
 
-    const Module* PackageRegistry::findModule(const std::string &identifier) const {
+    const Component* PackageRegistry::findModule(const std::string &identifier) const {
         auto it = moduleMap.find(identifier);
 
         if (it == moduleMap.end()) {
-            std::cout << identifier << " module  not found" << std::endl;
+            std::cout << identifier << " component  not found" << std::endl;
 
             return nullptr;
         }
 
-        std::cout << identifier << " module found!" << std::endl;
+        std::cout << identifier << " component found!" << std::endl;
 
         return it->second;
     }

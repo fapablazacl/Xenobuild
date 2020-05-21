@@ -14,7 +14,7 @@
 namespace bok {
     class Package;
     class Source;
-    class Module {
+    class Component {
     public:
         struct Type {
             std::string tag;
@@ -49,9 +49,9 @@ namespace bok {
         };
 
     public:
-        explicit Module(Package *package);
+        explicit Component(Package *package);
 
-        ~Module();
+        ~Component();
 
         std::string getName() const {
             return name;
@@ -77,7 +77,7 @@ namespace bok {
             return version;
         }
 
-        std::vector<const Module*> getDependencies() const {
+        std::vector<const Component*> getDependencies() const {
             return dependencies;
         }
 
@@ -110,7 +110,7 @@ namespace bok {
 
         std::vector<Source*> getSources() const;
 
-        void setDependencies(const std::vector<const Module*> &dependentModules);
+        void setDependencies(const std::vector<const Component*> &dependentModules);
 
         bool hasSources() const {
             return sources.size() > 0;
@@ -145,7 +145,7 @@ namespace bok {
         Type type;
         Version version;
         Language language;
-        std::vector<const Module*> dependencies;
+        std::vector<const Component*> dependencies;
 
         std::vector<boost::filesystem::path> sourcePaths;
         std::vector<boost::filesystem::path> includePaths;
