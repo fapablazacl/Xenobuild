@@ -1,12 +1,12 @@
 
 #pragma once 
 
-#include "SourceScanner.hpp"
+#include "FileScanner.hpp"
 
 namespace bok {
-    class SourceScannerFileSystem : public SourceScanner {
+    class DiskFileScanner : public FileScanner {
     public:
-        virtual ~SourceScannerFileSystem();
+        virtual ~DiskFileScanner();
 
         std::vector<path> scan(const path &folder, const ScanType scanType, std::function<bool (const path &)> filter) const override;
     };

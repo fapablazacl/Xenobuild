@@ -6,7 +6,7 @@
 #include <bok/core/Types.hpp>
 
 namespace bok {
-    class SourceScanner {
+    class FileScanner {
     public:
         enum ScanType {
             Linear,
@@ -14,7 +14,7 @@ namespace bok {
         };
 
     public:
-        virtual ~SourceScanner();
+        virtual ~FileScanner();
         
         virtual std::vector<path> scan(const path &folder, const ScanType scanType) const;
 

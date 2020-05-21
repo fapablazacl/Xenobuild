@@ -1,10 +1,10 @@
 
-#include "SourceScannerFileSystem.hpp"
+#include "DiskFileScanner.hpp"
 
 #include <boost/filesystem.hpp>
 
 namespace bok {
-    SourceScannerFileSystem::~SourceScannerFileSystem() {}
+    DiskFileScanner::~DiskFileScanner() {}
         
     template<typename Iterator>
     std::vector<path> scan_folder(const path &folder, std::function<bool (const path &)> filter) {
@@ -30,14 +30,14 @@ namespace bok {
     }
 
 
-    std::vector<path> SourceScannerFileSystem::scan(const path &folder, const ScanType scanType, std::function<bool (const path &)> filter) const {
+    std::vector<path> DiskFileScanner::scan(const path &folder, const ScanType scanType, std::function<bool (const path &)> filter) const {
         if (! boost::filesystem::exists(folder)) {
             return {};
         }
 
         std::vector<path> files;
 
-        if (scanType == SourceScanner::Recursive) {
+        if (scanType == FileScanner::Recursive) {
             using iterator = boost::filesystem::recursive_directory_iterator;
 
             return scan_folder<iterator>(folder, filter);

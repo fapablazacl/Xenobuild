@@ -114,10 +114,10 @@ set (sources
     ./src/bok/core/pipeline/TaskGraphGenerator.cpp
     ./src/bok/core/pipeline/BuildConfiguration.cpp
     ./src/bok/core/pipeline/BuildConfiguration.hpp
-    ./src/bok/core/pipeline/SourceScanner.hpp
-    ./src/bok/core/pipeline/SourceScanner.cpp
-    ./src/bok/core/pipeline/SourceScannerFileSystem.hpp
-    ./src/bok/core/pipeline/SourceScannerFileSystem.cpp
+    ./src/bok/core/pipeline/FileScanner.hpp
+    ./src/bok/core/pipeline/FileScanner.cpp
+    ./src/bok/core/pipeline/DiskFileScanner.hpp
+    ./src/bok/core/pipeline/DiskFileScanner.cpp
     ./src/bok/core/io/LanguageEntity.hpp
     ./src/bok/core/io/Decoder.hpp
     ./src/bok/core/io/YamlModel.hpp
