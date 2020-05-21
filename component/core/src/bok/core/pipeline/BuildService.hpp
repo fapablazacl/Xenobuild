@@ -8,34 +8,34 @@
 #include <boost/graph/adjacency_list.hpp>
 
 namespace bok {
-    struct DependencyGraphVertexData {
+    struct TaskGraphVertexData {
         std::string label;
         boost::filesystem::path filePath;
     };
 
-    struct DependencyGraphEdgeData {
+    struct TaskGraphEdgeData {
         std::string label;
         std::string command;
     };
 
     typedef boost::adjacency_list<
         boost::vecS, boost::vecS, boost::directedS, 
-        DependencyGraphVertexData, DependencyGraphEdgeData
-    > DependencyGraph;
+        TaskGraphVertexData, TaskGraphEdgeData
+    > TaskGraph;
 
     class Dag;
     class Package;
     class Component;
-    class DependencyGraphGenerator {
+    class TaskGraphGenerator {
     public:
-        virtual ~DependencyGraphGenerator();
+        virtual ~TaskGraphGenerator();
 
         [[deprecated]]
         virtual std::unique_ptr<Dag> createBuildDag(Package *package) = 0;
 
-        virtual DependencyGraph generate(Component *component) const = 0;
+        virtual TaskGraph generate(Component *component) const = 0;
 
-        virtual DependencyGraph generate(Package *package) const = 0;
+        virtual TaskGraph generate(Package *package) const = 0;
     };
 }
 

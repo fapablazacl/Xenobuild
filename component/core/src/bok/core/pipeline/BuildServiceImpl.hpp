@@ -16,7 +16,7 @@ namespace bok {
 
     struct CompileOptions;
 
-    class BuildServiceImpl : public DependencyGraphGenerator {
+    class BuildServiceImpl : public TaskGraphGenerator {
     public:
         BuildServiceImpl(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, BuildCache* buildCache, LoggingService *logger);
 
@@ -24,9 +24,9 @@ namespace bok {
 
         std::unique_ptr<Dag> createBuildDag(Package *package) override;
 
-        DependencyGraph generate(Component *component) const override;
+        TaskGraph generate(Component *component) const override;
 
-        DependencyGraph generate(Package *package) const override;
+        TaskGraph generate(Package *package) const override;
 
     private:
         struct Private;

@@ -93,8 +93,8 @@ namespace bok {
         std::fstream fs;
         fs.open("output.dot", std::ios_base::out);
         boost::write_graphviz(fs, dependencyGraph,
-            boost::make_label_writer(boost::get(&DependencyGraphVertexData::label, dependencyGraph)),
-            boost::make_label_writer(boost::get(&DependencyGraphEdgeData::label, dependencyGraph))
+            boost::make_label_writer(boost::get(&TaskGraphVertexData::label, dependencyGraph)),
+            boost::make_label_writer(boost::get(&TaskGraphEdgeData::label, dependencyGraph))
         );
         */
 
