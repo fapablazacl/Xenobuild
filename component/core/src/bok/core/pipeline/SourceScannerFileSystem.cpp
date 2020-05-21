@@ -6,13 +6,6 @@
 namespace bok {
     SourceScannerFileSystem::~SourceScannerFileSystem() {}
         
-    std::vector<path> SourceScannerFileSystem::scan(const path &folder, const ScanType scanType) const {
-        return scan(folder, scanType, [](const path &file) {
-            return true;
-        });
-    }
-
-
     template<typename Iterator>
     std::vector<path> scan_folder(const path &folder, std::function<bool (const path &)> filter) {
         std::vector<path> files;

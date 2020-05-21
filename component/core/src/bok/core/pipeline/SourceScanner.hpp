@@ -16,7 +16,7 @@ namespace bok {
     public:
         virtual ~SourceScanner();
         
-        virtual std::vector<path> scan(const path &folder, const ScanType scanType) const = 0;
+        virtual std::vector<path> scan(const path &folder, const ScanType scanType) const;
 
         virtual std::vector<path> scan(const path &folder, const ScanType scanType, std::function<bool (const path &)> filter) const = 0;
     };
