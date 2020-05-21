@@ -44,7 +44,7 @@ else()
     set (PTHREAD_LIB pthread)
 endif()
 
-target_link_libraries(${target} ${Boost_LIBRARIES} ${PTHREAD_LIB})
+target_link_libraries(${target} ${Boost_LIBRARIES} ${PTHREAD_LIB} core feature)
 
 install(
     TARGETS ${target}

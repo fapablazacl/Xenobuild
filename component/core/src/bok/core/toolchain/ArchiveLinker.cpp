@@ -2,10 +2,11 @@
 #include "ArchiveLinker.hpp"
 
 #include <iostream>
-#include <bok/model/Package.hpp>
-#include <bok/model/Module.hpp>
-#include <bok/model/Command.hpp>
-#include <bok/model/CommandFactory.hpp>
+
+#include <bok/core/common/Command.hpp>
+#include <bok/core/common/CommandFactory.hpp>
+#include <bok/core/package/Package.hpp>
+#include <bok/core/package/Module.hpp>
 
 namespace bok {
     ArchiveLinker::ArchiveLinker(CommandFactory *commandFactory, const std::string &commandPath, const ArchiveLinker::Switches &switches) {

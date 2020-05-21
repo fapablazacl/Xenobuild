@@ -18,6 +18,13 @@ find_package(nlohmann_json)
 set (target core)
 
 set (sources 
+    ./src/bok/core/Predef.h
+    ./src/bok/core/common/DagNode.hpp
+    ./src/bok/core/common/Dag.hpp
+    ./src/bok/core/common/DagVisitor.hpp
+    ./src/bok/core/common/Dag.cpp
+    ./src/bok/core/common/DagVisitor.cpp
+    ./src/bok/core/common/DagNode.cpp
     ./src/bok/core/common/Constants.hpp
     ./src/bok/core/common/LoggingService.hpp
     ./src/bok/core/common/FileService.cpp
@@ -95,15 +102,18 @@ set (sources
     ./src/bok/core/toolchain/ToolchainFactoryHardcoded.hpp
     ./src/bok/core/toolchain/Toolchain.cpp
     ./src/bok/core/toolchain/ManagedToolchainImpl.cpp
+    ./src/bok/core/pipeline/BuildCacheTxt.cpp
+    ./src/bok/core/pipeline/BuildCacheTxt.hpp
+    ./src/bok/core/pipeline/BuildCache.cpp
+    ./src/bok/core/pipeline/BuildCache.hpp
     ./src/bok/core/pipeline/BuildServiceImpl.cpp
+    ./src/bok/core/pipeline/BuildServiceImpl.hpp
     ./src/bok/core/pipeline/BuildPipeline.cpp
+    ./src/bok/core/pipeline/BuildPipeline.hpp
     ./src/bok/core/pipeline/BuildService.hpp
     ./src/bok/core/pipeline/BuildService.cpp
     ./src/bok/core/pipeline/BuildConfiguration.cpp
     ./src/bok/core/pipeline/BuildConfiguration.hpp
-    ./src/bok/core/pipeline/BuildPipeline.hpp
-    ./src/bok/core/pipeline/BuildServiceImpl.hpp
-    ./src/bok/core/Predef.h
     ./src/bok/core/io/LanguageEntity.hpp
     ./src/bok/core/io/Decoder.hpp
     ./src/bok/core/io/YamlModel.hpp

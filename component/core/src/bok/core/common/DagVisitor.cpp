@@ -1,9 +1,8 @@
 
-#include <bok/utility/DagVisitor.hpp>
-
-#include <bok/utility/Dag.hpp>
-#include <bok/utility/DagNode.hpp>
-#include <bok/model/Command.hpp>
+#include <bok/core/common/DagVisitor.hpp>
+#include <bok/core/common/Dag.hpp>
+#include <bok/core/common/DagNode.hpp>
+#include <bok/core/common/Command.hpp>
 
 namespace bok {    
     void DagVisitor::visit(Dag *dag) {

@@ -2,9 +2,8 @@
 #ifndef __BOK_CORE_SERVICEFACTORYSTUB_HPP__
 #define __BOK_CORE_SERVICEFACTORYSTUB_HPP__
 
-#include <bok/toolchain/ServiceFactory.hpp>
-
-#include <bok/model/CommandFactory.hpp>
+#include <bok/core/toolchain/ServiceFactory.hpp>
+#include <bok/core/common/CommandFactory.hpp>
 
 namespace bok {
     class ServiceFactoryStub : public ServiceFactory {

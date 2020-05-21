@@ -5,13 +5,14 @@
 
 #include <boost/filesystem.hpp>
 
-#include <bok/common/Constants.hpp>
-#include <bok/model/Version.hpp>
-#include <bok/entity/PackageEntity.hpp>
-#include <bok/entity/ComponentEntity.hpp>
-#include <bok/entity/JsonModel.hpp>
-#include <bok/entity/Encoder.hpp>
-#include <bok/services/FileServiceImpl.hpp>
+#include <bok/core/common/Constants.hpp>
+#include <bok/core/common/Version.hpp>
+#include <bok/core/common/FileServiceImpl.hpp>
+#include <bok/core/io/PackageEntity.hpp>
+#include <bok/core/io/ComponentEntity.hpp>
+#include <bok/core/io/JsonModel.hpp>
+#include <bok/core/io/Encoder.hpp>
+
 
 namespace bok {
     InitController::~InitController() {}

@@ -2,8 +2,8 @@
 #include "PackageRegistry.hpp"
 
 #include <iostream>
-#include <bok/model/Module.hpp>
-#include <bok/model/Package.hpp>
+#include <bok/core/package/Module.hpp>
+#include <bok/core/package/Package.hpp>
 
 namespace bok {
     PackageRegistry::PackageRegistry() {}

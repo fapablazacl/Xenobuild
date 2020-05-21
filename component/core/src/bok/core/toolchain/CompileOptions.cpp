@@ -1,5 +1,5 @@
 
-#include <bok/toolchain/CompileOptions.hpp>
+#include <bok/core/toolchain/CompileOptions.hpp>
 
 namespace bok {
     void CompileOptions::mergeWith(const CompileOptions &other) {

@@ -3,12 +3,11 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/hana.hpp>
-#include <bok/services/FileServiceImpl.hpp>
-#include <bok/entity/JsonModel.hpp>
-#include <bok/entity/Decoder.hpp>
-#include <bok/entity/Encoder.hpp>
-
-#include "BuildCacheTxt.hpp"
+#include <bok/core/common/FileServiceImpl.hpp>
+#include <bok/core/io/JsonModel.hpp>
+#include <bok/core/io/Decoder.hpp>
+#include <bok/core/io/Encoder.hpp>
+#include <bok/core/pipeline/BuildCacheTxt.hpp>
 
 BOOST_HANA_ADAPT_STRUCT(bok::Version, major, minor, revision);
 BOOST_HANA_ADAPT_STRUCT(bok::BuildConfiguration, toolchainId, arch, version, buildTypes, variables, toolchainPath);

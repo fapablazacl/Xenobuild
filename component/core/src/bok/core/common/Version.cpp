@@ -1,5 +1,5 @@
 
-#include <bok/model/Version.hpp>
+#include <bok/core/common/Version.hpp>
 
 #include <vector>
 #include <stdexcept>

@@ -2,7 +2,7 @@
 #include "PackageRegistryFactory.hpp"
 
 #include <boost/filesystem.hpp>
-#include <bok/services/PackageService.hpp>
+#include <bok/core/package/PackageService.hpp>
 #include "Package.hpp"
 #include "PackageRegistry.hpp"
 

@@ -1,5 +1,5 @@
 
-#include <bok/model/Source.hpp>
+#include <bok/core/package/Source.hpp>
 
 #include <stdexcept>
 #include <boost/filesystem.hpp>

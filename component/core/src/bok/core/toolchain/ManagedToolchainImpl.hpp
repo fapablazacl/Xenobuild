@@ -11,7 +11,7 @@
 #include <boost/optional/optional_fwd.hpp>
 #include <boost/filesystem/path.hpp>
 #include <boost/core/noncopyable.hpp>
-#include <bok/model/CommandFactory.hpp>
+#include <bok/core/common/CommandFactory.hpp>
 
 namespace bok {
     struct ToolchainEntity;

@@ -1,19 +1,19 @@
 
-#include <bok/services/BuildServiceImpl.hpp>
+#include <bok/core/pipeline/BuildServiceImpl.hpp>
 
 #include <iostream>
-#include <bok/utility/Dag.hpp>
-#include <bok/utility/DagNode.hpp>
-#include <bok/model/Package.hpp>
-#include <bok/model/Module.hpp>
-#include <bok/model/Source.hpp>
-#include <bok/model/Command.hpp>
-#include <bok/toolchain/Toolchain.hpp>
-#include <bok/toolchain/Compiler.hpp>
-#include <bok/toolchain/CompileOptions.hpp>
-#include <bok/toolchain/Linker.hpp>
-#include <bok/services/LoggingService.hpp>
-#include <bok/build/BuildCache.hpp>
+#include <bok/core/common/Dag.hpp>
+#include <bok/core/common/DagNode.hpp>
+#include <bok/core/common/Command.hpp>
+#include <bok/core/common/LoggingService.hpp>
+#include <bok/core/package/Package.hpp>
+#include <bok/core/package/Module.hpp>
+#include <bok/core/package/Source.hpp>
+#include <bok/core/toolchain/Toolchain.hpp>
+#include <bok/core/toolchain/Compiler.hpp>
+#include <bok/core/toolchain/CompileOptions.hpp>
+#include <bok/core/toolchain/Linker.hpp>
+#include <bok/core/pipeline/BuildCache.hpp>
 
 namespace bok {
     class BuildCacheUpdateCommand : public Command {

@@ -2,8 +2,8 @@
 #ifndef __BOK_MODEL_COMMAND_FOLDERCOMMAND_HPP__
 #define __BOK_MODEL_COMMAND_FOLDERCOMMAND_HPP__
 
-#include <bok/model/Command.hpp>
-#include <bok/model/CommandFactory.hpp>
+#include <bok/core/common/Command.hpp>
+#include <bok/core/common/CommandFactory.hpp>
 #include <boost/filesystem/path.hpp>
 
 namespace bok {

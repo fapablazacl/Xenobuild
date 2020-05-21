@@ -3,9 +3,9 @@
 
 #include <stdexcept>
 
-#include <bok/common/Constants.hpp>
-#include <bok/services/FileServiceImpl.hpp>
-#include <bok/services/ToolchainServiceImpl.hpp>
+#include <bok/core/common/Constants.hpp>
+#include <bok/core/common/FileServiceImpl.hpp>
+#include <bok/core/toolchain/ToolchainServiceImpl.hpp>
 
 #include "ToolchainImpl.hpp"
 

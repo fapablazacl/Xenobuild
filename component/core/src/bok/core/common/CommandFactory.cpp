@@ -1,5 +1,5 @@
 
-#include <bok/model/CommandFactory.hpp>
+#include <bok/core/common/CommandFactory.hpp>
 
 #include <iostream>
 #include <boost/filesystem.hpp>

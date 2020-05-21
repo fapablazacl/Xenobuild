@@ -3,12 +3,14 @@
 
 #include <boost/optional/optional.hpp>
 #include <boost/hana.hpp>
+
 #include <nlohmann/json.hpp>
-#include <bok/toolchain/ManagedToolchainImpl.hpp>
-#include <bok/services/FileService.hpp>
-#include <bok/entity/ToolchainEntity.hpp>
-#include <bok/entity/JsonModel.hpp>
-#include <bok/entity/Decoder.hpp>
+
+#include <bok/core/common/FileService.hpp>
+#include <bok/core/toolchain/ManagedToolchainImpl.hpp>
+#include <bok/core/io/ToolchainEntity.hpp>
+#include <bok/core/io/JsonModel.hpp>
+#include <bok/core/io/Decoder.hpp>
 
 BOOST_HANA_ADAPT_STRUCT(bok::ToolchainEntity::EnumeratedOption, name, flag);
 BOOST_HANA_ADAPT_STRUCT(bok::ToolchainEntity::Switches, dialects, optimizationLevels, debugInformation, includePath, compile, outputFile, generateBuildDependencies, importLibrary, libraryPath);

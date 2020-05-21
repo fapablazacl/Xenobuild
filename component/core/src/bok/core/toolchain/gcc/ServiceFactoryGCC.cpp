@@ -1,13 +1,12 @@
 
 #include "ServiceFactoryGCC.hpp"
 
-#include <bok/model/Command.hpp>
-#include <bok/toolchain/SourceChecker.hpp>
-
-#include <bok/toolchain/ModuleTypeChecker.hpp>
-#include <bok/toolchain/CompilerImpl.hpp>
-#include <bok/toolchain/ModuleLinker.hpp>
-#include <bok/toolchain/ArchiveLinker.hpp>
+#include <bok/core/common/Command.hpp>
+#include <bok/core/toolchain/SourceChecker.hpp>
+#include <bok/core/toolchain/ModuleTypeChecker.hpp>
+#include <bok/core/toolchain/CompilerImpl.hpp>
+#include <bok/core/toolchain/ModuleLinker.hpp>
+#include <bok/core/toolchain/ArchiveLinker.hpp>
 
 namespace bok {
     ServiceFactoryGCC::ServiceFactoryGCC(const std::string &commandBase) {

@@ -1,5 +1,5 @@
 
-#include <bok/toolchain/CompilerVersionDetector.hpp>
+#include <bok/core/toolchain/CompilerVersionDetector.hpp>
 
 namespace bok {
     CompilerVersionDetector::~CompilerVersionDetector() {}

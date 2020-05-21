@@ -1,5 +1,5 @@
 
-#include <bok/model/SourceCompilerMatcher.hpp>
+#include <bok/core/package/SourceCompilerMatcher.hpp>
 
 namespace bok {
     

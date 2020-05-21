@@ -2,10 +2,10 @@
 #include "ModuleLinker.hpp"
 
 #include <iostream>
-#include <bok/model/Package.hpp>
-#include <bok/model/Module.hpp>
-#include <bok/model/Command.hpp>
-#include <bok/model/CommandFactory.hpp>
+#include <bok/core/package/Package.hpp>
+#include <bok/core/package/Module.hpp>
+#include <bok/core/common/Command.hpp>
+#include <bok/core/common/CommandFactory.hpp>
 
 namespace bok {
     ModuleLinker::ModuleLinker(CommandFactory *commandFactory, const std::string &commandPath, const LinkerSwitches &switches, const LinkerConfiguration &configuration) {

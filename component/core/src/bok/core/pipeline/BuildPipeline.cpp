@@ -1,13 +1,11 @@
 
-#include <bok/model/BuildPipeline.hpp>
+#include <bok/core/pipeline/BuildPipeline.hpp>
 
 #include <iostream>
-#include <bok/model/Source.hpp>
+#include <bok/core/package/Source.hpp>
 
 namespace bok {
-    BuildPipeline::BuildPipeline() {
-        
-    }
+    BuildPipeline::BuildPipeline() {}
 
     BuildPipeline::~BuildPipeline() {}
 

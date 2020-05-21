@@ -2,7 +2,7 @@
 #ifndef __BOK_TOOLCHAIN_COMPILERIMPL_HPP__
 #define __BOK_TOOLCHAIN_COMPILERIMPL_HPP__
 
-#include <bok/toolchain/Compiler.hpp>
+#include <bok/core/toolchain/Compiler.hpp>
 
 #include <vector>
 #include <iostream>

@@ -14,9 +14,9 @@
 #include <bok/core/package/Module.hpp>
 #include <bok/core/package/PackageRegistryFactory.hpp>
 #include <bok/core/package/PackageServiceImpl.hpp>
+#include <bok/core/pipeline/BuildCache.hpp>
 
 #include <bok/feature/build/ConfigurationService.hpp>
-#include <bok/feature/build/BuildCache.hpp>
 
 namespace bok {
     struct ConfigureController::Private {

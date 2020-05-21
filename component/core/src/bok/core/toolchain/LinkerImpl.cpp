@@ -2,7 +2,7 @@
 #include "LinkerImpl.hpp"
 
 #include <boost/optional.hpp>
-#include <bok/model/CommandFactory.hpp>
+#include <bok/core/common/CommandFactory.hpp>
 
 namespace bok {
     struct LinkerImpl::Private {

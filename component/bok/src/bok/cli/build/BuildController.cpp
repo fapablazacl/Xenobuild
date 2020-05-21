@@ -7,25 +7,22 @@
 #include <boost/filesystem.hpp>
 #include <boost/graph/graphviz.hpp>
 
+#include <bok/core/common/DagNode.hpp>
+#include <bok/core/common/Dag.hpp>
+#include <bok/core/common/DagVisitor.hpp>
 #include <bok/core/common/Constants.hpp>
 #include <bok/core/common/FileServiceImpl.hpp>
+#include <bok/core/common/LoggingServiceImpl.hpp>
 #include <bok/core/pipeline/BuildServiceImpl.hpp>
+#include <bok/core/pipeline/BuildCache.hpp>
 #include <bok/core/package/PackageServiceImpl.hpp>
 #include <bok/core/package/Module.hpp>
 #include <bok/core/package/Package.hpp>
 #include <bok/core/package/PackageRegistry.hpp>
 #include <bok/core/package/PackageRegistryFactory.hpp>
-#include <bok/core/common/LoggingServiceImpl.hpp>
 #include <bok/core/toolchain/ToolchainFactoryFS.hpp>
 #include <bok/core/toolchain/Toolchain.hpp>
-
-#include <bok/feature/build/BuildCache.hpp>
 #include <bok/feature/build/ConfigurationService.hpp>
-
-
-#include <bok/utility/DagNode.hpp>
-#include <bok/utility/Dag.hpp>
-#include <bok/utility/DagVisitor.hpp>
 
 #include "BuildControllerOptions.hpp"
 

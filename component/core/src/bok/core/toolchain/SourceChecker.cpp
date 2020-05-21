@@ -1,5 +1,5 @@
 
-#include <bok/toolchain/SourceChecker.hpp>
+#include <bok/core/toolchain/SourceChecker.hpp>
 #include <algorithm>
 
 namespace bok {

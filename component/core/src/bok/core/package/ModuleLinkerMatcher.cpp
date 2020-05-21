@@ -1,5 +1,5 @@
 
-#include <bok/model/ModuleLinkerMatcher.hpp>
+#include <bok/core/package/ModuleLinkerMatcher.hpp>
 
 namespace bok {
 

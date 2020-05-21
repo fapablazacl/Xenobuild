@@ -1,5 +1,6 @@
 
-#include <bok/common/BuildConfiguration.hpp>
+#include <bok/core/pipeline/BuildConfiguration.hpp>
+
 #include <tuple>
 
 namespace bok {

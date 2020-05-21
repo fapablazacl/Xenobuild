@@ -1,5 +1,5 @@
 
-#include <bok/model/Command.hpp>
+#include <bok/core/common/Command.hpp>
 
 namespace bok {
     Command::~Command() {}

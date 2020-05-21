@@ -4,7 +4,7 @@
 #include <fstream>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
-#include <bok/common/Constants.hpp>
+#include <bok/core/common/Constants.hpp>
 
 namespace bok {
     BuildCacheTxt::BuildCacheTxt(const path &outputPath, const path &prefixPath) {

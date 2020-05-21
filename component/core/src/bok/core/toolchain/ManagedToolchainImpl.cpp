@@ -3,15 +3,15 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/process.hpp>
-#include <bok/model/Module.hpp>
-#include <bok/model/Source.hpp>
-#include <bok/model/Version.hpp>
-#include <bok/model/Command.hpp>
-#include <bok/entity/ToolchainEntity.hpp>
-#include <bok/toolchain/SourceChecker.hpp>
-#include <bok/toolchain/ModuleChecker.hpp>
-#include <bok/toolchain/CompilerImpl.hpp>
-#include <bok/toolchain/LinkerImpl.hpp>
+#include <bok/core/package/Module.hpp>
+#include <bok/core/package/Source.hpp>
+#include <bok/core/common/Version.hpp>
+#include <bok/core/common/Command.hpp>
+#include <bok/core/io/ToolchainEntity.hpp>
+#include <bok/core/toolchain/SourceChecker.hpp>
+#include <bok/core/toolchain/ModuleChecker.hpp>
+#include <bok/core/toolchain/CompilerImpl.hpp>
+#include <bok/core/toolchain/LinkerImpl.hpp>
 
 
 namespace bok {

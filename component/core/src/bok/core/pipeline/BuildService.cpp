@@ -1,5 +1,5 @@
 
-#include <bok/services/BuildService.hpp>
+#include <bok/core/pipeline/BuildService.hpp>
 
 namespace bok {
     BuildService::~BuildService() {}
