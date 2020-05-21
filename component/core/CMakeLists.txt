@@ -106,12 +106,12 @@ set (sources
     ./src/bok/core/pipeline/BuildCacheFileSystem.hpp
     ./src/bok/core/pipeline/BuildCache.cpp
     ./src/bok/core/pipeline/BuildCache.hpp
-    ./src/bok/core/pipeline/BuildServiceImpl.cpp
-    ./src/bok/core/pipeline/BuildServiceImpl.hpp
+    ./src/bok/core/pipeline/BuildTaskGraphGenerator.cpp
+    ./src/bok/core/pipeline/BuildTaskGraphGenerator.hpp
     ./src/bok/core/pipeline/BuildPipeline.cpp
     ./src/bok/core/pipeline/BuildPipeline.hpp
-    ./src/bok/core/pipeline/BuildService.hpp
-    ./src/bok/core/pipeline/BuildService.cpp
+    ./src/bok/core/pipeline/TaskGraphGenerator.hpp
+    ./src/bok/core/pipeline/TaskGraphGenerator.cpp
     ./src/bok/core/pipeline/BuildConfiguration.cpp
     ./src/bok/core/pipeline/BuildConfiguration.hpp
     ./src/bok/core/pipeline/SourceScanner.hpp

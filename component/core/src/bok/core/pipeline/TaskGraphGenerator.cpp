@@ -1,5 +1,5 @@
 
-#include <bok/core/pipeline/BuildService.hpp>
+#include <bok/core/pipeline/TaskGraphGenerator.hpp>
 
 namespace bok {
     TaskGraphGenerator::~TaskGraphGenerator() {}

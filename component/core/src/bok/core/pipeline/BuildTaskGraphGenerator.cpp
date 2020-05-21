@@ -1,5 +1,5 @@
 
-#include <bok/core/pipeline/BuildServiceImpl.hpp>
+#include <bok/core/pipeline/BuildTaskGraphGenerator.hpp>
 
 #include <cassert>
 #include <iostream>

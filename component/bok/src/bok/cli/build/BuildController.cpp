@@ -13,7 +13,7 @@
 #include <bok/core/Constants.hpp>
 #include <bok/core/FileServiceImpl.hpp>
 #include <bok/core/LoggingServiceImpl.hpp>
-#include <bok/core/pipeline/BuildServiceImpl.hpp>
+#include <bok/core/pipeline/BuildTaskGraphGenerator.hpp>
 #include <bok/core/pipeline/BuildCache.hpp>
 #include <bok/core/package/PackageServiceImpl.hpp>
 #include <bok/core/package/Module.hpp>

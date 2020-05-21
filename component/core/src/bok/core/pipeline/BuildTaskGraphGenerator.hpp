@@ -2,7 +2,7 @@
 #ifndef __BOK_SERVICES_BUILDSERVICEIMPL_HPP__
 #define __BOK_SERVICES_BUILDSERVICEIMPL_HPP__
 
-#include "BuildService.hpp"
+#include "TaskGraphGenerator.hpp"
 
 #include <vector>
 #include <boost/filesystem/path.hpp>
