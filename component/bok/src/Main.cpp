@@ -22,10 +22,16 @@ int main(int argc, char **argv) {
         controller->perform(args.size(), args.data());
     
         return 0;
-    } catch (const std::exception &exp) {
-        std::cout << "Exception caught:\n" << exp.what() << std::endl;
+    }
+    catch (const std::runtime_error &exp) {
+        std::cout << exp.what()  << std::endl;
 
         return 1;
+    }
+    catch (const std::exception &exp) {
+        std::cout << "Exception caught:\n" << exp.what() << std::endl;
+
+        return 2;
     }
 
     return 0;
