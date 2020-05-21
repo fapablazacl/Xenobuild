@@ -14,7 +14,7 @@ namespace bok {
     class Toolchain;
 
     class PackageRegistry;
-    class PackageService;
+    class PackageFactory;
 
     class ConfigureController : public ControllerStub<ConfigureControllerOptions> {
     public:

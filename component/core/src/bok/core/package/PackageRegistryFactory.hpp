@@ -6,11 +6,11 @@
 #include <boost/filesystem/path.hpp>
 
 namespace bok {
-    class PackageService;
+    class PackageFactory;
     class PackageRegistry;
     class PackageRegistryFactory {
     public:
-        std::unique_ptr<PackageRegistry> createPackageRegistry(PackageService *packageService, const boost::filesystem::path &packageRegistryPath) const;
+        std::unique_ptr<PackageRegistry> createPackageRegistry(PackageFactory *packageService, const boost::filesystem::path &packageRegistryPath) const;
     };
 }
 

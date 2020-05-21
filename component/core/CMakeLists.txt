@@ -126,9 +126,9 @@ set (sources
     ./src/bok/core/io/Encoder.hpp
     ./src/bok/core/io/ToolchainEntity.hpp
     ./src/bok/core/io/JsonModel.hpp
-    ./src/bok/core/package/PackageService.cpp
+    ./src/bok/core/package/PackageFactory.cpp
     ./src/bok/core/package/Package.cpp
-    ./src/bok/core/package/PackageServiceImpl.hpp
+    ./src/bok/core/package/FSPackageFactory.hpp
     ./src/bok/core/package/Module.cpp
     ./src/bok/core/package/Module.hpp
     ./src/bok/core/package/Source.cpp
@@ -137,7 +137,7 @@ set (sources
     ./src/bok/core/package/SourceCompilerMatcher.hpp
     ./src/bok/core/package/PackageRegistryFactory.hpp
     ./src/bok/core/package/PackageRegistry.hpp
-    ./src/bok/core/package/PackageService.hpp
+    ./src/bok/core/package/PackageFactory.hpp
     ./src/bok/core/package/PackageRegistry.cpp
     ./src/bok/core/package/Context.cpp
     ./src/bok/core/package/PackageRegistryFactory.cpp
@@ -145,7 +145,7 @@ set (sources
     ./src/bok/core/package/Package.hpp
     ./src/bok/core/package/Language.hpp
     ./src/bok/core/package/SourceCompilerMatcher.cpp
-    ./src/bok/core/package/PackageServiceImpl.cpp
+    ./src/bok/core/package/FSPackageFactory.cpp
     ./src/bok/core/package/ModuleLinkerMatcher.hpp
 )
 

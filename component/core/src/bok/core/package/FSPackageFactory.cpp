@@ -1,5 +1,5 @@
 
-#include "PackageServiceImpl.hpp"
+#include "FSPackageFactory.hpp"
 
 #include <map>
 #include <iostream>
@@ -19,12 +19,12 @@
 #include <bok/core/io/Decoder.hpp>
 
 namespace bok {
-    PackageServiceImpl::PackageServiceImpl(const FileService *fileService) {
+    FSPackageFactory::FSPackageFactory(const FileService *fileService) {
         this->fileService = fileService;
     }
 
 
-    std::unique_ptr<Package> PackageServiceImpl::createPackage(const boost::filesystem::path &packageBaseFolder, const PackageRegistry *packageRegistry) const {
+    std::unique_ptr<Package> FSPackageFactory::createPackage(const boost::filesystem::path &packageBaseFolder, const PackageRegistry *packageRegistry) const {
         const PackageEntity packageEntity = this->loadPackageEntity(packageBaseFolder);
 
         if (packageEntity.modulePaths.size() > 0) {
@@ -96,7 +96,7 @@ namespace bok {
     }
 
 
-    std::unique_ptr<Package> PackageServiceImpl::createPackageImpl(const PackageEntity &packageEntity, const std::vector<ComponentEntity> &moduleEntities, const PackageRegistry *packageRegistry) const {
+    std::unique_ptr<Package> FSPackageFactory::createPackageImpl(const PackageEntity &packageEntity, const std::vector<ComponentEntity> &moduleEntities, const PackageRegistry *packageRegistry) const {
         // now we are ready to create the package and modules instances
         auto package = std::make_unique<Package>(packageEntity.name);
 
@@ -200,7 +200,7 @@ namespace bok {
     }
 
 
-    PackageEntity PackageServiceImpl::loadPackageEntity(const boost::filesystem::path &packagePath) const {
+    PackageEntity FSPackageFactory::loadPackageEntity(const boost::filesystem::path &packagePath) const {
         const auto packageFilePath = packagePath / BOK_PACKAGE_DEFINITION_FILENAME;
 
         if (! checkValidBorcFile(packageFilePath)) {
@@ -214,7 +214,7 @@ namespace bok {
     }
 
 
-    std::vector<ComponentEntity> PackageServiceImpl::loadModuleEntities(const boost::filesystem::path &packagePath, const PackageEntity &packageEntity) const {
+    std::vector<ComponentEntity> FSPackageFactory::loadModuleEntities(const boost::filesystem::path &packagePath, const PackageEntity &packageEntity) const {
         std::vector<ComponentEntity> moduleEntities;
 
         for (const std::string &modulePartialPath : packageEntity.modulePaths) {
@@ -236,7 +236,7 @@ namespace bok {
     }
 
 
-    bool PackageServiceImpl::checkValidBorcFile(const boost::filesystem::path &filePath) const {
+    bool FSPackageFactory::checkValidBorcFile(const boost::filesystem::path &filePath) const {
         return !boost::filesystem::is_directory(filePath) && boost::filesystem::exists(filePath);
     }
 }

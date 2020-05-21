@@ -13,7 +13,7 @@
 #include <bok/core/package/PackageRegistry.hpp>
 #include <bok/core/package/Module.hpp>
 #include <bok/core/package/PackageRegistryFactory.hpp>
-#include <bok/core/package/PackageServiceImpl.hpp>
+#include <bok/core/package/FSPackageFactory.hpp>
 #include <bok/core/pipeline/BuildCache.hpp>
 
 #include <bok/feature/build/ConfigurationService.hpp>
@@ -42,7 +42,7 @@ namespace bok {
         }
 
 
-        std::unique_ptr<PackageRegistry> createPackageRegistry(PackageService *packageService, const boost::filesystem::path &packageRegistryPath) const {
+        std::unique_ptr<PackageRegistry> createPackageRegistry(PackageFactory *packageService, const boost::filesystem::path &packageRegistryPath) const {
             PackageRegistryFactory factory;
 
             return factory.createPackageRegistry(packageService, packageRegistryPath);
@@ -119,7 +119,7 @@ namespace bok {
 
         // construct the package with the current toolchain, in order grab dependency information
         const FileServiceImpl fileService;
-        auto packageService = std::make_unique<PackageServiceImpl>(&fileService);
+        auto packageService = std::make_unique<FSPackageFactory>(&fileService);
         auto packageRegistry = m_impl->createPackageRegistry(packageService.get(), BOK_PACKAGE_SEARCH_PATH);
         auto package = packageService->createPackage(basePackagePath, packageRegistry.get());
 

@@ -15,7 +15,7 @@
 #include <bok/core/LoggingServiceImpl.hpp>
 #include <bok/core/pipeline/BuildTaskGraphGenerator.hpp>
 #include <bok/core/pipeline/BuildCache.hpp>
-#include <bok/core/package/PackageServiceImpl.hpp>
+#include <bok/core/package/FSPackageFactory.hpp>
 #include <bok/core/package/Module.hpp>
 #include <bok/core/package/Package.hpp>
 #include <bok/core/package/PackageRegistry.hpp>
@@ -46,7 +46,7 @@ namespace bok {
 
         const FileServiceImpl fileService;
 
-        auto packageService = std::make_unique<PackageServiceImpl>(&fileService);
+        auto packageService = std::make_unique<FSPackageFactory>(&fileService);
         auto packageRegistryFactory = std::make_unique<PackageRegistryFactory>();
         auto packageRegistry = packageRegistryFactory->createPackageRegistry(packageService.get(), BOK_PACKAGE_SEARCH_PATH);
         auto package = packageService->createPackage(baseFolderPath, packageRegistry.get());

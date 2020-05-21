@@ -16,7 +16,7 @@ link_directories(${Boost_LIBRARY_DIRS})
 set (target bok)
 
 set (src
-    ./src/Main.cpp
+    ./src/main.cpp
     ./src/bok/cli/Controller.hpp
     ./src/bok/cli/build/BuildController.cpp
     ./src/bok/cli/build/BuildControllerOptions.hpp

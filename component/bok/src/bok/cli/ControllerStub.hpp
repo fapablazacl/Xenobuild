@@ -16,6 +16,7 @@ namespace bok {
             this->perform(options);
         }
 
+    protected:
         virtual void perform(const ControllerOptions &options) = 0;
     };
 }

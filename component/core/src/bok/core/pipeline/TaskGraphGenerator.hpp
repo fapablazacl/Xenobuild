@@ -19,7 +19,9 @@ namespace bok {
     };
 
     typedef boost::adjacency_list<
-        boost::vecS, boost::vecS, boost::directedS, 
+        boost::vecS, 
+        boost::vecS, 
+        boost::directedS, 
         TaskGraphVertexData, TaskGraphEdgeData
     > TaskGraph;
 

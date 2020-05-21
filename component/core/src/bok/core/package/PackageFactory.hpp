@@ -9,9 +9,9 @@ namespace bok {
     class Package;
     class PackageRegistry;
 
-    class PackageService {
+    class PackageFactory {
     public:
-        virtual ~PackageService();
+        virtual ~PackageFactory();
 
         virtual std::unique_ptr<Package> createPackage(const boost::filesystem::path &packageFilePath, const PackageRegistry *packageRegistry) const = 0;
     }; 

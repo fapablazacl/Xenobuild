@@ -2,7 +2,7 @@
 #ifndef __BOK_SERVICES_PACKAGESERVICEIMPL_HPP__
 #define __BOK_SERVICES_PACKAGESERVICEIMPL_HPP__
 
-#include "PackageService.hpp"
+#include "PackageFactory.hpp"
 
 #include <vector>
 
@@ -12,9 +12,9 @@ namespace bok {
 
     class FileService;
 
-    class PackageServiceImpl : public PackageService {
+    class FSPackageFactory : public PackageFactory {
     public:
-        PackageServiceImpl(const FileService *fileService);
+        FSPackageFactory(const FileService *fileService);
 
         virtual std::unique_ptr<Package> createPackage(const boost::filesystem::path &packageFilePath, const PackageRegistry *packageRegistry) const override;
 
