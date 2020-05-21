@@ -21,21 +21,21 @@ namespace bok {
     typedef boost::adjacency_list<
         boost::vecS, boost::vecS, boost::directedS, 
         DependencyGraphVertexData, DependencyGraphEdgeData
-    > TaskGraph;
+    > DependencyGraph;
 
     class Dag;
     class Package;
     class Component;
-    class TaskGraph {
+    class DependencyGraphGenerator {
     public:
-        virtual ~TaskGraph();
+        virtual ~DependencyGraphGenerator();
 
         [[deprecated]]
         virtual std::unique_ptr<Dag> createBuildDag(Package *package) = 0;
 
-        virtual TaskGraph generate(Component *component) const = 0;
+        virtual DependencyGraph generate(Component *component) const = 0;
 
-        virtual TaskGraph generate(Package *package) const = 0;
+        virtual DependencyGraph generate(Package *package) const = 0;
     };
 }
 

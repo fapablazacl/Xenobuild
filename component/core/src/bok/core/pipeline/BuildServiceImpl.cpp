@@ -36,7 +36,7 @@ namespace bok {
 
     class PathVertexMapper {
     public:
-        PathVertexMapper(TaskGraph &graph_) : graph(graph_) {}
+        PathVertexMapper(DependencyGraph &graph_) : graph(graph_) {}
 
         std::size_t getVD(const boost::filesystem::path &path) {
             if (auto it = pathVertexMap.find(path); it != pathVertexMap.end()) {
@@ -52,7 +52,7 @@ namespace bok {
         }
 
     private:
-        TaskGraph &graph;
+        DependencyGraph &graph;
         std::map<boost::filesystem::path, std::size_t> pathVertexMap;
     };
 
@@ -165,7 +165,7 @@ namespace bok {
     }
 
 
-    TaskGraph BuildServiceImpl::generate(Component *component) const {
+    DependencyGraph BuildServiceImpl::generate(Component *component) const {
         assert(component);
 
         const Linker *linker = m_impl->toolchain->selectLinker(component);
@@ -173,7 +173,7 @@ namespace bok {
             throw std::runtime_error("There is no linker for the supplied component.");
         }
 
-        TaskGraph graph;
+        DependencyGraph graph;
         PathVertexMapper mapper {graph};
 
         const auto moduleVD = mapper.getVD(component->getPath() / component->getName());
@@ -215,7 +215,7 @@ namespace bok {
     }
 
 
-    TaskGraph BuildServiceImpl::generate(Package *package) const {
+    DependencyGraph BuildServiceImpl::generate(Package *package) const {
         assert(package);
 
         return {};
