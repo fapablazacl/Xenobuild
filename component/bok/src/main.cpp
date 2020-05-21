@@ -7,7 +7,7 @@
 #include <bok/cli/Controller.hpp>
 #include <bok/cli/ControllerFactory.hpp>
 
-/*
+
 int main(int argc, char **argv) {
     try {
         if (argc < 2) {
@@ -36,17 +36,6 @@ int main(int argc, char **argv) {
 
     return 0;
 }
-*/
+
 
 // configure --toolchain=vc --build-type=all --var=BoostPath:C:\Boost --var=BoostVersion:1.7.1
-
-
-#include <bok/cli/init/InitController.hpp>
-#include <bok/cli/build/BuildController.hpp>
-#include <bok/cli/configure/ConfigureController.hpp>
-
-int main() {
-    std::cout << "Hola" << std::endl;
-
-    return 0;
-}
