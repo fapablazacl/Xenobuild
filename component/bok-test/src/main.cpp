@@ -7,8 +7,8 @@
 
 int main() {
     // bok::DiskFileScanner{}.scan()
-
     std::cout << CMAKE_CURRENT_SOURCE_DIR << std::endl;
+    
 
     return 0;
 }
