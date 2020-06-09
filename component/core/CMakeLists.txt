@@ -1,19 +1,3 @@
-# Boost
-find_package(Boost
-    REQUIRED
-    COMPONENTS program_options filesystem
-)
-
-include_directories(
-    "./src"
-    ${Boost_INCLUDE_DIRS}
-)
-
-link_directories(${Boost_LIBRARY_DIRS})
-
-
-# NLOHMANN JSON
-find_package(nlohmann_json)
 
 set (target core)
 
@@ -151,4 +135,4 @@ set (sources
 
 add_library(${target} ${sources})
 
-target_link_libraries(${target} yaml-cpp nlohmann_json ${Boost_LIBRARIES})
+target_link_libraries(${target} yaml-cpp ${Boost_LIBRARIES})

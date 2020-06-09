@@ -12,9 +12,10 @@ namespace bok {
 
     struct CompileOptions;
 
-    [[deprecated]]
     struct CompileOutput {
         boost::filesystem::path outputFileRelativePath;
+
+        [[deprecated]]
         DagNode *node = nullptr;
     };
 

@@ -6,6 +6,7 @@
 #include <bok/core/Types.hpp>
 
 namespace bok {
+    //! TODO: Move to the 'utility' module
     class FileScanner {
     public:
         enum ScanType {

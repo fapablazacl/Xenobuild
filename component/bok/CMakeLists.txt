@@ -12,7 +12,6 @@ include_directories(
 
 link_directories(${Boost_LIBRARY_DIRS})
 
-
 set (target bok)
 
 set (src

@@ -12,7 +12,5 @@ namespace bok {
         Package *mainPackage = nullptr;
         std::vector<std::unique_ptr<Package>> packages;
         std::vector<std::unique_ptr<Toolchain>> toolchains;
-
-        static Context create(const path &rootPath);
     };
 }

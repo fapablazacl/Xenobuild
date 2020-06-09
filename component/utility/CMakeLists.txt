@@ -2,7 +2,8 @@
 set (target utility)
 
 set (sources 
-    ./src/bok/utility/DependencyGraph.hpp
+	"./include/bok/utility/string.hpp"
+	"./src/string.cpp"
 )
 
-# add_library(${target} ${sources})
+add_library(${target} ${sources})

@@ -6,4 +6,4 @@ add_definitions(-DCMAKE_CURRENT_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
 
 add_executable(${target} ${sources})
 
-target_link_libraries(${target} core feature)
+target_link_libraries(${target} core feature utility)
