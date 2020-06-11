@@ -77,7 +77,7 @@ namespace bok::ir {
 
             const std::string content = fileService.load(rootFile.string());
 
-            nlohmann::to_json()
+            // nlohmann::to_json()
 
             return {};
         }
@@ -89,7 +89,7 @@ namespace bok::ir {
 }
 
 
-constexpr char* getPackagePath() {
+constexpr const char* getPackagePath() {
     return CMAKE_CURRENT_SOURCE_DIR "\\data\\cpp-core\\01-hello-world";
 }
 

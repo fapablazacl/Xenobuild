@@ -4,6 +4,7 @@
 #include <locale>
 #include <codecvt>
 #include <cassert>
+#include <cstring>
 
 namespace bok {
     std::wstring widen(const std::string &src) {
