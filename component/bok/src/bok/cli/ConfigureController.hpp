@@ -4,7 +4,6 @@
 
 #include <set>
 #include <bok/cli/Controller.hpp>
-#include "ConfigureControllerOptions.hpp"
 
 namespace bok {
     struct Version;

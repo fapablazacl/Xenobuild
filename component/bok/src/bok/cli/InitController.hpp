@@ -3,7 +3,6 @@
 #define __BOK_CLI_INITCONTROLLER_HPP__
 
 #include <bok/cli/Controller.hpp>
-#include "InitControllerOptions.hpp"
 
 namespace bok {
     struct Version;

@@ -2,9 +2,9 @@
 #include "ControllerFactory.hpp"
 
 #include <stdexcept>
-#include <bok/cli/init/InitController.hpp>
-#include <bok/cli/build/BuildController.hpp>
-#include <bok/cli/configure/ConfigureController.hpp>
+#include <bok/cli/InitController.hpp>
+#include <bok/cli/BuildController.hpp>
+#include <bok/cli/ConfigureController.hpp>
 
 namespace bok {
     template<typename ControllerImpl>

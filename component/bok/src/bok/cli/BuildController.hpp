@@ -3,7 +3,6 @@
 #define __BOK_CLI_BUILDCONTROLLER_HPP__
 
 #include <bok/cli/Controller.hpp>
-#include "BuildControllerOptions.hpp"
 
 namespace bok {
     class BuildController : public Controller {
