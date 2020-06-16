@@ -2,7 +2,7 @@
 #ifndef __BOK_CLI_INITCONTROLLER_HPP__
 #define __BOK_CLI_INITCONTROLLER_HPP__
 
-#include <bok/cli/ControllerStub.hpp>
+#include <bok/cli/Controller.hpp>
 #include "InitControllerOptions.hpp"
 
 namespace bok {
@@ -11,11 +11,11 @@ namespace bok {
     /**
      * @brief Setups an initial project structure at the specified directory
      */
-    class InitController : public ControllerStub<InitControllerOptions> {
+    class InitController : public Controller {
     public:
         virtual ~InitController();
 
-        virtual void perform(const InitControllerOptions &options) override;
+        virtual void perform(int argc, char **argv) override;
     };
 }
 

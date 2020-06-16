@@ -8,16 +8,7 @@
 #include <boost/optional.hpp>
 
 namespace bok {
-    struct InitControllerOptions {
-        bool showHelp = false;
-        std::string helpMessage;
 
-        boost::filesystem::path path;
-        std::string packageName;
-        std::string moduleType;
-
-        static InitControllerOptions parse(int argc, char **argv);
-    };
 }
 
 #endif

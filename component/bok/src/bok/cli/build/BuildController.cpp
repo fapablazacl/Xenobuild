@@ -5,7 +5,9 @@
 #include <sstream>
 
 #include <boost/filesystem.hpp>
+#include <boost/program_options.hpp>
 #include <boost/graph/graphviz.hpp>
+#include <boost/optional.hpp>
 
 #include <bok/core/DagNode.hpp>
 #include <bok/core/Dag.hpp>
@@ -24,13 +26,51 @@
 #include <bok/core/toolchain/Toolchain.hpp>
 #include <bok/feature/build/ConfigurationService.hpp>
 
-#include "BuildControllerOptions.hpp"
-
 namespace bok {
-    BuildController::~BuildController() {}
+    struct BuildControllerOptions {
+        bool force = false;
+        bool showHelp = false;
+        std::string helpMessage;
+
+        boost::optional<boost::filesystem::path> sourcePath;
+        boost::optional<boost::filesystem::path> outputPath;
+    };
 
 
-    void BuildController::perform(const BuildControllerOptions &options) {
+    static BuildControllerOptions parse(int argc, char **argv) {
+        boost::program_options::options_description desc("Allowed options for Configure subcommand");
+
+        desc.add_options()
+            ("help", "produce help message")
+            ("force,f", "Force a rebuild")
+        ;
+
+        boost::program_options::variables_map vm;
+        boost::program_options::store(boost::program_options::parse_command_line(argc, argv, desc), vm);
+        boost::program_options::notify(vm);
+
+        BuildControllerOptions options;
+
+        if (vm.count("help")) {
+            std::stringstream ss;
+
+            ss << desc << "\n";
+
+            options.showHelp = true;
+            options.helpMessage = ss.str();
+        }
+        
+        if (vm.count("force")) {
+            options.force = true;
+        }
+
+        return options;
+    }
+
+
+    void BuildController::perform(int argc, char **argv) {
+        const auto options = parse(argc, argv);
+
         if (options.showHelp) {
             std::cout << options.helpMessage;
             return;

@@ -3,11 +3,10 @@
 #define __BOK_CLI_CONFIGURECONTROLLER_HPP__
 
 #include <set>
-#include <bok/cli/ControllerStub.hpp>
+#include <bok/cli/Controller.hpp>
 #include "ConfigureControllerOptions.hpp"
 
 namespace bok {
-
     struct Version;
 
     struct BuildType;
@@ -16,13 +15,13 @@ namespace bok {
     class PackageRegistry;
     class PackageFactory;
 
-    class ConfigureController : public ControllerStub<ConfigureControllerOptions> {
+    class ConfigureController : public Controller {
     public:
         ConfigureController();
 
         virtual ~ConfigureController();
 
-        virtual void perform(const ConfigureControllerOptions &options) override;
+        virtual void perform(int argc, char **argv) override;
 
     private:
         struct Private;

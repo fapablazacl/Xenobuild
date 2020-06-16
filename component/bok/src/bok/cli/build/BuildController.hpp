@@ -2,15 +2,15 @@
 #ifndef __BOK_CLI_BUILDCONTROLLER_HPP__
 #define __BOK_CLI_BUILDCONTROLLER_HPP__
 
-#include <bok/cli/ControllerStub.hpp>
+#include <bok/cli/Controller.hpp>
 #include "BuildControllerOptions.hpp"
 
 namespace bok {
-    class BuildController : public ControllerStub<BuildControllerOptions> {
+    class BuildController : public Controller {
     public:
-        virtual ~BuildController();
+        virtual ~BuildController() {}
 
-        virtual void perform(const BuildControllerOptions &options) override;
+        virtual void perform(int argc, char **argv) override;
     };
 }
 
