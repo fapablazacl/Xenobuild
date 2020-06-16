@@ -1,12 +1,11 @@
 
 #include "ConfigureController.hpp"
-#include <iostream>
 
+#include <iostream>
 #include <boost/filesystem.hpp>
 #include <boost/range/algorithm/find.hpp>
 #include <boost/program_options.hpp>
 #include <boost/algorithm/string.hpp>
-
 #include <bok/core/Constants.hpp>
 #include <bok/core/FileServiceImpl.hpp>
 #include <bok/core/toolchain/Toolchain.hpp>
@@ -17,7 +16,6 @@
 #include <bok/core/package/PackageRegistryFactory.hpp>
 #include <bok/core/package/FSPackageFactory.hpp>
 #include <bok/core/pipeline/BuildCache.hpp>
-
 #include <bok/feature/build/ConfigurationService.hpp>
 
 namespace bok {
@@ -38,83 +36,79 @@ namespace bok {
         std::map<std::string, std::string> variables;
     };
 
-    
-    static ConfigureControllerOptions parse(int argc, char **argv) {
-        namespace po = boost::program_options;
+    struct ConfigureController::Private {
+        ConfigureControllerOptions parse(int argc, char **argv) {
+            namespace po = boost::program_options;
 
-        po::options_description desc("Allowed options for Configure subcommand");
+            po::options_description desc("Allowed options for Configure subcommand");
 
-        desc.add_options()
-            ("help", "produce this message")
-            ("build-type", po::value<std::string>(), "set build type (debug, release, all)")
-            ("toolchain", po::value<std::string>(), "set toolchain (gcc, vc)")
-            ("toolchain-path", po::value<std::string>(), "set toolchain installation path")
-            ("search-path", po::value<std::string>(), "set current search path directory for packages(?)")
-            ("var", po::value<std::vector<std::string>>(), "define required variable used by some packages")
-        ;
+            desc.add_options()
+                ("help", "produce this message")
+                ("build-type", po::value<std::string>(), "set build type (debug, release, all)")
+                ("toolchain", po::value<std::string>(), "set toolchain (gcc, vc)")
+                ("toolchain-path", po::value<std::string>(), "set toolchain installation path")
+                ("search-path", po::value<std::string>(), "set current search path directory for packages(?)")
+                ("var", po::value<std::vector<std::string>>(), "define required variable used by some packages")
+            ;
 
-        po::variables_map vm;
-        po::store(parse_command_line(argc, argv, desc), vm);
-        po::notify(vm);
+            po::variables_map vm;
+            po::store(parse_command_line(argc, argv, desc), vm);
+            po::notify(vm);
 
-        ConfigureControllerOptions options;
+            ConfigureControllerOptions options;
 
-        if (vm.count("help")) {
-            std::stringstream ss;
+            if (vm.count("help")) {
+                std::stringstream ss;
 
-            ss << desc << "\n";
+                ss << desc << "\n";
 
-            options.showHelp = true;
-            options.helpMessage = ss.str();
-        }
-        
-        if (vm.count("build-type")) {
-            options.buildType = vm["build-type"].as<std::string>();
-        } else {
-            options.buildType = "all";
-        }
+                options.showHelp = true;
+                options.helpMessage = ss.str();
+            }
+            
+            if (vm.count("build-type")) {
+                options.buildType = vm["build-type"].as<std::string>();
+            } else {
+                options.buildType = "all";
+            }
 
-        if (vm.count("toolchain")) {
-            options.toolchain = vm["toolchain"].as<std::string>();
-        }
+            if (vm.count("toolchain")) {
+                options.toolchain = vm["toolchain"].as<std::string>();
+            }
 
-        if (vm.count("toolchain-path")) {
-            options.toolchainPath = vm["toolchain-path"].as<std::string>();
-        }
+            if (vm.count("toolchain-path")) {
+                options.toolchainPath = vm["toolchain-path"].as<std::string>();
+            }
 
-        if (vm.count("search-path")) {
-            options.searchPaths.push_back(vm["search-path"].as<std::string>());
-        }
+            if (vm.count("search-path")) {
+                options.searchPaths.push_back(vm["search-path"].as<std::string>());
+            }
 
-        if (vm.count("var")) {
-            auto vars = vm["var"].as<std::vector<std::string>>();
+            if (vm.count("var")) {
+                auto vars = vm["var"].as<std::vector<std::string>>();
 
-            for (const auto &var : vars) {
-                std::vector<std::string> keyValue;
-                boost::split(keyValue, var, boost::is_any_of(":"));
+                for (const auto &var : vars) {
+                    std::vector<std::string> keyValue;
+                    boost::split(keyValue, var, boost::is_any_of(":"));
 
-                const size_t size = keyValue.size();
+                    const size_t size = keyValue.size();
 
-                switch (size) {
+                    switch (size) {
 
-                case 2:
-                    options.variables.insert({keyValue[0], keyValue[1]});
-                    break;
+                    case 2:
+                        options.variables.insert({keyValue[0], keyValue[1]});
+                        break;
 
-                case 3:
-                    options.variables.insert({keyValue[0], keyValue[1] + ":" + keyValue[2]});
-                    break;
+                    case 3:
+                        options.variables.insert({keyValue[0], keyValue[1] + ":" + keyValue[2]});
+                        break;
+                    }
                 }
             }
+
+            return options;
         }
 
-        return options;
-    }
-}
-
-
-namespace bok {
-    struct ConfigureController::Private {
         /**
          * @brief Determine all the build types from the parameter, specially when "All is used".
          * @todo: The values generated should come from the currently selected toolchain
@@ -142,19 +136,22 @@ namespace bok {
 
             return factory.createPackageRegistry(packageService, packageRegistryPath);
         }
+
+
+        
     };
 
 
     ConfigureController::ConfigureController() 
-        : m_impl(new ConfigureController::Private()) {}
+        : impl(new ConfigureController::Private()) {}
 
     ConfigureController::~ConfigureController() {
-        delete m_impl;
+        delete impl;
     }
 
 
     void ConfigureController::perform(int argc, char **argv) {
-        const auto options = parse(argc, argv);
+        const auto options = impl->parse(argc, argv);
         
         if (options.showHelp) {
             std::cout << options.helpMessage;
@@ -204,8 +201,8 @@ namespace bok {
         // setup the configuration requested by the user
         auto config = BuildConfiguration{};
         config.toolchainId = options.toolchain.get();
-        config.arch = m_impl->detectTargetArchitecture();
-        config.buildTypes = m_impl->generateBuildTypes(toolchain, options.buildType);
+        config.arch = impl->detectTargetArchitecture();
+        config.buildTypes = impl->generateBuildTypes(toolchain, options.buildType);
         config.version = toolchain->detectVersion();
 
         if (installationPath) {
@@ -217,7 +214,7 @@ namespace bok {
         // construct the package with the current toolchain, in order grab dependency information
         const FileServiceImpl fileService;
         auto packageService = std::make_unique<FSPackageFactory>(&fileService);
-        auto packageRegistry = m_impl->createPackageRegistry(packageService.get(), BOK_PACKAGE_SEARCH_PATH);
+        auto packageRegistry = impl->createPackageRegistry(packageService.get(), BOK_PACKAGE_SEARCH_PATH);
         auto package = packageService->createPackage(basePackagePath, packageRegistry.get());
 
         // validate required variables for dependencies againts supplied ones

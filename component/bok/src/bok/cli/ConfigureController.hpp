@@ -2,18 +2,9 @@
 #ifndef __BOK_CLI_CONFIGURECONTROLLER_HPP__
 #define __BOK_CLI_CONFIGURECONTROLLER_HPP__
 
-#include <set>
 #include <bok/cli/Controller.hpp>
 
 namespace bok {
-    struct Version;
-
-    struct BuildType;
-    class Toolchain;
-
-    class PackageRegistry;
-    class PackageFactory;
-
     class ConfigureController : public Controller {
     public:
         ConfigureController();
@@ -24,7 +15,7 @@ namespace bok {
 
     private:
         struct Private;
-        Private *m_impl = nullptr;
+        Private *impl = nullptr;
     };
 }
 

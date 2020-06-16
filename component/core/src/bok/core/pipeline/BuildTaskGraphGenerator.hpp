@@ -9,7 +9,7 @@
 
 namespace bok {
     class Toolchain;
-    class LoggingService;
+    class Logger;
     class Component;
     class BuildCache;
     class Command;
@@ -18,7 +18,7 @@ namespace bok {
 
     class BuildTaskGraphGenerator : public TaskGraphGenerator {
     public:
-        BuildTaskGraphGenerator(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, BuildCache* buildCache, LoggingService *logger);
+        BuildTaskGraphGenerator(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, BuildCache* buildCache, Logger *logger);
 
         virtual ~BuildTaskGraphGenerator();
 

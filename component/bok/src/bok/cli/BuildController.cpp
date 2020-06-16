@@ -14,7 +14,7 @@
 #include <bok/core/DagVisitor.hpp>
 #include <bok/core/Constants.hpp>
 #include <bok/core/FileServiceImpl.hpp>
-#include <bok/core/LoggingServiceImpl.hpp>
+#include <bok/core/ConsoleLogger.hpp>
 #include <bok/core/pipeline/BuildTaskGraphGenerator.hpp>
 #include <bok/core/pipeline/BuildCache.hpp>
 #include <bok/core/package/FSPackageFactory.hpp>
@@ -91,7 +91,7 @@ namespace bok {
         auto packageRegistry = packageRegistryFactory->createPackageRegistry(packageService.get(), BOK_PACKAGE_SEARCH_PATH);
         auto package = packageService->createPackage(baseFolderPath, packageRegistry.get());
 
-        LoggingServiceImpl loggingService {"BuildTaskGraphGenerator"};
+        ConsoleLogger logger;;
 
         ConfigurationService configurationService {outputPath, baseFolderPath};
         ConfigurationData configurationData = configurationService.getData();
@@ -118,7 +118,7 @@ namespace bok {
             outputPath / configurationData.currentBuildConfiguration.get().computeIdentifier(), 
             toolchain, 
             buildCache.get(), 
-            &loggingService
+            &logger
         };
 
         /*

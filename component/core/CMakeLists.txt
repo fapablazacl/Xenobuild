@@ -10,11 +10,8 @@ set (sources
     ./src/bok/core/DagVisitor.cpp
     ./src/bok/core/DagNode.cpp
     ./src/bok/core/Constants.hpp
-    ./src/bok/core/LoggingService.hpp
     ./src/bok/core/FileService.cpp
-    ./src/bok/core/LoggingServiceImpl.hpp
     ./src/bok/core/FileTypeService.hpp
-    ./src/bok/core/LoggingServiceImpl.cpp
     ./src/bok/core/Version.cpp
     ./src/bok/core/CommandFactory.cpp
     ./src/bok/core/FileServiceImpl.hpp
@@ -25,7 +22,10 @@ set (sources
     ./src/bok/core/FileService.hpp
     ./src/bok/core/Constants.cpp
     ./src/bok/core/FileTypeService.cpp
-    ./src/bok/core/LoggingService.cpp
+    ./src/bok/core/Logger.cpp
+    ./src/bok/core/Logger.hpp
+    ./src/bok/core/ConsoleLogger.cpp
+    ./src/bok/core/ConsoleLogger.hpp
     ./src/bok/core/Types.hpp
     ./src/bok/core/FileServiceImpl.cpp
     ./src/bok/core/FolderCommand.cpp

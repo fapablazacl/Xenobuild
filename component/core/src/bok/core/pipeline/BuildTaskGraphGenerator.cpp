@@ -6,7 +6,7 @@
 #include <bok/core/Dag.hpp>
 #include <bok/core/DagNode.hpp>
 #include <bok/core/Command.hpp>
-#include <bok/core/LoggingService.hpp>
+#include <bok/core/Logger.hpp>
 #include <bok/core/package/Package.hpp>
 #include <bok/core/package/Module.hpp>
 #include <bok/core/package/Source.hpp>
@@ -62,7 +62,7 @@ namespace bok {
         boost::filesystem::path outputPath;
         Toolchain *toolchain = nullptr;
         BuildCache *buildCache = nullptr;
-        LoggingService *logger = nullptr;
+        Logger *logger = nullptr;
         std::vector<std::unique_ptr<Command>> commandStorage;
 
 
@@ -96,7 +96,7 @@ namespace bok {
     };
 
 
-    BuildTaskGraphGenerator::BuildTaskGraphGenerator(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, BuildCache* buildCache, LoggingService *logger) 
+    BuildTaskGraphGenerator::BuildTaskGraphGenerator(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, BuildCache* buildCache, Logger *logger) 
             : m_impl(new BuildTaskGraphGenerator::Private()) {
         m_impl->basePath = basePath;
         m_impl->outputPath = outputPath;
