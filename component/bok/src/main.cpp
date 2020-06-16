@@ -21,21 +21,20 @@ int main(int argc, char **argv) {
 
         controller->perform(args.size(), args.data());
     
-        return 0;
+        return EXIT_SUCCESS;
     }
-    catch (const std::runtime_error &exp) {
+    catch (std::runtime_error exp) {
         std::cout << exp.what()  << std::endl;
 
-        return 1;
+        return EXIT_FAILURE;
     }
-    catch (const std::exception &exp) {
+    catch (std::exception exp) {
         std::cout << "Exception caught:\n" << exp.what() << std::endl;
 
-        return 2;
+        return EXIT_FAILURE;
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
-
 
 // configure --toolchain=vc --build-type=all --var=BoostPath:C:\Boost --var=BoostVersion:1.7.1
