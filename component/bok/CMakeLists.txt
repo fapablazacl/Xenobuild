@@ -25,8 +25,10 @@ set (src
     ./src/bok/cli/InitController.cpp
     ./src/bok/cli/InitController.hpp
     ./src/bok/cli/ControllerFactory.cpp
-    ./src/bok/cli/ControllerFactory.hpp
+	./src/bok/cli/ControllerFactory.hpp
 )
+
+source_group(\\ FILES ${src})
 
 add_executable(${target} ${src})
 

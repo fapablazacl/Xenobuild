@@ -34,6 +34,18 @@ namespace bok {
 
         boost::optional<boost::filesystem::path> sourcePath;
         boost::optional<boost::filesystem::path> outputPath;
+
+        boost::filesystem::path getRootPath() const {
+            return sourcePath 
+                ? sourcePath.get()
+                : boost::filesystem::current_path();
+        }
+
+        boost::filesystem::path getOutputPath() const {
+            return outputPath
+                ? outputPath.get()
+                : this->getRootPath() / ".bok";
+        }
     };
 
 
@@ -68,6 +80,19 @@ namespace bok {
     }
 
 
+    BuildController::BuildController() {
+        logger = new ConsoleLogger();
+        fileService = new FileServiceImpl();
+        packageFactory = new FSPackageFactory(fileService);
+        packageRegistryFactory = new PackageRegistryFactory();
+        packageRegistry = packageRegistryFactory->createPackageRegistry(packageFactory, BOK_PACKAGE_SEARCH_PATH);
+    }
+
+
+    BuildController::~BuildController() {
+        //NOTE: calls smart ptr's destructors ...
+    }
+
     void BuildController::perform(int argc, char **argv) {
         const auto options = parse(argc, argv);
 
@@ -76,24 +101,12 @@ namespace bok {
             return;
         }
 
-        const boost::filesystem::path baseFolderPath = options.sourcePath 
-            ? options.sourcePath.get()
-            : boost::filesystem::current_path();
+        const auto rootPath = options.getRootPath();
+        const auto outputPath = options.getOutputPath();
 
-        const boost::filesystem::path outputPath = options.outputPath
-            ? options.outputPath.get()
-            : baseFolderPath / ".bok";
+        auto package = packageFactory->createPackage(rootPath, packageRegistry.get());
 
-        const FileServiceImpl fileService;
-
-        auto packageService = std::make_unique<FSPackageFactory>(&fileService);
-        auto packageRegistryFactory = std::make_unique<PackageRegistryFactory>();
-        auto packageRegistry = packageRegistryFactory->createPackageRegistry(packageService.get(), BOK_PACKAGE_SEARCH_PATH);
-        auto package = packageService->createPackage(baseFolderPath, packageRegistry.get());
-
-        ConsoleLogger logger;;
-
-        ConfigurationService configurationService {outputPath, baseFolderPath};
+        ConfigurationService configurationService {outputPath, rootPath};
         ConfigurationData configurationData = configurationService.getData();
 
         if (configurationData.buildConfigurations.size() == 0) {
@@ -110,15 +123,14 @@ namespace bok {
         std::cout << "Building configuration " << configurationData.currentBuildConfiguration.get().computeIdentifier() << " ..." << std::endl;
 
         auto toolchainFactory = std::make_unique<ToolchainFactoryFS>("./toolchain/", boost::filesystem::path{configurationData.currentBuildConfiguration->toolchainPath});
-
         auto toolchain = toolchainFactory->createToolchain(configurationData.currentBuildConfiguration.get().toolchainId);
 
-        BuildTaskGraphGenerator buildService {
-            baseFolderPath, 
+        BuildTaskGraphGenerator buildTaskGraphGenerator {
+            rootPath, 
             outputPath / configurationData.currentBuildConfiguration.get().computeIdentifier(), 
             toolchain, 
-            buildCache.get(), 
-            &logger
+            buildCache.get(),
+            logger
         };
 
         /*
@@ -128,7 +140,7 @@ namespace bok {
             throw std::runtime_error("No modules detected for package '" + package->getName() + "'.");
         }
 
-        auto dependencyGraph = buildService.generate(package->getModules()[0]);
+        auto dependencyGraph = buildTaskGraphGenerator.generate(package->getModules()[0]);
         
         std::fstream fs;
         fs.open("output.dot", std::ios_base::out);
@@ -138,7 +150,7 @@ namespace bok {
         );
         */
 
-        auto dag = buildService.createBuildDag(package.get());
+        auto dag = buildTaskGraphGenerator.createBuildDag(package.get());
         DagVisitor dagVisitor;
         dagVisitor.visit(dag.get());
     }

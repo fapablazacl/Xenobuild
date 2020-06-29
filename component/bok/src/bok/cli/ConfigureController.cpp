@@ -136,9 +136,6 @@ namespace bok {
 
             return factory.createPackageRegistry(packageService, packageRegistryPath);
         }
-
-
-        
     };
 
 
