@@ -3,10 +3,13 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 #include <bok/cli/Controller.hpp>
 
-
 namespace bok {
+    class Package;
+    class Component;
+
     class BuildController2 : public Controller {
     public:
         virtual void perform(int argc, char **argv) override;
@@ -26,5 +29,7 @@ namespace bok {
 
     private:
         PackageIO parse(const std::string &rootFile) const;
+
+        std::unique_ptr<Package> createPackage(const PackageIO &data) const;
     };
 }
