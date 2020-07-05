@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <bok/cli/InitController.hpp>
 #include <bok/cli/BuildController.hpp>
+#include <bok/cli/BuildController2.hpp>
 #include <bok/cli/ConfigureController.hpp>
 
 namespace bok {
@@ -16,7 +17,8 @@ namespace bok {
     };
 
     ControllerFactory::ControllerFactory() {
-        makers["build"] = std::make_unique<ControllerMakerImpl<BuildController>>();
+        // makers["build"] = std::make_unique<ControllerMakerImpl<BuildController>>();
+        makers["build"] = std::make_unique<ControllerMakerImpl<BuildController2>>();
         makers["configure"] = std::make_unique<ControllerMakerImpl<ConfigureController>>();
         makers["init"] = std::make_unique<ControllerMakerImpl<InitController>>();
     }

@@ -20,6 +20,8 @@ set (src
     ./src/bok/cli/Controller.hpp
     ./src/bok/cli/BuildController.cpp
     ./src/bok/cli/BuildController.hpp
+    ./src/bok/cli/BuildController2.cpp
+    ./src/bok/cli/BuildController2.hpp
     ./src/bok/cli/ConfigureController.cpp
     ./src/bok/cli/ConfigureController.hpp
     ./src/bok/cli/InitController.cpp
@@ -38,7 +40,7 @@ else()
     set (PTHREAD_LIB pthread)
 endif()
 
-target_link_libraries(${target} ${Boost_LIBRARIES} ${PTHREAD_LIB} core feature)
+target_link_libraries(${target} ${Boost_LIBRARIES} ${PTHREAD_LIB} core feature yaml-cpp)
 
 install(
     TARGETS ${target}
