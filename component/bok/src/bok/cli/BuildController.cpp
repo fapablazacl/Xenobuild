@@ -91,6 +91,10 @@ namespace bok {
 
     BuildController::~BuildController() {
         //NOTE: calls smart ptr's destructors ...
+        delete packageRegistryFactory;
+        delete packageFactory;
+        delete fileService;
+        delete logger;
     }
 
     void BuildController::perform(int argc, char **argv) {

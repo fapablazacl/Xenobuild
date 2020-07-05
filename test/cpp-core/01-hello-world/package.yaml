@@ -1,0 +1,8 @@
+package:
+  name: "01-hello-world"
+  components:
+    -
+      name: "hello-world"
+      type: "app/cli"
+      language: "c++/17"
+      sources: "./*"
