@@ -48,9 +48,9 @@ target_link_libraries(${target}
 	core-pipeline 
 	core-package
 	core-toolchain 
-	core-toolchain-clang 
-	core-toolchain-gcc 
-	core-toolchain-vc 
+	# core-toolchain-clang 
+	# core-toolchain-gcc 
+	# core-toolchain-vc 
 	feature
 	yaml-cpp
 )

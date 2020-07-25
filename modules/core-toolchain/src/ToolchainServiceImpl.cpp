@@ -7,10 +7,10 @@
 #include <nlohmann/json.hpp>
 
 #include <bok/core/FileService.hpp>
-#include <bok/core/toolchain/ManagedToolchainImpl.hpp>
 #include <bok/core/io/ToolchainEntity.hpp>
 #include <bok/core/io/JsonModel.hpp>
 #include <bok/core/io/Decoder.hpp>
+#include <bok/core/toolchain/Toolchain.hpp>
 
 BOOST_HANA_ADAPT_STRUCT(bok::ToolchainEntity::EnumeratedOption, name, flag);
 BOOST_HANA_ADAPT_STRUCT(bok::ToolchainEntity::Switches, dialects, optimizationLevels, debugInformation, includePath, compile, outputFile, generateBuildDependencies, importLibrary, libraryPath);
@@ -25,7 +25,6 @@ namespace bok {
         this->fileService = fileService;
     }
 
-
     std::unique_ptr<Toolchain> ToolchainServiceImpl::createToolchain(const boost::filesystem::path &definitionFullPath, boost::optional<boost::filesystem::path> installationPath) const {
         const auto toolchainFilePath = definitionFullPath / "toolchain.bok.json";
         const auto toolchainJsonContent = fileService->load(toolchainFilePath.string());
@@ -33,6 +32,7 @@ namespace bok {
 
         const auto toolchainEntity = Decoder<JsonModel, ToolchainEntity>{toolchainJson}.decode();
 
-        return std::make_unique<ManagedToolchainImpl>(toolchainEntity, installationPath);
+        // return std::make_unique<ManagedToolchainImpl>(toolchainEntity, installationPath);
+        return {};
     }
 }

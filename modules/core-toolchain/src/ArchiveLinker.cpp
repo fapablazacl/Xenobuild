@@ -31,6 +31,8 @@ namespace bok {
 
         Command *command = commandFactory->createCommand(commandPath, commandOptions);
 
-        return {archiveOutputPath, command};
+        // return {archiveOutputPath, command};
+
+        return {};
     }
 }

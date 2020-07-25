@@ -71,7 +71,9 @@ namespace bok {
 
             for (const boost::filesystem::path &includePath : component->getIncludePaths()) {
                 const auto resolvedIncludePath = basePath / component->getPath() / includePath;
-                options.includePaths.push_back(resolvedIncludePath.string());
+
+                //! TODO: Rethink the design of this class, to make it work with the Compiler class.
+                // options.includePaths.push_back(resolvedIncludePath.string());
             }
 
             // TODO: Compute this recursively
@@ -79,7 +81,8 @@ namespace bok {
             for (const Component *dependentModule : component->getDependencies()) {
                 CompileOptions dependentOptions = this->computeCompileOptions(dependentModule);
 
-                options.mergeWith(dependentOptions);
+                //! TODO: Rethink the design of this class, to make it work with the new design of the Compiler class.
+                // options.mergeWith(dependentOptions);
             }
 
             return options;
@@ -141,7 +144,9 @@ namespace bok {
                 }
                 
                 CompileOutput compileOutput = compiler->compile(dag.get(), m_impl->outputPath, source, compileOptions);
-                objectFiles.push_back(compileOutput.outputFileRelativePath);
+
+                //! TODO: Rethink the design of this class, to make it work with the new design of the Compiler class.
+                // objectFiles.push_back(compileOutput.outputFileRelativePath);
 
                 if (! m_impl->buildCache->needsRebuild(source->getFilePath())) {
                     continue;

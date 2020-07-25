@@ -8,7 +8,6 @@ set (sources
 	include/bok/core/toolchain/CompilerVersionDetector.hpp
 	include/bok/core/toolchain/Linker.hpp
 	include/bok/core/toolchain/LinkerMock.hpp
-	include/bok/core/toolchain/ManagedToolchainImpl.hpp
 	include/bok/core/toolchain/ModuleChecker.hpp
 	include/bok/core/toolchain/ModuleLinker.hpp
 	include/bok/core/toolchain/ModuleTypeChecker.hpp
@@ -29,7 +28,6 @@ set (sources
 	src/CompilerVersionDetector.cpp
 	src/Linker.cpp
 	src/LinkerMock.cpp
-	src/ManagedToolchainImpl.cpp
 	src/ModuleChecker.cpp
 	src/ModuleLinker.cpp
 	src/ModuleTypeChecker.cpp
