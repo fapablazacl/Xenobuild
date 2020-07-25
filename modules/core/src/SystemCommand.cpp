@@ -1,5 +1,5 @@
 
-#include "SystemCommand.hpp"
+#include <bok/core/SystemCommand.hpp>
 
 #include <iostream>
 #include <stdexcept>

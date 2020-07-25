@@ -1,5 +1,5 @@
 
-#include "Constants.hpp"
+#include <bok/core/Constants.hpp>
 
 namespace bok {
     const char* BOK_PACKAGE_DEFINITION_FILENAME = "package.bok.json";

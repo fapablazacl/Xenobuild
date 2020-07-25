@@ -1,5 +1,5 @@
 
-#include "PackageRegistry.hpp"
+#include <bok/core/package/PackageRegistry.hpp>
 
 #include <iostream>
 #include <bok/core/package/Module.hpp>

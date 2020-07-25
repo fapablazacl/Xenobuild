@@ -40,7 +40,20 @@ else()
     set (PTHREAD_LIB pthread)
 endif()
 
-target_link_libraries(${target} ${Boost_LIBRARIES} ${PTHREAD_LIB} core feature yaml-cpp)
+target_link_libraries(${target} 
+	${Boost_LIBRARIES} 
+	${PTHREAD_LIB} 
+	core 
+	core-io 
+	core-pipeline 
+	core-package
+	core-toolchain 
+	core-toolchain-clang 
+	core-toolchain-gcc 
+	core-toolchain-vc 
+	feature
+	yaml-cpp
+)
 
 install(
     TARGETS ${target}

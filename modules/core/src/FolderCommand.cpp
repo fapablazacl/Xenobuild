@@ -1,5 +1,5 @@
 
-#include "FolderCommand.hpp"
+#include <bok/core/FolderCommand.hpp>
 
 #include <boost/filesystem.hpp>
 

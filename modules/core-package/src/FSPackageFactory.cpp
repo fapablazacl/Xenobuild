@@ -1,5 +1,5 @@
 
-#include "FSPackageFactory.hpp"
+#include <bok/core/package/FSPackageFactory.hpp>
 
 #include <map>
 #include <iostream>

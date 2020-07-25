@@ -1,5 +1,5 @@
 
-#include "ServiceFactoryStub.hpp"
+#include <bok/core/toolchain/ServiceFactoryStub.hpp>
 
 #include <bok/core/toolchain/Compiler.hpp>
 #include <bok/core/toolchain/Linker.hpp>

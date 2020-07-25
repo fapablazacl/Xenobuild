@@ -1,5 +1,5 @@
 
-#include "Module.hpp"
+#include <bok/core/package/Module.hpp>
 
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>

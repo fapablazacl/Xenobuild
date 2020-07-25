@@ -1,5 +1,5 @@
 
-#include "BuildCacheFileSystem.hpp"
+#include <bok/core/pipeline/BuildCacheFileSystem.hpp>
 
 #include <fstream>
 #include <boost/filesystem.hpp>

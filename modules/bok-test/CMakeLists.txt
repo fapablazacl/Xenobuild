@@ -8,4 +8,4 @@ source_group(\\ FILES ${sources})
 
 add_executable(${target} ${sources})
 
-target_link_libraries(${target} core feature utility)
+target_link_libraries(${target} core core-pipeline feature utility)

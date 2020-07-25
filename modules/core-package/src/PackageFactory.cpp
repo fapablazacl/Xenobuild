@@ -1,5 +1,5 @@
 
-#include "PackageFactory.hpp"
+#include <bok/core/package/PackageFactory.hpp>
 
 namespace bok {
     PackageFactory::~PackageFactory() {}

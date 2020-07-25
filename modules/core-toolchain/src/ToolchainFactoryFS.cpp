@@ -1,13 +1,12 @@
 
-#include "ToolchainFactoryFS.hpp"
+#include <bok/core/toolchain/ToolchainFactoryFS.hpp>
 
 #include <stdexcept>
 
 #include <bok/core/Constants.hpp>
 #include <bok/core/FileServiceImpl.hpp>
 #include <bok/core/toolchain/ToolchainServiceImpl.hpp>
-
-#include "ToolchainImpl.hpp"
+#include <bok/core/toolchain/ToolchainImpl.hpp>
 
 namespace bok {
     ToolchainFactoryFS::ToolchainFactoryFS(const boost::filesystem::path &definitionPath, boost::optional<boost::filesystem::path> installationPath) {

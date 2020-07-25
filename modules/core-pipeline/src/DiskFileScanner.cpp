@@ -1,5 +1,5 @@
 
-#include "DiskFileScanner.hpp"
+#include <bok/core/pipeline/DiskFileScanner.hpp>
 
 #include <boost/filesystem.hpp>
 

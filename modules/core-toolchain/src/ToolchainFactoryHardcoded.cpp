@@ -1,14 +1,12 @@
 
-#include "ToolchainFactoryHardcoded.hpp"
+#include <bok/core/toolchain/ToolchainFactoryHardcoded.hpp>
 
 #include <map>
 #include <vector>
 
-#include "Toolchain.hpp"
-#include "Compiler.hpp"
-#include "Linker.hpp"
-#include "vc/ServiceFactoryVC.hpp"
-#include "gcc/ServiceFactoryGCC.hpp"
+#include <bok/core/toolchain/Toolchain.hpp>
+#include <bok/core/toolchain/Compiler.hpp>
+#include <bok/core/toolchain/Linker.hpp>
 
 namespace bok {
     /*

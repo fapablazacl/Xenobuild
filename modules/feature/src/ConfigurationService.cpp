@@ -1,5 +1,5 @@
 
-#include "ConfigurationService.hpp"
+#include <bok/feature/build/ConfigurationService.hpp>
 
 #include <boost/filesystem.hpp>
 #include <boost/hana.hpp>

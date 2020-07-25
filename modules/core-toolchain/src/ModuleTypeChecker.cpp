@@ -1,5 +1,5 @@
 
-#include "ModuleTypeChecker.hpp"
+#include <bok/core/toolchain/ModuleTypeChecker.hpp>
 
 namespace bok {
     ModuleTypeChecker::ModuleTypeChecker(const std::initializer_list<Component::Type> &types) {

@@ -3,9 +3,8 @@
 
 #include <iostream>
 #include <boost/filesystem.hpp>
-
-#include "SystemCommand.hpp"
-#include "FolderCommand.hpp"
+#include <bok/core/SystemCommand.hpp>
+#include <bok/core/FolderCommand.hpp>
 
 namespace bok {
     CommandFactory::~CommandFactory() {}

@@ -1,5 +1,5 @@
 
-#include "ServiceFactoryGCC.hpp"
+#include <bok/core/toolchain/gcc/ServiceFactoryGCC.hpp>
 
 #include <bok/core/Command.hpp>
 #include <bok/core/toolchain/SourceChecker.hpp>

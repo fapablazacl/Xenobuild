@@ -1,5 +1,5 @@
 
-#include "FileScanner.hpp"
+#include <bok/core/pipeline/FileScanner.hpp>
 
 namespace bok {
     FileScanner::~FileScanner() {}

@@ -1,5 +1,5 @@
 
-#include "GCCCompilerVersionDetector.hpp"
+#include <bok/core/toolchain/gcc/GCCCompilerVersionDetector.hpp>
 
 #include <boost/process.hpp>
 #include <boost/algorithm/string.hpp>

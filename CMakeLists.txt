@@ -19,13 +19,13 @@ include_directories(
 
 link_directories(${Boost_LIBRARY_DIRS})
 
-# YAML_BUILD_SHARED_LIBS:BOOL=OFF
-# YAML_CPP_BUILD_CONTRIB:BOOL=OFF
-# YAML_CPP_BUILD_TESTS:BOOL=OFF
-# YAML_CPP_BUILD_TOOLS:BOOL=OFF
-# YAML_CPP_INSTALL:BOOL=OFF
-
 include_directories("dependencies/nlohmann-json-3.7.3/include")
+
+set(YAML_BUILD_SHARED_LIBS OFF CACHE BOOL "" FORCE)
+set(YAML_CPP_BUILD_CONTRIB OFF CACHE BOOL "" FORCE)
+set(YAML_CPP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(YAML_CPP_BUILD_TOOLS OFF CACHE BOOL "" FORCE)
+set(YAML_CPP_INSTALL OFF CACHE BOOL "" FORCE)
 
 add_subdirectory("dependencies/yaml-cpp")
 include_directories("dependencies/yaml-cpp/include")
@@ -34,6 +34,7 @@ add_subdirectory("modules/bok")
 add_subdirectory("modules/core")
 add_subdirectory("modules/core-io")
 add_subdirectory("modules/core-pipeline")
+add_subdirectory("modules/core-package")
 add_subdirectory("modules/core-toolchain")
 add_subdirectory("modules/core-toolchain-clang")
 add_subdirectory("modules/core-toolchain-gcc")

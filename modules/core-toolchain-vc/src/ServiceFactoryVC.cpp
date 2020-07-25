@@ -1,9 +1,8 @@
 
-#include "ServiceFactoryVC.hpp"
+#include <bok/core/toolchain/vc/ServiceFactoryVC.hpp>
 
 #include <bok/core/Command.hpp>
 #include <bok/core/toolchain/SourceChecker.hpp>
-
 #include <bok/core/toolchain/ModuleTypeChecker.hpp>
 #include <bok/core/toolchain/CompilerImpl.hpp>
 #include <bok/core/toolchain/ModuleLinker.hpp>

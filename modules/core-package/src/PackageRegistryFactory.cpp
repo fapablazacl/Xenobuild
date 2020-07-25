@@ -1,10 +1,10 @@
 
-#include "PackageRegistryFactory.hpp"
+#include <bok/core/package/PackageRegistryFactory.hpp>
 
 #include <boost/filesystem.hpp>
+#include <bok/core/package/Package.hpp>
 #include <bok/core/package/PackageFactory.hpp>
-#include "Package.hpp"
-#include "PackageRegistry.hpp"
+#include <bok/core/package/PackageRegistry.hpp>
 
 namespace bok {
     std::unique_ptr<PackageRegistry> PackageRegistryFactory::createPackageRegistry(PackageFactory *packageService, const boost::filesystem::path &packageRegistryPath) const {

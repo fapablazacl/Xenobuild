@@ -1,8 +1,7 @@
 
-#include "ArchiveLinker.hpp"
+#include <bok/core/toolchain/ArchiveLinker.hpp>
 
 #include <iostream>
-
 #include <bok/core/Command.hpp>
 #include <bok/core/CommandFactory.hpp>
 #include <bok/core/package/Package.hpp>
