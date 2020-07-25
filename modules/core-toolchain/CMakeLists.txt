@@ -5,7 +5,6 @@ set (sources
 	include/bok/core/toolchain/ArchiveLinker.hpp
 	include/bok/core/toolchain/Compiler.hpp
 	include/bok/core/toolchain/CompilerMock.hpp
-	include/bok/core/toolchain/CompilerVersionDetector.hpp
 	include/bok/core/toolchain/Linker.hpp
 	include/bok/core/toolchain/LinkerMock.hpp
 	include/bok/core/toolchain/ModuleChecker.hpp
@@ -23,7 +22,6 @@ set (sources
 	src/ArchiveLinker.cpp
 	src/Compiler.cpp
 	src/CompilerMock.cpp
-	src/CompilerVersionDetector.cpp
 	src/Linker.cpp
 	src/LinkerMock.cpp
 	src/ModuleChecker.cpp
