@@ -11,8 +11,6 @@ set (sources
 	include/bok/core/toolchain/ModuleChecker.hpp
 	include/bok/core/toolchain/ModuleLinker.hpp
 	include/bok/core/toolchain/ModuleTypeChecker.hpp
-	include/bok/core/toolchain/ServiceFactory.hpp
-	include/bok/core/toolchain/ServiceFactoryStub.hpp
 	include/bok/core/toolchain/SourceChecker.hpp
 	include/bok/core/toolchain/Toolchain.hpp
 	include/bok/core/toolchain/ToolchainFactory.hpp
@@ -31,8 +29,6 @@ set (sources
 	src/ModuleChecker.cpp
 	src/ModuleLinker.cpp
 	src/ModuleTypeChecker.cpp
-	src/ServiceFactory.cpp
-	src/ServiceFactoryStub.cpp
 	src/SourceChecker.cpp
 	src/Toolchain.cpp
 	src/ToolchainFactory.cpp
