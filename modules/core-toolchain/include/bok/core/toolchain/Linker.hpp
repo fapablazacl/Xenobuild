@@ -1,31 +1,56 @@
 
-#ifndef __BOK_TOOLCHAIN_LINKER_HPP__
-#define __BOK_TOOLCHAIN_LINKER_HPP__
+#pragma once
 
 #include <string>
 #include <vector>
 #include <boost/filesystem/path.hpp>
+#include <bok/core/Command.hpp>
 
 namespace bok {
-    class Command;
-    class Package;
-    class Component;
+    enum class LinkerModuleType {
+        GuiApplication,
+        CliApplication,
+        StaticLibrary,
+        DynamicLibrary
+    };
+
+    struct LinkInput {
+        std::string moduleName;
+        std::string outputPath;
+        std::vector<std::string> objectFiles;
+        LinkerModuleType moduleType;
+        std::vector<std::string> libraryPaths;
+        std::vector<std::string> libraries;
+    };
 
     struct LinkOutput {
         boost::filesystem::path outputModuleRelativePath;
+
+        CommandData linkCommand;
+
+        [[deprecated]]
         Command *command = nullptr;
     };
+
+    struct LinkerOptions {};
+    class Command;
+    class Package;
+    class Component;
 
     class Linker {
     public:
         virtual ~Linker();
 
+        virtual LinkOutput generateLinkOutput(const LinkInput &input) = 0;
+
+        [[deprecated]]
         virtual bool isModuleLinkable(const Component *component) const {
             return false;
         }
 
-        virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Component *component, const std::vector<boost::filesystem::path> &objectFiles) const = 0;
+        [[deprecated]]
+        virtual LinkOutput link(const boost::filesystem::path& outputPath, const Package* package, const Component* component, const std::vector<boost::filesystem::path>& objectFiles) const {
+            return {};
+        }
     };
 }
-
-#endif

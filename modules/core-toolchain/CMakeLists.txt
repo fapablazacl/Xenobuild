@@ -3,12 +3,11 @@ set (target core-toolchain)
 
 set (sources 
 	include/bok/core/toolchain/ArchiveLinker.hpp
-	include/bok/core/toolchain/CompileOptions.hpp
 	include/bok/core/toolchain/Compiler.hpp
-	include/bok/core/toolchain/CompilerImpl.hpp
+	include/bok/core/toolchain/CompilerMock.hpp
 	include/bok/core/toolchain/CompilerVersionDetector.hpp
 	include/bok/core/toolchain/Linker.hpp
-	include/bok/core/toolchain/LinkerImpl.hpp
+	include/bok/core/toolchain/LinkerMock.hpp
 	include/bok/core/toolchain/ManagedToolchainImpl.hpp
 	include/bok/core/toolchain/ModuleChecker.hpp
 	include/bok/core/toolchain/ModuleLinker.hpp
@@ -25,12 +24,11 @@ set (sources
 	include/bok/core/toolchain/ToolchainServiceImpl.hpp
 	
 	src/ArchiveLinker.cpp
-	src/CompileOptions.cpp
 	src/Compiler.cpp
-	src/CompilerImpl.cpp
+	src/CompilerMock.cpp
 	src/CompilerVersionDetector.cpp
 	src/Linker.cpp
-	src/LinkerImpl.cpp
+	src/LinkerMock.cpp
 	src/ManagedToolchainImpl.cpp
 	src/ModuleChecker.cpp
 	src/ModuleLinker.cpp

@@ -46,7 +46,8 @@ namespace bok {
 
         Command *command = commandFactory->createCommand(commandPath, commandOptions);
 
-        return {moduleOutputPath, command};
+        //return {moduleOutputPath, command};
+        return {};
     }
 
     std::vector<std::string> ModuleLinker::computeLibrariesOptions(const std::vector<std::string> &libraries) const {

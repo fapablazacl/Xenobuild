@@ -10,8 +10,8 @@
 #include <bok/core/io/ToolchainEntity.hpp>
 #include <bok/core/toolchain/SourceChecker.hpp>
 #include <bok/core/toolchain/ModuleChecker.hpp>
-#include <bok/core/toolchain/CompilerImpl.hpp>
-#include <bok/core/toolchain/LinkerImpl.hpp>
+#include <bok/core/toolchain/CompilerMock.hpp>
+#include <bok/core/toolchain/LinkerMock.hpp>
 
 
 namespace bok {
