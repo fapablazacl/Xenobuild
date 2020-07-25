@@ -22,6 +22,7 @@ namespace bok {
 
         virtual ~TaskGraphGenerator_Build();
 
+        [[deprecated]]
         std::unique_ptr<Dag> createBuildDag(Package *package) override;
 
         TaskGraph generate(Module *module) const override;

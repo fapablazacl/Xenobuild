@@ -10,7 +10,7 @@ namespace bok {
     public:
         virtual ~ToolchainFactory();
 
-        virtual Toolchain* createToolchain(const std::string &toolchainId) = 0;
+        virtual Toolchain* getToolchain(const std::string &toolchainId) = 0;
     };
 }
 

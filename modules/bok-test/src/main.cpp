@@ -9,45 +9,17 @@
 
 #include <bok/core/FileService_FS.hpp>
 #include <bok/core/pipeline/FileScanner_FS.hpp>
-#include <bok/utility/string.hpp>
+
+#include <bok/utility/WildcardClassifier.hpp>
 
 
 namespace bok {
     enum FILE_TYPE {
-        FT_UNKNOWN , 
         FT_CPP_SOURCE,
         FT_JSON
     };
 
-    class FileClassifier {
-    public:
-        FileClassifier() {
-            typeWildCardMap[FT_CPP_SOURCE] = {
-                "*.cpp", "*.cc", "*.c++", "*.cxx"
-            };
-
-            typeWildCardMap[FT_JSON] = {
-                "*.json"
-            };
-        }
-
-        FILE_TYPE getFileType(const boost::filesystem::path &path) const {
-            const auto file = path.filename().string();
-
-            for (const auto &keyValue : typeWildCardMap) {
-                for (const std::string &pattern : keyValue.second) {
-                    if (wildcard_match(pattern.c_str(), file.c_str())) {
-                        return keyValue.first;
-                    }
-                }
-            }
-
-            return FT_UNKNOWN;
-        }
-
-    private:
-        std::map<FILE_TYPE, std::vector<std::string>> typeWildCardMap;
-    };
+    using FileClassifier = WildcardClassifier<FILE_TYPE>;
 }
 
 namespace bok::ir {
@@ -73,8 +45,6 @@ namespace bok::ir {
     class ContextIRLoader {
     public:
         ContextIR parse(const boost::filesystem::path &rootFile) const {
-            assert(classifier.getFileType(rootFile) == FT_JSON);
-
             const std::string content = fileService.load(rootFile.string());
 
             // nlohmann::to_json()
@@ -96,16 +66,22 @@ constexpr const char* getPackagePath() {
 
 int main() {
     bok::FileClassifier classifier{};
+    classifier.registerCategory(bok::FT_CPP_SOURCE, {"*.cpp", "*.cc", "*.c++", "*.cxx" });
+    classifier.registerCategory(bok::FT_JSON, { "*.json" });
 
     auto filter = [&classifier](const boost::filesystem::path &path) {
-        return classifier.getFileType(path) == bok::FT_CPP_SOURCE;
+        return classifier.getFileType(path.string()) == bok::FT_CPP_SOURCE;
     };
 
     const std::string packagePath = getPackagePath();
     const std::vector<boost::filesystem::path> files = bok::FileScanner_FS{}.scan(packagePath, bok::FileScanner::Recursive, filter);
 
-    for (const auto &file : files) {
-        std::cout << file << std::endl;
+    if (files.empty()) {
+        std::cout << "No files where found in path '" << getPackagePath() << "'" << std::endl;
+    } else {
+        for (const auto& file : files) {
+            std::cout << file << std::endl;
+        }
     }
 
     return 0;

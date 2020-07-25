@@ -19,7 +19,7 @@ namespace bok {
 
         virtual ~ToolchainFactory_FS();
 
-        virtual Toolchain* createToolchain(const std::string &toolchainId) override;
+        virtual Toolchain* getToolchain(const std::string &toolchainId) override;
 
     private:
         std::vector<std::string> detectAvailableToolchainIds() const;

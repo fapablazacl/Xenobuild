@@ -29,7 +29,7 @@ namespace bok {
     ToolchainFactory_FS::~ToolchainFactory_FS() {}
 
 
-    Toolchain* ToolchainFactory_FS::createToolchain(const std::string &toolchainId) {
+    Toolchain* ToolchainFactory_FS::getToolchain(const std::string &toolchainId) {
         if (auto toolchainIt = toolchainMap.find(toolchainId); toolchainIt != toolchainMap.end()) {
             return toolchainIt->second.get();
         }  

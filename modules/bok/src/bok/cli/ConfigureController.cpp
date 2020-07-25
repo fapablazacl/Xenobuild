@@ -193,7 +193,7 @@ namespace bok {
         }
 
         auto factory = std::make_unique<ToolchainFactory_FS>("./toolchain/", installationPath);
-        auto toolchain = factory->createToolchain(options.toolchain.get());
+        auto toolchain = factory->getToolchain(options.toolchain.get());
 
         // setup the configuration requested by the user
         auto config = BuildConfiguration{};

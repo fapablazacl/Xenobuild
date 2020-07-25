@@ -12,7 +12,7 @@ set (sources
 	include/bok/core/toolchain/Toolchain_Mock.hpp
 	include/bok/core/toolchain/ToolchainFactory.hpp
 	include/bok/core/toolchain/ToolchainFactory_FS.hpp
-	include/bok/core/toolchain/ToolchainFactory_Hardcoded.hpp
+	include/bok/core/toolchain/ToolchainFactory_Mock.hpp
 	include/bok/core/toolchain/ToolchainService.hpp
 	include/bok/core/toolchain/ToolchainService_FS.hpp
 	
@@ -26,7 +26,7 @@ set (sources
 	src/Toolchain_Mock.cpp
 	src/ToolchainFactory.cpp
 	src/ToolchainFactory_FS.cpp
-	src/ToolchainFactory_Hardcoded.cpp
+	src/ToolchainFactory_Mock.cpp
 	src/ToolchainService.cpp
 	src/ToolchainService_FS.cpp
 )

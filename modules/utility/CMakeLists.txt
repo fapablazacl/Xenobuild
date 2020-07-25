@@ -3,7 +3,10 @@ set (target utility)
 
 set (sources 
 	"./include/bok/utility/string.hpp"
+	"./include/bok/utility/WildcardClassifier.hpp"
+
 	"./src/string.cpp"
+	"./src/WildcardClassifier.cpp"
 )
 
 add_library(${target} ${sources})

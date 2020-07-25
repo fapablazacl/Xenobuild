@@ -127,7 +127,7 @@ namespace bok {
         std::cout << "Building configuration " << configurationData.currentBuildConfiguration.get().computeIdentifier() << " ..." << std::endl;
 
         auto toolchainFactory = std::make_unique<ToolchainFactory_FS>("./toolchain/", boost::filesystem::path{configurationData.currentBuildConfiguration->toolchainPath});
-        auto toolchain = toolchainFactory->createToolchain(configurationData.currentBuildConfiguration.get().toolchainId);
+        auto toolchain = toolchainFactory->getToolchain(configurationData.currentBuildConfiguration.get().toolchainId);
 
         TaskGraphGenerator_Build buildTaskGraphGenerator {
             rootPath, 
