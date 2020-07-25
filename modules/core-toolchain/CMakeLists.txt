@@ -8,9 +8,6 @@ set (sources
 	include/bok/core/toolchain/Linker_Mock.hpp
 	include/bok/core/toolchain/Linker_Archive.hpp
 	include/bok/core/toolchain/Linker_Module.hpp
-	include/bok/core/toolchain/ModuleChecker.hpp
-	include/bok/core/toolchain/ModuleTypeChecker.hpp
-	include/bok/core/toolchain/SourceChecker.hpp
 	include/bok/core/toolchain/Toolchain.hpp
 	include/bok/core/toolchain/Toolchain_Mock.hpp
 	include/bok/core/toolchain/ToolchainFactory.hpp
@@ -25,9 +22,6 @@ set (sources
 	src/Linker.cpp
 	src/Linker_Mock.cpp
 	src/Linker_Module.cpp
-	src/ModuleChecker.cpp
-	src/ModuleTypeChecker.cpp
-	src/SourceChecker.cpp
 	src/Toolchain.cpp
 	src/Toolchain_Mock.cpp
 	src/ToolchainFactory.cpp
@@ -40,4 +34,4 @@ set (sources
 add_library(${target} ${sources})
 
 target_include_directories(${target} PUBLIC "include/")
-target_link_libraries(${target} core core-io core-package)
+target_link_libraries(${target} core core-io)

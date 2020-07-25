@@ -2,8 +2,6 @@
 #include <bok/core/toolchain/Linker_Module.hpp>
 
 #include <iostream>
-#include <bok/core/package/Package.hpp>
-#include <bok/core/package/Module.hpp>
 #include <bok/core/Command.hpp>
 #include <bok/core/CommandFactory.hpp>
 
@@ -19,22 +17,25 @@ namespace bok {
 
     LinkOutput Linker_Module::link(const boost::filesystem::path &outputPath, const Package *package, const Module *component, const std::vector<boost::filesystem::path> &objectFiles) const {
         // TODO: Change component name based on the current toolchain
-        boost::filesystem::path moduleName = component->getName();
+        boost::filesystem::path moduleName /* = component->getName()*/;
 
+        /*
         if (component->getType() == Module::Type{"library", "dynamic"}) {
             moduleName = "lib" + moduleName.string() + ".so";
         }
+        */
 
-        const boost::filesystem::path moduleOutputPath = outputPath / component->getPath() / moduleName;
+        const boost::filesystem::path moduleOutputPath = outputPath / /*component->getPath() / */ moduleName;
 
         const auto librariesOptions = this->computeLibrariesOptions(this->collectLibraries(package, component));
         const auto libraryPathsOptions = this->computeLibraryPathsOptions(this->collectLibraryPaths(package, component, outputPath));
 
         std::vector<std::string> commandOptions;
 
-        if (component->getType() == Module::Type{"library", "dynamic"}) {
+        /*if (component->getType() == Module::Type{"library", "dynamic"}) {
             commandOptions.push_back(switches.buildSharedLibrary);
         }
+        */
 
         commandOptions.insert(commandOptions.end(), librariesOptions.begin(), librariesOptions.end());
         commandOptions.insert(commandOptions.end(), libraryPathsOptions.begin(), libraryPathsOptions.end());
@@ -75,10 +76,12 @@ namespace bok {
     std::vector<std::string> Linker_Module::collectLibraries(const Package *package, const Module *component) const {
         std::vector<std::string> libraries = configuration.importLibraries;
 
+        /*
         for (const Module *dependency : component->getDependencies()) {
             const std::string library = dependency->getName();
             libraries.push_back(library);
         }
+        */
 
         return libraries;
     }
@@ -86,10 +89,12 @@ namespace bok {
     std::vector<std::string> Linker_Module::collectLibraryPaths(const Package *package, const Module *component, const boost::filesystem::path &outputPath) const {
         std::vector<std::string> paths = configuration.importLibraryPaths;
 
+        /*
         for (const Module *dependency : component->getDependencies()) {
             const std::string path = (outputPath / dependency->getPath()).string();
             paths.push_back(path);
         }
+        */
 
         return paths;
     }
