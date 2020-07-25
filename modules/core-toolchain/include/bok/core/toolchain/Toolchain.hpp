@@ -1,6 +1,7 @@
 
-#ifndef __BOK_CORE_TOOLCHAIN_HPP__
-#define __BOK_CORE_TOOLCHAIN_HPP__
+#pragma once 
+
+#include <vector>
 
 namespace bok {
     class Compiler;
@@ -14,12 +15,20 @@ namespace bok {
     public:
         virtual ~Toolchain();
 
-        virtual const Compiler* selectCompiler(const Source *source) const = 0;
+        virtual std::vector<Compiler*> enumerateCompilers() const = 0;
 
-        virtual const Linker* selectLinker(const Component *component) const = 0;
+        virtual std::vector<Linker*> enumerateLinkers() const = 0;
 
         virtual Version detectVersion() const = 0;
+
+        [[deprecated]]
+        virtual const Compiler* selectCompiler(const Source* source) const {
+            return nullptr;
+        }
+
+        [[deprecated]]
+        virtual const Linker* selectLinker(const Component* component) const {
+            return nullptr;
+        }
     };
 }
-
-#endif
