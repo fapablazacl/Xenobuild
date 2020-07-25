@@ -8,11 +8,11 @@
 #include <map>
 
 namespace bok {
-    class BuildCacheFileSystem : public BuildCache {
+    class BuildCache_FS : public BuildCache {
     public:
-        explicit BuildCacheFileSystem(const path &outputPath, const path &prefixPath);
+        explicit BuildCache_FS(const path &outputPath, const path &prefixPath);
 
-        virtual ~BuildCacheFileSystem();
+        virtual ~BuildCache_FS();
 
         virtual bool needsRebuild(const path &path) const override;
 

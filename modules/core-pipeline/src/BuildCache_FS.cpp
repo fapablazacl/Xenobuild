@@ -1,5 +1,5 @@
 
-#include <bok/core/pipeline/BuildCacheFileSystem.hpp>
+#include <bok/core/pipeline/BuildCache_FS.hpp>
 
 #include <fstream>
 #include <boost/filesystem.hpp>
@@ -7,22 +7,22 @@
 #include <bok/core/Constants.hpp>
 
 namespace bok {
-    BuildCacheFileSystem::BuildCacheFileSystem(const path &outputPath, const path &prefixPath) {
+    BuildCache_FS::BuildCache_FS(const path &outputPath, const path &prefixPath) {
         this->outputPath = outputPath;
         this->prefixPath = prefixPath;
         this->loadCache();
     }
 
 
-    BuildCacheFileSystem::~BuildCacheFileSystem() {}
+    BuildCache_FS::~BuildCache_FS() {}
 
 
-    std::string BuildCacheFileSystem::getCacheFileName() const {
+    std::string BuildCache_FS::getCacheFileName() const {
         return (outputPath / BOK_BUILD_CACHE_FILENAME).string();
     }
 
 
-    void BuildCacheFileSystem::loadCache() {
+    void BuildCache_FS::loadCache() {
         const std::string cacheFileName = this->getCacheFileName();
 
         std::fstream fs;
@@ -46,7 +46,7 @@ namespace bok {
     }
 
 
-    void BuildCacheFileSystem::saveCache() {
+    void BuildCache_FS::saveCache() {
         const std::string cacheFileName = this->getCacheFileName();
 
         std::fstream fs;
@@ -62,7 +62,7 @@ namespace bok {
     }
 
 
-    bool BuildCacheFileSystem::needsRebuild(const boost::filesystem::path &path) const {
+    bool BuildCache_FS::needsRebuild(const boost::filesystem::path &path) const {
         bool modified = true;
 
         const auto timestamp = this->computeMark(path);
@@ -76,7 +76,7 @@ namespace bok {
     }
 
 
-    void BuildCacheFileSystem::markAsBuilt(const boost::filesystem::path &path) {
+    void BuildCache_FS::markAsBuilt(const boost::filesystem::path &path) {
         const auto timestamp = this->computeMark(path);
         const auto relativePath = boost::filesystem::relative(path, prefixPath);
 
@@ -86,7 +86,7 @@ namespace bok {
     }
 
 
-    std::time_t BuildCacheFileSystem::computeMark(const boost::filesystem::path &path) const {
+    std::time_t BuildCache_FS::computeMark(const boost::filesystem::path &path) const {
         return boost::filesystem::last_write_time(path);
     }
 }

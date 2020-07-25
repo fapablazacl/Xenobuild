@@ -15,7 +15,7 @@
 #include <bok/core/Constants.hpp>
 #include <bok/core/FileService_FS.hpp>
 #include <bok/core/Logger_Console.hpp>
-#include <bok/core/pipeline/BuildTaskGraphGenerator.hpp>
+#include <bok/core/pipeline/TaskGraphGenerator_Build.hpp>
 #include <bok/core/pipeline/BuildCache.hpp>
 #include <bok/core/package/PackageFactory_FS.hpp>
 #include <bok/core/package/Module.hpp>
@@ -129,7 +129,7 @@ namespace bok {
         auto toolchainFactory = std::make_unique<ToolchainFactory_FS>("./toolchain/", boost::filesystem::path{configurationData.currentBuildConfiguration->toolchainPath});
         auto toolchain = toolchainFactory->createToolchain(configurationData.currentBuildConfiguration.get().toolchainId);
 
-        BuildTaskGraphGenerator buildTaskGraphGenerator {
+        TaskGraphGenerator_Build buildTaskGraphGenerator {
             rootPath, 
             outputPath / configurationData.currentBuildConfiguration.get().computeIdentifier(), 
             toolchain, 

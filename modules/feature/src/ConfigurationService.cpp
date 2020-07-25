@@ -7,7 +7,7 @@
 #include <bok/core/io/JsonModel.hpp>
 #include <bok/core/io/Decoder.hpp>
 #include <bok/core/io/Encoder.hpp>
-#include <bok/core/pipeline/BuildCacheFileSystem.hpp>
+#include <bok/core/pipeline/BuildCache_FS.hpp>
 
 BOOST_HANA_ADAPT_STRUCT(bok::Version, major, minor, revision);
 BOOST_HANA_ADAPT_STRUCT(bok::BuildConfiguration, toolchainId, arch, version, buildTypes, variables, toolchainPath);
@@ -83,6 +83,6 @@ namespace bok {
 
 
     std::unique_ptr<BuildCache> ConfigurationService::createBuildCache(const BuildConfiguration &config) {
-        return std::make_unique<BuildCacheFileSystem>(outputPath / config.computeIdentifier(), prefixPath);
+        return std::make_unique<BuildCache_FS>(outputPath / config.computeIdentifier(), prefixPath);
     }
 }

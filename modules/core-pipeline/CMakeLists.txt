@@ -2,23 +2,23 @@
 set (target core-pipeline)
 
 set (sources 
-	include/bok/core/pipeline/BuildCacheFileSystem.hpp
 	include/bok/core/pipeline/BuildCache.hpp
-	include/bok/core/pipeline/BuildTaskGraphGenerator.hpp
-	include/bok/core/pipeline/DiskFileScanner.hpp
-	include/bok/core/pipeline/FileScanner.hpp
+	include/bok/core/pipeline/BuildCache_FS.hpp
 	include/bok/core/pipeline/BuildConfiguration.hpp
 	include/bok/core/pipeline/TaskGraphGenerator.hpp
+	include/bok/core/pipeline/TaskGraphGenerator_Build.hpp
 	include/bok/core/pipeline/BuildPipeline.hpp
+	include/bok/core/pipeline/FileScanner.hpp
+	include/bok/core/pipeline/FileScanner_FS.hpp
 
-    src/BuildCacheFileSystem.cpp
     src/BuildCache.cpp
-    src/BuildTaskGraphGenerator.cpp
+	src/BuildCache_FS.cpp
     src/BuildPipeline.cpp
     src/TaskGraphGenerator.cpp
+	src/TaskGraphGenerator_Build.cpp
     src/BuildConfiguration.cpp
     src/FileScanner.cpp
-    src/DiskFileScanner.cpp
+    src/FileScanner_FS.cpp
 )
 
 add_library(${target} ${sources})

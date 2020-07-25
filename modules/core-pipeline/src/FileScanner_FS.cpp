@@ -1,10 +1,10 @@
 
-#include <bok/core/pipeline/DiskFileScanner.hpp>
+#include <bok/core/pipeline/FileScanner_FS.hpp>
 
 #include <boost/filesystem.hpp>
 
 namespace bok {
-    DiskFileScanner::~DiskFileScanner() {}
+    FileScanner_FS::~FileScanner_FS() {}
         
     template<typename Iterator>
     std::vector<path> scan_folder(const path &folder, std::function<bool (const path &)> filter) {
@@ -30,7 +30,7 @@ namespace bok {
     }
 
 
-    std::vector<path> DiskFileScanner::scan(const path &folder, const ScanType scanType, std::function<bool (const path &)> filter) const {
+    std::vector<path> FileScanner_FS::scan(const path &folder, const ScanType scanType, std::function<bool (const path &)> filter) const {
         if (! boost::filesystem::exists(folder)) {
             return {};
         }

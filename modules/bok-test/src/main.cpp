@@ -8,7 +8,7 @@
 #include <nlohmann/json.hpp>
 
 #include <bok/core/FileService_FS.hpp>
-#include <bok/core/pipeline/DiskFileScanner.hpp>
+#include <bok/core/pipeline/FileScanner_FS.hpp>
 #include <bok/utility/string.hpp>
 
 
@@ -102,7 +102,7 @@ int main() {
     };
 
     const std::string packagePath = getPackagePath();
-    const std::vector<boost::filesystem::path> files = bok::DiskFileScanner{}.scan(packagePath, bok::FileScanner::Recursive, filter);
+    const std::vector<boost::filesystem::path> files = bok::FileScanner_FS{}.scan(packagePath, bok::FileScanner::Recursive, filter);
 
     for (const auto &file : files) {
         std::cout << file << std::endl;

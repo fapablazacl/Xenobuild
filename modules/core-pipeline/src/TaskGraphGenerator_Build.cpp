@@ -1,5 +1,5 @@
 
-#include <bok/core/pipeline/BuildTaskGraphGenerator.hpp>
+#include <bok/core/pipeline/TaskGraphGenerator_Build.hpp>
 
 #include <cassert>
 #include <iostream>
@@ -57,7 +57,7 @@ namespace bok {
     };
 
 
-    struct BuildTaskGraphGenerator::Private {
+    struct TaskGraphGenerator_Build::Private {
         boost::filesystem::path basePath;
         boost::filesystem::path outputPath;
         Toolchain *toolchain = nullptr;
@@ -99,8 +99,8 @@ namespace bok {
     };
 
 
-    BuildTaskGraphGenerator::BuildTaskGraphGenerator(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, BuildCache* buildCache, Logger *logger) 
-            : m_impl(new BuildTaskGraphGenerator::Private()) {
+    TaskGraphGenerator_Build::TaskGraphGenerator_Build(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, BuildCache* buildCache, Logger *logger) 
+            : m_impl(new TaskGraphGenerator_Build::Private()) {
         m_impl->basePath = basePath;
         m_impl->outputPath = outputPath;
         m_impl->toolchain = toolchain;
@@ -109,12 +109,12 @@ namespace bok {
     }
 
 
-    BuildTaskGraphGenerator::~BuildTaskGraphGenerator() {
+    TaskGraphGenerator_Build::~TaskGraphGenerator_Build() {
         delete m_impl;
     }
 
 
-    std::unique_ptr<Dag> BuildTaskGraphGenerator::createBuildDag(Package *package) {
+    std::unique_ptr<Dag> TaskGraphGenerator_Build::createBuildDag(Package *package) {
         auto dag = std::make_unique<Dag>();
 
         for (Module *module : package->getModules()) {
@@ -170,7 +170,7 @@ namespace bok {
     }
 
 
-    TaskGraph BuildTaskGraphGenerator::generate(Module *module) const {
+    TaskGraph TaskGraphGenerator_Build::generate(Module *module) const {
         assert(module);
 
         const Linker *linker = m_impl->toolchain->selectLinker(module);
@@ -220,7 +220,7 @@ namespace bok {
     }
 
 
-    TaskGraph BuildTaskGraphGenerator::generate(Package *package) const {
+    TaskGraph TaskGraphGenerator_Build::generate(Package *package) const {
         assert(package);
 
         return {};
