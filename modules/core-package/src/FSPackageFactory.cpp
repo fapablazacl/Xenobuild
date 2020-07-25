@@ -60,7 +60,7 @@ namespace bok {
 
             for (const auto modulePackage : packageEntity.modules) {
                 // TODO: Process "common" modules (serves as a set of base definitions)
-                auto component = package->createModule<Component>();
+                auto component = package->createModule<Module>();
 
                 // component name
                 component->setName(modulePackage.name);
@@ -101,17 +101,17 @@ namespace bok {
         auto package = std::make_unique<Package>(packageEntity.name);
 
         // available component types for C/C++ projects
-        const std::map<std::string, Component::Type> moduleTypeMap = {
-            { "application/cli", Component::Type{"application", "cli"} },
-            { "application/gui", Component::Type{"application", "gui"} },
-            { "library/static", Component::Type{"library", "static"} },
-            { "library/dynamic", Component::Type{"library", "dynamic"} }
+        const std::map<std::string, Module::Type> moduleTypeMap = {
+            { "application/cli", Module::Type{"application", "cli"} },
+            { "application/gui", Module::Type{"application", "gui"} },
+            { "library/static", Module::Type{"library", "static"} },
+            { "library/dynamic", Module::Type{"library", "dynamic"} }
         };
 
         for (int i=0; i<moduleEntities.size(); i++) {
             const ComponentEntity &componentEntity = moduleEntities[i];
 
-            auto component = package->createModule<Component>();
+            auto component = package->createModule<Module>();
 
             component->setName(componentEntity.name);
 
@@ -149,16 +149,16 @@ namespace bok {
         }
 
         // solve component dependencies
-        std::vector<Component*> modules = package->getModules();
+        std::vector<Module*> modules = package->getModules();
 
         for (int i=0; i<moduleEntities.size(); i++) {
             const ComponentEntity &componentEntity = moduleEntities[i];
-            Component *component = modules[i];
+            Module *component = modules[i];
 
             for (const std::string dependency : componentEntity.dependencies) {
                 // Solve the dependency with the modules inside the package
                 bool found = false;
-                for (const Component *dependentModule : modules) {
+                for (const Module *dependentModule : modules) {
                     if (dependency == dependentModule->getName()) {
                         auto dependencies = component->getDependencies();
                         dependencies.push_back(dependentModule);

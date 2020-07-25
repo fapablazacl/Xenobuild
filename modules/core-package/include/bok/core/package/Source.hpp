@@ -7,15 +7,15 @@
 #include <boost/filesystem/path.hpp>
 
 namespace bok {
-    class Component;
+    class Module;
 
     class Source {
     public:
-        explicit Source(const Component *component, const boost::filesystem::path &filePath, const boost::filesystem::path &relativeFilePath);
+        explicit Source(const Module *component, const boost::filesystem::path &filePath, const boost::filesystem::path &relativeFilePath);
 
         ~Source();
 
-        const Component* getModule() const {
+        const Module* getModule() const {
             return component;
         }
 
@@ -32,7 +32,7 @@ namespace bok {
     private:
         boost::filesystem::path filePath;
         boost::filesystem::path relativeFilePath;
-        const Component *component = nullptr;
+        const Module *component = nullptr;
     };
 }
 

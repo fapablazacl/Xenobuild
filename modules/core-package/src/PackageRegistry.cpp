@@ -11,7 +11,7 @@ namespace bok {
     PackageRegistry::~PackageRegistry() {}
 
     void PackageRegistry::registerPackage(std::unique_ptr<Package> package) {
-        for (const Component *component : package->getModules()) {
+        for (const Module *component : package->getModules()) {
             const std::string key = this->getModuleIdentifier(component);
 
             std::cout << "Registered " << key << " component." << std::endl;
@@ -23,12 +23,12 @@ namespace bok {
     }
 
 
-    std::string PackageRegistry::getModuleIdentifier(const Component *component) const {
+    std::string PackageRegistry::getModuleIdentifier(const Module *component) const {
         return component->getPackage()->getName() + "/" + component->getName();
     }
 
 
-    const Component* PackageRegistry::findModule(const std::string &identifier) const {
+    const Module* PackageRegistry::findModule(const std::string &identifier) const {
         auto it = moduleMap.find(identifier);
 
         if (it == moduleMap.end()) {

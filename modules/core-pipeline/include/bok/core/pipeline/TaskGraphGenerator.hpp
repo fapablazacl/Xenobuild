@@ -27,7 +27,7 @@ namespace bok {
 
     class Dag;
     class Package;
-    class Component;
+    class Module;
     class TaskGraphGenerator {
     public:
         virtual ~TaskGraphGenerator();
@@ -35,7 +35,7 @@ namespace bok {
         [[deprecated]]
         virtual std::unique_ptr<Dag> createBuildDag(Package *package) = 0;
 
-        virtual TaskGraph generate(Component *component) const = 0;
+        virtual TaskGraph generate(Module *module) const = 0;
 
         virtual TaskGraph generate(Package *package) const = 0;
     };

@@ -35,7 +35,7 @@ namespace bok {
     struct LinkerOptions {};
     class Command;
     class Package;
-    class Component;
+    class Module;
 
     class Linker {
     public:
@@ -44,12 +44,12 @@ namespace bok {
         virtual LinkOutput generateLinkOutput(const LinkInput &input) = 0;
 
         [[deprecated]]
-        virtual bool isModuleLinkable(const Component *component) const {
+        virtual bool isModuleLinkable(const Module *component) const {
             return false;
         }
 
         [[deprecated]]
-        virtual LinkOutput link(const boost::filesystem::path& outputPath, const Package* package, const Component* component, const std::vector<boost::filesystem::path>& objectFiles) const {
+        virtual LinkOutput link(const boost::filesystem::path& outputPath, const Package* package, const Module* component, const std::vector<boost::filesystem::path>& objectFiles) const {
             return {};
         }
     };

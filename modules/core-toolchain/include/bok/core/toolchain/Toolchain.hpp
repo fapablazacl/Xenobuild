@@ -7,7 +7,7 @@ namespace bok {
     class Compiler;
     class Linker;
     class Source;
-    class Component;
+    class Module;
 
     struct Version;
 
@@ -27,7 +27,7 @@ namespace bok {
         }
 
         [[deprecated]]
-        virtual const Linker* selectLinker(const Component* component) const {
+        virtual const Linker* selectLinker(const Module* component) const {
             return nullptr;
         }
     };

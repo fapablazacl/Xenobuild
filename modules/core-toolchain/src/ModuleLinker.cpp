@@ -17,11 +17,11 @@ namespace bok {
 
     ModuleLinker::~ModuleLinker() {}
 
-    LinkOutput ModuleLinker::link(const boost::filesystem::path &outputPath, const Package *package, const Component *component, const std::vector<boost::filesystem::path> &objectFiles) const {
+    LinkOutput ModuleLinker::link(const boost::filesystem::path &outputPath, const Package *package, const Module *component, const std::vector<boost::filesystem::path> &objectFiles) const {
         // TODO: Change component name based on the current toolchain
         boost::filesystem::path moduleName = component->getName();
 
-        if (component->getType() == Component::Type{"library", "dynamic"}) {
+        if (component->getType() == Module::Type{"library", "dynamic"}) {
             moduleName = "lib" + moduleName.string() + ".so";
         }
 
@@ -32,7 +32,7 @@ namespace bok {
 
         std::vector<std::string> commandOptions;
 
-        if (component->getType() == Component::Type{"library", "dynamic"}) {
+        if (component->getType() == Module::Type{"library", "dynamic"}) {
             commandOptions.push_back(switches.buildSharedLibrary);
         }
 
@@ -72,10 +72,10 @@ namespace bok {
         return options;
     }
 
-    std::vector<std::string> ModuleLinker::collectLibraries(const Package *package, const Component *component) const {
+    std::vector<std::string> ModuleLinker::collectLibraries(const Package *package, const Module *component) const {
         std::vector<std::string> libraries = configuration.importLibraries;
 
-        for (const Component *dependency : component->getDependencies()) {
+        for (const Module *dependency : component->getDependencies()) {
             const std::string library = dependency->getName();
             libraries.push_back(library);
         }
@@ -83,10 +83,10 @@ namespace bok {
         return libraries;
     }
 
-    std::vector<std::string> ModuleLinker::collectLibraryPaths(const Package *package, const Component *component, const boost::filesystem::path &outputPath) const {
+    std::vector<std::string> ModuleLinker::collectLibraryPaths(const Package *package, const Module *component, const boost::filesystem::path &outputPath) const {
         std::vector<std::string> paths = configuration.importLibraryPaths;
 
-        for (const Component *dependency : component->getDependencies()) {
+        for (const Module *dependency : component->getDependencies()) {
             const std::string path = (outputPath / dependency->getPath()).string();
             paths.push_back(path);
         }

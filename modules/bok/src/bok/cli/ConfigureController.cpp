@@ -215,8 +215,8 @@ namespace bok {
         auto package = packageService->createPackage(basePackagePath, packageRegistry.get());
 
         // validate required variables for dependencies againts supplied ones
-        for (const Component *component : package->getModules()) {
-            for (const Component *dependency : component->getDependencies()) {
+        for (const Module *component : package->getModules()) {
+            for (const Module *dependency : component->getDependencies()) {
                 std::vector<PackageVariable> variables = dependency->getPackage()->getVariables();
 
                 for (const PackageVariable &variable : variables) {

@@ -7,55 +7,55 @@
 #include <bok/core/package/Source.hpp>
 
 namespace bok {
-    Component::Component(Package *package) {
+    Module::Module(Package *package) {
         this->package = package;
     }
 
 
-    Component::~Component() {}
+    Module::~Module() {}
 
 
-    void Component::setName(const std::string &name) {
+    void Module::setName(const std::string &name) {
         this->name = name;
     }
 
 
-    void Component::setPath(const boost::filesystem::path &path) {
+    void Module::setPath(const boost::filesystem::path &path) {
         this->path = path;
     }
 
 
-    void Component::setType(const Component::Type type) {
+    void Module::setType(const Module::Type type) {
         this->type = type;
     }
 
 
-    void Component::setVersion(const Version &version) {
+    void Module::setVersion(const Version &version) {
         this->version = version;
     }
 
 
-    void Component::setSourcePaths(const std::vector<boost::filesystem::path> &sourcePaths) {
+    void Module::setSourcePaths(const std::vector<boost::filesystem::path> &sourcePaths) {
         this->sourcePaths = sourcePaths;
     }
 
 
-    void Component::setIncludePaths(const std::vector<boost::filesystem::path> &includePaths) {
+    void Module::setIncludePaths(const std::vector<boost::filesystem::path> &includePaths) {
         this->includePaths = includePaths;
     }
 
 
-    void Component::setDependencies(const std::vector<const Component*> &dependentModules) {
+    void Module::setDependencies(const std::vector<const Module*> &dependentModules) {
         dependencies = dependentModules; 
     }
 
 
-    void Component::setLanguage(const Language &lang) {
+    void Module::setLanguage(const Language &lang) {
         language = lang;
     }
 
 
-    void Component::rescanSources(const boost::filesystem::path &baseFolder) {
+    void Module::rescanSources(const boost::filesystem::path &baseFolder) {
         sources.clear();
 
         for (const boost::filesystem::path &sourcePath : sourcePaths) {
@@ -88,7 +88,7 @@ namespace bok {
     }
 
 
-    std::vector<Source*> Component::getSources() const {
+    std::vector<Source*> Module::getSources() const {
         std::vector<Source*> result;
 
         for (auto &source : sources) {
@@ -99,17 +99,17 @@ namespace bok {
     }
 
 
-    void Component::setLibraryPaths(const std::vector<boost::filesystem::path> &libraryPaths) {
+    void Module::setLibraryPaths(const std::vector<boost::filesystem::path> &libraryPaths) {
         this->libraryPaths = libraryPaths;
     }
 
 
-    void Component::setLibraries(const std::vector<std::string> &libraries) {
+    void Module::setLibraries(const std::vector<std::string> &libraries) {
         this->libraries = libraries;
     }
 
 
-    std::vector<boost::filesystem::path> Component::solveLibraryPaths(const std::map<std::string, std::string> &variableMap) const {
+    std::vector<boost::filesystem::path> Module::solveLibraryPaths(const std::map<std::string, std::string> &variableMap) const {
         if (! this->getPackage()->validateVariableMap(variableMap)) {
             throw std::runtime_error("Missing definition variables, required for the current Module");
         }
@@ -130,7 +130,7 @@ namespace bok {
     }
 
 
-    std::vector<boost::filesystem::path> Component::solveIncludePaths(const std::map<std::string, std::string> &variableMap) const {
+    std::vector<boost::filesystem::path> Module::solveIncludePaths(const std::map<std::string, std::string> &variableMap) const {
         if (! this->getPackage()->validateVariableMap(variableMap)) {
             throw std::runtime_error("Missing definition variables, required for the current Module");
         }
@@ -151,7 +151,7 @@ namespace bok {
     }
 
 
-    std::vector<std::string> Component::solveLibraries(const std::map<std::string, std::string> &variableMap) const {
+    std::vector<std::string> Module::solveLibraries(const std::map<std::string, std::string> &variableMap) const {
         if (! this->getPackage()->validateVariableMap(variableMap)) {
             throw std::runtime_error("Missing definition variables, required for the current Module");
         }
@@ -171,7 +171,7 @@ namespace bok {
     }
 
 
-    std::string Component::solveVariable(const std::string &variableTemplate, const std::map<std::string, std::string> &variableMap) const {
+    std::string Module::solveVariable(const std::string &variableTemplate, const std::map<std::string, std::string> &variableMap) const {
         std::string result = variableTemplate;
 
         for (const PackageVariable variable: this->getPackage()->getVariables()) {

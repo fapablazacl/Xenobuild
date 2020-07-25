@@ -9,7 +9,7 @@
 
 namespace bok {
     class Package;
-    class Component;
+    class Module;
 
     /**
      * @brief Contains a package registry, for storing all the stock packages offered by BORC.
@@ -25,14 +25,14 @@ namespace bok {
 
         void registerPackage(std::unique_ptr<Package> package);
 
-        const Component* findModule(const std::string &identifier) const;
+        const Module* findModule(const std::string &identifier) const;
 
     private:
-        std::string getModuleIdentifier(const Component *component) const;
+        std::string getModuleIdentifier(const Module *component) const;
 
     private:
         std::vector<std::unique_ptr<Package>> packages;
-        std::map<std::string, const Component*> moduleMap;
+        std::map<std::string, const Module*> moduleMap;
     };
 }
 

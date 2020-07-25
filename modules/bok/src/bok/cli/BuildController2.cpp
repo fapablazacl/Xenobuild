@@ -57,7 +57,7 @@ namespace bok {
         auto package = std::make_unique<Package>(data.name);
 
         for (const auto &componentData : data.components) {
-            auto component = package->createModule<Component>();
+            auto component = package->createModule<Module>();
         }
 
         return package;

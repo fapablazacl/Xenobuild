@@ -3,12 +3,12 @@
 #define __BOK_TOOLCHAIN_MODULECHECKER_HPP__
 
 namespace bok {
-    class Component;
+    class Module;
     class ModuleChecker {
     public:
         virtual ~ModuleChecker();
 
-        virtual bool check(const Component *component) const = 0;
+        virtual bool check(const Module *component) const = 0;
     };
 }
 

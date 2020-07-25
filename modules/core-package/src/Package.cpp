@@ -11,8 +11,8 @@ namespace bok {
     Package::~Package() {}
 
 
-    std::vector<Component*> Package::getModules() const {
-        std::vector<Component*> result;
+    std::vector<Module*> Package::getModules() const {
+        std::vector<Module*> result;
 
         for (auto &component : modules) {
             result.push_back(component.get());

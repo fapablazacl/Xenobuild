@@ -8,7 +8,7 @@
 
 namespace bok {
     class Package;
-    class Component;
+    class Module;
 
     class BuildController2 : public Controller {
     public:

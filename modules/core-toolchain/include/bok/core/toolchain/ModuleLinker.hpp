@@ -12,7 +12,7 @@ namespace bok {
     class Command;
     class CommandFactory;
     class Package;
-    class Component;
+    class Module;
 
     struct LinkerSwitches {
         std::string buildSharedLibrary;
@@ -36,11 +36,11 @@ namespace bok {
 
         virtual ~ModuleLinker();
 
-        virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Component *component, const std::vector<boost::filesystem::path> &objectFiles) const override;
+        virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Module *component, const std::vector<boost::filesystem::path> &objectFiles) const override;
 
     private:
-        std::vector<std::string> collectLibraries(const Package *package, const Component *component) const;
-        std::vector<std::string> collectLibraryPaths(const Package *package, const Component *component, const boost::filesystem::path &outputPath) const;
+        std::vector<std::string> collectLibraries(const Package *package, const Module *component) const;
+        std::vector<std::string> collectLibraryPaths(const Package *package, const Module *component, const boost::filesystem::path &outputPath) const;
         
         std::vector<std::string> computeLibrariesOptions(const std::vector<std::string> &libraries) const;
         std::vector<std::string> computeLibraryPathsOptions(const std::vector<std::string> &libraryPaths) const;

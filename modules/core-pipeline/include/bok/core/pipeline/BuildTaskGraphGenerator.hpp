@@ -10,7 +10,7 @@
 namespace bok {
     class Toolchain;
     class Logger;
-    class Component;
+    class Module;
     class BuildCache;
     class Command;
 
@@ -24,7 +24,7 @@ namespace bok {
 
         std::unique_ptr<Dag> createBuildDag(Package *package) override;
 
-        TaskGraph generate(Component *component) const override;
+        TaskGraph generate(Module *module) const override;
 
         TaskGraph generate(Package *package) const override;
 
