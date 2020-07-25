@@ -8,11 +8,11 @@
 #include <bok/core/Command.hpp>
 
 namespace bok {
-    class SystemCommand : public Command {
+    class Command_System : public Command {
     public:
-        explicit SystemCommand(const std::string &base);
+        explicit Command_System(const std::string &base);
 
-        explicit SystemCommand(const std::string &base, const std::vector<std::string> &options);
+        explicit Command_System(const std::string &base, const std::vector<std::string> &options);
 
         virtual void execute() override;
 

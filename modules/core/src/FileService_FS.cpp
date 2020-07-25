@@ -1,13 +1,13 @@
 
-#include <bok/core/FileServiceImpl.hpp>
+#include <bok/core/FileService_FS.hpp>
 
 #include <fstream>
 
 namespace bok {
-    FileServiceImpl::~FileServiceImpl() {}
+    FileService_FS::~FileService_FS() {}
 
 
-    std::string FileServiceImpl::load(const std::string &filePath) const {
+    std::string FileService_FS::load(const std::string &filePath) const {
         typedef std::istreambuf_iterator<char> fstream_iterator;
 
         std::fstream fs;
@@ -26,7 +26,7 @@ namespace bok {
     }
 
 
-    void FileServiceImpl::save(const std::string &filePath, const std::string &content) const {
+    void FileService_FS::save(const std::string &filePath, const std::string &content) const {
         std::fstream fs;
 
         fs.open(filePath.c_str(), std::ios_base::out);
@@ -42,7 +42,7 @@ namespace bok {
     }
 
 
-    void FileServiceImpl::touch(const std::string &filePath) const {
+    void FileService_FS::touch(const std::string &filePath) const {
         std::ofstream os;
         os.open(filePath.c_str(), std::ios_base::out);
         os.close();

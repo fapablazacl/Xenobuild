@@ -3,7 +3,7 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/hana.hpp>
-#include <bok/core/FileServiceImpl.hpp>
+#include <bok/core/FileService_FS.hpp>
 #include <bok/core/io/JsonModel.hpp>
 #include <bok/core/io/Decoder.hpp>
 #include <bok/core/io/Encoder.hpp>
@@ -56,7 +56,7 @@ namespace bok {
         const auto configFilePath = outputPath / "configuration.json";
 
         if (boost::filesystem::exists(configFilePath)) {
-            auto fileService = FileServiceImpl{};
+            auto fileService = FileService_FS{};
 
             const std::string configurationJsonContent = fileService.load(configFilePath.string());
             const nlohmann::json configurationJson = nlohmann::json::parse(configurationJsonContent);
@@ -76,7 +76,7 @@ namespace bok {
 
         const std::string configurationJsonContent = configurationJson.dump(4);
 
-        auto fileService = FileServiceImpl{};
+        auto fileService = FileService_FS{};
 
         fileService.save(configFilePath.string(), configurationJsonContent);
     }

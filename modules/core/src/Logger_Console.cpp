@@ -1,10 +1,10 @@
 
-#include <bok/core/ConsoleLogger.hpp>
+#include <bok/core/Logger_Console.hpp>
 
 #include <iostream>
 
 namespace bok {
-    void ConsoleLogger::message(const MessageType type, const std::string &text) {
+    void Logger_Console::message(const MessageType type, const std::string &text) {
         std::string prefix;
 
         switch (type) {

@@ -8,7 +8,7 @@
 
 #include <bok/core/Constants.hpp>
 #include <bok/core/Version.hpp>
-#include <bok/core/FileServiceImpl.hpp>
+#include <bok/core/FileService_FS.hpp>
 #include <bok/core/io/PackageEntity.hpp>
 #include <bok/core/io/ComponentEntity.hpp>
 #include <bok/core/io/JsonModel.hpp>
@@ -127,7 +127,7 @@ namespace bok {
                 // create the sample file
                 const auto sourceFilePath = modulePath / sourcePath.path / "Main.cpp";
 
-                auto fileService = FileServiceImpl{};
+                auto fileService = FileService_FS{};
 
                 fileService.save(sourceFilePath.string() , R"(
 #include <iostream>

@@ -1,18 +1,18 @@
 
-#include <bok/core/SystemCommand.hpp>
+#include <bok/core/Command_System.hpp>
 
 #include <iostream>
 #include <stdexcept>
 #include <boost/algorithm/string/join.hpp>
 
 namespace bok {
-    SystemCommand::SystemCommand(const std::string &base)
+    Command_System::Command_System(const std::string &base)
         : _base(base) {}
 
-    SystemCommand::SystemCommand(const std::string &base, const std::vector<std::string> &options)
+    Command_System::Command_System(const std::string &base, const std::vector<std::string> &options)
         : _base(base), _options(options) {}
 
-    void SystemCommand::execute() {
+    void Command_System::execute() {
         // const std::string systemCommand = _base + " " + join(_options, " ");
         const std::string systemCommand = _base + " " + boost::algorithm::join(_options, " ");
 

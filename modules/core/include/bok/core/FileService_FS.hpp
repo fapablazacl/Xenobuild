@@ -7,9 +7,9 @@
 #include "FileService.hpp"
 
 namespace bok {
-    class FileServiceImpl : public FileService {
+    class FileService_FS : public FileService {
     public:
-        virtual ~FileServiceImpl();
+        virtual ~FileService_FS();
 
         virtual std::string load(const std::string &filePath) const override;
 

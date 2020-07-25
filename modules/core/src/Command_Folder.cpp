@@ -1,16 +1,16 @@
 
-#include <bok/core/FolderCommand.hpp>
+#include <bok/core/Command_Folder.hpp>
 
 #include <boost/filesystem.hpp>
 
 namespace bok {
-    FolderCommand::FolderCommand(const boost::filesystem::path &path, const PathCommand pathCommand) {
+    Command_Folder::Command_Folder(const boost::filesystem::path &path, const PathCommand pathCommand) {
         this->path = path;
         this->pathCommand = pathCommand;
     }
 
 
-    void FolderCommand::execute() {
+    void Command_Folder::execute() {
         switch (pathCommand) {
             case PathCommand::Create: 
                 boost::filesystem::create_directories(path); 

@@ -7,9 +7,9 @@
 #include <boost/filesystem/path.hpp>
 
 namespace bok {
-    class FolderCommand : public Command {
+    class Command_Folder : public Command {
     public:
-        explicit FolderCommand(const boost::filesystem::path &path, const PathCommand pathCommand);
+        explicit Command_Folder(const boost::filesystem::path &path, const PathCommand pathCommand);
 
         virtual void execute() override;
 

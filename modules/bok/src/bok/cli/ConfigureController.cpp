@@ -7,7 +7,7 @@
 #include <boost/program_options.hpp>
 #include <boost/algorithm/string.hpp>
 #include <bok/core/Constants.hpp>
-#include <bok/core/FileServiceImpl.hpp>
+#include <bok/core/FileService_FS.hpp>
 #include <bok/core/toolchain/Toolchain.hpp>
 #include <bok/core/toolchain/ToolchainFactory_FS.hpp>
 #include <bok/core/package/Package.hpp>
@@ -209,7 +209,7 @@ namespace bok {
         std::cout << "Detected compiler version: " << std::string(config.version) << std::endl;
 
         // construct the package with the current toolchain, in order grab dependency information
-        const FileServiceImpl fileService;
+        const FileService_FS fileService;
         auto packageService = std::make_unique<PackageFactory_FS>(&fileService);
         auto packageRegistry = impl->createPackageRegistry(packageService.get(), BOK_PACKAGE_SEARCH_PATH);
         auto package = packageService->createPackage(basePackagePath, packageRegistry.get());

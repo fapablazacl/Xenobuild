@@ -7,7 +7,7 @@
 #include <boost/filesystem.hpp>
 
 #include <bok/core/Constants.hpp>
-#include <bok/core/FileServiceImpl.hpp>
+#include <bok/core/FileService_FS.hpp>
 #include <bok/core/package/Package.hpp>
 #include <bok/core/package/PackageRegistry.hpp>
 #include <bok/core/package/Module.hpp>

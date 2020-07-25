@@ -4,14 +4,14 @@
 #include <stdexcept>
 
 #include <bok/core/Constants.hpp>
-#include <bok/core/FileServiceImpl.hpp>
+#include <bok/core/FileService_FS.hpp>
 #include <bok/core/toolchain/ToolchainService_FS.hpp>
 
 namespace bok {
     ToolchainFactory_FS::ToolchainFactory_FS(const boost::filesystem::path &definitionPath, boost::optional<boost::filesystem::path> installationPath) {
         this->definitionPath = definitionPath;
 
-        FileServiceImpl fileService;
+        FileService_FS fileService;
         ToolchainService_FS toolchainService(&fileService);
 
         // TODO: Add auto discovery via reading the bok.json

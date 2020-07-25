@@ -13,8 +13,8 @@
 #include <bok/core/Dag.hpp>
 #include <bok/core/DagVisitor.hpp>
 #include <bok/core/Constants.hpp>
-#include <bok/core/FileServiceImpl.hpp>
-#include <bok/core/ConsoleLogger.hpp>
+#include <bok/core/FileService_FS.hpp>
+#include <bok/core/Logger_Console.hpp>
 #include <bok/core/pipeline/BuildTaskGraphGenerator.hpp>
 #include <bok/core/pipeline/BuildCache.hpp>
 #include <bok/core/package/PackageFactory_FS.hpp>
@@ -81,8 +81,8 @@ namespace bok {
 
 
     BuildController::BuildController() {
-        logger = new ConsoleLogger();
-        fileService = new FileServiceImpl();
+        logger = new Logger_Console();
+        fileService = new FileService_FS();
         packageFactory = new PackageFactory_FS(fileService);
         packageRegistryFactory = new PackageRegistryFactory();
         packageRegistry = packageRegistryFactory->createPackageRegistry(packageFactory, BOK_PACKAGE_SEARCH_PATH);

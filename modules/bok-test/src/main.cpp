@@ -7,7 +7,7 @@
 
 #include <nlohmann/json.hpp>
 
-#include <bok/core/FileServiceImpl.hpp>
+#include <bok/core/FileService_FS.hpp>
 #include <bok/core/pipeline/DiskFileScanner.hpp>
 #include <bok/utility/string.hpp>
 
@@ -84,7 +84,7 @@ namespace bok::ir {
 
     private:
         FileClassifier classifier;
-        FileServiceImpl fileService;
+        FileService_FS fileService;
     };
 }
 
