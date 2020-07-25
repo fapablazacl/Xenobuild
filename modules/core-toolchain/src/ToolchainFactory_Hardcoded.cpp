@@ -1,5 +1,5 @@
 
-#include <bok/core/toolchain/ToolchainFactoryHardcoded.hpp>
+#include <bok/core/toolchain/ToolchainFactory_Hardcoded.hpp>
 
 #include <map>
 #include <vector>
@@ -50,18 +50,18 @@ namespace bok {
     */
 
 
-    struct ToolchainFactoryHardcoded::Impl {
+    struct ToolchainFactory_Hardcoded::Impl {
         std::map<std::string, boost::filesystem::path> installationPath;
         std::vector<std::unique_ptr<Toolchain>> toolchains;
     };
 
-    ToolchainFactoryHardcoded::ToolchainFactoryHardcoded() : impl(new ToolchainFactoryHardcoded::Impl()) {
+    ToolchainFactory_Hardcoded::ToolchainFactory_Hardcoded() : impl(new ToolchainFactory_Hardcoded::Impl()) {
 
     }
 
-    ToolchainFactoryHardcoded::~ToolchainFactoryHardcoded() {}
+    ToolchainFactory_Hardcoded::~ToolchainFactory_Hardcoded() {}
 
-    Toolchain* ToolchainFactoryHardcoded::createToolchain(const std::string &toolchainId) {
+    Toolchain* ToolchainFactory_Hardcoded::createToolchain(const std::string &toolchainId) {
         return nullptr;
     }
 }

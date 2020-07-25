@@ -30,11 +30,11 @@ namespace bok {
         LinkerConfiguration() {}
     };
 
-    class ModuleLinker : public Linker {
+    class Linker_Module : public Linker {
     public:
-        explicit ModuleLinker(CommandFactory *commandFactory, const std::string &commandPath, const LinkerSwitches &switches, const LinkerConfiguration &configuration);
+        explicit Linker_Module(CommandFactory *commandFactory, const std::string &commandPath, const LinkerSwitches &switches, const LinkerConfiguration &configuration);
 
-        virtual ~ModuleLinker();
+        virtual ~Linker_Module();
 
         virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Module *component, const std::vector<boost::filesystem::path> &objectFiles) const override;
 

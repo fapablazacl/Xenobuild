@@ -1,5 +1,5 @@
 
-#include <bok/core/toolchain/LinkerMock.hpp>
+#include <bok/core/toolchain/Linker_Mock.hpp>
 
 #include <boost/optional.hpp>
 #include <bok/core/CommandFactory.hpp>
@@ -16,7 +16,7 @@ namespace bok {
         }
     }
 
-    LinkOutput LinkerMock::generateLinkOutput(const LinkInput& input) {
+    LinkOutput Linker_Mock::generateLinkOutput(const LinkInput& input) {
         LinkOutput output;
 
         output.linkCommand.name = "link-c++";

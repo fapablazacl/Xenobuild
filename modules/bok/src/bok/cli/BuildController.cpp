@@ -22,7 +22,7 @@
 #include <bok/core/package/Package.hpp>
 #include <bok/core/package/PackageRegistry.hpp>
 #include <bok/core/package/PackageRegistryFactory.hpp>
-#include <bok/core/toolchain/ToolchainFactoryFS.hpp>
+#include <bok/core/toolchain/ToolchainFactory_FS.hpp>
 #include <bok/core/toolchain/Toolchain.hpp>
 #include <bok/feature/build/ConfigurationService.hpp>
 
@@ -126,7 +126,7 @@ namespace bok {
 
         std::cout << "Building configuration " << configurationData.currentBuildConfiguration.get().computeIdentifier() << " ..." << std::endl;
 
-        auto toolchainFactory = std::make_unique<ToolchainFactoryFS>("./toolchain/", boost::filesystem::path{configurationData.currentBuildConfiguration->toolchainPath});
+        auto toolchainFactory = std::make_unique<ToolchainFactory_FS>("./toolchain/", boost::filesystem::path{configurationData.currentBuildConfiguration->toolchainPath});
         auto toolchain = toolchainFactory->createToolchain(configurationData.currentBuildConfiguration.get().toolchainId);
 
         BuildTaskGraphGenerator buildTaskGraphGenerator {

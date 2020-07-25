@@ -1,19 +1,18 @@
 
-#include <bok/core/toolchain/ToolchainFactoryFS.hpp>
+#include <bok/core/toolchain/ToolchainFactory_FS.hpp>
 
 #include <stdexcept>
 
 #include <bok/core/Constants.hpp>
 #include <bok/core/FileServiceImpl.hpp>
-#include <bok/core/toolchain/ToolchainServiceImpl.hpp>
-#include <bok/core/toolchain/ToolchainImpl.hpp>
+#include <bok/core/toolchain/ToolchainService_FS.hpp>
 
 namespace bok {
-    ToolchainFactoryFS::ToolchainFactoryFS(const boost::filesystem::path &definitionPath, boost::optional<boost::filesystem::path> installationPath) {
+    ToolchainFactory_FS::ToolchainFactory_FS(const boost::filesystem::path &definitionPath, boost::optional<boost::filesystem::path> installationPath) {
         this->definitionPath = definitionPath;
 
         FileServiceImpl fileService;
-        ToolchainServiceImpl toolchainService(&fileService);
+        ToolchainService_FS toolchainService(&fileService);
 
         // TODO: Add auto discovery via reading the bok.json
         const std::vector<std::string> toolchainIds = this->detectAvailableToolchainIds();
@@ -27,10 +26,10 @@ namespace bok {
     }
 
 
-    ToolchainFactoryFS::~ToolchainFactoryFS() {}
+    ToolchainFactory_FS::~ToolchainFactory_FS() {}
 
 
-    Toolchain* ToolchainFactoryFS::createToolchain(const std::string &toolchainId) {
+    Toolchain* ToolchainFactory_FS::createToolchain(const std::string &toolchainId) {
         if (auto toolchainIt = toolchainMap.find(toolchainId); toolchainIt != toolchainMap.end()) {
             return toolchainIt->second.get();
         }  
@@ -39,7 +38,7 @@ namespace bok {
     }
 
 
-    std::vector<std::string> ToolchainFactoryFS::detectAvailableToolchainIds() const {
+    std::vector<std::string> ToolchainFactory_FS::detectAvailableToolchainIds() const {
         return { "vc", "gcc" };
     }
 }

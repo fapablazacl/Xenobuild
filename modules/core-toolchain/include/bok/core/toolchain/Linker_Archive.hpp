@@ -7,7 +7,7 @@
 namespace bok {
     class CommandFactory;
 
-    class ArchiveLinker : public Linker {
+    class Linker_Archive : public Linker {
     public:
         struct Switches {
             std::string buildStaticLibrary;
@@ -15,9 +15,9 @@ namespace bok {
         };
 
     public:
-        ArchiveLinker(CommandFactory *commandFactory, const std::string &commandPath, const Switches &switches);
+        Linker_Archive(CommandFactory *commandFactory, const std::string &commandPath, const Switches &switches);
 
-        virtual ~ArchiveLinker();
+        virtual ~Linker_Archive();
 
         virtual LinkOutput link(const boost::filesystem::path &outputPath, const Package *package, const Module *component, const std::vector<boost::filesystem::path> &objectFiles) const override;
 

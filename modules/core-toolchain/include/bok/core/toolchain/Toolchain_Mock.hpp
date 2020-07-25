@@ -9,11 +9,11 @@
 namespace bok {
     class Compiler;
     class Linker;
-    class ToolchainMock : public Toolchain {
+    class Toolchain_Mock : public Toolchain {
     public:
-        ToolchainMock();
+        Toolchain_Mock();
 
-        ~ToolchainMock() override;
+        ~Toolchain_Mock() override;
 
         std::vector<Compiler*> enumerateCompilers() const override;
 

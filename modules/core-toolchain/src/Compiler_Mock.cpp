@@ -1,5 +1,5 @@
 
-#include <bok/core/toolchain/CompilerMock.hpp>
+#include <bok/core/toolchain/Compiler_Mock.hpp>
 
 namespace bok {
     static std::string toString(const CompileTargetArchitecture arch) {
@@ -43,7 +43,7 @@ namespace bok {
         }
     }
 
-    CompileOutput CompilerMock::generateCompileOutput(const CompileInput& input) const {
+    CompileOutput Compiler_Mock::generateCompileOutput(const CompileInput& input) const {
         CompileOutput output;
         
         output.compileCommand.name = "compile-c++";

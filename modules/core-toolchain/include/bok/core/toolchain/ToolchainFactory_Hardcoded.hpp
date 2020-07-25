@@ -5,11 +5,11 @@
 #include <boost/filesystem/path.hpp>
 
 namespace bok {
-    class ToolchainFactoryHardcoded : public ToolchainFactory {
+    class ToolchainFactory_Hardcoded : public ToolchainFactory {
     public:
-        ToolchainFactoryHardcoded();
+        ToolchainFactory_Hardcoded();
 
-        virtual ~ToolchainFactoryHardcoded();
+        virtual ~ToolchainFactory_Hardcoded();
 
         void setInstallationPath(const std::string &toolchainId, const boost::filesystem::path &path);
 

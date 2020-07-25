@@ -4,7 +4,7 @@
 #include "Linker.hpp"
 
 namespace bok {
-    class LinkerMock : public Linker {
+    class Linker_Mock : public Linker {
     public:
         LinkOutput generateLinkOutput(const LinkInput& input) override;
     };

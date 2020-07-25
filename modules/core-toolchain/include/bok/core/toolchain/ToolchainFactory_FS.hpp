@@ -13,11 +13,11 @@ namespace bok {
     /**
      * @brief Toolchain Factory that loads the requested toolchain from the filesystem.
      */
-    class ToolchainFactoryFS : public ToolchainFactory {
+    class ToolchainFactory_FS : public ToolchainFactory {
     public:
-        explicit ToolchainFactoryFS(const boost::filesystem::path &definitionPath, boost::optional<boost::filesystem::path> installationPath);
+        explicit ToolchainFactory_FS(const boost::filesystem::path &definitionPath, boost::optional<boost::filesystem::path> installationPath);
 
-        virtual ~ToolchainFactoryFS();
+        virtual ~ToolchainFactory_FS();
 
         virtual Toolchain* createToolchain(const std::string &toolchainId) override;
 

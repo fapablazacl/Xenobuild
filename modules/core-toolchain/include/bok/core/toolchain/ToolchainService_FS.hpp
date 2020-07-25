@@ -7,9 +7,9 @@
 namespace bok {
     class FileService;
 
-    class ToolchainServiceImpl : public ToolchainService {
+    class ToolchainService_FS : public ToolchainService {
     public:
-        explicit ToolchainServiceImpl(const FileService *fileService);
+        explicit ToolchainService_FS(const FileService *fileService);
 
         std::unique_ptr<Toolchain> createToolchain(const boost::filesystem::path &toolchainFolder, boost::optional<boost::filesystem::path> installationPath) const override;
 

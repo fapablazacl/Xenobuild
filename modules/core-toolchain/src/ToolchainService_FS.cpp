@@ -1,5 +1,5 @@
 
-#include <bok/core/toolchain/ToolchainServiceImpl.hpp>
+#include <bok/core/toolchain/ToolchainService_FS.hpp>
 
 #include <boost/optional/optional.hpp>
 #include <boost/hana.hpp>
@@ -21,11 +21,11 @@ BOOST_HANA_ADAPT_STRUCT(bok::ToolchainEntity::Tool, type, command, buildRules, s
 BOOST_HANA_ADAPT_STRUCT(bok::ToolchainEntity, name, tools);
 
 namespace bok {
-    ToolchainServiceImpl::ToolchainServiceImpl(const FileService *fileService) {
+    ToolchainService_FS::ToolchainService_FS(const FileService *fileService) {
         this->fileService = fileService;
     }
 
-    std::unique_ptr<Toolchain> ToolchainServiceImpl::createToolchain(const boost::filesystem::path &definitionFullPath, boost::optional<boost::filesystem::path> installationPath) const {
+    std::unique_ptr<Toolchain> ToolchainService_FS::createToolchain(const boost::filesystem::path &definitionFullPath, boost::optional<boost::filesystem::path> installationPath) const {
         const auto toolchainFilePath = definitionFullPath / "toolchain.bok.json";
         const auto toolchainJsonContent = fileService->load(toolchainFilePath.string());
         const auto toolchainJson = nlohmann::json::parse(toolchainJsonContent);

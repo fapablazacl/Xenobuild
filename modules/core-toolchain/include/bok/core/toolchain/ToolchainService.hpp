@@ -3,8 +3,10 @@
 #define __BOK_SERVICES_TOOLCHAINSERVICE_HPP__
 
 #include <memory>
-#include <boost/optional/optional_fwd.hpp>
+#include <boost/optional/optional.hpp>
 #include <boost/filesystem/path.hpp>
+
+#include "Toolchain.hpp"
 
 namespace bok {
     class Toolchain;

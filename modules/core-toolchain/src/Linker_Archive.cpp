@@ -1,5 +1,5 @@
 
-#include <bok/core/toolchain/ArchiveLinker.hpp>
+#include <bok/core/toolchain/Linker_Archive.hpp>
 
 #include <iostream>
 #include <bok/core/Command.hpp>
@@ -8,15 +8,15 @@
 #include <bok/core/package/Module.hpp>
 
 namespace bok {
-    ArchiveLinker::ArchiveLinker(CommandFactory *commandFactory, const std::string &commandPath, const ArchiveLinker::Switches &switches) {
+    Linker_Archive::Linker_Archive(CommandFactory *commandFactory, const std::string &commandPath, const Linker_Archive::Switches &switches) {
         this->commandFactory = commandFactory;
         this->commandPath = commandPath;
         this->switches = switches;
     }
 
-    ArchiveLinker::~ArchiveLinker() {}
+    Linker_Archive::~Linker_Archive() {}
 
-    LinkOutput ArchiveLinker::link(const boost::filesystem::path &outputPath, const Package *package, const Module *component, const std::vector<boost::filesystem::path> &objectFiles) const {
+    LinkOutput Linker_Archive::link(const boost::filesystem::path &outputPath, const Package *package, const Module *component, const std::vector<boost::filesystem::path> &objectFiles) const {
         // TODO: Change component name based on the current toolchain
         const boost::filesystem::path archiveName = "lib" + component->getName() + ".a";
         const boost::filesystem::path archiveOutputPath = outputPath / component->getPath() / archiveName;

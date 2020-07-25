@@ -2,39 +2,39 @@
 set (target core-toolchain)
 
 set (sources 
-	include/bok/core/toolchain/ArchiveLinker.hpp
 	include/bok/core/toolchain/Compiler.hpp
-	include/bok/core/toolchain/CompilerMock.hpp
+	include/bok/core/toolchain/Compiler_Mock.hpp
 	include/bok/core/toolchain/Linker.hpp
-	include/bok/core/toolchain/LinkerMock.hpp
+	include/bok/core/toolchain/Linker_Mock.hpp
+	include/bok/core/toolchain/Linker_Archive.hpp
+	include/bok/core/toolchain/Linker_Module.hpp
 	include/bok/core/toolchain/ModuleChecker.hpp
-	include/bok/core/toolchain/ModuleLinker.hpp
 	include/bok/core/toolchain/ModuleTypeChecker.hpp
 	include/bok/core/toolchain/SourceChecker.hpp
 	include/bok/core/toolchain/Toolchain.hpp
+	include/bok/core/toolchain/Toolchain_Mock.hpp
 	include/bok/core/toolchain/ToolchainFactory.hpp
-	include/bok/core/toolchain/ToolchainFactoryFS.hpp
-	include/bok/core/toolchain/ToolchainFactoryHardcoded.hpp
-	include/bok/core/toolchain/ToolchainMock.hpp
+	include/bok/core/toolchain/ToolchainFactory_FS.hpp
+	include/bok/core/toolchain/ToolchainFactory_Hardcoded.hpp
 	include/bok/core/toolchain/ToolchainService.hpp
-	include/bok/core/toolchain/ToolchainServiceImpl.hpp
+	include/bok/core/toolchain/ToolchainService_FS.hpp
 	
-	src/ArchiveLinker.cpp
+	src/Linker_Archive.cpp
 	src/Compiler.cpp
-	src/CompilerMock.cpp
+	src/Compiler_Mock.cpp
 	src/Linker.cpp
-	src/LinkerMock.cpp
+	src/Linker_Mock.cpp
+	src/Linker_Module.cpp
 	src/ModuleChecker.cpp
-	src/ModuleLinker.cpp
 	src/ModuleTypeChecker.cpp
 	src/SourceChecker.cpp
 	src/Toolchain.cpp
+	src/Toolchain_Mock.cpp
 	src/ToolchainFactory.cpp
-	src/ToolchainFactoryFS.cpp
-	src/ToolchainFactoryHardcoded.cpp
-	src/ToolchainMock.cpp
+	src/ToolchainFactory_FS.cpp
+	src/ToolchainFactory_Hardcoded.cpp
 	src/ToolchainService.cpp
-	src/ToolchainServiceImpl.cpp
+	src/ToolchainService_FS.cpp
 )
 
 add_library(${target} ${sources})

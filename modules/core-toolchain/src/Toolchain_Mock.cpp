@@ -1,22 +1,22 @@
 
-#include <bok/core/toolchain/ToolchainMock.hpp>
+#include <bok/core/toolchain/Toolchain_Mock.hpp>
 
 #include <algorithm>
 #include <boost/filesystem.hpp>
 #include <boost/process.hpp>
 #include <bok/core/Version.hpp>
-#include <bok/core/toolchain/CompilerMock.hpp>
-#include <bok/core/toolchain/LinkerMock.hpp>
+#include <bok/core/toolchain/Compiler_Mock.hpp>
+#include <bok/core/toolchain/Linker_Mock.hpp>
 
 namespace bok {
-    ToolchainMock::ToolchainMock() {
-        compilers.emplace_back(new CompilerMock{});
-        linkers.emplace_back(new LinkerMock{});
+    Toolchain_Mock::Toolchain_Mock() {
+        compilers.emplace_back(new Compiler_Mock{});
+        linkers.emplace_back(new Linker_Mock{});
     }
 
-    ToolchainMock::~ToolchainMock() {}
+    Toolchain_Mock::~Toolchain_Mock() {}
 
-    std::vector<Compiler*> ToolchainMock::enumerateCompilers() const {
+    std::vector<Compiler*> Toolchain_Mock::enumerateCompilers() const {
         std::vector<Compiler*> result;
 
         result.push_back(compilers[0].get());
@@ -24,7 +24,7 @@ namespace bok {
         return result;
     }
 
-    std::vector<Linker*> ToolchainMock::enumerateLinkers() const {
+    std::vector<Linker*> Toolchain_Mock::enumerateLinkers() const {
         std::vector<Linker*> result;
 
         result.push_back(linkers[0].get());
@@ -32,7 +32,7 @@ namespace bok {
         return result;
     }
 
-    Version ToolchainMock::detectVersion() const {
+    Version Toolchain_Mock::detectVersion() const {
         return { 1, 0, 0 };
     }
 

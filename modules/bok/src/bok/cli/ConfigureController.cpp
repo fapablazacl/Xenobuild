@@ -9,7 +9,7 @@
 #include <bok/core/Constants.hpp>
 #include <bok/core/FileServiceImpl.hpp>
 #include <bok/core/toolchain/Toolchain.hpp>
-#include <bok/core/toolchain/ToolchainFactoryFS.hpp>
+#include <bok/core/toolchain/ToolchainFactory_FS.hpp>
 #include <bok/core/package/Package.hpp>
 #include <bok/core/package/PackageRegistry.hpp>
 #include <bok/core/package/Module.hpp>
@@ -192,7 +192,7 @@ namespace bok {
             installationPath = boost::filesystem::path{ options.toolchainPath.get() };
         }
 
-        auto factory = std::make_unique<ToolchainFactoryFS>("./toolchain/", installationPath);
+        auto factory = std::make_unique<ToolchainFactory_FS>("./toolchain/", installationPath);
         auto toolchain = factory->createToolchain(options.toolchain.get());
 
         // setup the configuration requested by the user
