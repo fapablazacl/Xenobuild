@@ -12,9 +12,9 @@ namespace bok {
 
     class FileService;
 
-    class FSPackageFactory : public PackageFactory {
+    class PackageFactory_FS : public PackageFactory {
     public:
-        FSPackageFactory(const FileService *fileService);
+        PackageFactory_FS(const FileService *fileService);
 
         virtual std::unique_ptr<Package> createPackage(const boost::filesystem::path &packageFilePath, const PackageRegistry *packageRegistry) const override;
 

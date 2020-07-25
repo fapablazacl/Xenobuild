@@ -17,7 +17,7 @@
 #include <bok/core/ConsoleLogger.hpp>
 #include <bok/core/pipeline/BuildTaskGraphGenerator.hpp>
 #include <bok/core/pipeline/BuildCache.hpp>
-#include <bok/core/package/FSPackageFactory.hpp>
+#include <bok/core/package/PackageFactory_FS.hpp>
 #include <bok/core/package/Module.hpp>
 #include <bok/core/package/Package.hpp>
 #include <bok/core/package/PackageRegistry.hpp>
@@ -83,7 +83,7 @@ namespace bok {
     BuildController::BuildController() {
         logger = new ConsoleLogger();
         fileService = new FileServiceImpl();
-        packageFactory = new FSPackageFactory(fileService);
+        packageFactory = new PackageFactory_FS(fileService);
         packageRegistryFactory = new PackageRegistryFactory();
         packageRegistry = packageRegistryFactory->createPackageRegistry(packageFactory, BOK_PACKAGE_SEARCH_PATH);
     }
