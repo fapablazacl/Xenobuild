@@ -25,7 +25,7 @@ namespace bok {
     class Module;
     class Package {
     public:
-        Package(const std::string &name);
+        explicit Package(const std::string &name);
 
         ~Package();
 

@@ -7,6 +7,9 @@
 
 #include <nlohmann/json.hpp>
 
+#include <bok/core/package/Package.hpp>
+#include <bok/core/package/Module.hpp>
+#include <bok/core/package/Source.hpp>
 #include <bok/core/pipeline/TaskGraphGenerator_Build.hpp>
 #include <bok/core/toolchain/Compiler.hpp>
 #include <bok/core/toolchain/Linker.hpp>
@@ -32,19 +35,53 @@ namespace bok {
 }
 
 
-constexpr const char* getPackagePath() {
-    return CMAKE_CURRENT_SOURCE_DIR "\\data\\cpp-core\\01-hello-world";
+std::unique_ptr<bok::Package> createPackage_01HelloWorld() {
+    const std::string path = CMAKE_CURRENT_SOURCE_DIR "\\data\\cpp-core\\01-hello-world";
+
+    auto package = std::make_unique<bok::Package>("01-hello-world");
+    auto module = package->createModule<bok::Module>();
+    module->setName("01-hello-world");
+    module->setPath(path);
+    module->setType(bok::Module::Type{ "app", "cli" });
+    module->setSourcePaths({"main.cpp"});
+
+    return package;
 }
 
-int main() {
-    auto taskGraphGeneratorBuild = bok::TaskGraphGenerator_Build{};
 
+namespace bok {
+    /**
+     * @brief Perform an operation for each edge in the graph
+     */
+    class TaskGraphVisitor {
+    public:
+        void visit(const TaskGraph& graph) const {
+            std::cout << "Number of Vertices: " << boost::num_vertices(graph) << std::endl;
+            std::cout << "Number of Edges:    " << boost::num_edges(graph) << std::endl;
+
+            std::cout << "Detail of Vertices:" << std::endl;
+
+            auto vs = boost::vertices(graph);
+
+            for (auto i = vs.first; i != vs.second; i++) {
+
+
+                std::cout << "    v: " << std::endl;
+            }
+        }
+    };
+}
+
+
+int main() {
+    auto package = createPackage_01HelloWorld();
+    auto taskGraphGeneratorBuild = bok::TaskGraphGenerator_Build{};
     auto toolchainManager = bok::ToolchainFactory_Mock{};
     auto toolchain = toolchainManager.getToolchain("mock");
+    auto visitor = bok::TaskGraphVisitor{};
 
-    auto compiler = toolchain->enumerateCompilers()[0];
-    auto linker = toolchain->enumerateLinkers()[0];
-    
+    visitor.visit(taskGraphGeneratorBuild.generate(toolchain, package->getModules()[0]));
+
     return 0;
 }
 
