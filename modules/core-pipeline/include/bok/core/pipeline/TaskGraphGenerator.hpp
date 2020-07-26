@@ -1,11 +1,11 @@
 
-#ifndef __BOK_SERVICES_BUILDSERVICE_HPP__
-#define __BOK_SERVICES_BUILDSERVICE_HPP__
+#pragma once
 
 #include <string>
 #include <memory>
 #include <boost/filesystem/path.hpp>
 #include <boost/graph/adjacency_list.hpp>
+#include <bok/core/Command.hpp>
 
 namespace bok {
     struct TaskGraphVertexData {
@@ -15,7 +15,7 @@ namespace bok {
 
     struct TaskGraphEdgeData {
         std::string label;
-        std::string command;
+        CommandData command;
     };
 
     typedef boost::adjacency_list<
@@ -25,20 +25,18 @@ namespace bok {
         TaskGraphVertexData, TaskGraphEdgeData
     > TaskGraph;
 
-    class Dag;
-    class Package;
     class Module;
+    class Package;
+    class Toolchain;
     class TaskGraphGenerator {
     public:
         virtual ~TaskGraphGenerator();
 
-        [[deprecated]]
-        virtual std::unique_ptr<Dag> createBuildDag(Package *package) = 0;
-
-        virtual TaskGraph generate(Module *module) const = 0;
-
-        virtual TaskGraph generate(Package *package) const = 0;
+        /**
+         * @brief Generate the full task graph required to build the specified Module.
+         *
+         * The Task Graph consists entirelly of compiler, assmebler and a linker commands.
+         */
+        virtual TaskGraph generate(Toolchain* toolchain, Module* module) const = 0;
     };
 }
-
-#endif

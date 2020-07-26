@@ -16,7 +16,7 @@ namespace bok {
         }
     }
 
-    LinkOutput Linker_Mock::generateLinkOutput(const LinkInput& input) {
+    LinkOutput Linker_Mock::generateLinkOutput(const LinkInput& input) const {
         LinkOutput output;
 
         output.linkCommand.name = "link-c++";

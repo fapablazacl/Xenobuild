@@ -130,11 +130,13 @@ namespace bok {
         auto toolchain = toolchainFactory->getToolchain(configurationData.currentBuildConfiguration.get().toolchainId);
 
         TaskGraphGenerator_Build buildTaskGraphGenerator {
+            /*
             rootPath, 
             outputPath / configurationData.currentBuildConfiguration.get().computeIdentifier(), 
             toolchain, 
             buildCache.get(),
             logger
+            */
         };
 
         /*
@@ -154,8 +156,10 @@ namespace bok {
         );
         */
 
+        /*
         auto dag = buildTaskGraphGenerator.createBuildDag(package.get());
         DagVisitor dagVisitor;
         dagVisitor.visit(dag.get());
+        */
     }
 }

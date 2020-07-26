@@ -18,20 +18,7 @@ namespace bok {
 
     class TaskGraphGenerator_Build : public TaskGraphGenerator {
     public:
-        TaskGraphGenerator_Build(const boost::filesystem::path &basePath, const boost::filesystem::path &outputPath, Toolchain *toolchain, BuildCache* buildCache, Logger *logger);
-
-        virtual ~TaskGraphGenerator_Build();
-
-        [[deprecated]]
-        std::unique_ptr<Dag> createBuildDag(Package *package) override;
-
-        TaskGraph generate(Module *module) const override;
-
-        TaskGraph generate(Package *package) const override;
-
-    private:
-        struct Private;
-        Private* m_impl = nullptr;
+        TaskGraph generate(Toolchain* toolchain, Module *module) const override;
     };
 }
 

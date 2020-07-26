@@ -7,11 +7,14 @@
 
 #include <nlohmann/json.hpp>
 
+#include <bok/core/pipeline/TaskGraphGenerator_Build.hpp>
+#include <bok/core/toolchain/Compiler.hpp>
+#include <bok/core/toolchain/Linker.hpp>
+#include <bok/core/toolchain/Toolchain.hpp>
+#include <bok/core/toolchain/ToolchainFactory_Mock.hpp>
 #include <bok/core/FileService_FS.hpp>
 #include <bok/core/pipeline/FileScanner_FS.hpp>
-
 #include <bok/utility/WildcardClassifier.hpp>
-
 
 namespace bok {
     enum FILE_TYPE {
@@ -19,42 +22,12 @@ namespace bok {
         FT_JSON
     };
 
-    using FileClassifier = WildcardClassifier<FILE_TYPE>;
-}
-
-namespace bok::ir {
-    struct ComponentIR {
-        std::string name;
-        std::string type;
-        std::string language;
-        std::vector<std::string> sources;
-    };
-
-    struct PackageIR {
-        std::string name;
-        std::vector<ComponentIR> components;
-    };
-
-    /**
-     * @brief a Parse Intermediate Representation, that maps the current content structure in a multi-file parsing operation
-     */
-    struct ContextIR {
-        PackageIR package;
-    };
-
-    class ContextIRLoader {
+    class FileClassifier : public WildcardClassifier<FILE_TYPE> {
     public:
-        ContextIR parse(const boost::filesystem::path &rootFile) const {
-            const std::string content = fileService.load(rootFile.string());
-
-            // nlohmann::to_json()
-
-            return {};
+        FileClassifier() {
+            registerCategory(FT_CPP_SOURCE, { "*.cpp", "*.cc", "*.c++", "*.cxx" });
+            registerCategory(FT_JSON, { "*.json" });
         }
-
-    private:
-        FileClassifier classifier;
-        FileService_FS fileService;
     };
 }
 
@@ -63,14 +36,26 @@ constexpr const char* getPackagePath() {
     return CMAKE_CURRENT_SOURCE_DIR "\\data\\cpp-core\\01-hello-world";
 }
 
-
 int main() {
-    bok::FileClassifier classifier{};
-    classifier.registerCategory(bok::FT_CPP_SOURCE, {"*.cpp", "*.cc", "*.c++", "*.cxx" });
-    classifier.registerCategory(bok::FT_JSON, { "*.json" });
+    auto taskGraphGeneratorBuild = bok::TaskGraphGenerator_Build{};
 
+    auto toolchainManager = bok::ToolchainFactory_Mock{};
+    auto toolchain = toolchainManager.getToolchain("mock");
+
+    auto compiler = toolchain->enumerateCompilers()[0];
+    auto linker = toolchain->enumerateLinkers()[0];
+    
+    return 0;
+}
+
+/*
+int main() {
+    auto classifier = bok::FileClassifier{};
+    
     auto filter = [&classifier](const boost::filesystem::path &path) {
-        return classifier.getFileType(path.string()) == bok::FT_CPP_SOURCE;
+        const auto fileType = classifier.getFileType(path.string());
+
+        return fileType.has_value() && fileType == bok::FT_CPP_SOURCE;
     };
 
     const std::string packagePath = getPackagePath();
@@ -86,3 +71,4 @@ int main() {
 
     return 0;
 }
+*/

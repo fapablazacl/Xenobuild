@@ -41,7 +41,7 @@ namespace bok {
     public:
         virtual ~Linker();
 
-        virtual LinkOutput generateLinkOutput(const LinkInput &input) = 0;
+        virtual LinkOutput generateLinkOutput(const LinkInput &input) const = 0;
 
         [[deprecated]]
         virtual bool isModuleLinkable(const Module *component) const {
