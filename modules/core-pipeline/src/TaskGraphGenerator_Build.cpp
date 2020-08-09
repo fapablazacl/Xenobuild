@@ -43,8 +43,8 @@ namespace bok {
                 return it->second;
             }
 
-            const auto objectFileVD = boost::add_vertex(graph);
-            graph[objectFileVD].filePath = path;
+            const auto objectFileVD = boost::add_vertex(graph.adjacencyList);
+            graph.adjacencyList[objectFileVD].filePath = path;
 
             pathVertexMap[path] = objectFileVD;
 
@@ -63,9 +63,8 @@ namespace bok {
         assert(toolchain->enumerateLinkers().size() > 0);
         assert(toolchain->enumerateCompilers().size() > 0);
 
-        const Linker* linker = toolchain->enumerateLinkers()[0];
-        assert(linker);
-
+        const Linker* linker = pickLinker(toolchain, module);
+        
         LinkInput linkInput;
         linkInput.moduleName = module->getName();
         linkInput.moduleType = LinkerModuleType::CliApplication;
@@ -75,12 +74,12 @@ namespace bok {
         PathVertexMapper mapper {graph};
 
         const auto moduleVD = mapper.getVD(module->getPath() / module->getName());
-        graph[moduleVD].label = graph[moduleVD].filePath.filename().string();
+        graph.adjacencyList[moduleVD].label = graph.adjacencyList[moduleVD].filePath.filename().string();
 
         for (Source *source : module->getSources()) {
-            const Compiler* compiler = toolchain->enumerateCompilers()[0];
-            assert(compiler);
-
+            // TODO: match the compiler from the file type and other properties
+            const Compiler* compiler = pickCompiler(toolchain, source);
+            
             // prepare the compile instruction
             CompileInput compileInput;
             compileInput.sourceFilePath = source->getFilePath().string();
@@ -99,38 +98,62 @@ namespace bok {
 
             // object file node
             const auto objectFileVD = mapper.getVD(compileInput.outputFilePath);
-            graph[objectFileVD].label = graph[objectFileVD].filePath.filename().string();
+            graph.adjacencyList[objectFileVD].label = graph.adjacencyList[objectFileVD].filePath.filename().string();
 
             // source file node 
             const auto sourceFileVD = mapper.getVD(compileInput.sourceFilePath);
-            graph[sourceFileVD].label = graph[sourceFileVD].filePath.filename().string();
+            graph.adjacencyList[sourceFileVD].label = graph.adjacencyList[sourceFileVD].filePath.filename().string();
 
             // mark that object depends on source to generate
-            const auto objectED = boost::add_edge(objectFileVD, sourceFileVD, graph);
-            graph[objectED.first].label = "compile[C++] " + boost::filesystem::path{ compileInput.sourceFilePath }.filename().string();
-            graph[objectED.first].command = compileOutput.compileCommand;
+            const auto objectED = boost::add_edge(objectFileVD, sourceFileVD, graph.adjacencyList);
+            graph.adjacencyList[objectED.first].label = "compile [C++] " + boost::filesystem::path{ compileInput.sourceFilePath }.filename().string();
+            graph.adjacencyList[objectED.first].command = compileOutput.compileCommand;
+            graph.adjacencyList[objectED.first].commandRequired = true;
 
             // trespass the dependency information, from include headers to the object file
             for (const std::string &includeFile : compileOutput.dependencyHeaders) {
                 const auto includeFileVD = mapper.getVD(includeFile);
-                graph[includeFileVD].label = graph[includeFileVD].filePath.filename().string();
+                graph.adjacencyList[includeFileVD].label = graph.adjacencyList[includeFileVD].filePath.filename().string();
 
-                boost::add_edge(objectFileVD, includeFileVD, graph);
+                boost::add_edge(objectFileVD, includeFileVD, graph.adjacencyList);
             }
 
             // mark also that the module file depends on the object files
-            boost::add_edge(moduleVD, objectFileVD, graph);
+            boost::add_edge(moduleVD, objectFileVD, graph.adjacencyList);
         }
 
         LinkOutput linkOutput = linker->generateLinkOutput(linkInput);
 
         // create a edge, from the module to a physical (binary module)
-        const auto binaryModuleNode = mapper.getVD(graph[moduleVD].filePath.string() + ".exe");
-        const auto binaryModuleEdge = boost::add_edge(binaryModuleNode, moduleVD, graph);
+        const auto binaryModuleNode = mapper.getVD(graph.adjacencyList[moduleVD].filePath.string() + ".exe");
+        const auto binaryModuleEdge = boost::add_edge(binaryModuleNode, moduleVD, graph.adjacencyList);
 
-        graph[binaryModuleEdge.first].label = "link [C++] " + graph[binaryModuleNode].filePath.filename().string();
-        graph[binaryModuleEdge.first].command = linkOutput.linkCommand;
+        graph.adjacencyList[binaryModuleEdge.first].label = "link [C++] " + graph.adjacencyList[binaryModuleNode].filePath.filename().string();
+        graph.adjacencyList[binaryModuleEdge.first].command = linkOutput.linkCommand;
+        graph.adjacencyList[binaryModuleEdge.first].commandRequired = true;
+
+        graph.moduleVertexDescriptor = binaryModuleNode;
 
         return graph;
+    }
+
+    const Compiler* TaskGraphGenerator_Build::pickCompiler(const Toolchain* toolchain, const Source* source) const {
+        assert(toolchain);
+        assert(source);
+
+        const Compiler* compiler = toolchain->enumerateCompilers()[0];
+        assert(compiler);
+
+        return compiler;
+    }
+
+    const Linker* TaskGraphGenerator_Build::pickLinker(const Toolchain* toolchain, const Module* module) const {
+        assert(toolchain);
+        assert(module);
+
+        const Linker* linker = toolchain->enumerateLinkers()[0];
+        assert(linker);
+
+        return linker;
     }
 }

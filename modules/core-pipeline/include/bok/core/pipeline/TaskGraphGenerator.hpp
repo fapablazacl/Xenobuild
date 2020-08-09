@@ -16,6 +16,7 @@ namespace bok {
     struct TaskGraphEdgeData {
         std::string label;
         CommandData command;
+        bool commandRequired = false;
     };
 
     typedef boost::adjacency_list<
@@ -23,7 +24,12 @@ namespace bok {
         boost::vecS, 
         boost::directedS, 
         TaskGraphVertexData, TaskGraphEdgeData
-    > TaskGraph;
+    > TaskGraphAdjacencyList;
+
+    struct TaskGraph {
+        size_t moduleVertexDescriptor;
+        TaskGraphAdjacencyList adjacencyList;
+    };
 
     class Module;
     class Package;

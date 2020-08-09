@@ -81,7 +81,7 @@ namespace bok {
                     ++it;
                 }
             } else {
-                auto source = new Source(this, solvedSourcePath, solvedSourcePath);
+                auto source = new Source(this, solvedSourcePath, baseFolder);
                 sources.emplace_back(source);
             }
         }

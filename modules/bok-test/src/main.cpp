@@ -18,6 +18,7 @@
 #include <bok/core/FileService_FS.hpp>
 #include <bok/core/pipeline/FileScanner_FS.hpp>
 #include <bok/utility/WildcardClassifier.hpp>
+#include <boost/graph/adjacency_list.hpp>
 
 namespace bok {
     enum FILE_TYPE {
@@ -39,11 +40,13 @@ std::unique_ptr<bok::Package> createPackage_01HelloWorld() {
     const std::string path = CMAKE_CURRENT_SOURCE_DIR "\\data\\cpp-core\\01-hello-world";
 
     auto package = std::make_unique<bok::Package>("01-hello-world");
+
     auto module = package->createModule<bok::Module>();
     module->setName("01-hello-world");
     module->setPath(path);
     module->setType(bok::Module::Type{ "app", "cli" });
     module->setSourcePaths({"main.cpp"});
+    module->rescanSources("");
 
     return package;
 }
@@ -56,17 +59,48 @@ namespace bok {
     class TaskGraphVisitor {
     public:
         void visit(const TaskGraph& graph) const {
-            std::cout << "Number of Vertices: " << boost::num_vertices(graph) << std::endl;
-            std::cout << "Number of Edges:    " << boost::num_edges(graph) << std::endl;
+            // boost::adjacent_vertices()
+            // showDiagnostics(graph);
 
+            visit(graph.moduleVertexDescriptor, graph.adjacencyList);
+        }
+
+    private:
+        void visit(const size_t vd, const TaskGraphAdjacencyList &al) const {
+            for (auto cvd : boost::make_iterator_range(boost::adjacent_vertices(vd, al))) {
+                visit(cvd, al);
+
+                // std::cout << " label: " << al[cvd].label << std::endl;
+                // std::cout << " filePath: " << boost::filesystem::path(al[cvd].filePath).filename() << std::endl;
+                // std::cout << std::endl;
+            }
+
+            for (auto ed : boost::make_iterator_range(boost::out_edges(vd, al))) {
+                if (!al[ed].commandRequired) {
+                    continue;
+                }
+
+                std::cout << " label: " << al[ed].label << std::endl;
+                std::cout << " command: " << al[ed].command << std::endl;
+                std::cout << std::endl;
+            }
+        }
+
+        void showDiagnostics(const TaskGraph& graph) const {
+            std::cout << "Number of Vertices: " << boost::num_vertices(graph.adjacencyList) << std::endl;
+            std::cout << "Number of Edges:    " << boost::num_edges(graph.adjacencyList) << std::endl;
             std::cout << "Detail of Vertices:" << std::endl;
 
-            auto vs = boost::vertices(graph);
+            for (auto vd : boost::make_iterator_range(boost::vertices(graph.adjacencyList))) {
+                std::cout << " label: " << graph.adjacencyList[vd].label << std::endl;
+                std::cout << " filePath: " << boost::filesystem::path(graph.adjacencyList[vd].filePath).filename() << std::endl;
+                std::cout << std::endl;
+            }
 
-            for (auto i = vs.first; i != vs.second; i++) {
-
-
-                std::cout << "    v: " << std::endl;
+            for (auto ed : boost::make_iterator_range(boost::edges(graph.adjacencyList))) {
+                std::cout << " label: " << graph.adjacencyList[ed].label << std::endl;
+                std::cout << " command: " << graph.adjacencyList[ed].command << std::endl;
+                std::cout << std::endl;
             }
         }
     };
