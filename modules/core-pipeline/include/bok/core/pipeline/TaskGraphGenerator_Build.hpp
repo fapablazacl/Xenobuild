@@ -1,6 +1,5 @@
 
-#ifndef __BOK_SERVICES_BUILDSERVICEIMPL_HPP__
-#define __BOK_SERVICES_BUILDSERVICEIMPL_HPP__
+#pragma once
 
 #include "TaskGraphGenerator.hpp"
 
@@ -9,11 +8,8 @@
 
 namespace bok {
     class Toolchain;
-    class Logger;
     class Module;
-    class BuildCache;
-    class Command;
-
+    
     class Source;
     class Compiler;
     class Linker;
@@ -30,5 +26,3 @@ namespace bok {
         const Linker* pickLinker(const Toolchain* toolchain, const Module* module) const;
     };
 }
-
-#endif

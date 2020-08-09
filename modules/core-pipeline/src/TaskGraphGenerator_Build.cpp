@@ -17,23 +17,6 @@
 #include <bok/core/pipeline/BuildCache.hpp>
 
 namespace bok {
-    //class BuildCacheUpdateCommand : public Command {
-    //public:
-    //    BuildCacheUpdateCommand(BuildCache *buildCache, const boost::filesystem::path &sourceFilePath) {
-    //        this->buildCache = buildCache;
-    //        this->sourceFilePath = sourceFilePath;
-    //    }
-    //
-    //    virtual void execute() override {
-    //        buildCache->markAsBuilt(sourceFilePath);
-    //    }
-    //
-    //private:
-    //    BuildCache *buildCache = nullptr;
-    //    boost::filesystem::path sourceFilePath;
-    //};
-
-
     class PathVertexMapper {
     public:
         PathVertexMapper(TaskGraph &graph_) : graph(graph_) {}
