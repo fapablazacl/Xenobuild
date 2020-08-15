@@ -43,9 +43,15 @@ namespace bok {
         }
     }
 
+    Compiler_VC::Compiler_VC(std::optional<std::string> path) : path(path) {}
+
     CompileOutput Compiler_VC::generateCompileOutput(const CompileInput& input) const {
         CompileOutput output;
         
+        if (path) {
+            output.compileCommand.path = *path;
+        }
+
         output.compileCommand.name = "cl.exe";
 
         output.compileCommand.args.push_back("/EHsc");

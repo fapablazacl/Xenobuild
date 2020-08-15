@@ -19,7 +19,7 @@
 #include <bok/core/pipeline/FileScanner_FS.hpp>
 #include <bok/utility/WildcardClassifier.hpp>
 #include <boost/graph/adjacency_list.hpp>
-
+#include <boost/process.hpp>
 
 bok::WildcardClassifier<bok::CompilerType> createSourceClassifier() {
     bok::WildcardClassifier<bok::CompilerType> classifier;
@@ -67,15 +67,53 @@ std::unique_ptr<bok::Package> createPackage_02WordCounter() {
     return package;
 }
 
-
 namespace bok {
+    struct CommandResult {
+        int exitCode;
+        std::vector<std::string> output;
+    };
+
+    class CommandExecutor {
+    public:
+        CommandResult execute(const CommandData& commandData) const {
+            boost::filesystem::path compilerPath = commandData.path;
+
+            if (commandData.path == "") {
+                compilerPath = boost::process::search_path(commandData.name);
+            } else {
+                compilerPath /= commandData.name;
+            }
+
+            boost::process::ipstream pipeStream;
+            boost::process::child childProcess {
+                compilerPath, 
+                boost::process::args(commandData.args), 
+                boost::process::std_out > pipeStream
+            };
+
+            std::string line;
+            std::vector<std::string> specs;
+
+            while (pipeStream && std::getline(pipeStream, line) && !line.empty()) {
+                specs.push_back(line);
+            }
+
+            childProcess.wait();
+
+            return {
+                childProcess.exit_code(),
+                specs
+            };
+        }
+    };
+
+
     /**
      * @brief Perform an operation for each edge in the graph
      */
     class TaskGraphVisitor {
     public:
         void visit(const TaskGraph& graph) const {
-            // boost::adjacent_vertices()
             // showDiagnostics(graph);
 
             visit(graph.moduleVertexDescriptor, graph.adjacencyList);
@@ -96,9 +134,20 @@ namespace bok {
                     continue;
                 }
 
-                std::cout << " label: " << al[ed].label << std::endl;
-                std::cout << " command: " << al[ed].command << std::endl;
-                std::cout << std::endl;
+                // std::cout << " label: " << al[ed].label << std::endl;
+                // std::cout << " command: " << al[ed].command << std::endl;
+
+                const auto result = executor.execute(al[ed].command);
+
+                if (result.exitCode != 0) {
+                    std::cout << "OK" << std::endl;
+                } else {
+                    std::cout << "Error" << std::endl;
+                }
+
+                for (const auto& line : result.output) {
+                    std::cout << line << std::endl;
+                }
             }
         }
 
@@ -119,18 +168,24 @@ namespace bok {
                 std::cout << std::endl;
             }
         }
+
+    private:
+        CommandExecutor executor;
     };
 }
 
 
 int main() {
+    // C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.22.27905\bin\Hostx64\x64
+
     auto classifier = createSourceClassifier();
 
     // auto package = createPackage_01HelloWorld();
     auto package = createPackage_02WordCounter();
     auto taskGraphGeneratorBuild = bok::TaskGraphGenerator_Build{classifier};
     auto toolchainManager = bok::ToolchainFactory_Mock{};
-    auto toolchain = toolchainManager.getToolchain("mock");
+    // auto toolchain = toolchainManager.getToolchain("mock");
+    auto toolchain = toolchainManager.getToolchain("vc");
     auto visitor = bok::TaskGraphVisitor{};
 
     auto graph = taskGraphGeneratorBuild.generate(toolchain, package->getModules()[0]);

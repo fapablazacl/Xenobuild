@@ -4,9 +4,17 @@
 #include <bok/core/Version.hpp>
 
 namespace bok {
-    Toolchain_VC::Toolchain_VC() {
-        compilers.emplace_back(new Compiler_VC{});
-        linkers.emplace_back(new Linker_VC{});
+    Toolchain_VC::Toolchain_VC(std::optional<std::string> path) {
+        // TODO: This depends on the host/target architecture
+        const std::string postfix = "\\Hostx64\\x64\\";
+
+        if (path) {
+            compilers.emplace_back(new Compiler_VC{*path + postfix});
+            linkers.emplace_back(new Linker_VC{*path + postfix});
+        } else {
+            compilers.emplace_back(new Compiler_VC{ {} });
+            linkers.emplace_back(new Linker_VC{ {} });
+        }
     }
 
     Toolchain_VC::~Toolchain_VC() {}

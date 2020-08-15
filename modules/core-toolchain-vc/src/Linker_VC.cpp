@@ -12,8 +12,14 @@ namespace bok {
         }
     }
     
+    Linker_VC::Linker_VC(std::optional<std::string> path) : path(path) {}
+
     LinkOutput Linker_VC::generateLinkOutput(const LinkInput& input) const {
         LinkOutput output;
+
+        if (path) {
+            output.linkCommand.path = *path;
+        }
 
         output.linkCommand.name = "link.exe";
 

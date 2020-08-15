@@ -4,13 +4,14 @@
 #include <bok/core/toolchain/Toolchain.hpp>
 
 #include <memory>
+#include <optional>
 #include <bok/core/toolchain/vc/Compiler_VC.hpp>
 #include <bok/core/toolchain/vc/Linker_VC.hpp>
 
 namespace bok {
     class Toolchain_VC : public Toolchain {
     public:
-        Toolchain_VC();
+        explicit Toolchain_VC(std::optional<std::string> path);
 
         ~Toolchain_VC();
 
@@ -25,6 +26,7 @@ namespace bok {
         Linker* getLinker(const LinkerType type) const override;
 
     private:
+
         std::vector<std::unique_ptr<Compiler_VC>> compilers;
         std::vector<std::unique_ptr<Linker_VC>> linkers;
     };
