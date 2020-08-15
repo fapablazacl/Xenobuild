@@ -77,12 +77,14 @@ namespace bok {
 
     class CommandExecutor {
     public:
+        virtual ~CommandExecutor() {}
 
+        virtual CommandResult execute(const CommandData& commandData) const = 0;
     };
 
     class CommandExecutor_BoostProcess : public CommandExecutor {
     public:
-        CommandResult execute(const CommandData& commandData) const {
+        CommandResult execute(const CommandData& commandData) const override {
             boost::filesystem::path compilerPath = commandData.path;
 
             if (commandData.path == "") {
