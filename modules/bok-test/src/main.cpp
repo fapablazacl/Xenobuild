@@ -20,19 +20,13 @@
 #include <bok/utility/WildcardClassifier.hpp>
 #include <boost/graph/adjacency_list.hpp>
 
-namespace bok {
-    enum FILE_TYPE {
-        FT_CPP_SOURCE,
-        FT_JSON
-    };
 
-    class FileClassifier : public WildcardClassifier<FILE_TYPE> {
-    public:
-        FileClassifier() {
-            registerCategory(FT_CPP_SOURCE, { "*.cpp", "*.cc", "*.c++", "*.cxx" });
-            registerCategory(FT_JSON, { "*.json" });
-        }
-    };
+bok::WildcardClassifier<bok::CompilerType> createSourceClassifier() {
+    bok::WildcardClassifier<bok::CompilerType> classifier;
+
+    classifier.registerCategory(bok::CompilerType::Source, { "*.cpp", "*.cc", "*.c++", "*.cxx" });
+
+    return classifier;
 }
 
 
@@ -46,6 +40,28 @@ std::unique_ptr<bok::Package> createPackage_01HelloWorld() {
     module->setPath(path);
     module->setType(bok::Module::Type{ "app", "cli" });
     module->setSourcePaths({"main.cpp"});
+    module->rescanSources("");
+
+    return package;
+}
+
+
+std::unique_ptr<bok::Package> createPackage_02WordCounter() {
+    const std::string path = CMAKE_CURRENT_SOURCE_DIR "\\data\\cpp-core\\02-word-counter";
+
+    auto package = std::make_unique<bok::Package>("02-word-counter");
+    auto module = package->createModule<bok::Module>();
+    module->setName("02-word-counter");
+    module->setPath(path);
+    module->setType(bok::Module::Type{ "app", "cli" });
+    module->setSourcePaths({
+        "main.cpp",
+        "WordCounter.hpp",
+        "WordCounter.cpp",
+        "WordList.hpp",
+        "WordList.cpp"
+    });
+
     module->rescanSources("");
 
     return package;
@@ -108,13 +124,18 @@ namespace bok {
 
 
 int main() {
-    auto package = createPackage_01HelloWorld();
-    auto taskGraphGeneratorBuild = bok::TaskGraphGenerator_Build{};
+    auto classifier = createSourceClassifier();
+
+    // auto package = createPackage_01HelloWorld();
+    auto package = createPackage_02WordCounter();
+    auto taskGraphGeneratorBuild = bok::TaskGraphGenerator_Build{classifier};
     auto toolchainManager = bok::ToolchainFactory_Mock{};
     auto toolchain = toolchainManager.getToolchain("mock");
     auto visitor = bok::TaskGraphVisitor{};
 
-    visitor.visit(taskGraphGeneratorBuild.generate(toolchain, package->getModules()[0]));
+    auto graph = taskGraphGeneratorBuild.generate(toolchain, package->getModules()[0]);
+
+    visitor.visit(graph);
 
     return 0;
 }

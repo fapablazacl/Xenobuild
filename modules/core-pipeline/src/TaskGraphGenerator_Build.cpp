@@ -10,11 +10,11 @@
 #include <bok/core/package/Package.hpp>
 #include <bok/core/package/Module.hpp>
 #include <bok/core/package/Source.hpp>
-#include <bok/core/toolchain/Toolchain.hpp>
 #include <bok/core/toolchain/Compiler.hpp>
 #include <bok/core/toolchain/CompileOptions.hpp>
 #include <bok/core/toolchain/Linker.hpp>
 #include <bok/core/pipeline/BuildCache.hpp>
+
 
 namespace bok {
     class PathVertexMapper {
@@ -40,6 +40,10 @@ namespace bok {
     };
 
 
+    TaskGraphGenerator_Build::TaskGraphGenerator_Build(const WildcardClassifier<CompilerType>& sourceClassifier) 
+        : sourceClassifier(sourceClassifier) {}
+
+
     TaskGraph TaskGraphGenerator_Build::generate(Toolchain* toolchain, Module* module) const {
         assert(toolchain);
         assert(module);
@@ -60,9 +64,12 @@ namespace bok {
         graph.adjacencyList[moduleVD].label = graph.adjacencyList[moduleVD].filePath.filename().string();
 
         for (Source *source : module->getSources()) {
-            // TODO: match the compiler from the file type and other properties
-            const Compiler* compiler = pickCompiler(toolchain, source);
-            
+            const auto compiler = pickCompiler(toolchain, source);
+
+            if (!compiler) {
+                continue;
+            }
+
             // prepare the compile instruction
             CompileInput compileInput;
             compileInput.sourceFilePath = source->getFilePath().string();
@@ -124,10 +131,13 @@ namespace bok {
         assert(toolchain);
         assert(source);
 
-        const Compiler* compiler = toolchain->enumerateCompilers()[0];
-        assert(compiler);
+        const auto compilerType = sourceClassifier.getFileType(source->getFilePath().string());
 
-        return compiler;
+        if (!compilerType) {
+            return nullptr;
+        }
+
+        return toolchain->getCompiler(*compilerType);
     }
 
     const Linker* TaskGraphGenerator_Build::pickLinker(const Toolchain* toolchain, const Module* module) const {

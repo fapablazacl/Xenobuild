@@ -36,6 +36,23 @@ namespace bok {
         return { 1, 0, 0 };
     }
 
+    Compiler* Toolchain_Mock::getCompiler(const CompilerType type) const {
+        if (type == CompilerType::Source) {
+            return compilers[0].get();
+        }
+        
+        return nullptr;
+
+    }
+
+    Linker* Toolchain_Mock::getLinker(const LinkerType type) const {
+        if (type == LinkerType::Binary) {
+            return linkers[0].get();
+        }
+        
+        return nullptr;
+    }
+
     struct ToolchainDetectorInfo {
         std::string commandTemplate;
         std::string executableFilePath;
