@@ -39,7 +39,7 @@ add_subdirectory("modules/core-toolchain")
 # NOTE: Temporally removed, waiting for an stable core to build on.
 # add_subdirectory("modules/core-toolchain-clang")
 # add_subdirectory("modules/core-toolchain-gcc")
-# add_subdirectory("modules/core-toolchain-vc")
+add_subdirectory("modules/core-toolchain-vc")
 add_subdirectory("modules/feature")
 add_subdirectory("modules/utility")
 add_subdirectory("modules/bok-test")
