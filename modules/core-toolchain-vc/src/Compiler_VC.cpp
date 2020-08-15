@@ -2,7 +2,7 @@
 #include <bok/core/toolchain/vc/Compiler_VC.hpp>
 
 namespace bok {
-        static std::string toString(const CompileTargetArchitecture arch) {
+    static std::string toString(const CompileTargetArchitecture arch) {
         switch (arch) {
         case CompileTargetArchitecture::Native: return "native";
         case CompileTargetArchitecture::x86_32: return "x86_32";
@@ -33,12 +33,12 @@ namespace bok {
         }
     }
 
-    static std::string toString(const CompileRuntimeLink runtime) {
+    static std::string getCompilerOption(const CompileRuntimeLink runtime) {
         switch (runtime) {
-        case CompileRuntimeLink::DynamicDebug: return "dynamic-debug";
-        case CompileRuntimeLink::DynamicRelease: return "dynamic-release";
-        case CompileRuntimeLink::StaticDebug: return "static-debug";
-        case CompileRuntimeLink::StaticRelease: return "static-release";
+        case CompileRuntimeLink::DynamicDebug: return "/MDd";
+        case CompileRuntimeLink::DynamicRelease: return "/MD";
+        case CompileRuntimeLink::StaticDebug: return "/MTd";
+        case CompileRuntimeLink::StaticRelease: return "/MT";
         default: return "<runtime-unknown>";
         }
     }
@@ -46,7 +46,7 @@ namespace bok {
     CompileOutput Compiler_VC::generateCompileOutput(const CompileInput& input) const {
         CompileOutput output;
         
-        output.compileCommand.name = "cl";
+        output.compileCommand.name = "cl.exe";
 
         output.compileCommand.args.push_back("/EHsc");
         output.compileCommand.args.push_back("/c");
@@ -59,8 +59,8 @@ namespace bok {
         
         output.compileCommand.args.push_back("/std:" + toString(input.language));
         output.compileCommand.args.push_back("/O" + toString(input.optimization));
-        output.compileCommand.args.push_back("--target-arch=" + toString(input.targetArchitecture));
-        output.compileCommand.args.push_back("--runtime-link=" + toString(input.runtimeLink));
+        // output.compileCommand.args.push_back("--target-arch=" + toString(input.targetArchitecture));
+        output.compileCommand.args.push_back(getCompilerOption(input.runtimeLink));
         
         for (const auto& pair : input.definitions) {
             std::string arg = "/D \"" + pair.first + "=" + pair.second + "\"";
