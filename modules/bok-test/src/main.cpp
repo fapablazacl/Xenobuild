@@ -20,6 +20,7 @@
 #include <bok/utility/WildcardClassifier.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/process.hpp>
+#include <boost/algorithm/string.hpp>
 
 bok::WildcardClassifier<bok::CompilerType> createSourceClassifier() {
     bok::WildcardClassifier<bok::CompilerType> classifier;
@@ -70,10 +71,16 @@ std::unique_ptr<bok::Package> createPackage_02WordCounter() {
 namespace bok {
     struct CommandResult {
         int exitCode;
-        std::vector<std::string> output;
+        std::vector<std::string> stdoutStreamOutput;
+        std::vector<std::string> stderrStreamOutput;
     };
 
     class CommandExecutor {
+    public:
+
+    };
+
+    class CommandExecutor_BoostProcess : public CommandExecutor {
     public:
         CommandResult execute(const CommandData& commandData) const {
             boost::filesystem::path compilerPath = commandData.path;
@@ -84,29 +91,40 @@ namespace bok {
                 compilerPath /= commandData.name;
             }
 
-            boost::process::ipstream pipeStream;
+            boost::process::ipstream stdoutStream;
+            boost::process::ipstream stderrStream;
+
             boost::process::child childProcess {
                 compilerPath, 
                 boost::process::args(commandData.args), 
-                boost::process::std_out > pipeStream
+                boost::process::std_out > stdoutStream,
+                boost::process::std_err > stderrStream,
             };
 
-            std::string line;
-            std::vector<std::string> specs;
-
-            while (pipeStream && std::getline(pipeStream, line) && !line.empty()) {
-                specs.push_back(line);
-            }
+            const std::vector<std::string> stdoutStreamOutput = grabStreamOutput(stdoutStream);
+            const std::vector<std::string> stderrStreamOutput = grabStreamOutput(stderrStream);
 
             childProcess.wait();
 
             return {
                 childProcess.exit_code(),
-                specs
+                stdoutStreamOutput,
+                stderrStreamOutput
             };
         }
-    };
 
+    private:
+        std::vector<std::string> grabStreamOutput(boost::process::ipstream &stream) const {
+            std::string line;
+            std::vector<std::string> lines;
+
+            while (stream && std::getline(stream, line) && !line.empty()) {
+                lines.push_back(line);
+            }
+
+            return lines;
+        }
+    };
 
     /**
      * @brief Perform an operation for each edge in the graph
@@ -139,14 +157,17 @@ namespace bok {
 
                 const auto result = executor.execute(al[ed].command);
 
-                if (result.exitCode != 0) {
+                if (result.stderrStreamOutput.size() == 0) {
                     std::cout << "OK" << std::endl;
+                    for (const auto& line : result.stdoutStreamOutput) {
+                        std::cout << line << std::endl;
+                    }
                 } else {
                     std::cout << "Error" << std::endl;
-                }
-
-                for (const auto& line : result.output) {
-                    std::cout << line << std::endl;
+                    for (const auto& line : result.stderrStreamOutput) {
+                        std::cout << line << std::endl;
+                    }
+                    std::cout << " command: " << al[ed].command << std::endl << std::endl;
                 }
             }
         }
@@ -170,7 +191,7 @@ namespace bok {
         }
 
     private:
-        CommandExecutor executor;
+        CommandExecutor_BoostProcess executor;
     };
 }
 

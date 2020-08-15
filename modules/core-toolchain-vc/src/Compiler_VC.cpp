@@ -53,11 +53,11 @@ namespace bok {
         }
 
         output.compileCommand.name = "cl.exe";
-
-        output.compileCommand.args.push_back("/EHsc");
+        output.compileCommand.args.push_back("/nologo");
         output.compileCommand.args.push_back("/c");
         output.compileCommand.args.push_back(input.sourceFilePath);
-        output.compileCommand.args.push_back("/Fo " + input.outputFilePath);
+        output.compileCommand.args.push_back("/EHsc");
+        output.compileCommand.args.push_back("/Fo\"" + input.outputFilePath + "\"");
 
         if (input.debugInformation) {
             output.compileCommand.args.push_back("/DEBUG");

@@ -22,8 +22,8 @@ namespace bok {
         }
 
         output.linkCommand.name = "link.exe";
-
-        output.linkCommand.args.push_back("/OUT:" + input.outputPath);
+        output.linkCommand.args.push_back("/nologo");
+        output.linkCommand.args.push_back("/OUT:" + input.outputPath + "\\" + input.moduleName + ".exe");
 
         if (auto option = getCompilerOption(input.moduleType); option) {
             output.linkCommand.args.push_back(*option);
