@@ -12,7 +12,7 @@ namespace bok {
         }
     }
     
-    Linker_VC::Linker_VC(std::optional<std::string> path) : path(path) {}
+    Linker_VC::Linker_VC(std::optional<boost::filesystem::path> path) : path(path) {}
 
     LinkOutput Linker_VC::generateLinkOutput(const LinkInput& input) const {
         LinkOutput output;
@@ -23,19 +23,22 @@ namespace bok {
 
         output.linkCommand.name = "link.exe";
         output.linkCommand.args.push_back("/nologo");
-        output.linkCommand.args.push_back("/OUT:" + input.outputPath + "\\" + input.moduleName + ".exe");
+        output.linkCommand.args.push_back("/OUT:" + (input.outputPath / input.moduleName).string() + ".exe");
 
         if (auto option = getCompilerOption(input.moduleType); option) {
             output.linkCommand.args.push_back(*option);
         }
 
-        std::copy(input.objectFiles.begin(), input.objectFiles.end(), std::back_inserter(output.linkCommand.args));
-        std::transform(input.libraries.begin(), input.libraries.end(), std::back_inserter(output.linkCommand.args), [](const std::string &library) {
-            return library;
+        std::transform(input.objectFiles.begin(), input.objectFiles.end(), std::back_inserter(output.linkCommand.args), [](const auto &objectFile) {
+            return objectFile.string();
+        });
+
+        std::transform(input.libraries.begin(), input.libraries.end(), std::back_inserter(output.linkCommand.args), [](const auto &library) {
+            return library.string();
         });
         
-        std::transform(input.libraryPaths.begin(), input.libraryPaths.end(), std::back_inserter(output.linkCommand.args), [](const std::string& libraryPath) {
-            return "/LIBPATH:" + libraryPath;
+        std::transform(input.libraryPaths.begin(), input.libraryPaths.end(), std::back_inserter(output.linkCommand.args), [](const auto& libraryPath) {
+            return "/LIBPATH:" + libraryPath.string();
         });
         
         return output;
@@ -55,7 +58,6 @@ namespace bok {
         //};
         //linkerConfiguration.importLibraries = { "AdvAPI32" };
         
-
         //ServiceFactoryVC::ServiceFactoryVC(const std::string &installationPath, const std::string &windowsKitPath) {
         //    const std::string commandBasePath = installationPath + "bin\\Hostx64\\x64\\";
         //    const std::string linkerCommand = commandBasePath + "link.exe";

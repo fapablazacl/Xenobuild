@@ -47,8 +47,8 @@ namespace bok {
         CompileOutput output;
         
         output.compileCommand.name = "compile-c++";
-        output.compileCommand.args.push_back(input.sourceFilePath);
-        output.compileCommand.args.push_back("--output=" + input.outputFilePath);
+        output.compileCommand.args.push_back(input.sourceFilePath.string());
+        output.compileCommand.args.push_back("--output=" + input.outputFilePath.string());
         output.compileCommand.args.push_back("--debug-information=" + std::to_string(input.debugInformation));
         output.compileCommand.args.push_back("--language=" + toString(input.language));
         output.compileCommand.args.push_back("--optimization=" + toString(input.optimization));
@@ -64,7 +64,7 @@ namespace bok {
         std::transform(
             input.includePaths.begin(), input.includePaths.end(), 
             std::back_inserter(output.compileCommand.args), 
-            [](const std::string &includePath) { return "--include-path=" + includePath; });
+            [](const auto &includePath) { return "--include-path=" + includePath.string(); });
 
         return output;
     }

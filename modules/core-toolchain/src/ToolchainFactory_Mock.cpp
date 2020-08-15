@@ -16,7 +16,7 @@ namespace bok {
         : impl(new ToolchainFactory_Mock::Impl()) {
 
         impl->toolchainMap["mock"] = std::make_unique<Toolchain_Mock>();
-        impl->toolchainMap["vc"] = std::make_unique<Toolchain_VC>("C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.22.27905\\bin");
+        impl->toolchainMap["vc"] = std::make_unique<Toolchain_VC>("C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Tools\\MSVC\\14.22.27905");
     }
 
     ToolchainFactory_Mock::~ToolchainFactory_Mock() {}

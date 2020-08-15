@@ -43,21 +43,38 @@ namespace bok {
         }
     }
 
-    Compiler_VC::Compiler_VC(std::optional<std::string> path) : path(path) {}
+    Compiler_VC::Compiler_VC(std::optional<Compiler_VC_Path> path) : path(path) {}
 
-    CompileOutput Compiler_VC::generateCompileOutput(const CompileInput& input) const {
+    CompileOutput Compiler_VC::generateCompileOutput(const CompileInput& rawinput) const {
+        // appends compiler-specific generic compilation options, like include directories
+        const auto input = intercept(rawinput);
+
         CompileOutput output;
         
         if (path) {
-            output.compileCommand.path = *path;
+            output.compileCommand.path = path->installationPath / path->postfixPath;
         }
 
         output.compileCommand.name = "cl.exe";
         output.compileCommand.args.push_back("/nologo");
+
+        // output.compileCommand.args.push_back("/X");
+        
+        std::transform(
+            input.includePaths.begin(), input.includePaths.end(), 
+            std::back_inserter(output.compileCommand.args), 
+            [](const auto &includePath) { return "/I" + includePath.string() + "" ; });
+
+        for (const auto& pair : input.definitions) {
+            std::string arg = "/D \"" + pair.first + "=" + pair.second + "\"";
+            output.compileCommand.args.push_back(arg);
+        }
+
         output.compileCommand.args.push_back("/c");
-        output.compileCommand.args.push_back(input.sourceFilePath);
+        output.compileCommand.args.push_back(input.sourceFilePath.string());
+        
         output.compileCommand.args.push_back("/EHsc");
-        output.compileCommand.args.push_back("/Fo\"" + input.outputFilePath + "\"");
+        output.compileCommand.args.push_back("/Fo\"" + input.outputFilePath.string() + "\"");
 
         if (input.debugInformation) {
             output.compileCommand.args.push_back("/DEBUG");
@@ -68,16 +85,6 @@ namespace bok {
         // output.compileCommand.args.push_back("--target-arch=" + toString(input.targetArchitecture));
         output.compileCommand.args.push_back(getCompilerOption(input.runtimeLink));
         
-        for (const auto& pair : input.definitions) {
-            std::string arg = "/D \"" + pair.first + "=" + pair.second + "\"";
-            output.compileCommand.args.push_back(arg);
-        }
-
-        std::transform(
-            input.includePaths.begin(), input.includePaths.end(), 
-            std::back_inserter(output.compileCommand.args), 
-            [](const std::string &includePath) { return "/I " + includePath; });
-
         return output;
 
         // const std::string standardIncludePath = installationPath + "include";
@@ -97,5 +104,13 @@ namespace bok {
         //         }
         //     }
         // );
+    }
+
+    CompileInput Compiler_VC::intercept(CompileInput input) const {
+        if (path) {
+            input.includePaths.push_back(path->installationPath / "include");
+        }
+
+        return input;
     }
 }

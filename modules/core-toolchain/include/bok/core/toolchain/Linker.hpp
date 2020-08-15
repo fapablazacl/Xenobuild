@@ -16,11 +16,11 @@ namespace bok {
 
     struct LinkInput {
         std::string moduleName;
-        std::string outputPath;
-        std::vector<std::string> objectFiles;
+        boost::filesystem::path outputPath;
+        std::vector<boost::filesystem::path> objectFiles;
         LinkerModuleType moduleType;
-        std::vector<std::string> libraryPaths;
-        std::vector<std::string> libraries;
+        std::vector<boost::filesystem::path> libraryPaths;
+        std::vector<boost::filesystem::path> libraries;
     };
 
     struct LinkOutput {

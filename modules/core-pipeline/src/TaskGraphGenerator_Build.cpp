@@ -101,7 +101,7 @@ namespace bok {
             graph.adjacencyList[objectED.first].commandRequired = true;
 
             // trespass the dependency information, from include headers to the object file
-            for (const std::string &includeFile : compileOutput.dependencyHeaders) {
+            for (const auto &includeFile : compileOutput.dependencyHeaders) {
                 const auto includeFileVD = mapper.getVD(includeFile);
                 graph.adjacencyList[includeFileVD].label = graph.adjacencyList[includeFileVD].filePath.filename().string();
 

@@ -8,7 +8,6 @@
 #include <bok/core/Command.hpp>
 
 namespace bok {
-
     enum class CompileLanguage {
         Cplusplus98,
         Cplusplus03,
@@ -39,13 +38,13 @@ namespace bok {
     };
 
     struct CompileInput {
-        std::string sourceFilePath;
-        std::string outputFilePath;
+        boost::filesystem::path sourceFilePath;
+        boost::filesystem::path outputFilePath;
         CompileLanguage language;
         CompileOptimization optimization;
         CompileTargetArchitecture targetArchitecture;
         CompileRuntimeLink runtimeLink;
-        std::vector<std::string> includePaths;
+        std::vector<boost::filesystem::path> includePaths;
         std::map<std::string, std::string> definitions;
         bool debugInformation;
     };
@@ -56,7 +55,7 @@ namespace bok {
 
     struct CompileOutput {
         CommandData compileCommand;
-        std::vector<std::string> dependencyHeaders;
+        std::vector<boost::filesystem::path> dependencyHeaders;
 
         [[deprecated]]
         DagNode *node = nullptr;

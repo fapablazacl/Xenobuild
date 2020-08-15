@@ -20,16 +20,19 @@ namespace bok {
         LinkOutput output;
 
         output.linkCommand.name = "link-c++";
-        output.linkCommand.args.push_back("--output=" + input.outputPath);
+        output.linkCommand.args.push_back("--output=" + input.outputPath.string());
         output.linkCommand.args.push_back("--type=" + toString(input.moduleType));
 
-        std::copy(input.objectFiles.begin(), input.objectFiles.end(), std::back_inserter(output.linkCommand.args));
-        std::transform(input.libraries.begin(), input.libraries.end(), std::back_inserter(output.linkCommand.args), [](const std::string &library) {
-            return "--library=" + library;
+        std::transform(input.objectFiles.begin(), input.objectFiles.end(), std::back_inserter(output.linkCommand.args), [](const auto &objectFile) {
+            return objectFile.string();
+        });
+
+        std::transform(input.libraries.begin(), input.libraries.end(), std::back_inserter(output.linkCommand.args), [](const auto &library) {
+            return "--library=" + library.string();
         });
         
-        std::transform(input.libraryPaths.begin(), input.libraryPaths.end(), std::back_inserter(output.linkCommand.args), [](const std::string& libraryPath) {
-            return "--library-path=" + libraryPath;
+        std::transform(input.libraryPaths.begin(), input.libraryPaths.end(), std::back_inserter(output.linkCommand.args), [](const auto libraryPath) {
+            return "--library-path=" + libraryPath.string();
         });
         
         return output;

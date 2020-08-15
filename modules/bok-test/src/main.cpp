@@ -164,6 +164,8 @@ namespace bok {
                     for (const auto& line : result.stdoutStreamOutput) {
                         std::cout << line << std::endl;
                     }
+
+                    std::cout << " command: "  << std::endl << al[ed].command << std::endl;
                 } else {
                     std::cout << "Error" << std::endl;
                     for (const auto& line : result.stderrStreamOutput) {

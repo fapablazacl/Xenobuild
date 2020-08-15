@@ -4,13 +4,14 @@
 #include <bok/core/Version.hpp>
 
 namespace bok {
-    Toolchain_VC::Toolchain_VC(std::optional<std::string> path) {
+    Toolchain_VC::Toolchain_VC(std::optional<boost::filesystem::path> installationPath) : installationPath(installationPath) {
         // TODO: This depends on the host/target architecture
-        const std::string postfix = "\\Hostx64\\x64\\";
+        const std::string postfix = computePostfix();
 
-        if (path) {
-            compilers.emplace_back(new Compiler_VC{*path + postfix});
-            linkers.emplace_back(new Linker_VC{*path + postfix});
+        if (installationPath) {
+            compilers.emplace_back(new Compiler_VC{ Compiler_VC_Path{*installationPath, postfix} });
+
+            linkers.emplace_back(new Linker_VC{*installationPath / postfix});
         } else {
             compilers.emplace_back(new Compiler_VC{ {} });
             linkers.emplace_back(new Linker_VC{ {} });
@@ -46,6 +47,10 @@ namespace bok {
         }
 
         return nullptr;
+    }
+
+    std::string Toolchain_VC::computePostfix() const {
+        return "bin/Hostx64/x64";
     }
 
     //    const std::string commandBasePath = installationPath + "bin\\Hostx64\\x64\\";

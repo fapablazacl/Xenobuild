@@ -5,10 +5,11 @@
 #include <string>
 #include <vector>
 #include <ostream>
+#include <boost/filesystem/path.hpp>
 
 namespace bok {
     struct CommandData {
-        std::string path;
+        boost::filesystem::path path;
         std::string name;
         std::vector<std::string> args;
         
