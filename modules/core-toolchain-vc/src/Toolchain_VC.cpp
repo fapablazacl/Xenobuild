@@ -1,17 +1,85 @@
 
 #include <bok/core/toolchain/vc/Toolchain_VC.hpp>
 
+#include <cassert>
+#include <boost/filesystem.hpp>
 #include <bok/core/Version.hpp>
 
+
 namespace bok {
-    Toolchain_VC::Toolchain_VC(std::optional<boost::filesystem::path> installationPath) : installationPath(installationPath) {
+    class PrebuiltPackage_StdLib : public PrebuiltPackage {
+    public:
+        PrebuiltPackage_StdLib(const boost::filesystem::path &basePath, const std::string &targetArch)
+            : basePath(basePath), targetArch(targetArch) {
+
+            assert(boost::filesystem::exists(basePath));
+        }
+
+        std::string getName() const override {
+            return "stdlib";
+        }
+
+        PrebuiltPackageBuildData getBuildData() const override {
+            PrebuiltPackageBuildData result;
+
+            result.includePaths = { basePath / "include" };
+            result.libraryPaths = { basePath / "lib" / targetArch };
+
+            return result;
+        }
+
+    private:
+        boost::filesystem::path basePath;
+        std::string targetArch;
+    };
+
+
+    class PrebuiltPackage_WinSDK : public PrebuiltPackage {
+    public:
+        PrebuiltPackage_WinSDK(const boost::filesystem::path &basePath, const std::string &version, const std::string &targetArch)
+            : basePath(basePath), version(version), targetArch(targetArch) {
+
+            assert(boost::filesystem::exists(basePath));
+        }
+
+        std::string getName() const override {
+            return "winsdk";
+        }
+
+        PrebuiltPackageBuildData getBuildData() const override {
+            PrebuiltPackageBuildData result;
+
+            result.includePaths = {
+                basePath / "Include" / version / "ucrt",
+                basePath / "Include" / version / "um",
+                basePath / "Include" / version / "shared"
+            };
+
+            result.libraryPaths = {
+                basePath / "Lib" / version / "um" / targetArch,
+                basePath / "Lib" / version / "ucrt" / targetArch
+            };
+
+            result.libraries = {"AdvAPI32"};
+
+            return result;
+        }
+
+    private:
+        boost::filesystem::path basePath;
+        std::string version;
+        std::string targetArch;
+    };
+
+
+    Toolchain_VC::Toolchain_VC(std::optional<boost::filesystem::path> toolchainPath) : toolchainPath(toolchainPath) {
         // TODO: This depends on the host/target architecture
         const std::string postfix = computePostfix();
 
-        if (installationPath) {
-            compilers.emplace_back(new Compiler_VC{ Compiler_VC_Path{*installationPath, postfix} });
+        if (toolchainPath) {
+            compilers.emplace_back(new Compiler_VC{ Compiler_VC_Path{*toolchainPath, postfix} });
 
-            linkers.emplace_back(new Linker_VC{*installationPath / postfix});
+            linkers.emplace_back(new Linker_VC{*toolchainPath / postfix});
         } else {
             compilers.emplace_back(new Compiler_VC{ {} });
             linkers.emplace_back(new Linker_VC{ {} });
@@ -29,7 +97,7 @@ namespace bok {
     }
 
     Version Toolchain_VC::detectVersion() const {
-        // TODO: Compute compiler version
+        // TODO: Compute toolchain version
         return {1, 0, 0};
     }
 
@@ -53,29 +121,26 @@ namespace bok {
         return "bin/Hostx64/x64";
     }
 
-    //    const std::string commandBasePath = installationPath + "bin\\Hostx64\\x64\\";
-    //    const std::string compilerCommand = commandBasePath + "cl.exe";
-    //    const std::string linkerCommand = commandBasePath + "link.exe";
-    //        std::unique_ptr<Linker> ServiceFactoryVC::createLinker(const std::string &linkerCommand, const std::string &installationPath, const std::string &windowsKitPath) {
-    //    LinkerSwitches linkerSwitches;
-    //    linkerSwitches.buildSharedLibrary = "/DLL";
-    //    linkerSwitches.moduleOutput = "/OUT:";
-    //    linkerSwitches.importLibrary = "/IMPLIB:";
-    //    linkerSwitches.importLibraryPath = "/LIBPATH:";
-    //    LinkerConfiguration linkerConfiguration;
-    //    linkerConfiguration.importLibraryPaths = {
-    //        "\"" + installationPath + "lib\\x64" + "\"",
-    //        "\"" + windowsKitPath + "Lib\\10.0.17763.0\\um\\x64" + "\"",
-    //        "\"" + windowsKitPath + "Lib\\10.0.17763.0\\ucrt\\x64" + "\""
-    //        // "\"C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.17763.0\\um\\x64\"",
-    //        // "\"C:\\Program Files (x86)\\Windows Kits\\10\\Lib\\10.0.17763.0\\ucrt\\x64\""
-    //    };
-    //    linkerConfiguration.importLibraries = { "AdvAPI32" };
-    //    return std::make_unique<ModuleLinker>(
-    //        &commandFactory, 
-    //        linkerCommand,
-    //        linkerSwitches, 
-    //        linkerConfiguration
-    //    );
-    //}
+    std::optional<PrebuiltPackageBuildData> Toolchain_VC::getPackageBuildData(const std::string& packageName) const {
+        if (packageName == "winsdk") {
+            const auto winsdk = PrebuiltPackage_WinSDK {
+                "C:\\Program Files (x86)\\Windows Kits\\10",
+                "10.0.18362.0",
+                "x64"
+            };
+
+            assert(winsdk.getName() == "winsdk");
+
+            if (toolchainPath) {
+                const auto stdlib = PrebuiltPackage_StdLib {*toolchainPath, "x64" };
+                assert(stdlib.getName() == "stdlib");
+
+                return stdlib.getBuildData().merge(winsdk.getBuildData());
+            }
+
+            return winsdk.getBuildData();
+        }
+
+        return {};
+    }
 }

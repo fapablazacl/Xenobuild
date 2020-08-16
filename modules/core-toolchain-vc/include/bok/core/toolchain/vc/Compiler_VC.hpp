@@ -7,7 +7,7 @@
 
 namespace bok {
     struct Compiler_VC_Path {
-        boost::filesystem::path installationPath;
+        boost::filesystem::path toolchainPath;
         boost::filesystem::path postfixPath;
     };
 

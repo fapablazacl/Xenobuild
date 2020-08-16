@@ -11,7 +11,7 @@
 namespace bok {
     class Toolchain_VC : public Toolchain {
     public:
-        explicit Toolchain_VC(std::optional<boost::filesystem::path> installationPath);
+        explicit Toolchain_VC(std::optional<boost::filesystem::path> toolchainPath);
 
         ~Toolchain_VC();
 
@@ -25,11 +25,13 @@ namespace bok {
 
         Linker* getLinker(const LinkerType type) const override;
 
+        std::optional<PrebuiltPackageBuildData> getPackageBuildData(const std::string &packageName) const override;
+
     private:
         std::string computePostfix() const;
 
     private:
-        std::optional<boost::filesystem::path> installationPath;
+        std::optional<boost::filesystem::path> toolchainPath;
         std::vector<std::unique_ptr<Compiler_VC>> compilers;
         std::vector<std::unique_ptr<Linker_VC>> linkers;
     };

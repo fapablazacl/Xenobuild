@@ -60,7 +60,7 @@ namespace bok {
         [[deprecated]]
         DagNode *node = nullptr;
     };
-
+    
     class Source;
     class Compiler {
     public:

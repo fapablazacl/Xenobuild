@@ -34,7 +34,11 @@ namespace bok {
         });
 
         std::transform(input.libraries.begin(), input.libraries.end(), std::back_inserter(output.linkCommand.args), [](const auto &library) {
-            return library.string();
+            if (library.has_extension()) {
+                return library.string();
+            }
+
+            return library.string() + ".lib";
         });
         
         std::transform(input.libraryPaths.begin(), input.libraryPaths.end(), std::back_inserter(output.linkCommand.args), [](const auto& libraryPath) {

@@ -52,18 +52,16 @@ namespace bok {
         CompileOutput output;
         
         if (path) {
-            output.compileCommand.path = path->installationPath / path->postfixPath;
+            output.compileCommand.path = path->toolchainPath / path->postfixPath;
         }
 
         output.compileCommand.name = "cl.exe";
         output.compileCommand.args.push_back("/nologo");
 
-        // output.compileCommand.args.push_back("/X");
-        
         std::transform(
             input.includePaths.begin(), input.includePaths.end(), 
             std::back_inserter(output.compileCommand.args), 
-            [](const auto &includePath) { return "/I" + includePath.string() + "" ; });
+            [](const auto &includePath) { return "/I" + includePath.string(); });
 
         for (const auto& pair : input.definitions) {
             std::string arg = "/D \"" + pair.first + "=" + pair.second + "\"";
@@ -74,7 +72,7 @@ namespace bok {
         output.compileCommand.args.push_back(input.sourceFilePath.string());
         
         output.compileCommand.args.push_back("/EHsc");
-        output.compileCommand.args.push_back("/Fo\"" + input.outputFilePath.string() + "\"");
+        output.compileCommand.args.push_back("/Fo" + input.outputFilePath.string());
 
         if (input.debugInformation) {
             output.compileCommand.args.push_back("/DEBUG");
@@ -86,29 +84,11 @@ namespace bok {
         output.compileCommand.args.push_back(getCompilerOption(input.runtimeLink));
         
         return output;
-
-        // const std::string standardIncludePath = installationPath + "include";
-        // const std::string ucrtIncludePath = windowsKitPath + "Include\\10.0.17763.0\\ucrt";
-        // const std::string umIncludePath = windowsKitPath + "Include\\10.0.17763.0\\um";
-        // 
-        // const std::string sharedIncludePath = windowsKitPath + "Include\\10.0.17763.0\\shared";
-        // return std::make_unique<CompilerImpl> (
-        //     &commandFactory, compilerCommand, compilerSwitches,
-        //     CompilerConfiguration { 
-        //         {"/EHsc", "/std:c++17"}, 
-        //         { 
-        //             "\"" + standardIncludePath + "\"", 
-        //             "\"" + ucrtIncludePath + "\"",
-        //             "\"" + umIncludePath + "\"",
-        //             "\"" + sharedIncludePath + "\""
-        //         }
-        //     }
-        // );
     }
 
     CompileInput Compiler_VC::intercept(CompileInput input) const {
         if (path) {
-            input.includePaths.push_back(path->installationPath / "include");
+            input.includePaths.push_back(path->toolchainPath / "include");
         }
 
         return input;

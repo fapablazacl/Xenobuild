@@ -25,6 +25,10 @@ namespace bok {
 
         Linker* getLinker(const LinkerType type) const override;
 
+        std::optional<PrebuiltPackageBuildData> getPackageBuildData(const std::string& packageName) const override {
+            return {};
+        }
+
     private:
         std::vector<std::unique_ptr<Compiler>> compilers;
         std::vector<std::unique_ptr<Linker>> linkers;

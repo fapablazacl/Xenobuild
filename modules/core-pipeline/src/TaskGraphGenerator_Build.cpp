@@ -40,6 +40,19 @@ namespace bok {
     };
 
 
+    static CompileInput complementCompileInput(CompileInput input, const PrebuiltPackageBuildData& buildData) {
+        input.includePaths.insert(input.includePaths.end(), buildData.includePaths.begin(), buildData.includePaths.end());
+
+        return input;
+    }
+
+    static LinkInput complementLinkInput(LinkInput input, const PrebuiltPackageBuildData& buildData) {
+        input.libraryPaths.insert(input.libraryPaths.end(), buildData.libraryPaths.begin(), buildData.libraryPaths.end());
+        input.libraries.insert(input.libraries.end(), buildData.libraries.begin(), buildData.libraries.end());
+
+        return input;
+    }
+
     TaskGraphGenerator_Build::TaskGraphGenerator_Build(const WildcardClassifier<CompilerType>& sourceClassifier) 
         : sourceClassifier(sourceClassifier) {}
 
@@ -50,12 +63,19 @@ namespace bok {
         assert(toolchain->enumerateLinkers().size() > 0);
         assert(toolchain->enumerateCompilers().size() > 0);
 
+        // TODO: Refactor later into a more scalable solution (dependency management)
+        const auto winsdkBuildData = toolchain->getPackageBuildData("winsdk");
+
         const Linker* linker = pickLinker(toolchain, module);
         
         LinkInput linkInput;
         linkInput.moduleName = module->getName();
         linkInput.moduleType = LinkerModuleType::CliApplication;
         linkInput.outputPath = module->getPath().string();
+
+        if (winsdkBuildData) {
+            linkInput = complementLinkInput(linkInput, *winsdkBuildData);
+        }
 
         TaskGraph graph;
         PathVertexMapper mapper {graph};
@@ -79,7 +99,11 @@ namespace bok {
             compileInput.language = CompileLanguage::Cplusplus17;
             compileInput.targetArchitecture = CompileTargetArchitecture::Native;
             compileInput.outputFilePath = source->getFilePath().string() + ".obj";
-            
+
+            if (winsdkBuildData) {
+                compileInput = complementCompileInput(compileInput, *winsdkBuildData);
+            }
+
             // gather the object file name
             linkInput.objectFiles.push_back(compileInput.outputFilePath);
 
@@ -96,7 +120,7 @@ namespace bok {
 
             // mark that object depends on source to generate
             const auto objectED = boost::add_edge(objectFileVD, sourceFileVD, graph.adjacencyList);
-            graph.adjacencyList[objectED.first].label = "compile [C++] " + boost::filesystem::path{ compileInput.sourceFilePath }.filename().string();
+            graph.adjacencyList[objectED.first].label = "compile [C++] " + compileInput.sourceFilePath.filename().string();
             graph.adjacencyList[objectED.first].command = compileOutput.compileCommand;
             graph.adjacencyList[objectED.first].commandRequired = true;
 
@@ -115,7 +139,8 @@ namespace bok {
         LinkOutput linkOutput = linker->generateLinkOutput(linkInput);
 
         // create a edge, from the module to a physical (binary module)
-        const auto binaryModuleNode = mapper.getVD(graph.adjacencyList[moduleVD].filePath.string() + ".exe");
+        // TODO: The ".exe" addition must be refactored to a "target" platform management code (maybe via DI in this class)
+        const auto binaryModuleNode = mapper.getVD(graph.adjacencyList[moduleVD].filePath.string() + ".exe");   
         const auto binaryModuleEdge = boost::add_edge(binaryModuleNode, moduleVD, graph.adjacencyList);
 
         graph.adjacencyList[binaryModuleEdge.first].label = "link [C++] " + graph.adjacencyList[binaryModuleNode].filePath.filename().string();
