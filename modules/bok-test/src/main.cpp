@@ -134,8 +134,6 @@ namespace bok {
     class TaskGraphVisitor {
     public:
         void visit(const TaskGraph& graph) const {
-            // showDiagnostics(graph);
-
             visit(graph.moduleVertexDescriptor, graph.adjacencyList);
         }
 
@@ -143,10 +141,6 @@ namespace bok {
         void visit(const size_t vd, const TaskGraphAdjacencyList &al) const {
             for (auto cvd : boost::make_iterator_range(boost::adjacent_vertices(vd, al))) {
                 visit(cvd, al);
-
-                // std::cout << " label: " << al[cvd].label << std::endl;
-                // std::cout << " filePath: " << boost::filesystem::path(al[cvd].filePath).filename() << std::endl;
-                // std::cout << std::endl;
             }
 
             for (auto ed : boost::make_iterator_range(boost::out_edges(vd, al))) {
@@ -154,29 +148,22 @@ namespace bok {
                     continue;
                 }
 
-                // std::cout << " label: " << al[ed].label << std::endl;
-                // std::cout << " command: " << al[ed].command << std::endl;
+                std::cout << al[ed].label << std::endl;
 
                 const auto result = executor.execute(al[ed].command);
 
-                if (result.stderrStreamOutput.size() == 0) {
-                    std::cout << "OK" << std::endl;
-                    for (const auto& line : result.stdoutStreamOutput) {
-                        std::cout << line << std::endl;
-                    }
+                if (result.stderrStreamOutput.size() != 0) {
+                    std::cout << al[ed].command << std::endl << std::endl;
+                    std::cout << "failed:" << std::endl;
 
-                    std::cout << " command: "  << std::endl << al[ed].command << std::endl;
-                } else {
-                    std::cout << "Error" << std::endl;
                     for (const auto& line : result.stderrStreamOutput) {
                         std::cout << line << std::endl;
                     }
-                    std::cout << " command: " << al[ed].command << std::endl << std::endl;
                 }
             }
         }
 
-        void showDiagnostics(const TaskGraph& graph) const {
+        void showDebugDiagnostics(const TaskGraph& graph) const {
             std::cout << "Number of Vertices: " << boost::num_vertices(graph.adjacencyList) << std::endl;
             std::cout << "Number of Edges:    " << boost::num_edges(graph.adjacencyList) << std::endl;
             std::cout << "Detail of Vertices:" << std::endl;
@@ -203,8 +190,8 @@ namespace bok {
 int main() {
     auto classifier = createSourceClassifier();
 
-    // auto package = createPackage_01HelloWorld();
-    auto package = createPackage_02WordCounter();
+    auto package = createPackage_01HelloWorld();
+    // auto package = createPackage_02WordCounter();
     auto taskGraphGeneratorBuild = bok::TaskGraphGenerator_Build{classifier};
     auto toolchainManager = bok::ToolchainFactory_Mock{};
     // auto toolchain = toolchainManager.getToolchain("mock");
