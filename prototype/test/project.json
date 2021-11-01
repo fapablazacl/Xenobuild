@@ -1,0 +1,68 @@
+{
+    "buildSystem": {
+        "type": "cmake"
+    },
+    "dependencies": [
+        {
+            "name": "glfw",
+            "repositoryType": "git",
+            "buildSystem": "cmake",
+            "git": {
+                "provider": "github",
+                "author": "glfw",
+                "repository": "https://github.com/glfw/glfw.git"
+            },
+            "cmake": {
+                "definitions": {
+                    "GLFW_BUILD_DOCS": "OFF",
+                    "GLFW_BUILD_EXAMPLES": "OFF",
+                    "GLFW_BUILD_TESTS": "OFF"
+                }
+            }
+        }, {
+            "name": "fruit",
+            "repositoryType": "git",
+            "buildSystem": "cmake",
+            "git": {
+                "provider": "github",
+                "author": "google",
+                "repository": "https://github.com/google/fruit.git"
+            },
+            "cmake": {
+                "definitions": {
+                    "FRUIT_TESTS_USE_PRECOMPILED_HEADERS": "OFF",
+                    "FRUIT_USES_BOOST": "OFF"
+                }
+            }
+        }, {
+            "name": "json",
+            "repositoryType": "git",
+            "buildSystem": "cmake",
+            "git": {
+                "provider": "github",
+                "author": "nlohmann",
+                "repository": "https://github.com/nlohmann/json.git"
+            },
+            "cmake": {
+                "definitions": {
+                    "BUILD_TESTING": "OFF",
+                    "JSON_BuildTests": "OFF"
+                }
+            }
+        }, {
+            "name": "yaml-cpp",
+            "repositoryType": "git",
+            "buildSystem": "cmake",
+            "git": {
+                "provider": "github",
+                "author": "jbeder",
+                "repository": "https://github.com/jbeder/yaml-cpp.git"
+            },
+            "cmake": {
+                "definitions": {
+                    "YAML_CPP_BUILD_TESTS": "OFF"
+                }
+            }
+        }
+    ]
+}

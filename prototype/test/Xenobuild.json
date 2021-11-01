@@ -1,0 +1,26 @@
+{
+    "buildSystem": {
+        "type": "cmake",
+        "cmake": {
+            "buildTypes": ["Debug", "Release"]
+        }
+    },
+    "dependencies": [
+        {
+            "name": "json",
+            "repositoryType": "git",
+            "buildSystem": "cmake",
+            "git": {
+                "provider": "github",
+                "author": "nlohmann",
+                "repository": "https://github.com/nlohmann/json.git"
+            },
+            "cmake": {
+                "definitions": {
+                    "BUILD_TESTING": "OFF",
+                    "JSON_BuildTests": "OFF"
+                }
+            }
+        }
+    ]
+}

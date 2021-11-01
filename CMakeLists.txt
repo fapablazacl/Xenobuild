@@ -36,7 +36,7 @@ add_subdirectory("modules/core-io")
 add_subdirectory("modules/core-pipeline")
 add_subdirectory("modules/core-package")
 add_subdirectory("modules/core-toolchain")
-# NOTE: Temporally removed, waiting for an stable core to build on.
+# NOTE: Temporally removed, waiting for an stable core to build upon on.
 # add_subdirectory("modules/core-toolchain-clang")
 # add_subdirectory("modules/core-toolchain-gcc")
 add_subdirectory("modules/core-toolchain-vc")
