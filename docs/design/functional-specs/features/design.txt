@@ -63,7 +63,3 @@ Flexible and transparent build support
 	- Static and Shared Runtime Libraries.
 	- 32, 64 bits, etc.
 	- x86, ARM, etc.
-
-==============================
-4. Python Requirements
-==============================
