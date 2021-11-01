@@ -1,0 +1,8 @@
+
+BORC Specification Document
+Version 1.0
+
+BORC Is a suite of tools (binaries and libraries) for build software products, based
+on a project description file.
+
+The project description file is based on XML, with the

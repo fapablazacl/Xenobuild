@@ -1,0 +1,69 @@
+
+BORC Specification Document
+Version 1.0
+
+==============================
+1. Non-functional requirements:
+==============================
+
+1.1 Library based design.
+	? For integration with IDEs and other programming tools.
+
+1.2 Set of command line tools for ease the non-gui based development. For example:
+	$ borc run test01
+	$ borc build
+	$ borc install
+
+1.3 Non-Turing Complete, Domain Specific Language (use XML for prototyping).
+
+1.4 Extensible Build System
+	- Support for custom build actions (based on filenames or content recognizers).
+	- Support for Plugins (based on C++).
+
+
+==============================
+2. Generic Requirements
+==============================
+
+2.1 Support for diverse development activities (build, test, run and pack)
+	- Build: Construction of software artifacts (binaries, documentation, installers, etc).
+	- Test: Run unit tests as part of the build process.
+	- Run: Run the specified executable. Add to the path the internal dependency
+	- Pack: Package the application in a setup / makefile, compress data files, etc.
+
+2.2 Native support for multiple programming languages
+	? This will ease the development of multi-technology projects (for example, Python frontend with C/C++ based backends)
+	2.1 Support for C/C++.
+	2.2 Support for Python.
+
+==============================
+3. C/C++ Requirements
+==============================
+
+Project management
+	- A project is composed by one or more components:
+		! Program. An executable program. Can be constructed from C/C++ source files, object files, static libraries and another dynamic libraries.
+		! Static Library. Compendium of multiple object files, archived into a single library for direct inclusion on executable Programs or Dynamic Libraries.
+		! Dynamic Library. A library loaded at runtime by a program.
+	- Programs and Libraries are constructed from C/C++ source files, object files, and static libraries.
+
+Automatic management for build-time and run-time dependencies.
+	- runtime dependency: A dynamic library required to run the executable.
+	- buildtime dependency: A dynamic or static library and/or header-based library, required to build the binary (an executable or dynamic library).
+
+Automatic management for internal and external dependencies.
+	- Internal dependency: Dependency defined by the current project itself.
+	- External dependency: Dependency defined by default, and generally avaiable in the host system.
+
+Flexible and transparent build support
+	- Different compiler support (GCC, Visual C++, Intel C++, etc).
+	- Compiler independent
+	- Debug, Release and others.
+	- Static and Shared Libraries.
+	- Static and Shared Runtime Libraries.
+	- 32, 64 bits, etc.
+	- x86, ARM, etc.
+
+==============================
+4. Python Requirements
+==============================

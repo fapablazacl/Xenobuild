@@ -1,0 +1,183 @@
+
+  Project "langros" prototype.
+
+  Non functional requeriments:  
+    Support for multiple toolchains.
+    Support for multiple programming languages in the same project.
+    Support for dependencies (libraries and another projects).
+    Syntax based on YAML
+    Configuration oriented (no logical structures).
+    Support for huge size projects.
+
+ Concepts:
+  project: The software project, composed of many 'components'
+  component: A software component. Can be a component of the project, or be a external library.
+
+
+Features:
+I want this to have several operation modes.
+
+* Build Mode:
+
+$ langros build
+
+On the Build Mode the tool acts like a make tool: It will generate all the build artifacts (binaries, documentation, installers, etc).
+Whenever the user invokes the tool in build mode, it will make a hidden directory at the project root folder, called '.langros',
+with the same structure as the source files. For example, let's suppose the following project structure:
+
+myproject
+  myexecutable
+    include
+      myexe.h
+      module.h
+    src
+      myexe.c
+      module.c
+  mylibrary
+    include
+      mylib.h
+    src
+      mylib.c
+
+The build artifacts will have the following folder structure:
+  .langros
+    myexecutable
+      myexecutable (*)
+      src
+        myexe.c.obj
+        module.c.obj
+    mylibrary
+      mylibrary (*)
+      src
+        mylib.c.obj
+
+This has to be as shown like this because this way we will avoid file name collision cross language.
+This behaviour can't be configured because we want the tool simple and fast.
+
+* Debug Mode.
+On the build mode, the tool will execute the specified executable component. This will be like this because:
+  - We want to select the debugger
+  - The executable maybe have software library dependencies, constructed in the same
+
+$ langros debug myexecutable
+
+* Generate Mode
+     Prototype in Python, but final version must be in C.
+     Support for multiple toolchains.
+     Support for multiple programming languages in the same project.
+     Support for dependencies (libraries and another projects).
+     Syntax based on YAML
+
+
+
+other notes:
+
+Constructor de Software multi lenguaje, multi plataforma.
+
+'mula' es una herramienta de linea de comandos que se encarga de gestionar todo el proceso de construccion de proyectos de software. Esto es:
+
+De forma similar a CMake,
+
+Ejemplos de uso:
+
+Construccion
+
+$ cd felide
+$ mula build
+
+Building software components  ...
+Resolving software components in project felide... OK
+Building xe.sys ... OK
+Building libfelide ... OK
+Building felide ... OK
+Building unit testings ... OK
+
+Running unit testings ... OK
+Generating dev documentation ... OK.
+Generating user documentation ... OK
+Packaging
+
+Build done in %d seconds.
+
+# En este punto, el proyecto esta completamente construido.
+
+Ejecucion
+
+$ mula run --nodebug
+Hello, World!
+
+# ejecuta el proyecto, agregando a una lista de paths temporales asociadas al proceso ejecutable para que no tenga con las dependencias dinamicas.
+# estas dependencias deben estar primero que las paths del sistema, para asi tomar siempre la version que esta siendo actualmente desarrollada.
+# La idea es que sea como una familia de comandos, de forma similar a como opera git.
+
+Generadores
+
+Los generadores son entidades que generan scripts de instalacion para distintas plataformas y sistemas operativos. La idea es que estas soportes compilacion cruzada, y no dependendan de que 'mula' este instalado en el sistema del cliente.
+
+Ejemplo:
+
+$ mula gen --makefile
+
+  Generating configure and makefiles for Linux ...
+  Generating configure and makefiles for Windows ...
+  Generating configure and makefiles for OS X ...
+  Generating configure and makefiles for Android ...
+  Done.
+
+
+
+Por defecto, se generaran makefiles para la plataforma actual.
+
+Para generar makefiles para todas las plataformas soportadas:
+
+$ mula gen --makefile --all
+
+    Generating installation scripts for all supported platforms ...
+
+$ mula init
+
+   Scanning possible
+
+
+Compatibilidad multilenguaje
+
+Langros tiene la gran ventaja de que soporta multiples lenguajes de programacion en un mismo proyecto. Por ejemplo, supongamos que tenemos la siguiente estructura de datos:
+
+
+multiproj
+    multiproj.langros
+
+    clib
+        include
+            pool.h
+            vector.h
+            mesh.h
+        src
+            pool.c
+            vector.c
+            mesh.c
+    jclib
+        src
+            Pool.java
+            Vector.java
+            Mesh.java
+    jario
+        src
+            Jario.java
+
+
+Los proyectos seran construidos de la siguiente manera:
+
+$ mula build
+     Building software components  ...
+Resolving software components in project multiproj... OK
+Building clib ... OK
+Building jclib ... OK
+Building jario ... OK
+
+$ langros list
+clib : C Library.
+jclib: Java Class Library
+jario: Java Application.
+
+$ langros run

@@ -1,0 +1,5 @@
+project borc;
+
+program borc {
+    sources = borc/BorcFile.cpp;
+}

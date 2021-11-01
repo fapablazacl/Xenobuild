@@ -1,0 +1,76 @@
+
+/**
+ * Build description file for the borc Project.
+ *
+ * This file describes a build project structure with a high level representation, using a C-like syntax.
+ * All the directives resemble many C/C++ and Java constructs.
+ */
+
+// This fileformat also accepts C++ style comments 
+
+// A project is the top level entity, and it is specified with the project directive.
+// In this case, we are defining the 'borc' project.
+project borc;
+
+// The 'program' directive specifies an executable program.
+program borc {
+	// The import directive specifies that this project requires the 'libborc' dependency to build.
+	// This dependency can be any library, internal (defined in the current project) or external (defined on another projects).
+	// This way the build orchestrator adds automatically any compile flag, include path, linking libraries, etc, 
+	// required to build and run the executable program.  
+	import libborc;
+
+	// by default, any buildable entity uses a current relative root path
+	// for this executable program, we are using the 'borc' directory as the root path
+	path = borc;
+
+	// ** all paths are relative to the current 'borcfile' **
+
+	// add to the include paths the 'include' directory relative to the root path (borc in this case)  
+	// the final result is 'borc/include'
+	includes = include; 
+
+	// with the 'sources' directive we are specifying all the source files that compose this 
+	// executable program (headers also must be included)
+	sources = {
+		include/borc/Borc.hpp, 
+		src/Borc.cpp
+	}
+}
+
+// The 'library' directive specifies an library
+// By default, all libraries are dynamic ones. 
+library libborc {
+
+	// The 'public' modifier specifies that this include path must be added to the 
+	// dependent libraries or executable programs that make use of this library.
+	// By default, the modifier is 'private', meaning that include(s) belong only to 
+	// the current buildable entity (program or library) 
+	public includes = include; 
+
+	// specify all the components of the library 'libborc' 
+	sources = {
+		include/borc/Parser.hpp,
+		include/borc/Project.hpp,
+		include/borc/Library.hpp,
+		include/borc/Program.hpp,
+		include/borc/FileSystem.hpp,
+
+		src/Parser.cpp, 
+		src/Project.cpp,
+		src/Library.cpp,
+		src/Program.cpp,
+		src/FileSystem.cpp
+	}
+}
+
+// A test is a special kind of program that is executed automatically after succesful compilation
+// of all buildables.
+test borc-tdd {
+	import unittestpp;
+
+	path = borc-tdd;
+
+	// include all files from the 'src' directory
+	sources = src/*;	 
+}

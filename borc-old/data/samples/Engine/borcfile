@@ -1,0 +1,26 @@
+
+/**
+ * sample 'borcfile' for the managment for C/C++ projects.
+ */
+
+project engine;
+
+library engine {
+
+}
+
+library engine-gfx-gl3 {
+
+}
+
+library engine-gfx-gles2 {
+
+}
+
+library engine-gfx-png {
+
+}
+
+library engine-gfx-ft2 {
+
+}

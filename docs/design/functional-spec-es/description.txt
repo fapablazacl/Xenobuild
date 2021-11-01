@@ -1,0 +1,101 @@
+
+BORC Description Document
+Version 1.0
+
+BORC Is a suite of tools (binaries and libraries) for build software products,
+
+based on a project description file.
+
+==============================
+1. A Simple Example
+==============================
+
+Let's consider the following directory hierarchy:
+
+    ConsoleApp01/
+      borcfile.xml
+      ConsoleApp01.cpp
+
+Listing 1.1: borcfile.xml content
+
+    <borc:project name="ConsoleApp01">
+
+        <borc:program name="ConsoleApp01" language="C++11">
+            <!-- all paths are relative -->
+            <borc:directory path="." />
+        </borc:program>
+
+    </borc:project>
+
+
+In order to build this project, one could enter the following command:
+
+    $ borc build
+
+    Scanning Components ...
+    Building C++11 Program 'ConsoleApp01' ...
+    Done.
+
+
+Now the folder hierarchy looks like this:
+
+    ConsoleApp01/
+      borcfile.xml
+      ConsoleApp01.cpp
+      .borc/
+        .borcmetadata
+        gcc-unknown-x86_64/
+          ConsoleApp01[.exe]
+          ConsoleApp01.cpp.obj
+
+==============================
+2. A Program with a Library
+
+==============================
+Now, consider a program that computes the distance between two 2D points via
+the command line, with the following directory hierarchy:
+
+    App02/
+      borcfile.xml
+      MathLib/
+        MathLib.cpp
+        MathLib.hpp
+      App02
+        App02.cpp
+
+
+Listing 2.1: MathLib.hpp content
+
+    #ifndef __mathlib_hpp__
+    #define __mathlib_hpp__
+
+    namespace MathLib {
+        extern float distance(float x1, float y1, float x2, float y2);
+    }
+
+    #endif
+
+Listing 2.2: App02.cpp content:
+
+    #include <iostream>
+    #include "MathLib/MathLib.hpp"
+
+    using MathLib::distance;
+
+    int main(int argc, char **argv) {
+        if (argc < 5) {
+            std::cout << "Usage: " << argv[0] << "x1 y1 x2 y2" << std::endl;
+        }
+
+        const float x1 = std::stof(argv[1]);
+        const float y1 = std::stof(argv[2]);
+        const float x2 = std::stof(argv[3]);
+        const float y2 = std::stof(argv[4]);
+
+        std::cout << distance(x1, y1, x2, y2);
+
+        return 0;
+    }
+
+
+The program 'App02' uses the library 'MathLib'
