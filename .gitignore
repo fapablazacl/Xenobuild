@@ -2,10 +2,10 @@
 .vscode/*
 .bok/*
 .borc/*
-src/*
 docs/bok.vpp.*
 output.dot
 docs/*.jpg
 docs/*.lck
 docs/*.vpp.b*
-
+project/
+build/
