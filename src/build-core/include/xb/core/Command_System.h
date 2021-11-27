@@ -5,9 +5,9 @@
 #include <string>
 #include <vector>
 
-#include <bok/core/Command.hpp>
+#include <xb/core/Command.h>
 
-namespace bok {
+namespace Xenobuild {
     class Command_System : public Command {
     public:
         explicit Command_System(const std::string &base);

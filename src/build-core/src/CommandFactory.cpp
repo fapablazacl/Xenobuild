@@ -1,12 +1,12 @@
 
-#include <bok/core/CommandFactory.hpp>
+#include <xb/core/CommandFactory.h>
 
 #include <iostream>
 #include <boost/filesystem.hpp>
-#include <bok/core/Command_System.hpp>
-#include <bok/core/Command_Folder.hpp>
+#include <xb/core/Command_System.h>
+#include <xb/core/Command_Folder.h>
 
-namespace bok {
+namespace Xenobuild {
     CommandFactory::~CommandFactory() {}
 
 

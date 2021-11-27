@@ -2,11 +2,11 @@
 #ifndef __BOK_MODEL_COMMAND_FOLDERCOMMAND_HPP__
 #define __BOK_MODEL_COMMAND_FOLDERCOMMAND_HPP__
 
-#include <bok/core/Command.hpp>
-#include <bok/core/CommandFactory.hpp>
+#include <xb/core/Command.h>
+#include <xb/core/CommandFactory.h>
 #include <boost/filesystem/path.hpp>
 
-namespace bok {
+namespace Xenobuild {
     class Command_Folder : public Command {
     public:
         explicit Command_Folder(const boost::filesystem::path &path, const PathCommand pathCommand);

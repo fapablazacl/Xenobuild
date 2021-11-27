@@ -4,9 +4,9 @@
 
 #include <string>
 
-#include "FileService.hpp"
+#include "FileService.h"
 
-namespace bok {
+namespace Xenobuild {
     class FileService_FS : public FileService {
     public:
         virtual ~FileService_FS();

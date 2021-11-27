@@ -2,7 +2,7 @@
 #ifndef __BOK__COMMON_CONSTANTS_HPP__
 #define __BOK__COMMON_CONSTANTS_HPP__
 
-namespace bok {
+namespace Xenobuild {
     extern const char* BOK_PACKAGE_DEFINITION_FILENAME;
     extern const char* BOK_COMPONENT_DEFINITION_FILENAME;
     extern const char* BOK_PACKAGE_SEARCH_PATH;

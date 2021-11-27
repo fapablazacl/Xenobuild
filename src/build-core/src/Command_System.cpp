@@ -1,11 +1,12 @@
 
-#include <bok/core/Command_System.hpp>
+#include <xb/core/Command_System.h>
 
 #include <iostream>
 #include <stdexcept>
 #include <boost/algorithm/string/join.hpp>
 
-namespace bok {
+
+namespace Xenobuild {
     Command_System::Command_System(const std::string &base)
         : _base(base) {}
 

@@ -1,36 +1,21 @@
 
-# Boost
-find_package(Boost
-    REQUIRED
-    COMPONENTS program_options filesystem
-)
+set (target xb)
 
-include_directories(
-    "./src"
-    ${Boost_INCLUDE_DIRS}
-)
-
-link_directories(${Boost_LIBRARY_DIRS})
-
-set (target bok)
-
-set (src
+set (sources
     ./src/main.cpp
     ./src/bok/cli/Controller.cpp
-    ./src/bok/cli/Controller.hpp
+    ./src/bok/cli/Controller.h
     ./src/bok/cli/BuildController.cpp
-    ./src/bok/cli/BuildController.hpp
+    ./src/bok/cli/BuildController.h
     ./src/bok/cli/BuildController2.cpp
-    ./src/bok/cli/BuildController2.hpp
+    ./src/bok/cli/BuildController2.h
     ./src/bok/cli/ConfigureController.cpp
-    ./src/bok/cli/ConfigureController.hpp
+    ./src/bok/cli/ConfigureController.h
     ./src/bok/cli/InitController.cpp
-    ./src/bok/cli/InitController.hpp
+    ./src/bok/cli/InitController.h
     ./src/bok/cli/ControllerFactory.cpp
-	./src/bok/cli/ControllerFactory.hpp
+	./src/bok/cli/ControllerFactory.h
 )
-
-source_group(\\ FILES ${src})
 
 add_executable(${target} ${src})
 
@@ -53,11 +38,4 @@ target_link_libraries(${target}
 	# core-toolchain-vc 
 	feature
 	yaml-cpp
-)
-
-install(
-    TARGETS ${target}
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
 )

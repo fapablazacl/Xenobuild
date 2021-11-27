@@ -1,23 +1,23 @@
 
-set (target core)
+set (target xb-core)
 
 set (sources 
-	include/bok/core/Predef.h
-	include/bok/core/Command.hpp
-	include/bok/core/Command_System.hpp
-	include/bok/core/Command_Folder.hpp
-	include/bok/core/CommandFactory.hpp
-	include/bok/core/Constants.hpp
-	include/bok/core/Dag.hpp
-	include/bok/core/DagNode.hpp
-	include/bok/core/DagVisitor.hpp
-	include/bok/core/FileService.hpp
-	include/bok/core/FileService_FS.hpp
-	include/bok/core/FileTypeService.hpp
-	include/bok/core/Logger.hpp
-	include/bok/core/Logger_Console.hpp
-	include/bok/core/Types.hpp
-	include/bok/core/Version.hpp
+	include/xb/core/Predef.h
+	include/xb/core/Command.h
+	include/xb/core/Command_System.h
+	include/xb/core/Command_Folder.h
+	include/xb/core/CommandFactory.h
+	include/xb/core/Constants.h
+	include/xb/core/Dag.h
+	include/xb/core/DagNode.h
+	include/xb/core/DagVisitor.h
+	include/xb/core/FileService.h
+	include/xb/core/FileService_FS.h
+	include/xb/core/FileTypeService.h
+	include/xb/core/Logger.h
+	include/xb/core/Logger_Console.h
+	include/xb/core/Types.h
+	include/xb/core/Version.h
 	
 	src/Command.cpp
 	src/Command_System.cpp
@@ -37,6 +37,6 @@ set (sources
 
 add_library(${target} ${sources})
 
-target_link_libraries(${target} yaml-cpp ${Boost_LIBRARIES})
+target_link_libraries(${target} ${Boost_LIBRARIES})
 
 target_include_directories(${target} PUBLIC "include/")

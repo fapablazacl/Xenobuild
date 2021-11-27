@@ -9,3 +9,5 @@ docs/*.lck
 docs/*.vpp.b*
 project/
 build/
+.xb/*
+.DS_Store

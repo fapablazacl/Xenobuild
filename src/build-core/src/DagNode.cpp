@@ -1,8 +1,8 @@
 
-#include <bok/core/DagNode.hpp>
-#include <bok/core/Dag.hpp>
+#include <xb/core/DagNode.h>
+#include <xb/core/Dag.h>
 
-namespace bok {
+namespace Xenobuild {
     DagNode::DagNode(Dag *dag, Command *command) {
         this->dag = dag;
         this->command = command;

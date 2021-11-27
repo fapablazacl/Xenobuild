@@ -1,9 +1,9 @@
 
-#include <bok/core/Logger_Console.hpp>
+#include <xb/core/Logger_Console.h>
 
 #include <iostream>
 
-namespace bok {
+namespace Xenobuild {
     void Logger_Console::message(const MessageType type, const std::string &text) {
         std::string prefix;
 

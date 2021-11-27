@@ -7,7 +7,7 @@
 #include <ostream>
 #include <boost/filesystem/path.hpp>
 
-namespace bok {
+namespace Xenobuild {
     struct CommandData {
         boost::filesystem::path path;
         std::string name;

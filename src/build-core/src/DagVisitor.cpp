@@ -1,10 +1,10 @@
 
-#include <bok/core/DagVisitor.hpp>
-#include <bok/core/Dag.hpp>
-#include <bok/core/DagNode.hpp>
-#include <bok/core/Command.hpp>
+#include <xb/core/DagVisitor.h>
+#include <xb/core/Dag.h>
+#include <xb/core/DagNode.h>
+#include <xb/core/Command.h>
 
-namespace bok {    
+namespace Xenobuild {    
     void DagVisitor::visit(Dag *dag) {
         this->visitNode(dag->getRoot());
     }

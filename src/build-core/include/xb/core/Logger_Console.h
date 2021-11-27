@@ -1,9 +1,9 @@
 
 #pragma once
 
-#include "Logger.hpp"
+#include "Logger.h"
 
-namespace bok {
+namespace Xenobuild {
     class Logger_Console : public Logger {
     public:
         void message(const MessageType type, const std::string &text) override;

@@ -4,7 +4,7 @@
 
 #include <string>
 
-namespace bok {
+namespace Xenobuild {
     class FileService {
     public:
         virtual ~FileService();

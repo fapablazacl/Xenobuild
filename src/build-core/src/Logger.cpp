@@ -1,6 +1,6 @@
 
-#include <bok/core/Logger.hpp>
+#include <xb/core/Logger.h>
 
-namespace bok {
+namespace Xenobuild {
     Logger::~Logger() {}
 }

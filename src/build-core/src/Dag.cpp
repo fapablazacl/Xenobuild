@@ -1,8 +1,8 @@
 
-#include <bok/core/Dag.hpp>
-#include <bok/core/DagNode.hpp>
+#include <xb/core/Dag.h>
+#include <xb/core/DagNode.h>
 
-namespace bok {
+namespace Xenobuild {
     Dag::Dag() {
         root = this->createNode();
     }

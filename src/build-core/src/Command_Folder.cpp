@@ -1,9 +1,9 @@
 
-#include <bok/core/Command_Folder.hpp>
+#include <xb/core/Command_Folder.h>
 
 #include <boost/filesystem.hpp>
 
-namespace bok {
+namespace Xenobuild {
     Command_Folder::Command_Folder(const boost::filesystem::path &path, const PathCommand pathCommand) {
         this->path = path;
         this->pathCommand = pathCommand;

@@ -1,6 +1,0 @@
-{
-    "toolchains": [
-        "toolchain/gcc",
-        "toolchain/vc"
-    ]
-}

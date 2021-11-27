@@ -6,7 +6,7 @@
 #include <memory>
 #include <boost/optional.hpp>
 
-namespace bok {
+namespace Xenobuild {
     class Command;
     class DagNode;
 

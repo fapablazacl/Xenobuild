@@ -1,6 +1,6 @@
 
-#include <bok/core/Command.hpp>
+#include <xb/core/Command.h>
 
-namespace bok {
+namespace Xenobuild {
     Command::~Command() {}
 }

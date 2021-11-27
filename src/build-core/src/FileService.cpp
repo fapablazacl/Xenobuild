@@ -1,6 +1,6 @@
 
-#include <bok/core/FileService.hpp>
+#include <xb/core/FileService.h>
 
-namespace bok {
+namespace Xenobuild {
     FileService::~FileService() {}
 }

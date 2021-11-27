@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace bok {
+namespace Xenobuild {
     class Logger {
     public:
         enum MessageType {

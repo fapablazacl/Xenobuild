@@ -1,11 +1,11 @@
 
-#include <bok/core/Version.hpp>
+#include <xb/core/Version.h>
 
 #include <vector>
 #include <stdexcept>
 #include <boost/algorithm/string.hpp>
 
-namespace bok {
+namespace Xenobuild {
     Version Version::parse(const std::string &str) {
         std::vector<std::string> results;
         boost::split(results, str, boost::is_any_of("."));

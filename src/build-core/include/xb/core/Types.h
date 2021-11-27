@@ -1,8 +1,8 @@
 
 #pragma once 
 
-#include <boost/filesystem/path.hpp>
+#include <boost/filesystem/path.h>
 
-namespace bok {
+namespace Xenobuild {
     typedef boost::filesystem::path path;
 }

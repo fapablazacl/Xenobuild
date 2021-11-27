@@ -4,7 +4,7 @@
 
 #include <vector>
 
-namespace bok {
+namespace Xenobuild {
     class Command;
 
     class Dag;

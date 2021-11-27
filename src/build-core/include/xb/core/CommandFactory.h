@@ -7,7 +7,7 @@
 #include <memory>
 #include <boost/filesystem/path.hpp>
 
-namespace bok {
+namespace Xenobuild {
     enum class PathCommand {
         Create,
         Delete
