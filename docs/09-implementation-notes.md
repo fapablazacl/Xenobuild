@@ -1,27 +1,6 @@
-# Version 1.0.0 Objectives
-- Replicate the functionality found in the Python prototype
-- Setup the CI pipelines in all major platforms(Windows, Linux, macOS).
-
-## Functional Specification
-
-### Main Points
-- Eases the build processes from the command line
-- Manage CMake-based build configurations, locally in the source code locations
-- Import CMake-based dependencies from Git repositories
-- CLI Application, centered around subcommands
-
-### Supported Subcommands
-#### Configure
-    xb configure
-
-#### Build
-    xb build
-#### Install
-    xb install
-
 ## Implementation Details
 
-### Useful shell commands 
+### Useful CMake shell commands 
 #### Clone a Dependency
     git clone --depth 1 --branch yaml-cpp-0.7.0 https://github.com/jbeder/yaml-cpp.git
 

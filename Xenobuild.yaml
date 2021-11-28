@@ -3,7 +3,6 @@ Xenobuild:
   license: MIT
   author:
     name: 'Felipe Apablaza'
-    email: 'felipe.apablaza@protonmail.com'
   buildSystem: cmake
   dependencies:
     yaml-cpp:

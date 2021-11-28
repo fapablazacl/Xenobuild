@@ -1,53 +1,51 @@
 
-#include <iostream>
-#include <vector>
-#include <xb/core/Command.h>
-#include <boost/filesystem.hpp>
+#include "Xenobuild.h"
 
-// core-cpp:
-// relationship between components and source files
+namespace Xenobuild {
+    class PackageFactory {
+    public:
+        Package createMockPackage() {
+            Package package {
+                "Test01",
+                "borc-old/data/samples/MyApp",
+                {
+                    { ModuleType::Executable, "MyApp", "MyApp", {"MyLib01", "MyLib02"}, { {"MyApp.cpp"} } },
+                    { ModuleType::Library, "MyLib01", "MyLib01", {}, { {"MyLib01.hpp"}, {"MyLib01.cpp"} } },
+                    { ModuleType::Library, "MyLib02", "MyLib02", {}, { {"MyLib02.hpp"}, {"MyLib02.cpp"} } }
+                }
+            };
 
+            checkIntegrity(package);
 
-struct SourceFile {
-    boost::filesystem::path path;
-};
+            return package;
+        }
 
+    private:
+        void checkIntegrity(const Package &package) {
+            std::cout << "Package " << package.name << std::endl;
 
-enum class ModuleType {
-    Executable,
-    Library
-};
+            for (const Module &module : package.modules) {
+                std::cout << "    Module " << module.name << std::endl;
 
+                for (const SourceFile &source : module.sourceFiles) {
+                    const auto fullFilePath = package.path / module.path / source.path;
 
-struct Module {
-    ModuleType type = ModuleType::Executable;
-    std::string name;
-    boost::filesystem::path path;
-    std::vector<SourceFile> sourceFiles;
-};
-
-
-struct Package {
-    std::string name;
-    boost::filesystem::path path;
-    std::vector<Module> modules;
-};
-
-
-struct BuildConfig {
-
-};
-
-
-int main(int argc, char **argv) {
-    Package package {
-        "Test01",
-        "borc-old/data/samples/ConsoleApp01",
-        {
-            { ModuleType::Executable, "Test01", "./", { {"ConsoleApp01.hpp"}, {"ConsoleApp01.cpp"} } }
+                    if (! boost::filesystem::exists(fullFilePath)) {
+                        std::cout << "        SourceFile " << fullFilePath << " doesn't exists." << std::endl;
+                    } else  if (! boost::filesystem::is_regular_file(fullFilePath)) {
+                        std::cout << "        SourceFile " << fullFilePath << " isn't a regular file." << std::endl;
+                    } else {
+                        std::cout << "        SourceFile " << source.path << " OK." << std::endl;
+                    }
+                }
+            }
         }
     };
+}
 
+using namespace Xenobuild;
+
+static void print(const Package &package) {
     std::cout << "Package " << package.name << std::endl;
     for (const Module &module : package.modules) {
         std::cout << "    Module " << module.name << std::endl;
@@ -56,6 +54,14 @@ int main(int argc, char **argv) {
             std::cout << "        SourceFile " << source.path << std::endl;
         }
     }
+}
+
+
+int main(int argc, char **argv) {
+    using namespace Xenobuild;
+
+    PackageFactory factory;
+    const Package package = factory.createMockPackage();
 
     return EXIT_SUCCESS;
 }
