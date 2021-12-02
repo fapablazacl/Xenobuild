@@ -1,16 +1,20 @@
 
 # Introduction
 
-El ecosistema de herramientas para el lenguaje C++ es uno maduro, y con gran variedad. Sin embargo, en el área de los Sistemas de Construcción (Build Systems), es uno que palidece con respecto a las opciones que podemos encontrar en otros ecosistemas de lenguajes, como Gradle o Node Package Manager.
-
+The build systems found for the C++ language are too cumbersome to use, and aren't as developer-friendly like NPM or Gradle.
 
 ## Main Pain-Points
-Los principales problemas (or pain-points) que surgen a partir de los build system tradicionales son:
+Los principales problemas (or pain-points) que surgen a partir de los build system 
 
-- Bajo nivel de abstracción: Proveen una poca capacidad de abstracción sobre el proceso de compilación. Esto provoca que el desarrollador tenga que invertir grandes cantidades de tiempo para corregir los archivos de definición.
-- Dependency Managemen: Poca o nula gestión de paquetes: Esto provoca que el desarrollador tenga que descargar, compilar e instalar paquetes externos de librerías de forma separada.
+- Bajo nivel de abstracción: Proveen una poca capacidad de abstracción sobre el proceso de compilación. Esto provoca que el desarrollador tenga que invertir grandes cantidades de tiempo para corregir los archivos de definición, resultando muchas veces que tengan que aprender practicamente un nuevo lenguaje de programacion.
+
+- Dependency Management: The developer must configure the dependencies manually.
+
 - Poco soporte para múltiples compiladores y targets: En CMake, el desarrollador debe configurar (llámese, ubicar dependencias externas, establecer opciones de compilación, etc) varias veces la compilación de un mismo paquete cada vez que quiere y/o debe usar un compilador distinto, o el mismo compilador con diferentes configuraciones.
-- Some of the mainstream build systems are too complex, meaning that the user must learn a new programming language.
+
+- Poor support for multiple, simultaneous, toolchain, from a code base. For example, in CMake, the developer muse configure many times the build from 
+
+- Some of the mainstream build systems are too complex, meaning that the user must, practically, learn a new programming language, to use it beyond simple use-cases.
 
 Es por esto que nace “borc”, una alternativa que toma inspiración de las mejores características de los gestores de compilación de otras plataformas para remediar la situación antes descrita.
 
@@ -37,10 +41,11 @@ Xenobuild debe ser una herramienta que permite reducir al máximo el tiempo y es
 ## Design Criteria
 ### Criterio general de diseño
 Facilitar, automatizar y acelerar las actividades relacionadas con la definición y construcción de una solución de software, de tal forma que el tiempo que se quita el foco en el software sea mínimo (en todo sentido).
+
 ### Reglas de Construcción
-Simple e intuitivas: Una persona que no conoce la sintaxis de las reglas de construcción debe ser capaz de poder entenderlas inmediatamente.
-Preferir el estilo Declarativo sobre el Imperativo: Un estilo declarativo tiene la ventaja de ser más fácil de usar. Uno imperativo provee más flexibilidad.
-Proveer un nivel de abstracción superior con respecto a los otros sistemas de construcción.
+- Simple e intuitivas: Una persona que no conoce la sintaxis de las reglas de construcción debe ser capaz de poder entenderlas inmediatamente.
+- Preferir el estilo Declarativo sobre el Imperativo: Un estilo declarativo tiene la ventaja de ser más fácil de usar. Uno imperativo provee más flexibilidad.
+- Proveer un nivel de abstracción superior con respecto a los otros sistemas de construcción.
 
 ## Development Methodology
 Estas son algunas directrices a seguir a rajatabla en el proceso de diseño y desarrollo. El primer MVP (o versión 1.0) debe ser capaz de:
