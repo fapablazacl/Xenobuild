@@ -4,17 +4,26 @@
 #include <stdexcept>
 #include <vector>
 #include <cassert>
+#include <memory>
 
 #include <Xenobuild/ControllerFactory.h>
-// #include <Xenobuild/InitController.h>
+#include <Xenobuild/BuildController.h>
+
+using ControllerFactoryMap = std::map<std::string, std::unique_ptr<Xenobuild::ControllerFactory>>;
+
+
+static ControllerFactoryMap createControllerFactoryMap() {
+    ControllerFactoryMap result;
+
+    result["build"] = std::make_unique<Xenobuild::ConcreteControllerFactory<Xenobuild::BuildController>>();
+
+    return result;
+}
 
 
 int main(int argc, char **argv) {
-    using ControllerFactoryMap = std::map<std::string, std::unique_ptr<Xenobuild::ControllerFactory>>;
-    const ControllerFactoryMap controllerFactoryMap {
-        // TODO: Add controllers
-    };
-
+    const ControllerFactoryMap controllerFactoryMap = createControllerFactoryMap();
+    
     if (argc < 2) {
         std::cerr << "No subcommand supplied." << std::endl;
         return EXIT_FAILURE;

@@ -11,3 +11,4 @@ project/
 build/
 .xb/*
 .DS_Store
+.build/*

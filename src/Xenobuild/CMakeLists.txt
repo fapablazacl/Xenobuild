@@ -4,8 +4,10 @@ set (target "Xenobuild")
 set (sources 
     "include/Xenobuild/Controller.h"
     "include/Xenobuild/ControllerFactory.h"
+    "include/Xenobuild/BuildController.h"
 
     "src/main.cpp"
+    "src/BuildController.cpp"
 )
 
 add_executable(${target} ${sources})
