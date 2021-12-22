@@ -1,5 +1,5 @@
 
-#include <xb/core/Constants.h>
+#include <Xenobuild/core/Constants.h>
 
 namespace Xenobuild {
     const char* BOK_PACKAGE_DEFINITION_FILENAME = "package.bok.json";

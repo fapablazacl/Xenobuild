@@ -20,6 +20,7 @@ include_directories(
 link_directories(${Boost_LIBRARY_DIRS})
 
 add_subdirectory("src/Xenobuild")
+add_subdirectory("src/core")
 add_subdirectory("src/build-core")
 
 # add_subdirectory("src/build-core-io")
@@ -30,5 +31,4 @@ add_subdirectory("src/build-core")
 # add_subdirectory("src/build-core-toolchain-gcc")
 # add_subdirectory("src/build-core-toolchain-vc")
 # add_subdirectory("src/build-feature")
-# add_subdirectory("src/build-utility")
 # add_subdirectory("src/xb-test")

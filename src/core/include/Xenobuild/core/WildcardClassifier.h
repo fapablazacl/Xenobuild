@@ -6,9 +6,9 @@
 #include <string>
 #include <optional>
 
-#include "string.hpp"
+#include "string.h"
 
-namespace bok {
+namespace Xenobuild {
     template<typename Category>
     class WildcardClassifier {
     public:

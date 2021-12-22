@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include <xb/core/Command.h>
+#include <Xenobuild/core/Command.h>
 
 namespace Xenobuild {
     class Command_System : public Command {

@@ -1,5 +1,5 @@
 
-#include <xb/core/Command.h>
+#include <Xenobuild/core/Command.h>
 
 namespace Xenobuild {
     Command::~Command() {}

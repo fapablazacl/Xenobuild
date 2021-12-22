@@ -1,5 +1,5 @@
 
-#include <xb/core/Version.h>
+#include <Xenobuild/core/Version.h>
 
 #include <vector>
 #include <stdexcept>

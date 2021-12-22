@@ -1,6 +1,6 @@
 
-#include <xb/core/Dag.h>
-#include <xb/core/DagNode.h>
+#include <Xenobuild/core/Dag.h>
+#include <Xenobuild/core/DagNode.h>
 
 namespace Xenobuild {
     Dag::Dag() {

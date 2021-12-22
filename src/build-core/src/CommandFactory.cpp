@@ -1,10 +1,10 @@
 
-#include <xb/core/CommandFactory.h>
+#include <Xenobuild/core/CommandFactory.h>
 
 #include <iostream>
 #include <boost/filesystem.hpp>
-#include <xb/core/Command_System.h>
-#include <xb/core/Command_Folder.h>
+#include <Xenobuild/core/Command_System.h>
+#include <Xenobuild/core/Command_Folder.h>
 
 namespace Xenobuild {
     CommandFactory::~CommandFactory() {}

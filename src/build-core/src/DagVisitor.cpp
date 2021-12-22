@@ -1,8 +1,8 @@
 
-#include <xb/core/DagVisitor.h>
-#include <xb/core/Dag.h>
-#include <xb/core/DagNode.h>
-#include <xb/core/Command.h>
+#include <Xenobuild/core/DagVisitor.h>
+#include <Xenobuild/core/Dag.h>
+#include <Xenobuild/core/DagNode.h>
+#include <Xenobuild/core/Command.h>
 
 namespace Xenobuild {    
     void DagVisitor::visit(Dag *dag) {

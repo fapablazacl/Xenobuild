@@ -2,8 +2,8 @@
 #ifndef __BOK_MODEL_COMMAND_FOLDERCOMMAND_HPP__
 #define __BOK_MODEL_COMMAND_FOLDERCOMMAND_HPP__
 
-#include <xb/core/Command.h>
-#include <xb/core/CommandFactory.h>
+#include <Xenobuild/core/Command.h>
+#include <Xenobuild/core/CommandFactory.h>
 #include <boost/filesystem/path.hpp>
 
 namespace Xenobuild {

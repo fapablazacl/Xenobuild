@@ -27,8 +27,11 @@ Layers:
 
 
 #include <Xenobuild/BuildController.h>
-#include <xb/core/Command.h>
-#include <xb/core/Version.h>
+#include <Xenobuild/core/Command.h>
+#include <Xenobuild/core/Version.h>
+#include <Xenobuild/core/Package.h>
+#include <Xenobuild/core/Module.h>
+#include <Xenobuild/core/SourceFile.h>
 
 #include <iostream>
 #include <vector>
@@ -36,33 +39,6 @@ Layers:
 #include <boost/filesystem.hpp>
 #include <boost/optional.hpp>
 #include <boost/graph/adjacency_list.hpp>
-
-
-namespace Xenobuild {
-    struct SourceFile {
-        boost::filesystem::path path;
-    };
-
-    enum class ModuleType {
-        Executable,
-        Library
-    };
-
-    struct Module {
-        std::string name;
-        ModuleType type = ModuleType::Executable;
-        std::string lang;
-        boost::filesystem::path path;
-        std::vector<std::string> dependencies;
-        std::vector<SourceFile> sourceFiles;
-    };
-
-    struct Package {
-        std::string name;
-        boost::filesystem::path path;
-        std::vector<Module> modules;
-    };
-}
 
 
 namespace Xenobuild {

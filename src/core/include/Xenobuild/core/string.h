@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace bok {
+namespace Xenobuild {
     extern std::wstring widen(const std::string &src);
 
     extern std::wstring widen(const char *src);
