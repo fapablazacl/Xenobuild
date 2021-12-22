@@ -1,35 +1,32 @@
 
-// core-cpp:
+// BuildController:
 // relationship between components and source files
-
-/*
-    1. Read the Package to Build 
-    2. Create the Abstract TaskGraph
-        2.1 Create a AbstractTaskGraph with the dependency relationship between the different Modules in a Package. Collect errors
-        2.2 Create a AbstractTaskGraph, with the dependency relationships between the different SourceFiles in a Modules. Collect errors
-    3. Optimize the Abstract TaskGraph
-    4. Concretize the TaskGraph, with an explicit
-
-Layers:
-    Model Domain
-        Package
-        Toolchain
-
-    PackageGraph
-
-    Build
-        TaskGraph
-
-    Clean
-        TaskGraph
-*/
-
+//    1. Read the Package to Build 
+//    2. Create the Abstract TaskGraph
+//        2.1 Create a AbstractTaskGraph with the dependency relationship between the different Modules in a Package. Collect errors
+//        2.2 Create a AbstractTaskGraph, with the dependency relationships between the different SourceFiles in a Modules. Collect errors
+//    3. Optimize the Abstract TaskGraph
+//    4. Concretize the TaskGraph, with an explicit
+//
+//Layers:
+//    Model Domain
+//        Package
+//        Toolchain
+//
+//    PackageGraph
+//
+//    Build
+//        TaskGraph
+//
+//    Clean
+//        TaskGraph
 
 
 #include <Xenobuild/BuildController.h>
 #include <Xenobuild/core/Command.h>
 #include <Xenobuild/core/Version.h>
 #include <Xenobuild/core/Package.h>
+#include <Xenobuild/core/FileSystemPackageFactory.h>
 #include <Xenobuild/core/Module.h>
 #include <Xenobuild/core/SourceFile.h>
 
@@ -39,6 +36,20 @@ Layers:
 #include <boost/filesystem.hpp>
 #include <boost/optional.hpp>
 #include <boost/graph/adjacency_list.hpp>
+
+
+namespace Xenobuild {
+    BuildControllerInput BuildControllerInput::parse(int, char**) {
+        const auto currentPath = boost::filesystem::current_path();
+
+        BuildControllerInput result;
+
+        result.sourceDir = currentPath.string();
+        result.buildDir = (currentPath / ".Xenobuild").string();
+
+        return result;
+    }
+}
 
 
 namespace Xenobuild {
@@ -90,70 +101,16 @@ namespace Xenobuild {
 
 
 namespace Xenobuild {
-    class PackageFactory {
-    public:
-        Package createMockPackage() {
-            Package package {
-                "Test01",
-                boost::filesystem::path{"borc-old/data/samples/MyApp"},
-                {
-                    Module{ "MyApp", ModuleType::Executable, "MyApp", {"MyLib01", "MyLib02"}, { {"MyApp.cpp"} } },
-                    Module{ "MyLib01", ModuleType::Library, "MyLib01", {}, { {"MyLib01.hpp"}, {"MyLib01.cpp"} } },
-                    Module{ "MyLib02", ModuleType::Library, "MyLib02", {}, { {"MyLib02.hpp"}, {"MyLib02.cpp"} } }
-                }
-            };
-
-            checkIntegrity(package);
-
-            return package;
-        }
-
-
-    private:
-        void checkIntegrity(const Package &package) {
-            std::cout << "Package " << package.name << std::endl;
-
-            for (const Module &module : package.modules) {
-                std::cout << "    Module " << module.name << std::endl;
-
-                for (const SourceFile &source : module.sourceFiles) {
-                    const auto fullFilePath = package.path / module.path / source.path;
-
-                    if (! boost::filesystem::exists(fullFilePath)) {
-                        std::cout << "        SourceFile " << fullFilePath << " doesn't exists." << std::endl;
-                    } else  if (! boost::filesystem::is_regular_file(fullFilePath)) {
-                        std::cout << "        SourceFile " << fullFilePath << " isn't a regular file." << std::endl;
-                    } else {
-                        std::cout << "        SourceFile " << source.path << " OK." << std::endl;
-                    }
-                }
-            }
-        }
-    };
-
-
-    void print(const Package &package) {
-        std::cout << "Package " << package.name << std::endl;
-        for (const Module &module : package.modules) {
-            std::cout << "    Module " << module.name << std::endl;
-
-            for (const SourceFile &source : module.sourceFiles) {
-                std::cout << "        SourceFile " << source.path << std::endl;
-            }
-        }
+    BuildController::BuildController(int argc, char **argv) {
+        input = BuildControllerInput::parse(argc, argv);
     }
-}
-
-
-namespace Xenobuild {
-    BuildController::BuildController(int argc, char **argv) {}
 
 
     void BuildController::perform() {
         std::cout << "BuildController::perform" << std::endl;
 
-        PackageFactory packageFactory;
-        Package package = packageFactory.createMockPackage();
+        FileSystemPackageFactory packageFactory;
+        Package package = packageFactory.createPackage(input.sourceDir);
 
         print(package);
     }
