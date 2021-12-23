@@ -13,14 +13,18 @@ namespace Xenobuild {
         static BuildControllerInput parse(int argc, char** argv);
     };
 
-
+    class PackageFactory;
     class BuildController : public Controller {
     public:
-        BuildController(int argc, char **argv);
+        typedef BuildControllerInput Params;
+
+    public:
+        BuildController(PackageFactory &packageFactory, const BuildControllerInput &params);
 
         void perform() override;
 
     private:
-        BuildControllerInput input;
+        PackageFactory& packageFactory;
+        BuildControllerInput params;
     };
 }

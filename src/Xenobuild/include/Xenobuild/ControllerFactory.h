@@ -2,7 +2,10 @@
 #pragma once 
 
 #include <memory>
+
 #include "Controller.h"
+#include <Xenobuild/core/PackageFactory.h>
+
 
 namespace Xenobuild {
     class ControllerFactory {
@@ -15,8 +18,15 @@ namespace Xenobuild {
     template<typename ConcreteController>
     class ConcreteControllerFactory : public ControllerFactory {
     public:
+        ConcreteControllerFactory(PackageFactory& packageFactory) 
+            : packageFactory(packageFactory) {}
+
         std::unique_ptr<Controller> createController(int argc, char **argv) override {
-            return std::make_unique<ConcreteController>(argc, argv);
+            const auto params = ConcreteController::Params::parse(argc, argv);
+
+            return std::make_unique<ConcreteController>(packageFactory, params);
         }
+
+        PackageFactory& packageFactory;
     };
 }

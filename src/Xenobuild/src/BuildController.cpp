@@ -26,7 +26,7 @@
 #include <Xenobuild/core/Command.h>
 #include <Xenobuild/core/Version.h>
 #include <Xenobuild/core/Package.h>
-#include <Xenobuild/core/FileSystemPackageFactory.h>
+#include <Xenobuild/core/PackageFactory.h>
 #include <Xenobuild/core/Module.h>
 #include <Xenobuild/core/SourceFile.h>
 
@@ -101,16 +101,13 @@ namespace Xenobuild {
 
 
 namespace Xenobuild {
-    BuildController::BuildController(int argc, char **argv) {
-        input = BuildControllerInput::parse(argc, argv);
-    }
-
+    BuildController::BuildController(PackageFactory &packageFactory, const BuildControllerInput& params) 
+        : packageFactory(packageFactory), params(params) {}
 
     void BuildController::perform() {
         std::cout << "BuildController::perform" << std::endl;
 
-        FileSystemPackageFactory packageFactory;
-        Package package = packageFactory.createPackage(input.sourceDir);
+        Package package = packageFactory.createPackage(params.sourceDir);
 
         print(package);
     }

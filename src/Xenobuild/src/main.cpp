@@ -6,23 +6,26 @@
 #include <cassert>
 #include <memory>
 
+#include <Xenobuild/core/FileSystemPackageFactory.h>
 #include <Xenobuild/ControllerFactory.h>
 #include <Xenobuild/BuildController.h>
 
 using ControllerFactoryMap = std::map<std::string, std::unique_ptr<Xenobuild::ControllerFactory>>;
 
 
-static ControllerFactoryMap createControllerFactoryMap() {
+static ControllerFactoryMap createControllerFactoryMap(Xenobuild::PackageFactory &packageFactory) {
     ControllerFactoryMap result;
 
-    result["build"] = std::make_unique<Xenobuild::ConcreteControllerFactory<Xenobuild::BuildController>>();
+    result["build"] = std::make_unique<Xenobuild::ConcreteControllerFactory<Xenobuild::BuildController>>(packageFactory);
 
     return result;
 }
 
 
 int main(int argc, char **argv) {
-    const ControllerFactoryMap controllerFactoryMap = createControllerFactoryMap();
+    Xenobuild::FileSystemPackageFactory packageFactory;
+
+    const ControllerFactoryMap controllerFactoryMap = createControllerFactoryMap(packageFactory);
     
     if (argc < 2) {
         std::cerr << "No subcommand supplied." << std::endl;
