@@ -26,7 +26,7 @@ namespace Xenobuild {
         }
     };
 
-    class Command {
+    class [[deprecated]] Command {
     public:
         virtual ~Command();
 

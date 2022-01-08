@@ -9,6 +9,8 @@
 #include <Xenobuild/core/FileSystemPackageFactory.h>
 #include <Xenobuild/ControllerFactory.h>
 #include <Xenobuild/BuildController.h>
+#include <Xenobuild/SetupController.h>
+
 
 using ControllerFactoryMap = std::map<std::string, std::unique_ptr<Xenobuild::ControllerFactory>>;
 
@@ -17,6 +19,7 @@ static ControllerFactoryMap createControllerFactoryMap(Xenobuild::PackageFactory
     ControllerFactoryMap result;
 
     result["build"] = std::make_unique<Xenobuild::ConcreteControllerFactory<Xenobuild::BuildController>>(packageFactory);
+    result["setup"] = std::make_unique<Xenobuild::ConcreteControllerFactory<Xenobuild::SetupController>>(packageFactory);
 
     return result;
 }
