@@ -18,6 +18,7 @@
 #include <boost/optional.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/process.hpp>
 
 
 namespace Xenobuild {
@@ -59,6 +60,24 @@ namespace Xenobuild {
             }
         }
     };
+
+    class BoostProcessCommandExecutor : public CommandExecutor {
+    public:
+        virtual ~BoostProcessCommandExecutor() {}
+
+        void execute(const std::vector<std::string>& command) override {
+            boost::process::child childp;
+
+            const std::string cmdline = boost::join(command, " ");
+            const int code = std::system(cmdline.c_str());
+
+            if (code != 0) {
+                const std::string msg = "Error while executing command '" + cmdline + "'";
+                throw CommandExecutorException(msg, code);
+            }
+        }
+    };
+
 
     struct URL {
         std::string schema;
@@ -403,11 +422,5 @@ namespace Xenobuild {
         manager.configure(dependencies[0], CMakeBuildType::Release);
         manager.build(dependencies[0], CMakeBuildType::Release);
         manager.install(dependencies[0], CMakeBuildType::Release);
-
-        // TODO: Locate user directory, and put the downloaded source code and residual 
-        // build artifacts in one sub-location, and the installation path in another
-        // 
-        // Package package = packageFactory.createPackage(params.sourceDir);
-        // print(package);
     }
 }
