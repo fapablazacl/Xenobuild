@@ -22,6 +22,21 @@
 
 
 namespace Xenobuild {
+    enum class Platform {
+        Unknown,
+        Windows,
+        Linux,
+        MacOS
+    };
+
+    constexpr Platform getHostPlatform() {
+#if defined (_WIN32)
+        return Platform::Windows;
+#else
+        return Platform::Unknown;
+#endif
+    }
+
     class CommandExecutorException : public std::runtime_error {
     public:
         CommandExecutorException(const std::string& msg, const int exitCode) 
@@ -35,14 +50,41 @@ namespace Xenobuild {
         const int exitCode;
     };
     
+    struct CommandX {
+        std::string name;
+        std::vector<std::string> args;
+    };
+
+    struct CommandBatch {
+        CommandBatch() {}
+
+        CommandBatch(std::string name, std::vector<std::string> args) {
+            commands.push_back(CommandX{name, args});
+        }
+
+        CommandBatch(const std::vector<CommandX> &commands) : commands(commands) {}
+
+        CommandBatch(const CommandX &command) {
+            commands.push_back(command);
+        }
+
+        std::vector<CommandX> commands;
+    };
+
     class CommandExecutor {
     public:
         virtual ~CommandExecutor() {}
 
-        virtual void execute(const std::vector<std::string>& command) = 0;
+        virtual void execute(const CommandBatch& batch) = 0;
 
-        inline void operator() (const std::vector<std::string>& command) {
+        virtual void execute(const CommandX& command) = 0;
+
+        inline void operator() (const CommandX& command) {
             execute(command);
+        }
+
+        inline void operator() (const CommandBatch& batch) {
+            execute(batch);
         }
     };
 
@@ -50,8 +92,8 @@ namespace Xenobuild {
     public:
         virtual ~SystemCommandExecutor() {}
 
-        void execute(const std::vector<std::string>& command) override {
-            const std::string cmdline = boost::join(command, " ");
+        void execute(const CommandX& command) override {
+            const std::string cmdline = createCmdLine(command);
             const int code = std::system(cmdline.c_str());
 
             if (code != 0) {
@@ -59,22 +101,41 @@ namespace Xenobuild {
                 throw CommandExecutorException(msg, code);
             }
         }
+
+        void execute(const CommandBatch& batch) override {
+            std::vector<std::string> cmdlines;
+
+            std::transform(
+                batch.commands.begin(), 
+                batch.commands.end(), 
+                std::back_inserter(cmdlines), [this](const auto command) {
+                return createCmdLine(command);
+            });
+
+            const std::string cmdline = boost::join(cmdlines, "&&");
+
+            const int code = std::system(cmdline.c_str());
+
+            if (code != 0) {
+                const std::string msg = "Error while executing command batch:'" + cmdline + "'";
+                throw CommandExecutorException(msg, code);
+            }
+        }
+
+    private:
+        std::string createCmdLine(const CommandX& command) const {
+            const std::string cmdline = command.name + " " + boost::join(command.args, " ");
+
+            return cmdline;
+        }
     };
 
     class BoostProcessCommandExecutor : public CommandExecutor {
     public:
         virtual ~BoostProcessCommandExecutor() {}
 
-        void execute(const std::vector<std::string>& command) override {
+        void execute(const CommandX& command) override {
             boost::process::child childp;
-
-            const std::string cmdline = boost::join(command, " ");
-            const int code = std::system(cmdline.c_str());
-
-            if (code != 0) {
-                const std::string msg = "Error while executing command '" + cmdline + "'";
-                throw CommandExecutorException(msg, code);
-            }
         }
     };
 
@@ -106,8 +167,12 @@ namespace Xenobuild {
         std::string url;
 
         void clone(CommandExecutor &execute, const boost::filesystem::path &sourcePath) const {
-            std::vector<std::string> command{
-                "git", "clone", url, sourcePath.string()
+            if (boost::filesystem::exists(sourcePath)) {
+                return;
+            }
+
+            CommandX command{
+                "git", {"clone", url, sourcePath.string()}
             };
 
             execute(command);
@@ -130,18 +195,27 @@ namespace Xenobuild {
         std::map<std::string, std::string> definitions;
     };
 
-    std::vector<std::string> generateCommand(const CMakeConfig &config) {
-        std::vector<std::string> command {
+    CommandX createVC2019VarsCommand() {
+        return {
+            "call",
+            {"\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat\""}
+        };
+    }
+
+    CommandX generateCommand(const CMakeConfig &config) {
+        CommandX command {
             "cmake",
-            "-S" + config.sourcePath,
-            "-B" + config.buildPath,
-            "-G \"" + config.generator + "\""
+            {
+                "-S" + config.sourcePath,
+                "-B" + config.buildPath,
+                "-G \"" + config.generator + "\""
+            }
         };
 
         std::transform(
             config.definitions.begin(), 
             config.definitions.end(), 
-            std::back_inserter(command), [](const auto pair) {
+            std::back_inserter(command.args), [](const auto pair) {
 
             const CMakeDefinition definition{ pair.first, pair.second };
 
@@ -156,8 +230,8 @@ namespace Xenobuild {
         std::string buildPath;
     };
 
-    std::vector<std::string> generateCommand(const CMakeBuild& build) {
-        return { "cmake", "-B" + build.buildPath, "--build" };
+    CommandX generateCommand(const CMakeBuild& build) {
+        return { "cmake", {"--build", build.buildPath} };
     }
 
     
@@ -165,8 +239,8 @@ namespace Xenobuild {
         std::string buildPath;
     };
     
-    std::vector<std::string> generateCommand(const CMakeInstall& install) {
-        return { "cmake", "-B" + install.buildPath, "--install" };
+    CommandX generateCommand(const CMakeInstall& install) {
+        return { "cmake", {"--install", install.buildPath } };
     }
 
     enum class CMakeBuildType {
@@ -189,73 +263,6 @@ namespace Xenobuild {
     }
 
 
-    struct CMakeProject {
-        std::string sourcePath;
-
-        void configure(
-            CommandExecutor &execute, 
-            const std::string &buildType, 
-            const std::string &buildPath, 
-            const std::string &generator,
-            const std::optional<std::string> &installPath, 
-            const std::optional<std::string> &debugPostfix,
-            const std::vector<std::string> &prefixPaths,
-            const std::map<std::string, std::string> &definitionMap) {
-
-            std::vector<std::string> command {
-                "cmake",
-                "-S" + sourcePath,
-                "-B" + buildPath,
-                "-G \"" + generator + "\"",
-                "-DCMAKE_OSX_ARCHITECTURES=\"arm64\"",
-                "-DCMAKE_BUILD_TYPE=" + buildType
-            };
-
-            if (installPath.has_value()) {
-                const std::string value = "-DCMAKE_INSTALL_PREFIX=\"" + installPath.value() + "\"";
-                command.push_back(value);
-            }
-
-            if (debugPostfix.has_value()) {
-                const std::string definition = "-DCMAKE_DEBUG_POSTFIX=\"" + debugPostfix.value() + "\"";
-
-                command.push_back(definition);
-            }
-
-            if (prefixPaths.size() > 0) {
-                const std::string value = "-DCMAKE_PREFIX_PATH=\"" + boost::join(prefixPaths, ";") + "\"";
-                command.push_back(value);
-            }
-            
-            for (const auto& def : definitionMap) {
-                const std::string value = "-D" + def.first + "=" + def.second;
-                command.push_back(value);
-            }
-
-            execute(command);
-        }
-
-        void build(CommandExecutor &execute, std::string buildPath) {
-            std::vector<std::string> command = {
-                "cmake",
-                "-B" + buildPath,
-                "--build"
-            };
-
-            execute(command);
-        }
-
-        void install(CommandExecutor &execute, std::string buildPath) {
-            std::vector<std::string> command = {
-                "cmake",
-                "-B" + buildPath,
-                "--install"
-            };
-
-            execute(command);
-        }
-    };
-
     struct Dependency {
         std::string url;
         std::map<std::string, std::string> definitions;
@@ -276,7 +283,7 @@ namespace Xenobuild {
             return true;
         }
 
-        bool configure(const Dependency& dependency, const CMakeBuildType buildType) {
+        bool configure(const Dependency& dependency, const CMakeBuildType buildType, const std::string &generator) {
             const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url));
             
             const auto buildPath = computePath(sourcePath, buildType);
@@ -285,11 +292,16 @@ namespace Xenobuild {
             CMakeConfig config {
                 sourcePath.string(),
                 buildPath.string(),
-                "NMake Makefiles",
+                generator,
                 createConfigDefinitions(installPath, buildType)
             };
 
-            executor(generateCommand(config));
+            config.definitions.insert(dependency.definitions.begin(), dependency.definitions.end());
+
+            CommandX command = generateCommand(config);
+            CommandBatch batch = createCMakeBatch(command);
+
+            executor(batch);
 
             return true;
         }
@@ -299,8 +311,10 @@ namespace Xenobuild {
             const auto buildPath = computePath(sourcePath, buildType);
             
             CMakeBuild build { buildPath.string() };
+            CommandX command = generateCommand(build);
+            CommandBatch batch = createCMakeBatch(command);
 
-            executor(generateCommand(build));
+            executor(batch);
 
             return true;
         }
@@ -310,14 +324,29 @@ namespace Xenobuild {
             const auto buildPath = computePath(sourcePath, buildType);
             
             CMakeInstall install { buildPath.string() };
+            CommandX command = generateCommand(install);
+            CommandBatch batch = createCMakeBatch(command);
 
-            executor(generateCommand(install));
+            executor(batch);
 
             return true;
         }
 
 
     private:
+        CommandBatch createCMakeBatch(const CommandX command) {
+            CommandBatch batch{};
+
+            if (getHostPlatform() == Platform::Windows) {
+                const CommandX vcvars = createVC2019VarsCommand();
+                batch.commands.push_back(vcvars);
+            }
+
+            batch.commands.push_back(command);
+
+            return batch;
+        }
+
         std::map<std::string, std::string> createConfigDefinitions(const boost::filesystem::path& installPrefix, const CMakeBuildType buildType) {
             std::map<std::string, std::string> definitions = {
                 {"CMAKE_OSX_ARCHITECTURES", "arm64;x86_64"},
@@ -388,8 +417,6 @@ namespace Xenobuild {
         : packageFactory(packageFactory), params(params) {}
 
     void SetupController::perform() {
-        std::cout << "SetupController::perform" << std::endl;
-
         const std::vector<Dependency> dependencies = {
             Dependency{
                 "https://github.com/glfw/glfw.git", 
@@ -418,9 +445,18 @@ namespace Xenobuild {
         SystemCommandExecutor executor;
         DependencyManager manager{executor, "C:\\Users\\fapablaza\\.Xenobuild" };
 
-        manager.download(dependencies[0]);
-        manager.configure(dependencies[0], CMakeBuildType::Release);
-        manager.build(dependencies[0], CMakeBuildType::Release);
-        manager.install(dependencies[0], CMakeBuildType::Release);
+        std::for_each(dependencies.begin(), dependencies.end(), [&manager](const Dependency& dep) {
+            const CMakeBuildType buildTypes[] = {
+                CMakeBuildType::Release, CMakeBuildType::Debug
+            };
+
+            manager.download(dep);
+
+            for (const CMakeBuildType buildType : buildTypes) {
+                manager.configure(dep, buildType, "NMake Makefiles");
+                manager.build(dep, buildType);
+                manager.install(dep, buildType);
+            }
+        });
     }
 }
