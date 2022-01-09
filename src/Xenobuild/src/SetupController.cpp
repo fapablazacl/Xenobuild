@@ -86,9 +86,9 @@ namespace Xenobuild {
     struct GitRepository {
         std::string url;
 
-        void clone(CommandExecutor &execute, const std::string &sourcePath) const {
+        void clone(CommandExecutor &execute, const boost::filesystem::path &sourcePath) const {
             std::vector<std::string> command{
-                "git", "clone", url, sourcePath
+                "git", "clone", url, sourcePath.string()
             };
 
             execute(command);
@@ -111,7 +111,6 @@ namespace Xenobuild {
         std::map<std::string, std::string> definitions;
     };
 
-
     std::vector<std::string> generateCommand(const CMakeConfig &config) {
         std::vector<std::string> command {
             "cmake",
@@ -131,6 +130,43 @@ namespace Xenobuild {
         });
 
         return command;
+    }
+
+    
+    struct CMakeBuild {
+        std::string buildPath;
+    };
+
+    std::vector<std::string> generateCommand(const CMakeBuild& build) {
+        return { "cmake", "-B" + build.buildPath, "--build" };
+    }
+
+    
+    struct CMakeInstall {
+        std::string buildPath;
+    };
+    
+    std::vector<std::string> generateCommand(const CMakeInstall& install) {
+        return { "cmake", "-B" + install.buildPath, "--install" };
+    }
+
+    enum class CMakeBuildType {
+        Default,
+        Debug,
+        Release
+    };
+
+
+    std::string evaluate(const CMakeBuildType buildType) {
+        switch (buildType) {
+        case CMakeBuildType::Debug:
+            return "Debug";
+
+        case CMakeBuildType::Release:
+            return "Release";
+        }
+
+        return "";
     }
 
 
@@ -206,34 +242,96 @@ namespace Xenobuild {
         std::map<std::string, std::string> definitions;
     };
 
-    struct DependencyInstallResult {
-        bool success = false;
-        std::string message;
-
-        operator bool() const {
-            return success;
-        }
-    };
 
     class DependencyManager {
     public:
         explicit DependencyManager(CommandExecutor &executor, const std::string& prefixPath) 
             : executor(executor), prefixPath(prefixPath) {}
 
-        DependencyInstallResult install(const Dependency& dependency) {
+        bool download(const Dependency& dependency) const {
             const auto repository = GitRepository { dependency.url };
-            const auto sourcePath = computeSourcePath(prefixPath / "sources", URL::parse(dependency.url));
+            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url));
 
-            // assumtions:
-            // the source URL is a Git repository
-            // the build system in that directory is CMake
+            repository.clone(executor, sourcePath);
 
-            return {true, ""};
+            return true;
         }
 
+        bool configure(const Dependency& dependency, const CMakeBuildType buildType) {
+            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url));
+            
+            const auto buildPath = computePath(sourcePath, buildType);
+            const auto installPath = computePath(prefixPath / "packages", URL::parse(dependency.url));
+
+            CMakeConfig config {
+                sourcePath.string(),
+                buildPath.string(),
+                "NMake Makefiles",
+                createConfigDefinitions(installPath, buildType)
+            };
+
+            executor(generateCommand(config));
+
+            return true;
+        }
+
+        bool build(const Dependency& dependency, const CMakeBuildType buildType) {
+            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url));
+            const auto buildPath = computePath(sourcePath, buildType);
+            
+            CMakeBuild build { buildPath.string() };
+
+            executor(generateCommand(build));
+
+            return true;
+        }
+
+        bool install(const Dependency& dependency, const CMakeBuildType buildType) {
+            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url));
+            const auto buildPath = computePath(sourcePath, buildType);
+            
+            CMakeInstall install { buildPath.string() };
+
+            executor(generateCommand(install));
+
+            return true;
+        }
+
+
     private:
-        boost::filesystem::path computeSourcePath(const boost::filesystem::path& sourcePrefixPath, const URL url) const {
-            boost::filesystem::path sourcePath{ sourcePrefixPath / url.host };
+        std::map<std::string, std::string> createConfigDefinitions(const boost::filesystem::path& installPrefix, const CMakeBuildType buildType) {
+            std::map<std::string, std::string> definitions = {
+                {"CMAKE_OSX_ARCHITECTURES", "arm64;x86_64"},
+                {"CMAKE_DEBUG_POSTFIX", "d"},
+                {"CMAKE_INSTALL_PREFIX", installPrefix.string()}
+            };
+
+            if (buildType != CMakeBuildType::Default) {
+                definitions["CMAKE_BUILD_TYPE"] = evaluate(buildType);
+            }
+
+            return definitions;
+        }
+
+
+        boost::filesystem::path computePath(const boost::filesystem::path& prefix, const CMakeBuildType type) const {
+            switch (type) {
+            case CMakeBuildType::Default:
+                return prefix;
+
+            case CMakeBuildType::Debug:
+                return prefix / "debug";
+
+            case CMakeBuildType::Release:
+                return prefix / "release";
+            }
+
+            return prefix;
+        }
+
+
+        boost::filesystem::path computePath(const boost::filesystem::path& prefix, const URL url) const {
+            boost::filesystem::path sourcePath{ prefix / url.host };
 
             std::vector<std::string> pathParts;
             boost::split(pathParts, url.path, boost::is_any_of("/"));
@@ -301,7 +399,10 @@ namespace Xenobuild {
         SystemCommandExecutor executor;
         DependencyManager manager{executor, "C:\\Users\\fapablaza\\.Xenobuild" };
 
-        manager.install(dependencies[0]);
+        manager.download(dependencies[0]);
+        manager.configure(dependencies[0], CMakeBuildType::Release);
+        manager.build(dependencies[0], CMakeBuildType::Release);
+        manager.install(dependencies[0], CMakeBuildType::Release);
 
         // TODO: Locate user directory, and put the downloaded source code and residual 
         // build artifacts in one sub-location, and the installation path in another
