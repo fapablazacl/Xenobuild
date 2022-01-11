@@ -6,9 +6,37 @@
 #include <string>
 
 namespace Xenobuild {
+    enum class Arch {
+        X86_32,
+        X86_64
+    };
+
+    enum class Platform {
+        Windows,
+        Linux,
+        MacOS
+    };
+
+    enum class Toolchain {
+        Clang,
+        MicrosoftVC,
+        AppleClang,
+        GnuGCC
+    };
+    
+    struct Triplet {
+        Platform platform;
+        Arch arch;
+        Toolchain toolchain;
+    };
+
+
     struct SetupControllerInput {
         std::string sourceDir;
         std::string buildDir;
+
+        //! the requested triplet to build for.
+        Triplet triplet;
 
         static SetupControllerInput parse(int argc, char** argv);
     };

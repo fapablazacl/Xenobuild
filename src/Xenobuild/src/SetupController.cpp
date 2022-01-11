@@ -16,26 +16,19 @@
 #include <map>
 #include <boost/filesystem.hpp>
 #include <boost/optional.hpp>
-#include <boost/graph/adjacency_list.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/process.hpp>
 
 
 namespace Xenobuild {
-    enum class Platform {
-        Unknown,
-        Windows,
-        Linux,
-        MacOS
-    };
-
     constexpr Platform getHostPlatform() {
 #if defined (_WIN32)
         return Platform::Windows;
 #else
-        return Platform::Unknown;
+#error Current Platform isn't supported.
 #endif
     }
+
 
     class CommandExecutorException : public std::runtime_error {
     public:
@@ -139,7 +132,6 @@ namespace Xenobuild {
         }
     };
 
-
     struct URL {
         std::string schema;
         std::string host;
@@ -184,8 +176,12 @@ namespace Xenobuild {
         std::string value;
     };
 
+    inline std::string quote(const std::string& str) {
+        return "\"" + str + "\"";
+    }
+
     std::string evaluate(const CMakeDefinition& def) {
-        return "-D" + def.name + "=\"" + def.value + "\"";
+        return "-D" + def.name + "=" + quote(def.value);
     }
 
     struct CMakeConfig {
@@ -195,11 +191,31 @@ namespace Xenobuild {
         std::map<std::string, std::string> definitions;
     };
 
-    CommandX createVC2019VarsCommand() {
-        return {
-            "call",
-            {"\"C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat\""}
+
+    std::vector<std::string> enumerateVCInstallations() {
+        const std::vector<std::string> vars = {
+            "VS2019INSTALLDIR"
         };
+
+        std::vector<std::string> installations;
+
+        for (const std::string& var : vars) {
+            const char* value = std::getenv(var.c_str());
+
+            if (value == nullptr) {
+                continue;
+            }
+
+            installations.push_back(value);
+        }
+
+        return installations;
+    }
+
+    CommandX createVCVars64Command(const boost::filesystem::path &prefixPath) {
+        const auto vcvars = prefixPath / "VC\\Auxiliary\\Build\\vcvars64.bat";
+
+        return { "call", { quote(vcvars.string()) } };
     }
 
     CommandX generateCommand(const CMakeConfig &config) {
@@ -208,7 +224,7 @@ namespace Xenobuild {
             {
                 "-S" + config.sourcePath,
                 "-B" + config.buildPath,
-                "-G \"" + config.generator + "\""
+                "-G " + quote(config.generator)
             }
         };
 
@@ -266,13 +282,14 @@ namespace Xenobuild {
     struct Dependency {
         std::string url;
         std::map<std::string, std::string> definitions;
+        std::string tag;
     };
 
 
     class DependencyManager {
     public:
-        explicit DependencyManager(CommandExecutor &executor, const std::string& prefixPath) 
-            : executor(executor), prefixPath(prefixPath) {}
+        explicit DependencyManager(CommandExecutor &executor, const std::string& prefixPath, const std::string &toolchainPrefix, const std::string &installSuffix) 
+            : executor(executor), prefixPath(prefixPath), toolchainPrefix(toolchainPrefix), installSuffix(installSuffix) {}
 
         bool download(const Dependency& dependency) const {
             const auto repository = GitRepository { dependency.url };
@@ -287,7 +304,7 @@ namespace Xenobuild {
             const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url));
             
             const auto buildPath = computePath(sourcePath, buildType);
-            const auto installPath = computePath(prefixPath / "packages", URL::parse(dependency.url));
+            const auto installPath = computePath(prefixPath / "packages" / installSuffix, URL::parse(dependency.url));
 
             CMakeConfig config {
                 sourcePath.string(),
@@ -338,7 +355,7 @@ namespace Xenobuild {
             CommandBatch batch{};
 
             if (getHostPlatform() == Platform::Windows) {
-                const CommandX vcvars = createVC2019VarsCommand();
+                const CommandX vcvars = createVCVars64Command(toolchainPrefix);
                 batch.commands.push_back(vcvars);
             }
 
@@ -394,7 +411,62 @@ namespace Xenobuild {
     private:
         CommandExecutor &executor;
         boost::filesystem::path prefixPath;
+        boost::filesystem::path toolchainPrefix;
+        std::string installSuffix;
     };
+
+
+    std::string computePathSuffix(const Platform platform) {
+        switch (platform) {
+        case Platform::Windows:
+            return "windows";
+
+        case Platform::Linux:
+            return "linux";
+
+        case Platform::MacOS:
+            return "macOS";
+        }
+
+        return "host";
+    }
+    
+    std::string computePathSuffix(const Arch arch) {
+        switch (arch) {
+        case Arch::X86_32:
+            return "x86";
+
+        case Arch::X86_64:
+            return "x64";
+        }
+
+        return "native";
+    }
+    
+    std::string computePathSuffix(const Toolchain toolchain) {
+        switch (toolchain) {
+        case Toolchain::AppleClang:
+            return "appleclang";
+
+        case Toolchain::Clang:
+            return "clang";
+
+        case Toolchain::MicrosoftVC:
+            return "vc";
+            
+        case Toolchain::GnuGCC:
+            return "gcc";
+        }
+
+        return "cc";
+    }
+
+    std::string computePathSuffix(const Triplet& triplet) {
+        return 
+            computePathSuffix(triplet.platform) + "-" + 
+            computePathSuffix(triplet.arch) + "-" + 
+            computePathSuffix(triplet.toolchain);
+    }
 }
 
 
@@ -407,7 +479,21 @@ namespace Xenobuild {
         result.sourceDir = currentPath.string();
         result.buildDir = (currentPath / ".Xenobuild").string();
 
+        result.triplet = {
+            Platform::Windows,
+            Arch::X86_64,
+            Toolchain::MicrosoftVC
+        };
+
         return result;
+    }
+
+    /**
+     * @brief Get the home folder of the current user.
+     * @todo refactor into a cross-platform solution.
+     */
+    std::string getUserPath() {
+        return std::getenv("USERPROFILE");
     }
 }
 
@@ -415,6 +501,7 @@ namespace Xenobuild {
 namespace Xenobuild {
     SetupController::SetupController(PackageFactory &packageFactory, const SetupControllerInput& params) 
         : packageFactory(packageFactory), params(params) {}
+
 
     void SetupController::perform() {
         const std::vector<Dependency> dependencies = {
@@ -426,26 +513,61 @@ namespace Xenobuild {
                     { "GLFW_BUILD_TESTS", "OFF" }
                 }
             },
-            Dependency {
-                "https://github.com/google/fruit.git", 
-                {
-                    { "FRUIT_TESTS_USE_PRECOMPILED_HEADERS", "OFF" },
-                    { "FRUIT_USES_BOOST", "OFF" }
-                }
-            },
+            //Dependency {
+            //    "https://github.com/google/fruit.git", 
+            //    {
+            //        { "FRUIT_TESTS_USE_PRECOMPILED_HEADERS", "OFF" },
+            //        { "FRUIT_USES_BOOST", "OFF" }
+            //    }
+            //},
             Dependency {
                 "https://github.com/jbeder/yaml-cpp.git", 
                 {
                     { "YAML_CPP_BUILD_TESTS", "OFF" }
                 }
-            }
+            },
+            Dependency{
+                "https://github.com/catchorg/Catch2.git", 
+                {
+                    { "CATCH_BUILD_TESTING", "OFF" },
+                    { "CATCH_INSTALL_DOCS", "OFF" }
+                }
+            },
+            Dependency{
+                "https://github.com/fapablazacl/glades2.git"
+            },
+            Dependency{
+                "https://github.com/cginternals/glbinding.git", 
+                {
+                    { "OPTION_BUILD_EXAMPLES", "OFF" },
+                    { "OPTION_BUILD_TOOLS", "OFF" },
+                    { "BUILD_SHARED_LIBS", "OFF" }
+                }
+            },
         };
 
-        // action: setup dependencies
+        // Pick a Default Toolchain
+        const std::vector<std::string> toolchainPrefixPaths = enumerateVCInstallations();
+
+        if (toolchainPrefixPaths.size() == 0) {
+            // No toolchain found
+            // ERROR;
+            return;
+        }
+
+        const std::string toolchainPrefix = toolchainPrefixPaths[0];
+
+        // By default, use the local user path to store package repositories
+        const std::string prefix = getUserPath();
+        const std::string suffix = computePathSuffix(params.triplet);
+
         SystemCommandExecutor executor;
-        DependencyManager manager{executor, "C:\\Users\\fapablaza\\.Xenobuild" };
+        DependencyManager manager{executor, prefix + "\\.Xenobuild", toolchainPrefix, suffix};
 
         std::for_each(dependencies.begin(), dependencies.end(), [&manager](const Dependency& dep) {
+            // TODO: The default generator depends on the toolchain, and maybe, the platform.
+            const std::string generator = "NMake Makefiles";
+
             const CMakeBuildType buildTypes[] = {
                 CMakeBuildType::Release, CMakeBuildType::Debug
             };
@@ -453,7 +575,7 @@ namespace Xenobuild {
             manager.download(dep);
 
             for (const CMakeBuildType buildType : buildTypes) {
-                manager.configure(dep, buildType, "NMake Makefiles");
+                manager.configure(dep, buildType, generator);
                 manager.build(dep, buildType);
                 manager.install(dep, buildType);
             }
