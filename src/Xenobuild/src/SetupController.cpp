@@ -157,6 +157,10 @@ namespace Xenobuild {
 
     struct GitRepository {
         std::string url;
+        std::string tag;
+
+        GitRepository(const std::string& url, const std::string& tag) 
+            : url(url), tag(tag) {}
 
         void clone(CommandExecutor &execute, const boost::filesystem::path &sourcePath) const {
             if (boost::filesystem::exists(sourcePath)) {
@@ -164,8 +168,12 @@ namespace Xenobuild {
             }
 
             CommandX command{
-                "git", {"clone", url, sourcePath.string()}
+                "git", {"clone", "--depth 1", url, sourcePath.string()}
             };
+
+            if (tag != "") {
+                command.args.push_back("--branch " + tag);
+            }
 
             execute(command);
         }
@@ -280,9 +288,31 @@ namespace Xenobuild {
 
 
     struct Dependency {
+        //! the Git URL repository
         std::string url;
-        std::map<std::string, std::string> definitions;
+
+        //! the tag (or branch), of the Git repository.
         std::string tag;
+
+        //! version string. used to assemble the installation path suffix.
+        std::string version;
+
+        //! cmake definitions, in the dependency build/install stage.
+        std::map<std::string, std::string> definitions;
+
+        Dependency() {}
+
+        Dependency(const std::string& url) 
+            : url(url) {}
+
+        Dependency(const std::string& url, const std::string &tag, const std::string &version) 
+            : url(url), tag(tag), version(version) {}
+
+        Dependency(const std::string& url, const std::string &tag, const std::string &version, const std::map<std::string, std::string> &definitions) 
+            : url(url), tag(tag), version(version), definitions(definitions) {}
+        
+        Dependency(const std::string& url, const std::map<std::string, std::string> &definitions) 
+            : url(url), definitions(definitions) {}
     };
 
 
@@ -292,8 +322,8 @@ namespace Xenobuild {
             : executor(executor), prefixPath(prefixPath), toolchainPrefix(toolchainPrefix), installSuffix(installSuffix) {}
 
         bool download(const Dependency& dependency) const {
-            const auto repository = GitRepository { dependency.url };
-            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url));
+            const auto repository = GitRepository { dependency.url, dependency.tag };
+            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url), dependency.tag);
 
             repository.clone(executor, sourcePath);
 
@@ -301,10 +331,10 @@ namespace Xenobuild {
         }
 
         bool configure(const Dependency& dependency, const CMakeBuildType buildType, const std::string &generator) {
-            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url));
+            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url), dependency.tag);
             
             const auto buildPath = computePath(sourcePath, buildType);
-            const auto installPath = computePath(prefixPath / "packages" / installSuffix, URL::parse(dependency.url));
+            const auto installPath = computePath(prefixPath / "packages" / installSuffix, URL::parse(dependency.url), dependency.version);
 
             CMakeConfig config {
                 sourcePath.string(),
@@ -324,7 +354,7 @@ namespace Xenobuild {
         }
 
         bool build(const Dependency& dependency, const CMakeBuildType buildType) {
-            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url));
+            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url), dependency.tag);
             const auto buildPath = computePath(sourcePath, buildType);
             
             CMakeBuild build { buildPath.string() };
@@ -337,7 +367,7 @@ namespace Xenobuild {
         }
 
         bool install(const Dependency& dependency, const CMakeBuildType buildType) {
-            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url));
+            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url), dependency.tag);
             const auto buildPath = computePath(sourcePath, buildType);
             
             CMakeInstall install { buildPath.string() };
@@ -395,7 +425,7 @@ namespace Xenobuild {
         }
 
 
-        boost::filesystem::path computePath(const boost::filesystem::path& prefix, const URL url) const {
+        boost::filesystem::path computePath(const boost::filesystem::path& prefix, const URL url, const std::string &suffix) const {
             boost::filesystem::path sourcePath{ prefix / url.host };
 
             std::vector<std::string> pathParts;
@@ -408,12 +438,17 @@ namespace Xenobuild {
             //sourcePath /= boost::join_if(pathParts, "-", [](const auto part) {
             //    return part != "";
             //});
+            const boost::filesystem::path dependencyName { pathParts[pathParts.size() - 1] };
 
-            sourcePath /= pathParts[pathParts.size() - 1];
+            sourcePath /= dependencyName.stem();    // removes the .git suffix
+
+            if (suffix != "") {
+                sourcePath += ("-" + suffix);
+            }
 
             return sourcePath;
         }
-            
+
     private:
         CommandExecutor &executor;
         boost::filesystem::path prefixPath;
@@ -515,12 +550,41 @@ namespace Xenobuild {
         const std::vector<Dependency> dependencies = {
             Dependency{
                 "https://github.com/glfw/glfw.git", 
+                "3.3", "3.3",
                 {
                     { "GLFW_BUILD_DOCS", "OFF" },
                     { "GLFW_BUILD_EXAMPLES", "OFF" },
                     { "GLFW_BUILD_TESTS", "OFF" }
                 }
             },
+            Dependency {
+                "https://github.com/jbeder/yaml-cpp.git", 
+                "yaml-cpp-0.7.0", "0.7.0",
+                {
+                    { "YAML_CPP_BUILD_TESTS", "OFF" }
+                }
+            },
+            //Dependency{
+            //    "https://github.com/catchorg/Catch2.git", 
+            //    "v3.0.0-preview3", "3.0.0-rc3",
+            //    {
+            //        { "CATCH_BUILD_TESTING", "OFF" },
+            //        { "CATCH_INSTALL_DOCS", "OFF" }
+            //    }
+            //},
+            //Dependency{ "https://github.com/fapablazacl/glades2.git" },
+            //Dependency{
+            //    "https://github.com/cginternals/glbinding.git", 
+            //    "v3.1.0", "3.1.0",
+            //    {
+            //        { "OPTION_BUILD_EXAMPLES", "OFF" },
+            //        { "OPTION_BUILD_TOOLS", "OFF" },
+            //        { "BUILD_SHARED_LIBS", "ON" }
+            //    }
+            //},
+            
+
+            // fails build.
             //Dependency {
             //    "https://github.com/google/fruit.git", 
             //    {
@@ -528,30 +592,6 @@ namespace Xenobuild {
             //        { "FRUIT_USES_BOOST", "OFF" }
             //    }
             //},
-            Dependency {
-                "https://github.com/jbeder/yaml-cpp.git", 
-                {
-                    { "YAML_CPP_BUILD_TESTS", "OFF" }
-                }
-            },
-            Dependency{
-                "https://github.com/catchorg/Catch2.git", 
-                {
-                    { "CATCH_BUILD_TESTING", "OFF" },
-                    { "CATCH_INSTALL_DOCS", "OFF" }
-                }
-            },
-            Dependency{
-                "https://github.com/fapablazacl/glades2.git"
-            },
-            Dependency{
-                "https://github.com/cginternals/glbinding.git", 
-                {
-                    { "OPTION_BUILD_EXAMPLES", "OFF" },
-                    { "OPTION_BUILD_TOOLS", "OFF" },
-                    { "BUILD_SHARED_LIBS", "ON" }
-                }
-            },
         };
 
         // Pick a Default Toolchain
