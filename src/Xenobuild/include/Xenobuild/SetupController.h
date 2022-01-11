@@ -7,8 +7,8 @@
 
 namespace Xenobuild {
     enum class Arch {
-        X86_32,
-        X86_64
+        X32,
+        X64
     };
 
     enum class Platform {

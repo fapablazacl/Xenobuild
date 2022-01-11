@@ -401,9 +401,15 @@ namespace Xenobuild {
             std::vector<std::string> pathParts;
             boost::split(pathParts, url.path, boost::is_any_of("/"));
 
-            for (const auto& part : pathParts) {
-                sourcePath /= part;
-            }
+            //for (const auto& part : pathParts) {
+            //    sourcePath /= part;
+            //}
+
+            //sourcePath /= boost::join_if(pathParts, "-", [](const auto part) {
+            //    return part != "";
+            //});
+
+            sourcePath /= pathParts[pathParts.size() - 1];
 
             return sourcePath;
         }
@@ -430,19 +436,21 @@ namespace Xenobuild {
 
         return "host";
     }
+
     
     std::string computePathSuffix(const Arch arch) {
         switch (arch) {
-        case Arch::X86_32:
+        case Arch::X32:
             return "x86";
 
-        case Arch::X86_64:
+        case Arch::X64:
             return "x64";
         }
 
         return "native";
     }
     
+
     std::string computePathSuffix(const Toolchain toolchain) {
         switch (toolchain) {
         case Toolchain::AppleClang:
@@ -481,7 +489,7 @@ namespace Xenobuild {
 
         result.triplet = {
             Platform::Windows,
-            Arch::X86_64,
+            Arch::X64,
             Toolchain::MicrosoftVC
         };
 
@@ -541,7 +549,7 @@ namespace Xenobuild {
                 {
                     { "OPTION_BUILD_EXAMPLES", "OFF" },
                     { "OPTION_BUILD_TOOLS", "OFF" },
-                    { "BUILD_SHARED_LIBS", "OFF" }
+                    { "BUILD_SHARED_LIBS", "ON" }
                 }
             },
         };
