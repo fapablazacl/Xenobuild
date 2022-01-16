@@ -11,7 +11,7 @@ namespace Xenobuild {
         X64
     };
 
-    enum class Platform {
+    enum class OS {
         Windows,
         Linux,
         MacOS
@@ -25,15 +25,21 @@ namespace Xenobuild {
     };
     
     struct Triplet {
-        Platform platform;
+        OS os;
         Arch arch;
         Toolchain toolchain;
     };
 
 
     struct SetupControllerInput {
+        //! current source code folder
         std::string sourceDir;
+        
+        //! destination build folder
         std::string buildDir;
+        
+        //! Shows the current environment for the running process
+        bool showEnvironment = false;
 
         //! the requested triplet to build for.
         Triplet triplet;

@@ -21,14 +21,15 @@
 
 
 namespace Xenobuild {
-    constexpr Platform getHostPlatform() {
-#if defined (_WIN32)
-        return Platform::Windows;
+    constexpr OS getHostOS() {
+#if defined(_WIN32)
+        return OS::Windows;
+#elif defined(__APPLE__)
+        return OS::MacOS;
 #else
-#error Current Platform isn't supported.
+#error Current OS isn't supported.
 #endif
     }
-
 
     class CommandExecutorException : public std::runtime_error {
     public:
@@ -46,6 +47,12 @@ namespace Xenobuild {
     struct CommandX {
         std::string name;
         std::vector<std::string> args;
+    };
+    
+    struct CommandResult {
+        int exitCode;
+        std::vector<std::string> stdout;
+        std::vector<std::string> stderr;
     };
 
     struct CommandBatch {
@@ -68,16 +75,16 @@ namespace Xenobuild {
     public:
         virtual ~CommandExecutor() {}
 
-        virtual void execute(const CommandBatch& batch) = 0;
+        virtual CommandResult execute(const CommandX& command) = 0;
 
-        virtual void execute(const CommandX& command) = 0;
+        virtual CommandResult execute(const CommandBatch& batch) = 0;
 
-        inline void operator() (const CommandX& command) {
-            execute(command);
+        inline CommandResult operator() (const CommandX& command) {
+            return execute(command);
         }
 
-        inline void operator() (const CommandBatch& batch) {
-            execute(batch);
+        inline CommandResult operator() (const CommandBatch& batch) {
+            return execute(batch);
         }
     };
 
@@ -85,17 +92,14 @@ namespace Xenobuild {
     public:
         virtual ~SystemCommandExecutor() {}
 
-        void execute(const CommandX& command) override {
+        CommandResult execute(const CommandX& command) override {
             const std::string cmdline = createCmdLine(command);
             const int code = std::system(cmdline.c_str());
-
-            if (code != 0) {
-                const std::string msg = "Error while executing command '" + cmdline + "'";
-                throw CommandExecutorException(msg, code);
-            }
+            
+            return {code, {}, {}};
         }
 
-        void execute(const CommandBatch& batch) override {
+        CommandResult execute(const CommandBatch& batch) override {
             std::vector<std::string> cmdlines;
 
             std::transform(
@@ -108,27 +112,73 @@ namespace Xenobuild {
             const std::string cmdline = boost::join(cmdlines, "&&");
 
             const int code = std::system(cmdline.c_str());
-
-            if (code != 0) {
-                const std::string msg = "Error while executing command batch:'" + cmdline + "'";
-                throw CommandExecutorException(msg, code);
-            }
+            
+            return {code, {}, {}};
         }
 
     private:
         std::string createCmdLine(const CommandX& command) const {
-            const std::string cmdline = command.name + " " + boost::join(command.args, " ");
-
-            return cmdline;
+            return command.name + " " + boost::join(command.args, " ");
         }
     };
 
+    
     class BoostProcessCommandExecutor : public CommandExecutor {
     public:
         virtual ~BoostProcessCommandExecutor() {}
 
-        void execute(const CommandX& command) override {
-            boost::process::child childp;
+        CommandResult execute(const CommandX& command) override {
+            boost::filesystem::path commandPath = boost::process::search_path(command.name);
+            
+            if (! boost::filesystem::exists(commandPath)) {
+                // TODO: This is specific for my macOS installation
+                throw std::runtime_error("\"" + command.name + "\": Command couldn't be located in current environment.");
+            }
+            
+            boost::process::ipstream stdoutStream;
+            boost::process::ipstream stderrStream;
+
+            boost::process::child childProcess {
+                commandPath,
+                boost::process::args(command.args),
+                boost::process::std_out > stdoutStream,
+                boost::process::std_err > stderrStream
+            };
+
+            const std::vector<std::string> stdoutStreamOutput = grabStreamOutput(stdoutStream);
+            const std::vector<std::string> stderrStreamOutput = grabStreamOutput(stderrStream);
+
+            childProcess.wait();
+
+            return {
+                childProcess.exit_code(),
+                stdoutStreamOutput,
+                stderrStreamOutput
+            };
+        }
+        
+        CommandResult execute(const CommandBatch& batch) override {
+            if (batch.commands.size() == 0) {
+                return {0, {}, {}};
+            }
+            
+            if (batch.commands.size() == 1) {
+                return execute(batch.commands[0]);
+            }
+            
+            return {0, {}, {}};
+        }
+
+    private:
+        std::vector<std::string> grabStreamOutput(boost::process::ipstream &stream) const {
+            std::string line;
+            std::vector<std::string> lines;
+
+            while (stream && std::getline(stream, line) && !line.empty()) {
+                lines.push_back(line);
+            }
+
+            return lines;
         }
     };
 
@@ -231,11 +281,15 @@ namespace Xenobuild {
             "cmake",
             {
                 "-S" + config.sourcePath,
-                "-B" + config.buildPath,
-                "-G " + quote(config.generator)
+                "-B" + config.buildPath
             }
         };
 
+        if (config.generator != "") {
+            const std::string arg = "-G " + quote(config.generator);
+            command.args.push_back(arg);
+        }
+        
         std::transform(
             config.definitions.begin(), 
             config.definitions.end(), 
@@ -276,14 +330,18 @@ namespace Xenobuild {
 
     std::string evaluate(const CMakeBuildType buildType) {
         switch (buildType) {
+        case CMakeBuildType::Default:
+            return "";
+
         case CMakeBuildType::Debug:
             return "Debug";
 
         case CMakeBuildType::Release:
             return "Release";
-        }
 
-        return "";
+        default:
+            return "";
+        }
     }
 
 
@@ -384,7 +442,7 @@ namespace Xenobuild {
         CommandBatch createCMakeBatch(const CommandX command) {
             CommandBatch batch{};
 
-            if (getHostPlatform() == Platform::Windows) {
+            if (getHostOS() == OS::Windows) {
                 const CommandX vcvars = createVCVars64Command(toolchainPrefix);
                 batch.commands.push_back(vcvars);
             }
@@ -396,8 +454,12 @@ namespace Xenobuild {
 
         std::map<std::string, std::string> createConfigDefinitions(const boost::filesystem::path& installPrefix, const CMakeBuildType buildType) {
             std::map<std::string, std::string> definitions = {
+                // requiered in macOS; unused on other platforms
                 {"CMAKE_OSX_ARCHITECTURES", "arm64;x86_64"},
+                
+                // for generating dual-config libraries (Debug and Release)
                 {"CMAKE_DEBUG_POSTFIX", "d"},
+                
                 {"CMAKE_INSTALL_PREFIX", installPrefix.string()}
             };
 
@@ -431,20 +493,11 @@ namespace Xenobuild {
             std::vector<std::string> pathParts;
             boost::split(pathParts, url.path, boost::is_any_of("/"));
 
-            //for (const auto& part : pathParts) {
-            //    sourcePath /= part;
-            //}
-
-            //sourcePath /= boost::join_if(pathParts, "-", [](const auto part) {
-            //    return part != "";
-            //});
-            const boost::filesystem::path dependencyName { pathParts[pathParts.size() - 1] };
-
-            sourcePath /= dependencyName.stem();    // removes the .git suffix
-
-            if (suffix != "") {
-                sourcePath += ("-" + suffix);
+            for (const auto& part : pathParts) {
+                sourcePath /= part;
             }
+
+            sourcePath /= suffix;
 
             return sourcePath;
         }
@@ -457,15 +510,15 @@ namespace Xenobuild {
     };
 
 
-    std::string computePathSuffix(const Platform platform) {
+    std::string computePathSuffix(const OS platform) {
         switch (platform) {
-        case Platform::Windows:
+        case OS::Windows:
             return "windows";
 
-        case Platform::Linux:
+        case OS::Linux:
             return "linux";
 
-        case Platform::MacOS:
+        case OS::MacOS:
             return "macOS";
         }
 
@@ -506,7 +559,7 @@ namespace Xenobuild {
 
     std::string computePathSuffix(const Triplet& triplet) {
         return 
-            computePathSuffix(triplet.platform) + "-" + 
+            computePathSuffix(triplet.os) + "-" +
             computePathSuffix(triplet.arch) + "-" + 
             computePathSuffix(triplet.toolchain);
     }
@@ -522,21 +575,38 @@ namespace Xenobuild {
         result.sourceDir = currentPath.string();
         result.buildDir = (currentPath / ".Xenobuild").string();
 
-        result.triplet = {
-            Platform::Windows,
-            Arch::X64,
-            Toolchain::MicrosoftVC
-        };
-
+        switch (getHostOS()) {
+        case OS::Windows:
+            result.triplet = { OS::Windows, Arch::X64, Toolchain::MicrosoftVC };
+            break;
+            
+        case OS::MacOS:
+            result.triplet = { OS::MacOS, Arch::X64, Toolchain::AppleClang };
+            break;
+            
+        case OS::Linux:
+            result.triplet = { OS::Linux, Arch::X64, Toolchain::GnuGCC };
+            break;
+        }
+        
         return result;
     }
-
+    
     /**
      * @brief Get the home folder of the current user.
-     * @todo refactor into a cross-platform solution.
      */
-    std::string getUserPath() {
-        return std::getenv("USERPROFILE");
+     boost::filesystem::path getUserPath() {
+        switch (getHostOS()) {
+            case OS::Windows:
+                return std::getenv("USERPROFILE");
+                
+            case OS::MacOS:
+            case OS::Linux:
+                return std::getenv("HOME");
+                
+            default:
+                return ".";
+        }
     }
 }
 
@@ -572,7 +642,7 @@ namespace Xenobuild {
             //        { "CATCH_INSTALL_DOCS", "OFF" }
             //    }
             //},
-            //Dependency{ "https://github.com/fapablazacl/glades2.git" },
+            Dependency{ "https://github.com/fapablazacl/glades2.git" },
             //Dependency{
             //    "https://github.com/cginternals/glbinding.git", 
             //    "v3.1.0", "3.1.0",
@@ -593,39 +663,60 @@ namespace Xenobuild {
             //    }
             //},
         };
-
-        // Pick a Default Toolchain
-        const std::vector<std::string> toolchainPrefixPaths = enumerateVCInstallations();
-
-        if (toolchainPrefixPaths.size() == 0) {
-            // No toolchain found
-            // ERROR;
-            return;
+        
+        // show current execution environment
+        if (params.showEnvironment) {
+            std::cout << "USER: \"" << std::getenv("USER") << "\"" << std::endl;
+            std::cout << "PATH: \"" << std::getenv("PATH") << "\"" << std::endl;
+            std::cout << "SHELL: \"" << std::getenv("SHELL") << "\"" << std::endl;
         }
+        
+        // Pick a Default Toolchain, for Windows
+        // for other platforms, use the default toolchain
+        std::string toolchainPrefix;
+        
+        if (getHostOS() == OS::Windows) {
+            const std::vector<std::string> toolchainPrefixPaths = enumerateVCInstallations();
 
-        const std::string toolchainPrefix = toolchainPrefixPaths[0];
-
+            if (toolchainPrefixPaths.size() > 0) {
+                toolchainPrefix = toolchainPrefixPaths[0];
+            }
+        }
+        
         // By default, use the local user path to store package repositories
-        const std::string prefix = getUserPath();
+        const boost::filesystem::path prefix = getUserPath();
         const std::string suffix = computePathSuffix(params.triplet);
 
-        SystemCommandExecutor executor;
-        DependencyManager manager{executor, prefix + "\\.Xenobuild", toolchainPrefix, suffix};
+        BoostProcessCommandExecutor executor;
+        // SystemCommandExecutor executor;
+        DependencyManager manager{executor, (prefix / ".Xenobuild").string(), toolchainPrefix, suffix};
 
         std::for_each(dependencies.begin(), dependencies.end(), [&manager](const Dependency& dep) {
+            std::cout << "Dependency " << dep.url << std::endl;
             // TODO: The default generator depends on the toolchain, and maybe, the platform.
-            const std::string generator = "NMake Makefiles";
+            // const std::string generator = "NMake Makefiles";
 
             const CMakeBuildType buildTypes[] = {
                 CMakeBuildType::Release, CMakeBuildType::Debug
             };
 
+            std::cout << "    Downloading... ";
             manager.download(dep);
+            std::cout << "Done." << std::endl;
 
             for (const CMakeBuildType buildType : buildTypes) {
-                manager.configure(dep, buildType, generator);
+                std::cout << "    Configuring " << evaluate(buildType) << "... ";
+                // manager.configure(dep, buildType, generator);
+                manager.configure(dep, buildType, "");
+                std::cout << "Done." << std::endl;
+                
+                std::cout << "    Bulding " << evaluate(buildType) << "... ";
                 manager.build(dep, buildType);
+                std::cout << "Done." << std::endl;
+                
+                std::cout << "    Installing " << evaluate(buildType) << "...";
                 manager.install(dep, buildType);
+                std::cout << "Done." << std::endl;
             }
         });
     }

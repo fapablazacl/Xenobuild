@@ -1,6 +1,4 @@
 
-#pragma once 
-
 #include <Xenobuild/core/FileSystemPackageFactory.h>
 
 #include <cassert>
