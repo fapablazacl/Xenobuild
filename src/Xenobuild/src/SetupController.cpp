@@ -14,6 +14,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <thread>
 #include <boost/filesystem.hpp>
 #include <boost/optional.hpp>
 #include <boost/algorithm/string.hpp>
@@ -29,6 +30,20 @@ namespace Xenobuild {
 #else
 #error Current OS isn't supported.
 #endif
+    }
+    
+    unsigned getProcessorCount() {
+        const auto processor_count = std::thread::hardware_concurrency();
+        
+        if (processor_count == 0) {
+            return 1;
+        }
+        
+        return processor_count;
+    }
+
+    inline std::string quote(const std::string& str) {
+        return "\"" + str + "\"";
     }
 
     class CommandExecutorException : public std::runtime_error {
@@ -53,8 +68,20 @@ namespace Xenobuild {
         int exitCode;
         std::vector<std::string> stdout;
         std::vector<std::string> stderr;
+        
+        operator bool() const {
+            return exitCode == 0;
+        }
     };
-
+    
+    inline std::ostream& write(std::ostream &os, std::vector<std::string> lines) {
+        for (const std::string &line : lines) {
+            os << line << std::endl;
+        }
+        
+        return  os;
+    }
+    
     struct CommandBatch {
         CommandBatch() {}
 
@@ -131,33 +158,33 @@ namespace Xenobuild {
             boost::filesystem::path commandPath = boost::process::search_path(command.name);
             
             if (! boost::filesystem::exists(commandPath)) {
-                // TODO: This is specific for my macOS installation
-                throw std::runtime_error("\"" + command.name + "\": Command couldn't be located in current environment.");
+                throw std::runtime_error("\"" + command.name + "\": Command couldn't be located within the current environment.");
             }
             
             boost::process::ipstream stdoutStream;
             boost::process::ipstream stderrStream;
-
-            boost::process::child childProcess {
-                commandPath,
-                boost::process::args(command.args),
+            
+            const std::string commandLine = commandPath.string() + " " + boost::join(command.args, " ");
+            
+            boost::process::child process {
+                // commandPath, boost::process::args += command.args,
+                commandLine,
                 boost::process::std_out > stdoutStream,
                 boost::process::std_err > stderrStream
             };
 
-            const std::vector<std::string> stdoutStreamOutput = grabStreamOutput(stdoutStream);
-            const std::vector<std::string> stderrStreamOutput = grabStreamOutput(stderrStream);
+            const std::vector<std::string> stdoutOutput = grabStreamOutput(stdoutStream);
+            const std::vector<std::string> stderrOutput = grabStreamOutput(stderrStream);
 
-            childProcess.wait();
-
-            return {
-                childProcess.exit_code(),
-                stdoutStreamOutput,
-                stderrStreamOutput
-            };
+            process.wait();
+            
+            return {process.exit_code(), stdoutOutput, stderrOutput };
         }
         
+        
         CommandResult execute(const CommandBatch& batch) override {
+            assert(batch.commands.size() < 2);
+            
             if (batch.commands.size() == 0) {
                 return {0, {}, {}};
             }
@@ -166,6 +193,7 @@ namespace Xenobuild {
                 return execute(batch.commands[0]);
             }
             
+            // TODO: Add implementation
             return {0, {}, {}};
         }
 
@@ -212,20 +240,24 @@ namespace Xenobuild {
         GitRepository(const std::string& url, const std::string& tag) 
             : url(url), tag(tag) {}
 
-        void clone(CommandExecutor &execute, const boost::filesystem::path &sourcePath) const {
+        CommandResult clone(CommandExecutor &execute, const boost::filesystem::path &sourcePath) const {
             if (boost::filesystem::exists(sourcePath)) {
-                return;
+                return {0, {}, {}};
             }
 
             CommandX command{
-                "git", {"clone", "--depth 1", url, sourcePath.string()}
+                "git", {"clone"}
             };
 
             if (tag != "") {
                 command.args.push_back("--branch " + tag);
             }
+            
+            command.args.push_back("--depth 1");
+            command.args.push_back(url);
+            command.args.push_back(sourcePath.string());
 
-            execute(command);
+            return execute(command);
         }
     };
 
@@ -233,10 +265,6 @@ namespace Xenobuild {
         std::string name;
         std::string value;
     };
-
-    inline std::string quote(const std::string& str) {
-        return "\"" + str + "\"";
-    }
 
     std::string evaluate(const CMakeDefinition& def) {
         return "-D" + def.name + "=" + quote(def.value);
@@ -280,8 +308,8 @@ namespace Xenobuild {
         CommandX command {
             "cmake",
             {
-                "-S" + config.sourcePath,
-                "-B" + config.buildPath
+                "-S" + quote(config.sourcePath),
+                "-B" + quote(config.buildPath)
             }
         };
 
@@ -306,10 +334,21 @@ namespace Xenobuild {
     
     struct CMakeBuild {
         std::string buildPath;
+        boost::optional<unsigned> jobCount;
     };
 
     CommandX generateCommand(const CMakeBuild& build) {
-        return { "cmake", {"--build", build.buildPath} };
+        CommandX command {
+            "cmake",
+            {"--build", build.buildPath}
+        };
+        
+        if (build.jobCount) {
+            // this require CMake >= 3.12.
+            command.args.push_back("--parallel " + std::to_string(*build.jobCount));
+        }
+        
+        return command;
     }
 
     
@@ -376,23 +415,40 @@ namespace Xenobuild {
 
     class DependencyManager {
     public:
-        explicit DependencyManager(CommandExecutor &executor, const std::string& prefixPath, const std::string &toolchainPrefix, const std::string &installSuffix) 
-            : executor(executor), prefixPath(prefixPath), toolchainPrefix(toolchainPrefix), installSuffix(installSuffix) {}
+        explicit DependencyManager(CommandExecutor &executor,
+                                   const std::string& prefixPath,
+                                   const std::string &toolchainPrefix,
+                                   const std::string &installSuffix,
+                                   const unsigned processorCount) :
+        executor(executor),
+        prefixPath(prefixPath),
+        toolchainPrefix(toolchainPrefix),
+        installSuffix(installSuffix) {}
 
         bool download(const Dependency& dependency) const {
+            const URL url = URL::parse(dependency.url);
             const auto repository = GitRepository { dependency.url, dependency.tag };
-            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url), dependency.tag);
+            const auto sourcePath = computePath(prefixPath / "sources", url, dependency.tag);
 
-            repository.clone(executor, sourcePath);
+            const CommandResult result = repository.clone(executor, sourcePath);
 
+            if (!result) {
+                std::cerr << "Repository failed." << std::endl;
+                write(std::cerr, result.stderr);
+                
+                return false;
+            }
+            
             return true;
         }
 
         bool configure(const Dependency& dependency, const CMakeBuildType buildType, const std::string &generator) {
-            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url), dependency.tag);
+            const URL url = URL::parse(dependency.url);
+            
+            const auto sourcePath = computePath(prefixPath / "sources", url, dependency.tag);
             
             const auto buildPath = computePath(sourcePath, buildType);
-            const auto installPath = computePath(prefixPath / "packages" / installSuffix, URL::parse(dependency.url), dependency.version);
+            const auto installPath = computePath(prefixPath / "packages" / installSuffix, url, dependency.version);
 
             CMakeConfig config {
                 sourcePath.string(),
@@ -406,7 +462,14 @@ namespace Xenobuild {
             CommandX command = generateCommand(config);
             CommandBatch batch = createCMakeBatch(command);
 
-            executor(batch);
+            const CommandResult result = executor(batch);
+            
+            if (!result) {
+                std::cerr << "Configure command failed." << std::endl;
+                write(std::cerr, result.stderr);
+                
+                return false;
+            }
 
             return true;
         }
@@ -415,11 +478,19 @@ namespace Xenobuild {
             const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url), dependency.tag);
             const auto buildPath = computePath(sourcePath, buildType);
             
-            CMakeBuild build { buildPath.string() };
+            // FIX: Using parallel build with CMake, causes deadlock in glfw.
+            CMakeBuild build { buildPath.string()/*, processorCount */};
             CommandX command = generateCommand(build);
             CommandBatch batch = createCMakeBatch(command);
 
-            executor(batch);
+            const CommandResult result = executor(batch);
+            
+            if (!result) {
+                std::cerr << "Build command failed." << std::endl;
+                write(std::cerr, result.stderr);
+                
+                return false;
+            }
 
             return true;
         }
@@ -432,7 +503,14 @@ namespace Xenobuild {
             CommandX command = generateCommand(install);
             CommandBatch batch = createCMakeBatch(command);
 
-            executor(batch);
+            const CommandResult result = executor(batch);
+            
+            if (!result) {
+                std::cerr << "Install command failed." << std::endl;
+                write(std::cerr, result.stderr);
+                
+                return false;
+            }
 
             return true;
         }
@@ -507,11 +585,12 @@ namespace Xenobuild {
         boost::filesystem::path prefixPath;
         boost::filesystem::path toolchainPrefix;
         std::string installSuffix;
+        unsigned processorCount;
     };
 
 
-    std::string computePathSuffix(const OS platform) {
-        switch (platform) {
+    std::string computePathSuffix(const OS os) {
+        switch (os) {
         case OS::Windows:
             return "windows";
 
@@ -519,7 +598,7 @@ namespace Xenobuild {
             return "linux";
 
         case OS::MacOS:
-            return "macOS";
+            return "macos";
         }
 
         return "host";
@@ -634,27 +713,26 @@ namespace Xenobuild {
                     { "YAML_CPP_BUILD_TESTS", "OFF" }
                 }
             },
-            //Dependency{
-            //    "https://github.com/catchorg/Catch2.git", 
-            //    "v3.0.0-preview3", "3.0.0-rc3",
-            //    {
-            //        { "CATCH_BUILD_TESTING", "OFF" },
-            //        { "CATCH_INSTALL_DOCS", "OFF" }
-            //    }
-            //},
+            Dependency{
+                "https://github.com/catchorg/Catch2.git",
+                "v3.0.0-preview3", "3.0.0-rc3",
+                {
+                    { "CATCH_BUILD_TESTING", "OFF" },
+                    { "CATCH_INSTALL_DOCS", "OFF" }
+                }
+            },
             Dependency{ "https://github.com/fapablazacl/glades2.git" },
-            //Dependency{
-            //    "https://github.com/cginternals/glbinding.git", 
-            //    "v3.1.0", "3.1.0",
-            //    {
-            //        { "OPTION_BUILD_EXAMPLES", "OFF" },
-            //        { "OPTION_BUILD_TOOLS", "OFF" },
-            //        { "BUILD_SHARED_LIBS", "ON" }
-            //    }
-            //},
-            
+            Dependency{
+                "https://github.com/cginternals/glbinding.git",
+                "v3.1.0", "3.1.0",
+                {
+                    { "OPTION_BUILD_EXAMPLES", "OFF" },
+                    { "OPTION_BUILD_TOOLS", "OFF" },
+                    { "BUILD_SHARED_LIBS", "ON" }
+                }
+            },
 
-            // fails build.
+            // build fails in Windows.
             //Dependency {
             //    "https://github.com/google/fruit.git", 
             //    {
@@ -664,11 +742,14 @@ namespace Xenobuild {
             //},
         };
         
+        const unsigned processorCount = getProcessorCount();
+        
         // show current execution environment
         if (params.showEnvironment) {
             std::cout << "USER: \"" << std::getenv("USER") << "\"" << std::endl;
             std::cout << "PATH: \"" << std::getenv("PATH") << "\"" << std::endl;
             std::cout << "SHELL: \"" << std::getenv("SHELL") << "\"" << std::endl;
+            std::cout << "Detected CPU Cores: \"" << processorCount << "\"" << std::endl;
         }
         
         // Pick a Default Toolchain, for Windows
@@ -687,9 +768,15 @@ namespace Xenobuild {
         const boost::filesystem::path prefix = getUserPath();
         const std::string suffix = computePathSuffix(params.triplet);
 
-        BoostProcessCommandExecutor executor;
-        // SystemCommandExecutor executor;
-        DependencyManager manager{executor, (prefix / ".Xenobuild").string(), toolchainPrefix, suffix};
+        // BoostProcessCommandExecutor executor;
+        SystemCommandExecutor executor;
+        DependencyManager manager {
+            executor,
+            (prefix / ".Xenobuild").string(),
+            toolchainPrefix,
+            suffix,
+            processorCount
+        };
 
         std::for_each(dependencies.begin(), dependencies.end(), [&manager](const Dependency& dep) {
             std::cout << "Dependency " << dep.url << std::endl;
@@ -701,21 +788,30 @@ namespace Xenobuild {
             };
 
             std::cout << "    Downloading... ";
-            manager.download(dep);
+            if (!manager.download(dep)) {
+                throw std::runtime_error("Download command failed.");
+            }
             std::cout << "Done." << std::endl;
 
             for (const CMakeBuildType buildType : buildTypes) {
                 std::cout << "    Configuring " << evaluate(buildType) << "... ";
                 // manager.configure(dep, buildType, generator);
-                manager.configure(dep, buildType, "");
+                if (! manager.configure(dep, buildType, "")) {
+                    throw std::runtime_error("Configure command failed.");
+                }
+                
                 std::cout << "Done." << std::endl;
                 
-                std::cout << "    Bulding " << evaluate(buildType) << "... ";
-                manager.build(dep, buildType);
+                std::cout << "    Building " << evaluate(buildType) << "... ";
+                if (! manager.build(dep, buildType)) {
+                    throw std::runtime_error("Build command failed.");
+                }
                 std::cout << "Done." << std::endl;
                 
                 std::cout << "    Installing " << evaluate(buildType) << "...";
-                manager.install(dep, buildType);
+                if (! manager.install(dep, buildType)) {
+                    throw std::runtime_error("Install command failed.");
+                }
                 std::cout << "Done." << std::endl;
             }
         });

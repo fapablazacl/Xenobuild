@@ -39,7 +39,7 @@ namespace Xenobuild {
         std::string buildDir;
         
         //! Shows the current environment for the running process
-        bool showEnvironment = false;
+        bool showEnvironment = true;
 
         //! the requested triplet to build for.
         Triplet triplet;
