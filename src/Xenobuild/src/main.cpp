@@ -18,8 +18,11 @@ using ControllerFactoryMap = std::map<std::string, std::unique_ptr<Xenobuild::Co
 static ControllerFactoryMap createControllerFactoryMap(Xenobuild::PackageFactory &packageFactory) {
     ControllerFactoryMap result;
 
-    result["build"] = std::make_unique<Xenobuild::ConcreteControllerFactory<Xenobuild::BuildController>>(packageFactory);
-    result["setup"] = std::make_unique<Xenobuild::ConcreteControllerFactory<Xenobuild::SetupController>>(packageFactory);
+    result[Xenobuild::BuildController::Name]
+        = std::make_unique<Xenobuild::ConcreteControllerFactory<Xenobuild::BuildController>>(packageFactory);
+    
+    result[Xenobuild::SetupController::Name]
+        = std::make_unique<Xenobuild::ConcreteControllerFactory<Xenobuild::SetupController>>(packageFactory);
 
     return result;
 }

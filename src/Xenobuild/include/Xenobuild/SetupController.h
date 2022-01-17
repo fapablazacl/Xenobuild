@@ -51,6 +51,8 @@ namespace Xenobuild {
     class SetupController : public Controller {
     public:
         typedef SetupControllerInput Params;
+        
+        static const char* Name;
 
     public:
         SetupController(PackageFactory &packageFactory, const SetupControllerInput &params);

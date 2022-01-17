@@ -691,6 +691,9 @@ namespace Xenobuild {
 
 
 namespace Xenobuild {
+    
+    const char* SetupController::Name = "setup";
+    
     SetupController::SetupController(PackageFactory &packageFactory, const SetupControllerInput& params) 
         : packageFactory(packageFactory), params(params) {}
 

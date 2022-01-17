@@ -17,6 +17,8 @@ namespace Xenobuild {
     class BuildController : public Controller {
     public:
         typedef BuildControllerInput Params;
+        
+        static const char* Name;
 
     public:
         BuildController(PackageFactory &packageFactory, const BuildControllerInput &params);
