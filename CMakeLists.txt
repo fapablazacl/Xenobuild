@@ -12,6 +12,8 @@ find_package(Boost
     COMPONENTS program_options filesystem
 )
 
+add_definitions(-DCMAKE_CURRENT_SOURCE_DIR="$CMAKE_CURRENT_SOURCE_DIR")
+
 include_directories(
     "./src"
     ${Boost_INCLUDE_DIRS}

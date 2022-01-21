@@ -2,6 +2,7 @@
 set (target "Xenobuild")
 
 set (sources 
+    "include/Xenobuild/Common.h"
     "include/Xenobuild/Controller.h"
     "include/Xenobuild/ControllerFactory.h"
     "include/Xenobuild/BuildController.h"

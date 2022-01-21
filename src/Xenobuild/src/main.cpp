@@ -10,19 +10,30 @@
 #include <Xenobuild/ControllerFactory.h>
 #include <Xenobuild/BuildController.h>
 #include <Xenobuild/SetupController.h>
+#include <Xenobuild/ConfigureController.h>
 
 
 using ControllerFactoryMap = std::map<std::string, std::unique_ptr<Xenobuild::ControllerFactory>>;
 
 
+template <typename TController>
+void appendFactoryController(ControllerFactoryMap &controllerFactoryMap, Xenobuild::PackageFactory &packageFactory) {
+    auto name = TController::Name;
+    auto factory = std::make_unique<Xenobuild::ConcreteControllerFactory<TController>>(packageFactory);
+    
+    const auto it = controllerFactoryMap.find(name);
+    assert(it == controllerFactoryMap.end());
+    
+    controllerFactoryMap[name] = std::move(factory);
+}
+
+
 static ControllerFactoryMap createControllerFactoryMap(Xenobuild::PackageFactory &packageFactory) {
     ControllerFactoryMap result;
-
-    result[Xenobuild::BuildController::Name]
-        = std::make_unique<Xenobuild::ConcreteControllerFactory<Xenobuild::BuildController>>(packageFactory);
     
-    result[Xenobuild::SetupController::Name]
-        = std::make_unique<Xenobuild::ConcreteControllerFactory<Xenobuild::SetupController>>(packageFactory);
+    appendFactoryController<Xenobuild::BuildController>(result, packageFactory);
+    appendFactoryController<Xenobuild::SetupController>(result, packageFactory);
+    appendFactoryController<Xenobuild::ConfigureController>(result, packageFactory);
 
     return result;
 }

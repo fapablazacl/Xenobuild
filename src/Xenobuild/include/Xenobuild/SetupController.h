@@ -6,31 +6,6 @@
 #include <string>
 
 namespace Xenobuild {
-    enum class Arch {
-        X32,
-        X64
-    };
-
-    enum class OS {
-        Windows,
-        Linux,
-        MacOS
-    };
-
-    enum class Toolchain {
-        Clang,
-        MicrosoftVC,
-        AppleClang,
-        GnuGCC
-    };
-    
-    struct Triplet {
-        OS os;
-        Arch arch;
-        Toolchain toolchain;
-    };
-
-
     struct SetupControllerInput {
         //! current source code folder
         std::string sourceDir;
