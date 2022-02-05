@@ -8,7 +8,10 @@
 #include <Xenobuild/core/Package.h>
 #include <Xenobuild/core/PackageFactory.h>
 #include <Xenobuild/core/Module.h>
+#include <Xenobuild/core/Dependency.h>
+#include <Xenobuild/core/DependencyManager.h>
 #include <Xenobuild/core/SourceFile.h>
+
 
 namespace Xenobuild {
     SetupControllerInput SetupControllerInput::parse(int, char**) {

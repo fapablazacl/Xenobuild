@@ -1,9 +1,14 @@
 
 #include <Xenobuild/core/FileSystemPackageFactory.h>
+#include <Xenobuild/core/Module.h>
+#include <Xenobuild/core/Dependency.h>
 
 #include <cassert>
+#include <iostream>
 #include <boost/filesystem.hpp>
 #include <yaml-cpp/yaml.h>
+#include <Xenobuild/core/Package.h>
+#include <Xenobuild/core/Module.h>
 
 
 namespace Xenobuild {
@@ -118,24 +123,39 @@ namespace YAML {
         return true;
     }
     
+    template<> struct convert<boost::filesystem::path> {
+        static Node encode(const boost::filesystem::path& rhs) {
+            Node node;
+            
+            node = rhs.string();
+            
+            return node;
+        }
+
+        static bool decode(const Node& node, boost::filesystem::path& rhs) {
+            if (! node.IsScalar()) {
+                return false;
+            }
+            
+            const std::string tentative = node.as<std::string>();
+            
+            if (! boost::filesystem::native(tentative)) {
+                return false;
+            }
+            
+            rhs = tentative;
+            
+            return true;
+        }
+    };
+    
     template<> struct convert<Xenobuild::Package> {
         static Node encode(const Xenobuild::Package& rhs) {
             Node node;
 
             node["name"] = rhs.name;
             node["path"] = rhs.path;
-//            node["blockModel"] = rhs.blockModel;
-//            node["caveback"] = rhs.caveback;
-//            node["drawpoints"] = rhs.drawpoints;
-//            node["historicalExtraction"] = rhs.historicalExtraction;
-//            node["tracers"] = rhs.tracers;
-//            node["fragmentation"] = rhs.fragmentation;
-//            node["structure"] = rhs.structure;
-//            node["printPeriods"] = rhs.printPeriods;
-//            node["cuttingPlanes"] = rhs.cuttingPlanes;
-//            node["reblock"] = rhs.reblock;
-//            node["visualization"] = rhs.visualization;
-//            node["visualizationFiles"] = rhs.visualizationFiles;
+            node["dependencies"] = rhs.dependencies;
             
             return node;
         }
@@ -147,18 +167,33 @@ namespace YAML {
 
             extractValue(node, "name", rhs.name);
             extractValue(node, "path", rhs.path);
-//            extractValue(node, "blockModel", rhs.blockModel);
-//            extractValue(node, "caveback", rhs.caveback);
-//            extractValue(node, "drawpoints", rhs.drawpoints);
-//            extractValue(node, "historicalExtraction", rhs.historicalExtraction);
-//            extractValue(node, "tracers", rhs.tracers);
-//            extractValue(node, "fragmentation", rhs.fragmentation);
-//            extractValue(node, "structure", rhs.structure);
-//            extractValue(node, "printPeriods", rhs.printPeriods);
-//            extractValue(node, "cuttingPlanes", rhs.cuttingPlanes);
-//            extractValue(node, "reblock", rhs.reblock);
-//            extractValue(node, "visualization", rhs.visualization);
-//            extractValue(node, "visualizationFiles", rhs.visualizationFiles);
+            extractValue(node, "dependencies", rhs.dependencies);
+            
+            return true;
+        }
+    };
+    
+    template<> struct convert<Xenobuild::Dependency> {
+        static Node encode(const Xenobuild::Dependency& rhs) {
+            Node node;
+
+            node["url"] = rhs.url;
+            node["tag"] = rhs.tag;
+            node["version"] = rhs.version;
+            node["definitions"] = rhs.definitions;
+            
+            return node;
+        }
+
+        static bool decode(const Node& node, Xenobuild::Dependency& rhs) {
+            if (node.IsScalar()) {
+                return false;
+            }
+
+            extractValue(node, "url", rhs.url);
+            extractValue(node, "tag", rhs.tag);
+            extractValue(node, "version", rhs.version);
+            extractValue(node, "definitions", rhs.definitions);
             
             return true;
         }

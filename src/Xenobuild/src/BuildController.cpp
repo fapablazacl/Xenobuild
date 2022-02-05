@@ -110,7 +110,5 @@ namespace Xenobuild {
         std::cout << "BuildController::perform" << std::endl;
 
         Package package = packageFactory.createPackage(params.sourceDir);
-
-        print(package);
     }
 }

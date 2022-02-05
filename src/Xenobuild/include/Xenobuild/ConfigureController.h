@@ -2,11 +2,13 @@
 #pragma once
 
 #include "Controller.h"
+#include <Xenobuild/core/Triplet.h>
 
 #include <string>
 #include <ostream>
 
 namespace Xenobuild {
+    
     struct ConfigureControllerInput {
         std::string sourceDir;
         std::string buildDir;

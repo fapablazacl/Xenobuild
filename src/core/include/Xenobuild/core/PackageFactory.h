@@ -1,10 +1,11 @@
 
 #pragma once 
 
-#include "Package.h"
 #include <istream>
 
 namespace Xenobuild {
+    struct Package;
+    
     class PackageFactory {
     public:
         virtual ~PackageFactory() {}

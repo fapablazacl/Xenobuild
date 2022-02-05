@@ -4,7 +4,10 @@
 #include <Xenobuild/core/Command.h>
 #include <Xenobuild/core/Version.h>
 #include <Xenobuild/core/Package.h>
+#include <Xenobuild/core/Dependency.h>
 #include <Xenobuild/core/PackageFactory.h>
+#include <Xenobuild/core/PackageManager.h>
+
 
 namespace Xenobuild {
     const boost::filesystem::path currentPath = CMAKE_CURRENT_SOURCE_DIR;

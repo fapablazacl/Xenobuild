@@ -3,6 +3,7 @@
 
 #include "Controller.h"
 
+#include <Xenobuild/core/Triplet.h>
 #include <string>
 
 namespace Xenobuild {

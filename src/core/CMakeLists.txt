@@ -26,6 +26,7 @@ set (sources
 	"src/FileSystemPackageFactory.cpp"
 	"src/PackageFactory.cpp"
 	"src/PackageManager.cpp"
+	"src/Package.cpp"
 )
 
 add_library(${target} ${sources})
