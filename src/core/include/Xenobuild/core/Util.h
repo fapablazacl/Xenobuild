@@ -1,29 +1,49 @@
 
 #pragma once
 
-#include <thread>
 #include <string>
+#include <vector>
+#include <map>
+#include <iosfwd>
+#include <boost/filesystem/path.hpp>
+
 
 namespace Xenobuild {
-    inline unsigned getProcessorCount() {
-        const auto processor_count = std::thread::hardware_concurrency();
-        
-        if (processor_count == 0) {
-            return 1;
-        }
-        
-        return processor_count;
-    }
-
-    inline std::string quote(const std::string& str) {
-        return "\"" + str + "\"";
-    }
+    struct CommandBatch;
+    struct CommandX;
+    struct CMakeDefinition;
+    struct CMakeBuild;
+    struct CMakeInstall;
+    struct CMakeConfig;
     
-    inline std::ostream& write(std::ostream &os, std::vector<std::string> lines) {
-        for (const std::string &line : lines) {
-            os << line << std::endl;
-        }
-        
-        return  os;
-    }
+    enum class CMakeBuildType;
+    
+    
+    unsigned getProcessorCount();
+
+    std::string quote(const std::string& str);
+    
+    std::ostream& write(std::ostream &os, std::vector<std::string> lines);
+    
+    std::string evaluate(const CMakeDefinition& def);
+    
+    std::vector<std::string> enumerateVCInstallations();
+
+    CommandX createVCVars64Command(const boost::filesystem::path &prefixPath);
+
+    CommandX generateCommand(const CMakeConfig &config);
+
+    
+    CommandX generateCommand(const CMakeBuild& build);
+
+    
+    CommandX generateCommand(const CMakeInstall& install);
+
+    
+    std::string evaluate(const CMakeBuildType buildType);
+
+
+    std::map<std::string, std::string> createConfigDefinitions(const boost::filesystem::path& installPrefix, const CMakeBuildType buildType);
+    
+    CommandBatch createCMakeBatch(const CommandX command, const boost::filesystem::path &toolchainPrefix);
 }

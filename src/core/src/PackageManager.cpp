@@ -1,5 +1,5 @@
 
-#include <Xenobuild/core/Command.h>
+#include <Xenobuild/core/PackageManager.h>
 
 namespace Xenobuild {
     

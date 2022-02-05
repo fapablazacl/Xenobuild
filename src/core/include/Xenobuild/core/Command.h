@@ -71,34 +71,9 @@ namespace Xenobuild {
     public:
         virtual ~SystemCommandExecutor() {}
 
-        CommandResult execute(const CommandX& command) override {
-            const std::string cmdline = createCmdLine(command);
-            const int code = std::system(cmdline.c_str());
-            
-            return {code, {}, {}};
-        }
+        CommandResult execute(const CommandX& command) override;
 
-        CommandResult execute(const CommandBatch& batch) override {
-            std::vector<std::string> cmdlines;
-
-            std::transform(
-                batch.commands.begin(),
-                batch.commands.end(),
-                std::back_inserter(cmdlines), [this](const auto command) {
-                return createCmdLine(command);
-            });
-
-            const std::string cmdline = boost::join(cmdlines, "&&");
-
-            const int code = std::system(cmdline.c_str());
-            
-            return {code, {}, {}};
-        }
-
-    private:
-        std::string createCmdLine(const CommandX& command) const {
-            return command.name + " " + boost::join(command.args, " ");
-        }
+        CommandResult execute(const CommandBatch& batch) override;
     };
 
     
@@ -106,59 +81,8 @@ namespace Xenobuild {
     public:
         virtual ~BoostProcessCommandExecutor() {}
 
-        CommandResult execute(const CommandX& command) override {
-            boost::filesystem::path commandPath = boost::process::search_path(command.name);
-            
-            if (! boost::filesystem::exists(commandPath)) {
-                throw std::runtime_error("\"" + command.name + "\": Command couldn't be located within the current environment.");
-            }
-            
-            boost::process::ipstream stdoutStream;
-            boost::process::ipstream stderrStream;
-            
-            const std::string commandLine = commandPath.string() + " " + boost::join(command.args, " ");
-            
-            boost::process::child process {
-                // commandPath, boost::process::args += command.args,
-                commandLine,
-                boost::process::std_out > stdoutStream,
-                boost::process::std_err > stderrStream
-            };
-
-            const std::vector<std::string> stdoutOutput = grabStreamOutput(stdoutStream);
-            const std::vector<std::string> stderrOutput = grabStreamOutput(stderrStream);
-
-            process.wait();
-            
-            return {process.exit_code(), stdoutOutput, stderrOutput };
-        }
+        CommandResult execute(const CommandX& command) override;
         
-        
-        CommandResult execute(const CommandBatch& batch) override {
-            assert(batch.commands.size() < 2);
-            
-            if (batch.commands.size() == 0) {
-                return {0, {}, {}};
-            }
-            
-            if (batch.commands.size() == 1) {
-                return execute(batch.commands[0]);
-            }
-            
-            // TODO: Add implementation
-            return {0, {}, {}};
-        }
-
-    private:
-        std::vector<std::string> grabStreamOutput(boost::process::ipstream &stream) const {
-            std::string line;
-            std::vector<std::string> lines;
-
-            while (stream && std::getline(stream, line) && !line.empty()) {
-                lines.push_back(line);
-            }
-
-            return lines;
-        }
+        CommandResult execute(const CommandBatch& batch) override;
     };
 }

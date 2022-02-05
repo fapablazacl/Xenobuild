@@ -22,6 +22,7 @@ set (sources
 	"src/Command.cpp"
 	"src/Dependency.cpp"
 	"src/DependencyManager.cpp"
+	"src/Util.cpp"
 	"src/FileSystemPackageFactory.cpp"
 	"src/PackageFactory.cpp"
 	"src/PackageManager.cpp"
