@@ -19,3 +19,5 @@ add_executable(${target} ${sources})
 
 target_include_directories(${target} PUBLIC "./include/")
 target_link_libraries(${target} core build-core)
+
+install(TARGETS ${target} DESTINATION bin)

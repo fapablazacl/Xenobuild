@@ -23,6 +23,9 @@ link_directories(${Boost_LIBRARY_DIRS})
 
 # yaml-cpp
 set(YAML_CPP_BUILD_TESTS "OFF" CACHE STRING "" FORCE)
+set(YAML_CPP_BUILD_CONTRIB "OFF" CACHE STRING "" FORCE)
+set(YAML_CPP_BUILD_TOOLS "OFF" CACHE STRING "" FORCE)
+set(YAML_CPP_INSTALL "OFF" CACHE STRING "" FORCE)
 add_subdirectory("dependencies/yaml-cpp")
 
 add_subdirectory("src/Xenobuild")
