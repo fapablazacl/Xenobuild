@@ -21,6 +21,10 @@ include_directories(
 
 link_directories(${Boost_LIBRARY_DIRS})
 
+# yaml-cpp
+set(YAML_CPP_BUILD_TESTS "OFF" CACHE STRING "" FORCE)
+add_subdirectory("dependencies/yaml-cpp")
+
 add_subdirectory("src/Xenobuild")
 add_subdirectory("src/core")
 add_subdirectory("src/build-core")

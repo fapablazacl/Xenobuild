@@ -13,6 +13,7 @@ namespace Xenobuild {
         std::string name;
         boost::filesystem::path path;
         std::vector<Module> modules;
+        
     };
 
     inline void print(const Package &package) {

@@ -3,6 +3,7 @@
 
 #include <cassert>
 #include <boost/filesystem.hpp>
+#include <yaml-cpp/yaml.h>
 
 
 namespace Xenobuild {
@@ -87,6 +88,91 @@ namespace Xenobuild {
 
         package.modules = { module };
 
+        return package;
+    }
+    
+    
+    template<typename T>
+    inline bool extractValue(const YAML::Node& node, const std::string& name, T& value) {
+        if (! node[name]) {
+            return false;
+        }
+
+        value = node[name].as<T>();
+
+        return true;
+    }
+
+
+    template<typename T>
+    inline bool extractValue(const YAML::Node& node, const std::string& name, T& value, const T defaultValue) {
+        if (! node[name]) {
+            value = defaultValue;
+            return false;
+        }
+
+        value = node[name].as<T>();
+
+        return true;
+    }
+}
+
+
+namespace YAML {
+    template<> struct convert<Xenobuild::Package> {
+        static Node encode(const Xenobuild::Package& rhs) {
+            Node node;
+
+            node["name"] = rhs.name;
+            node["path"] = rhs.path;
+            node["blockModel"] = rhs.blockModel;
+            node["caveback"] = rhs.caveback;
+            node["drawpoints"] = rhs.drawpoints;
+            node["historicalExtraction"] = rhs.historicalExtraction;
+            node["tracers"] = rhs.tracers;
+            node["fragmentation"] = rhs.fragmentation;
+            node["structure"] = rhs.structure;
+            node["printPeriods"] = rhs.printPeriods;
+            node["cuttingPlanes"] = rhs.cuttingPlanes;
+            node["reblock"] = rhs.reblock;
+            node["visualization"] = rhs.visualization;
+            node["visualizationFiles"] = rhs.visualizationFiles;
+            
+            return node;
+        }
+
+        static bool decode(const Node& node, Xenobuild::Package& rhs) {
+            if (node.IsScalar()) {
+                return false;
+            }
+
+            extractValue(node, "name", rhs.name);
+            extractValue(node, "path", rhs.path);
+            extractValue(node, "blockModel", rhs.blockModel);
+            extractValue(node, "caveback", rhs.caveback);
+            extractValue(node, "drawpoints", rhs.drawpoints);
+            extractValue(node, "historicalExtraction", rhs.historicalExtraction);
+            extractValue(node, "tracers", rhs.tracers);
+            extractValue(node, "fragmentation", rhs.fragmentation);
+            extractValue(node, "structure", rhs.structure);
+            extractValue(node, "printPeriods", rhs.printPeriods);
+            extractValue(node, "cuttingPlanes", rhs.cuttingPlanes);
+            extractValue(node, "reblock", rhs.reblock);
+            extractValue(node, "visualization", rhs.visualization);
+            extractValue(node, "visualizationFiles", rhs.visualizationFiles);
+            
+            return true;
+        }
+    };
+}
+
+
+namespace Xenobuild {
+    Package FileSystemPackageFactory::createPackage(std::istream &is) {
+        YAML::Node rootNode = YAML::Load(is);
+        
+        Package package = rootNode.as<Package>();
+        
         return package;
     }
 }

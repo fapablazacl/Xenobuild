@@ -9,5 +9,7 @@ namespace Xenobuild {
         Package createMockPackage() override;
 
         Package createPackage(const std::string& sourceDir) override;
+        
+        Package createPackage(std::istream &is) override;
     };
 }
