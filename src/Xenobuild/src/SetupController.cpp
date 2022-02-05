@@ -31,56 +31,12 @@ namespace Xenobuild {
     
     const char* SetupController::Name = "setup";
     
-    SetupController::SetupController(PackageFactory &packageFactory, const SetupControllerInput& params) 
-        : packageFactory(packageFactory), params(params) {}
+    SetupController::SetupController(Package& package, const SetupControllerInput& params)
+        : package(package), params(params) {}
 
 
     void SetupController::perform() {
-        const std::vector<Dependency> dependencies = {
-            Dependency{
-                "https://github.com/glfw/glfw.git", 
-                "3.3", "3.3",
-                {
-                    { "GLFW_BUILD_DOCS", "OFF" },
-                    { "GLFW_BUILD_EXAMPLES", "OFF" },
-                    { "GLFW_BUILD_TESTS", "OFF" }
-                }
-            },
-            Dependency {
-                "https://github.com/jbeder/yaml-cpp.git", 
-                "yaml-cpp-0.7.0", "0.7.0",
-                {
-                    { "YAML_CPP_BUILD_TESTS", "OFF" }
-                }
-            },
-            Dependency{
-                "https://github.com/catchorg/Catch2.git",
-                "v3.0.0-preview3", "3.0.0-rc3",
-                {
-                    { "CATCH_BUILD_TESTING", "OFF" },
-                    { "CATCH_INSTALL_DOCS", "OFF" }
-                }
-            },
-            Dependency{ "https://github.com/fapablazacl/glades2.git" },
-            Dependency{
-                "https://github.com/cginternals/glbinding.git",
-                "v3.1.0", "3.1.0",
-                {
-                    { "OPTION_BUILD_EXAMPLES", "OFF" },
-                    { "OPTION_BUILD_TOOLS", "OFF" },
-                    { "BUILD_SHARED_LIBS", "ON" }
-                }
-            },
-
-            // build fails in Windows.
-            //Dependency {
-            //    "https://github.com/google/fruit.git", 
-            //    {
-            //        { "FRUIT_TESTS_USE_PRECOMPILED_HEADERS", "OFF" },
-            //        { "FRUIT_USES_BOOST", "OFF" }
-            //    }
-            //},
-        };
+        const std::vector<Dependency> dependencies = package.dependencies;
         
         const unsigned processorCount = getProcessorCount();
         

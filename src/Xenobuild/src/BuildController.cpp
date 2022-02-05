@@ -103,12 +103,10 @@ namespace Xenobuild {
 namespace Xenobuild {
     const char* BuildController::Name = "build";
     
-    BuildController::BuildController(PackageFactory &packageFactory, const BuildControllerInput& params) 
-        : packageFactory(packageFactory), params(params) {}
+    BuildController::BuildController(Package& package, const BuildControllerInput& params)
+        : package(package), params(params) {}
 
     void BuildController::perform() {
-        std::cout << "BuildController::perform" << std::endl;
-
-        Package package = packageFactory.createPackage(params.sourceDir);
+        
     }
 }

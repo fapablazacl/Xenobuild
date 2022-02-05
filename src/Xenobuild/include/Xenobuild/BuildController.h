@@ -21,12 +21,12 @@ namespace Xenobuild {
         static const char* Name;
 
     public:
-        BuildController(PackageFactory &packageFactory, const BuildControllerInput &params);
+        BuildController(Package& package, const BuildControllerInput &params);
 
         void perform() override;
 
     private:
-        PackageFactory& packageFactory;
+        Package& package;
         BuildControllerInput params;
     };
 }

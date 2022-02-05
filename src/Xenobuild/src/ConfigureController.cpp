@@ -5,7 +5,7 @@
 #include <Xenobuild/core/Version.h>
 #include <Xenobuild/core/Package.h>
 #include <Xenobuild/core/Dependency.h>
-#include <Xenobuild/core/PackageFactory.h>
+#include <Xenobuild/core/Package.h>
 #include <Xenobuild/core/PackageManager.h>
 
 
@@ -27,57 +27,13 @@ namespace Xenobuild {
 namespace Xenobuild {
     const char* ConfigureController::Name = "configure";
     
-    ConfigureController::ConfigureController(PackageFactory &packageFactory, const ConfigureControllerInput& params)
-        : packageFactory(packageFactory), params(params) {}
+    ConfigureController::ConfigureController(Package &package, const ConfigureControllerInput& params)
+        : package(package), params(params) {}
 
     void ConfigureController::perform() {
         std::cout << "ConfigureController::perform" << std::endl;
 
-        const std::vector<Dependency> dependencies = {
-            Dependency{
-                "https://github.com/glfw/glfw.git",
-                "3.3", "3.3",
-                {
-                    { "GLFW_BUILD_DOCS", "OFF" },
-                    { "GLFW_BUILD_EXAMPLES", "OFF" },
-                    { "GLFW_BUILD_TESTS", "OFF" }
-                }
-            },
-            Dependency {
-                "https://github.com/jbeder/yaml-cpp.git",
-                "yaml-cpp-0.7.0", "0.7.0",
-                {
-                    { "YAML_CPP_BUILD_TESTS", "OFF" }
-                }
-            },
-            Dependency{
-                "https://github.com/catchorg/Catch2.git",
-                "v3.0.0-preview3", "3.0.0-rc3",
-                {
-                    { "CATCH_BUILD_TESTING", "OFF" },
-                    { "CATCH_INSTALL_DOCS", "OFF" }
-                }
-            },
-            Dependency{ "https://github.com/fapablazacl/glades2.git" },
-            Dependency{
-                "https://github.com/cginternals/glbinding.git",
-                "v3.1.0", "3.1.0",
-                {
-                    { "OPTION_BUILD_EXAMPLES", "OFF" },
-                    { "OPTION_BUILD_TOOLS", "OFF" },
-                    { "BUILD_SHARED_LIBS", "ON" }
-                }
-            },
-
-            // build fails in Windows.
-            //Dependency {
-            //    "https://github.com/google/fruit.git",
-            //    {
-            //        { "FRUIT_TESTS_USE_PRECOMPILED_HEADERS", "OFF" },
-            //        { "FRUIT_USES_BOOST", "OFF" }
-            //    }
-            //},
-        };
+        const std::vector<Dependency> dependencies = package.dependencies;
         
         const unsigned processorCount = getProcessorCount();
         
@@ -114,10 +70,8 @@ namespace Xenobuild {
             suffix,
             processorCount
         };
-        
-        Package package = packageFactory.createPackage(params.sourceDir);
 
-        std::for_each(dependencies.begin(), dependencies.end(), [&manager, &dependencies, &package, this](const Dependency& dep) {
+        std::for_each(dependencies.begin(), dependencies.end(), [&manager, &dependencies, this](const Dependency& dep) {
             std::cout << "Dependency " << dep.url << std::endl;
             // TODO: The default generator depends on the toolchain, and maybe, the platform.
             // const std::string generator = "NMake Makefiles";

@@ -23,7 +23,7 @@ namespace Xenobuild {
         static SetupControllerInput parse(int argc, char** argv);
     };
 
-    class PackageFactory;
+    class Package;
     class SetupController : public Controller {
     public:
         typedef SetupControllerInput Params;
@@ -31,12 +31,12 @@ namespace Xenobuild {
         static const char* Name;
 
     public:
-        SetupController(PackageFactory &packageFactory, const SetupControllerInput &params);
+        SetupController(Package& package, const SetupControllerInput &params);
 
         void perform() override;
 
     private:
-        PackageFactory& packageFactory;
+        Package& package;
         SetupControllerInput params;
     };
 }

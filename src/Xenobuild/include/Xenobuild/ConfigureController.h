@@ -8,7 +8,6 @@
 #include <ostream>
 
 namespace Xenobuild {
-    
     struct ConfigureControllerInput {
         std::string sourceDir;
         std::string buildDir;
@@ -36,12 +35,12 @@ namespace Xenobuild {
         static const char* Name;
 
     public:
-        ConfigureController(PackageFactory &packageFactory, const ConfigureControllerInput &params);
+        ConfigureController(Package &package, const ConfigureControllerInput &params);
 
         void perform() override;
 
     private:
-        PackageFactory& packageFactory;
+        Package &package;
         ConfigureControllerInput params;
     };
 }

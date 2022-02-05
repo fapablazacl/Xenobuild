@@ -17,9 +17,9 @@ using ControllerFactoryMap = std::map<std::string, std::unique_ptr<Xenobuild::Co
 
 
 template <typename TController>
-void appendFactoryController(ControllerFactoryMap &controllerFactoryMap, Xenobuild::PackageFactory &packageFactory) {
+void appendFactoryController(ControllerFactoryMap &controllerFactoryMap, Xenobuild::Package &package) {
     auto name = TController::Name;
-    auto factory = std::make_unique<Xenobuild::ConcreteControllerFactory<TController>>(packageFactory);
+    auto factory = std::make_unique<Xenobuild::ConcreteControllerFactory<TController>>(package);
     
     const auto it = controllerFactoryMap.find(name);
     assert(it == controllerFactoryMap.end());
@@ -28,21 +28,30 @@ void appendFactoryController(ControllerFactoryMap &controllerFactoryMap, Xenobui
 }
 
 
-static ControllerFactoryMap createControllerFactoryMap(Xenobuild::PackageFactory &packageFactory) {
+static ControllerFactoryMap createControllerFactoryMap(Xenobuild::Package &package) {
     ControllerFactoryMap result;
     
-    appendFactoryController<Xenobuild::BuildController>(result, packageFactory);
-    appendFactoryController<Xenobuild::SetupController>(result, packageFactory);
-    appendFactoryController<Xenobuild::ConfigureController>(result, packageFactory);
+    appendFactoryController<Xenobuild::BuildController>(result, package);
+    appendFactoryController<Xenobuild::SetupController>(result, package);
+    appendFactoryController<Xenobuild::ConfigureController>(result, package);
 
     return result;
 }
 
 
 int main(int argc, char **argv) {
+    std::fstream fs;
+    
+    fs.open("Xenobuild.yaml", std::ios::in);
+    if (! fs.is_open()) {
+        std::cerr << "There is no accesible Xenobuild.yaml file in the current folder" << std::endl;
+        return EXIT_FAILURE;
+    }
+    
     Xenobuild::FileSystemPackageFactory packageFactory;
-
-    const ControllerFactoryMap controllerFactoryMap = createControllerFactoryMap(packageFactory);
+    Xenobuild::Package package = packageFactory.createPackage(fs);
+    
+    const ControllerFactoryMap controllerFactoryMap = createControllerFactoryMap(package);
     
     if (argc < 2) {
         std::cerr << "No subcommand supplied." << std::endl;

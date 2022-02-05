@@ -51,6 +51,9 @@ namespace Xenobuild {
     };
 
     struct Dependency {
+        //! The dependency identifier
+        std::string name;
+        
         //! the Git URL repository
         std::string url;
 
@@ -64,17 +67,19 @@ namespace Xenobuild {
         std::map<std::string, std::string> definitions;
 
         Dependency() {}
-
-        Dependency(const std::string& url)
-            : url(url) {}
-
-        Dependency(const std::string& url, const std::string &tag, const std::string &version)
-            : url(url), tag(tag), version(version) {}
-
-        Dependency(const std::string& url, const std::string &tag, const std::string &version, const std::map<std::string, std::string> &definitions)
-            : url(url), tag(tag), version(version), definitions(definitions) {}
         
-        Dependency(const std::string& url, const std::map<std::string, std::string> &definitions)
-            : url(url), definitions(definitions) {}
+        Dependency(const std::string &name) : name(name) {}
+
+        Dependency(const std::string &name, const std::string& url)
+            : name(name), url(url) {}
+
+        Dependency(const std::string &name, const std::string& url, const std::string &tag, const std::string &version)
+            : name(name), url(url), tag(tag), version(version) {}
+
+        Dependency(const std::string &name, const std::string& url, const std::string &tag, const std::string &version, const std::map<std::string, std::string> &definitions)
+            : name(name), url(url), tag(tag), version(version), definitions(definitions) {}
+        
+        Dependency(const std::string &name, const std::string& url, const std::map<std::string, std::string> &definitions)
+            : name(name), url(url), definitions(definitions) {}
     };
 }
