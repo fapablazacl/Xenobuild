@@ -18,6 +18,7 @@
 #include <boost/optional.hpp>
 #include <boost/algorithm/string.hpp>
 #include <boost/process.hpp>
+#include <boost/optional.hpp>
 
 
 namespace Xenobuild {
@@ -132,26 +133,42 @@ namespace Xenobuild {
         }
     };
 
-    struct URL {
+    struct Url {
         std::string schema;
         std::string host;
         std::string path;
         // TODO: query string
 
-        static URL parse(const std::string& strUrl) {
-            // Sample URL: https://github.com/glfw/glfw.git
+        std::string str;
 
-            URL url;
+        static boost::optional<Url> parse(const std::string& strUrl) {
+            // Sample URL: https://github.com/glfw/glfw.git
+            Url url;
 
             const size_t schemaPos = strUrl.find_first_of(':');
+            
+            if (schemaPos == std::string::npos) {
+                return {};
+            }
+
             url.schema = strUrl.substr(0, schemaPos);
 
             const size_t hostEndPos = strUrl.find('/', schemaPos + 3);
+            if (hostEndPos == std::string::npos) {
+                return {};
+            }
+
             url.host = strUrl.substr(schemaPos + 3, hostEndPos - (schemaPos + 3));
 
             url.path = strUrl.substr(hostEndPos);
 
+            url.str = strUrl;
+
             return url;
+        }
+
+        std::string string() const {
+            return str;
         }
     };
 
@@ -323,7 +340,7 @@ namespace Xenobuild {
 
         bool download(const Dependency& dependency) const {
             const auto repository = GitRepository { dependency.url, dependency.tag };
-            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url), dependency.tag);
+            const auto sourcePath = computePath(prefixPath / "sources", *Url::parse(dependency.url), dependency.tag);
 
             repository.clone(executor, sourcePath);
 
@@ -331,10 +348,10 @@ namespace Xenobuild {
         }
 
         bool configure(const Dependency& dependency, const CMakeBuildType buildType, const std::string &generator) {
-            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url), dependency.tag);
+            const auto sourcePath = computePath(prefixPath / "sources", *Url::parse(dependency.url), dependency.tag);
             
             const auto buildPath = computePath(sourcePath, buildType);
-            const auto installPath = computePath(prefixPath / "packages" / installSuffix, URL::parse(dependency.url), dependency.version);
+            const auto installPath = computePath(prefixPath / "packages" / installSuffix, *Url::parse(dependency.url), dependency.version);
 
             CMakeConfig config {
                 sourcePath.string(),
@@ -354,7 +371,7 @@ namespace Xenobuild {
         }
 
         bool build(const Dependency& dependency, const CMakeBuildType buildType) {
-            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url), dependency.tag);
+            const auto sourcePath = computePath(prefixPath / "sources", *Url::parse(dependency.url), dependency.tag);
             const auto buildPath = computePath(sourcePath, buildType);
             
             CMakeBuild build { buildPath.string() };
@@ -367,7 +384,7 @@ namespace Xenobuild {
         }
 
         bool install(const Dependency& dependency, const CMakeBuildType buildType) {
-            const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url), dependency.tag);
+            const auto sourcePath = computePath(prefixPath / "sources", *Url::parse(dependency.url), dependency.tag);
             const auto buildPath = computePath(sourcePath, buildType);
             
             CMakeInstall install { buildPath.string() };
@@ -425,7 +442,7 @@ namespace Xenobuild {
         }
 
 
-        boost::filesystem::path computePath(const boost::filesystem::path& prefix, const URL url, const std::string &suffix) const {
+        boost::filesystem::path computePath(const boost::filesystem::path& prefix, const Url url, const std::string &suffix) const {
             boost::filesystem::path sourcePath{ prefix / url.host };
 
             std::vector<std::string> pathParts;
@@ -564,26 +581,24 @@ namespace Xenobuild {
                     { "YAML_CPP_BUILD_TESTS", "OFF" }
                 }
             },
-            //Dependency{
-            //    "https://github.com/catchorg/Catch2.git", 
-            //    "v3.0.0-preview3", "3.0.0-rc3",
-            //    {
-            //        { "CATCH_BUILD_TESTING", "OFF" },
-            //        { "CATCH_INSTALL_DOCS", "OFF" }
-            //    }
-            //},
-            //Dependency{ "https://github.com/fapablazacl/glades2.git" },
-            //Dependency{
-            //    "https://github.com/cginternals/glbinding.git", 
-            //    "v3.1.0", "3.1.0",
-            //    {
-            //        { "OPTION_BUILD_EXAMPLES", "OFF" },
-            //        { "OPTION_BUILD_TOOLS", "OFF" },
-            //        { "BUILD_SHARED_LIBS", "ON" }
-            //    }
-            //},
-            
-
+            Dependency{
+                "https://github.com/catchorg/Catch2.git", 
+                "v3.0.0-preview3", "3.0.0-rc3",
+                {
+                    { "CATCH_BUILD_TESTING", "OFF" },
+                    { "CATCH_INSTALL_DOCS", "OFF" }
+                }
+            },
+            Dependency{ "https://github.com/fapablazacl/glades2.git" },
+            Dependency{
+                "https://github.com/cginternals/glbinding.git", 
+                "v3.1.0", "3.1.0",
+                {
+                    { "OPTION_BUILD_EXAMPLES", "OFF" },
+                    { "OPTION_BUILD_TOOLS", "OFF" },
+                    { "BUILD_SHARED_LIBS", "ON" }
+                }
+            },
             // fails build.
             //Dependency {
             //    "https://github.com/google/fruit.git", 
