@@ -18,13 +18,12 @@ namespace Xenobuild {
     toolchainPrefix(toolchainPrefix),
     installSuffix(installSuffix) {}
     
-    
     bool PackageManager::configure(const Package &package, const Triplet &triplet, const CMakeBuildType buildType) {
         // NOTE: Let's assume that the build system that the current Package uses, is CMake.
         CMakeConfig config;
         
         config.sourcePath = package.path.string();
-        config.buildPath = (package.path / computePathSuffix(triplet) / evaluate(buildType)).string();
+        config.buildPath = (prefixPath / computePathSuffix(triplet) / evaluate(buildType)).string();
         config.definitions = createConfigDefinitions("", buildType);
         CommandX command = generateCommand(config);
         CommandBatch batch = createCMakeBatch(command, toolchainPrefix);
