@@ -1,41 +1,27 @@
 
 #pragma once 
 
+#include <string>
+#include <vector>
+#include <boost/filesystem/path.hpp>
+
 
 namespace Xenobuild {
+    enum class CMakeBuildType;
+    struct Dependency;
+    struct Package;
+    struct Triplet;
+    class CommandExecutor;
+    
     class PackageManager {
     public:
         explicit PackageManager(CommandExecutor &executor,
                                    const std::string& prefixPath,
                                    const std::string &toolchainPrefix,
                                    const std::string &installSuffix,
-                                   const unsigned processorCount) :
-        executor(executor),
-        prefixPath(prefixPath),
-        toolchainPrefix(toolchainPrefix),
-        installSuffix(installSuffix) {}
+                                const unsigned processorCount);
         
-        bool configure(const std::vector<Dependency> &dependencies, const Package &package, const Triplet &triplet, const CMakeBuildType buildType) {
-            // NOTE: Let's assume that the build system that the current Package uses, is CMake.
-            CMakeConfig config;
-            
-            config.sourcePath = package.path.string();
-            config.buildPath = (package.path / computePathSuffix(triplet) / evaluate(buildType)).string();
-            config.definitions = createConfigDefinitions("", buildType);
-            CommandX command = generateCommand(config);
-            CommandBatch batch = createCMakeBatch(command, toolchainPrefix);
-
-            const CommandResult result = executor(batch);
-            
-            if (!result) {
-                std::cerr << "Configure command failed." << std::endl;
-                write(std::cerr, result.stderr);
-                
-                return false;
-            }
-            
-            return true;
-        }
+        bool configure(const std::vector<Dependency> &dependencies, const Package &package, const Triplet &triplet, const CMakeBuildType buildType);
         
     private:
         CommandExecutor &executor;
