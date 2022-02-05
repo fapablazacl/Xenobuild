@@ -51,6 +51,10 @@ int main(int argc, char **argv) {
     Xenobuild::FileSystemPackageFactory packageFactory;
     Xenobuild::Package package = packageFactory.createPackage(fs);
     
+    if (package.path == "") {
+        package.path = boost::filesystem::current_path().string();
+    }
+    
     const ControllerFactoryMap controllerFactoryMap = createControllerFactoryMap(package);
     
     if (argc < 2) {

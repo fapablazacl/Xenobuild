@@ -21,7 +21,7 @@ namespace Xenobuild {
                                    const std::string &installSuffix,
                                 const unsigned processorCount);
         
-        bool configure(const std::vector<Dependency> &dependencies, const Package &package, const Triplet &triplet, const CMakeBuildType buildType);
+        bool configure(const Package &package, const Triplet &triplet, const CMakeBuildType buildType);
         
     private:
         CommandExecutor &executor;

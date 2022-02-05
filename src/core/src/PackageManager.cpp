@@ -19,7 +19,7 @@ namespace Xenobuild {
     installSuffix(installSuffix) {}
     
     
-    bool PackageManager::configure(const std::vector<Dependency> &dependencies, const Package &package, const Triplet &triplet, const CMakeBuildType buildType) {
+    bool PackageManager::configure(const Package &package, const Triplet &triplet, const CMakeBuildType buildType) {
         // NOTE: Let's assume that the build system that the current Package uses, is CMake.
         CMakeConfig config;
         

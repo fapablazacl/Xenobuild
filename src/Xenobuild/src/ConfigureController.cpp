@@ -31,11 +31,11 @@ namespace Xenobuild {
         : package(package), params(params) {}
 
     void ConfigureController::perform() {
+        // For CMake projects, generates all the build configurations required to build the main package.
+        
         std::cout << "ConfigureController::perform" << std::endl;
 
-        const std::vector<Dependency> dependencies = package.dependencies;
-        
-        const unsigned processorCount = getProcessorCount();
+        const unsigned processorCount = 1;
         
         // show current execution environment
         if (params.showEnvironment) {
@@ -58,7 +58,7 @@ namespace Xenobuild {
         }
         
         // By default, use the local user path to store package repositories
-        const boost::filesystem::path prefix = getUserPath();
+        const boost::filesystem::path prefix = package.path;
         const std::string suffix = computePathSuffix(params.triplet);
 
         // BoostProcessCommandExecutor executor;
@@ -70,21 +70,15 @@ namespace Xenobuild {
             suffix,
             processorCount
         };
-
-        std::for_each(dependencies.begin(), dependencies.end(), [&manager, &dependencies, this](const Dependency& dep) {
-            std::cout << "Dependency " << dep.url << std::endl;
-            // TODO: The default generator depends on the toolchain, and maybe, the platform.
-            // const std::string generator = "NMake Makefiles";
-
-            const CMakeBuildType buildTypes[] = {
-                CMakeBuildType::Release, CMakeBuildType::Debug
-            };
-            
-            for (const CMakeBuildType buildType : buildTypes) {
-                if (! manager.configure(dependencies, package, this->params.triplet, buildType)) {
-                    throw std::runtime_error("Configure command failed.");
-                }
+        
+        const CMakeBuildType buildTypes[] = {
+            CMakeBuildType::Release, CMakeBuildType::Debug
+        };
+        
+        for (const CMakeBuildType buildType : buildTypes) {
+            if (! manager.configure(package, params.triplet, buildType)) {
+                throw std::runtime_error("Configure command failed.");
             }
-        });
+        }
     }
 }

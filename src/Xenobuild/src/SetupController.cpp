@@ -28,7 +28,6 @@ namespace Xenobuild {
 }
 
 namespace Xenobuild {
-    
     const char* SetupController::Name = "setup";
     
     SetupController::SetupController(Package& package, const SetupControllerInput& params)
