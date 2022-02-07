@@ -5,20 +5,15 @@ author:
   name: 'Felipe Apablaza'
 buildSystem: cmake
 dependencies:
-  - name: glfw
-    version: '3.3.0'
-    url: 'https://github.com/glfw/glfw.git'
-    tag: '3.3'
-    definitions:
-      GLFW_BUILD_DOCS: OFF
-      GLFW_BUILD_EXAMPLES: OFF
-      GLFW_BUILD_TESTS: OFF
   - name: yaml-cpp
     version: '0.7.0'
     url: 'https://github.com/jbeder/yaml-cpp.git'
     tag: 'yaml-cpp-0.7.0'
     definitions:
       YAML_CPP_BUILD_TESTS: OFF
+      YAML_CPP_BUILD_CONTRIB: OFF
+      YAML_CPP_BUILD_TOOLS: OFF
+      YAML_CPP_INSTALL: ON
   - name: catch
     version: '3.0.0-rc3'
     url: 'https://github.com/catchorg/Catch2.git'
@@ -26,11 +21,3 @@ dependencies:
     definitions:
       CATCH_BUILD_TESTING: OFF
       CATCH_INSTALL_DOCS: OFF
-  - name: cginternals/glbinding
-    version: '3.1.0'
-    url: 'https://github.com/cginternals/glbinding.git'
-    tag: 'v3.1.0'
-    definitions:
-      OPTION_BUILD_EXAMPLES: OFF
-      OPTION_BUILD_TOOLS: OFF
-      BUILD_SHARED_LIBS: ON

@@ -26,8 +26,8 @@ namespace Xenobuild {
     
     struct CommandResult {
         int exitCode;
-        std::vector<std::string> stdout;
-        std::vector<std::string> stderr;
+        std::vector<std::string> out;
+        std::vector<std::string> err;
         
         operator bool() const {
             return exitCode == 0;

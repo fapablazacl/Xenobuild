@@ -1,6 +1,9 @@
 
 #pragma once 
 
+#include <ostream>
+#include <string>
+#include <boost/filesystem/path.hpp>
 
 
 namespace Xenobuild {
@@ -183,21 +186,4 @@ namespace Xenobuild {
             computePathSuffix(triplet.arch) + "-" +
             computePathSuffix(triplet.toolchain);
     }
-    
-    /**
-     * @brief Get the home folder of the current user.
-     */
-     inline boost::filesystem::path getUserPath() {
-        switch (getHostOS()) {
-            case OS::Windows:
-                return std::getenv("USERPROFILE");
-                
-            case OS::MacOS:
-            case OS::Linux:
-                return std::getenv("HOME");
-                
-            default:
-                return ".";
-        }
-    }    
 }

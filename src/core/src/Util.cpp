@@ -2,12 +2,22 @@
 #include <Xenobuild/core/Util.h>
 
 #include <thread>
+#include <boost/filesystem.hpp>
 #include <Xenobuild/core/Command.h>
 #include <Xenobuild/core/Triplet.h>
 #include <Xenobuild/core/Dependency.h>
 
-
 namespace Xenobuild {
+    boost::optional<std::string> getenv(const std::string& var) {
+        const char* val = std::getenv(var.c_str());
+
+        if (val == nullptr) {
+            return {};
+        }
+
+        return std::string(val);
+    }
+
     unsigned getProcessorCount() {
         const auto processor_count = std::thread::hardware_concurrency();
         
@@ -42,13 +52,13 @@ namespace Xenobuild {
         std::vector<std::string> installations;
 
         for (const std::string& var : vars) {
-            const char* value = std::getenv(var.c_str());
+            const boost::optional<std::string> value = getenv(var);
 
-            if (value == nullptr) {
+            if (! value.has_value()) {
                 continue;
             }
 
-            installations.push_back(value);
+            installations.push_back(value.get());
         }
 
         return installations;
@@ -156,5 +166,26 @@ namespace Xenobuild {
         batch.commands.push_back(command);
 
         return batch;
+    }
+
+    boost::filesystem::path getUserPath() {
+        boost::optional<std::string> userPathStr;
+
+        switch (getHostOS()) {
+            case OS::Windows:
+                userPathStr = getenv("USERPROFILE");
+                break;
+                
+            case OS::MacOS:
+            case OS::Linux:
+                userPathStr = getenv("HOME");
+                break;
+        }
+
+        if (!userPathStr) {
+            return boost::filesystem::current_path();
+        }
+
+        return userPathStr.get();
     }
 }

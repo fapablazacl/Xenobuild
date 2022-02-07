@@ -27,7 +27,7 @@ namespace Xenobuild {
 
         if (!result) {
             std::cerr << "Repository failed." << std::endl;
-            write(std::cerr, result.stderr);
+            write(std::cerr, result.err);
             
             return false;
         }
@@ -60,7 +60,7 @@ namespace Xenobuild {
         
         if (!result) {
             std::cerr << "Configure command failed." << std::endl;
-            write(std::cerr, result.stderr);
+            write(std::cerr, result.err);
             
             return false;
         }
@@ -82,7 +82,7 @@ namespace Xenobuild {
         
         if (!result) {
             std::cerr << "Build command failed." << std::endl;
-            write(std::cerr, result.stderr);
+            write(std::cerr, result.err);
             
             return false;
         }
@@ -103,7 +103,7 @@ namespace Xenobuild {
         
         if (!result) {
             std::cerr << "Install command failed." << std::endl;
-            write(std::cerr, result.stderr);
+            write(std::cerr, result.err);
             
             return false;
         }
