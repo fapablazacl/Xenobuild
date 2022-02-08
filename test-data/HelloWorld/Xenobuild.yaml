@@ -1,0 +1,13 @@
+name: HelloWorld
+dependencies:
+  - name: yaml-cpp
+    version: '0.7.0'
+    url: 'https://github.com/jbeder/yaml-cpp.git'
+    tag: 'yaml-cpp-0.7.0'
+    definitions:
+      YAML_CPP_BUILD_TESTS: OFF
+      YAML_CPP_BUILD_CONTRIB: OFF
+      YAML_CPP_BUILD_TOOLS: OFF
+      YAML_CPP_INSTALL: ON
+    publicdefs:
+      YAML_DIR: '${installPrefix}/lib/cmake/yaml-cpp'
