@@ -35,7 +35,7 @@ namespace Xenobuild {
             };
             
             for (const auto &definitionValuePair : dependency.publicdefs) {
-                const std::string &definition = definitionValuePair.first;
+                std::string const &definition = definitionValuePair.first;
                 std::string value = definitionValuePair.second;
                 
                 for (const auto variableValuePair : variableMap) {
