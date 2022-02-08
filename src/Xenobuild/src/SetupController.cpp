@@ -60,14 +60,14 @@ namespace Xenobuild {
         }
         
         // By default, use the local user path to store package repositories
-        const boost::filesystem::path prefix = getUserPath();
+        const boost::filesystem::path userPath = getUserPath();
         const std::string suffix = computePathSuffix(params.triplet);
 
         // BoostProcessCommandExecutor executor;
         SystemCommandExecutor executor;
         DependencyManager manager {
             executor,
-            (prefix / ".Xenobuild").string(),
+            (userPath / ".Xenobuild").string(),
             toolchainPrefix,
             suffix,
             processorCount

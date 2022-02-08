@@ -137,7 +137,7 @@ namespace Xenobuild {
 
     std::map<std::string, std::string> createConfigDefinitions(const boost::filesystem::path& installPrefix, const CMakeBuildType buildType) {
         std::map<std::string, std::string> definitions = {
-            // requiered in macOS; unused on other platforms
+            // requiered in macOS; unused in other platforms
             {"CMAKE_OSX_ARCHITECTURES", "arm64;x86_64"},
             
             // for generating dual-config libraries (Debug and Release)

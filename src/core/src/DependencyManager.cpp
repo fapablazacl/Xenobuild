@@ -112,6 +112,15 @@ namespace Xenobuild {
     }
 
     
+    boost::filesystem::path DependencyManager::computeInstallPath(const Dependency &dependency, const CMakeBuildType buildType) const {
+     
+        const URL url = URL::parse(dependency.url);
+        const boost::filesystem::path installPath = computePath(prefixPath / "packages" / installSuffix, url, dependency.version);
+        
+        return installPath;
+    }
+    
+    
     boost::filesystem::path DependencyManager::computePath(const boost::filesystem::path& prefix, const CMakeBuildType type) const {
         switch (type) {
         case CMakeBuildType::Default:

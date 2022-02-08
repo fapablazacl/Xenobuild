@@ -8,10 +8,13 @@
 
 namespace Xenobuild {
     enum class CMakeBuildType;
+    
     struct Dependency;
     struct Package;
     struct Triplet;
+    
     class CommandExecutor;
+    class DependencyManager;
     
     class PackageManager {
     public:
@@ -21,8 +24,8 @@ namespace Xenobuild {
                                    const std::string &installSuffix,
                                 const unsigned processorCount);
         
-        bool configure(const Package &package, const Triplet &triplet, const CMakeBuildType buildType);
-        
+        bool configure(const Package &package, const Triplet &triplet, const CMakeBuildType buildType, const DependencyManager &dependencyManager);
+            
     private:
         CommandExecutor &executor;
         

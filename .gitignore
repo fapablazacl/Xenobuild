@@ -12,3 +12,5 @@ build/
 .xb/*
 .DS_Store
 .build/*
+.Xenobuild/*
+Xenobuild-Xcode/*

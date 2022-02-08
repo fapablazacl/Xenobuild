@@ -27,7 +27,8 @@ namespace Xenobuild {
         bool build(const Dependency& dependency, const CMakeBuildType buildType);
 
         bool install(const Dependency& dependency, const CMakeBuildType buildType);
-
+        
+        boost::filesystem::path computeInstallPath(const Dependency &dependency, const CMakeBuildType buildType) const;
 
     private:
         boost::filesystem::path computePath(const boost::filesystem::path& prefix, const CMakeBuildType type) const;

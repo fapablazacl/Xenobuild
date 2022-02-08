@@ -65,6 +65,9 @@ namespace Xenobuild {
 
         //! cmake definitions, in the dependency build/install stage.
         std::map<std::string, std::string> definitions;
+        
+        //! cmake definitions, used in the main package at the configuring
+        std::map<std::string, std::string> publicdefs;
 
         Dependency() {}
         

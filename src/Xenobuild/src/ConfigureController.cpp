@@ -5,6 +5,7 @@
 #include <Xenobuild/core/Version.h>
 #include <Xenobuild/core/Package.h>
 #include <Xenobuild/core/Dependency.h>
+#include <Xenobuild/core/DependencyManager.h>
 #include <Xenobuild/core/Package.h>
 #include <Xenobuild/core/PackageManager.h>
 
@@ -59,6 +60,7 @@ namespace Xenobuild {
         
         // By default, use the local user path to store package repositories
         const boost::filesystem::path prefix = package.path;
+        const boost::filesystem::path userPath = getUserPath();
         const std::string suffix = computePathSuffix(params.triplet);
 
         // BoostProcessCommandExecutor executor;
@@ -71,12 +73,20 @@ namespace Xenobuild {
             processorCount
         };
         
+        DependencyManager dependencyManager {
+            executor,
+            (userPath / ".Xenobuild").string(),
+            toolchainPrefix,
+            suffix,
+            processorCount
+        };
+        
         const CMakeBuildType buildTypes[] = {
             CMakeBuildType::Release, CMakeBuildType::Debug
         };
         
         for (const CMakeBuildType buildType : buildTypes) {
-            if (! manager.configure(package, params.triplet, buildType)) {
+            if (! manager.configure(package, params.triplet, buildType, dependencyManager)) {
                 throw std::runtime_error("Configure command failed.");
             }
         }

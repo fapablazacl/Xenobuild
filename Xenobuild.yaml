@@ -14,6 +14,8 @@ dependencies:
       YAML_CPP_BUILD_CONTRIB: OFF
       YAML_CPP_BUILD_TOOLS: OFF
       YAML_CPP_INSTALL: ON
+    publicdefs:
+      YAML_DIR: '${installPrefix}/lib/cmake/yaml-cpp'
   - name: catch
     version: '3.0.0-rc3'
     url: 'https://github.com/catchorg/Catch2.git'
@@ -21,3 +23,5 @@ dependencies:
     definitions:
       CATCH_BUILD_TESTING: OFF
       CATCH_INSTALL_DOCS: OFF
+    publicdefs:
+      CATCH2_DIR: '${installPrefix}/lib/cmake/catch'

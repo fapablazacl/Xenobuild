@@ -181,6 +181,7 @@ namespace YAML {
             node["tag"] = rhs.tag;
             node["version"] = rhs.version;
             node["definitions"] = rhs.definitions;
+            node["publicdefs"] = rhs.publicdefs;
             
             return node;
         }
@@ -194,6 +195,7 @@ namespace YAML {
             extractValue(node, "tag", rhs.tag);
             extractValue(node, "version", rhs.version);
             extractValue(node, "definitions", rhs.definitions);
+            extractValue(node, "publicdefs", rhs.publicdefs);
             
             return true;
         }
