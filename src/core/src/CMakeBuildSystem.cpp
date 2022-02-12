@@ -25,7 +25,7 @@ namespace Xenobuild {
         return "";
     }
 
-    CommandX generateCommand(const CMakeConfig &config) {
+    CommandX generateCommand(const CMakeConfiguration &config) {
         CommandX command {
             "cmake",
             {

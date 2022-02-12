@@ -14,7 +14,7 @@ namespace Xenobuild {
     struct CMakeDefinition;
     struct CMakeBuild;
     struct CMakeInstall;
-    struct CMakeConfig;
+    struct CMakeConfiguration;
     
     enum class CMakeBuildType;
     

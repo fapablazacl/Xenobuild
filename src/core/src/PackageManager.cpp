@@ -23,7 +23,7 @@ namespace Xenobuild {
     
     bool PackageManager::configure(const Package &package, const Triplet &triplet, const CMakeBuildType buildType, const DependencyManager &dependencyManager) {
         // NOTE: Let's assume that the build system that the current Package uses, is CMake.
-        CMakeConfig config;
+        CMakeConfiguration config;
 
         config.sourcePath = package.path.string();
         config.buildPath = (prefixPath / computePathSuffix(triplet) / evaluate(buildType)).string();

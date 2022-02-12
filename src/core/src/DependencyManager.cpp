@@ -1,10 +1,12 @@
 
 #include <Xenobuild/core/DependencyManager.h>
+
+#include <boost/algorithm/string.hpp>
 #include <Xenobuild/core/URL.h>
 #include <Xenobuild/core/Command.h>
 #include <Xenobuild/core/Dependency.h>
 #include <Xenobuild/core/CMakeBuildSystem.h>
-#include <boost/algorithm/string.hpp>
+#include <Xenobuild/core/GitRepository.h>
 
 
 namespace Xenobuild {
@@ -45,7 +47,7 @@ namespace Xenobuild {
         const auto buildPath = computePath(sourcePath, buildType);
         const auto installPath = computePath(prefixPath / "packages" / installSuffix, url, dependency.version);
 
-        CMakeConfig config {
+        CMakeConfiguration config {
             sourcePath.string(),
             buildPath.string(),
             generator,
@@ -114,7 +116,6 @@ namespace Xenobuild {
 
     
     boost::filesystem::path DependencyManager::computeInstallPath(const Dependency &dependency, const CMakeBuildType buildType) const {
-     
         const URL url = URL::parse(dependency.url);
         const boost::filesystem::path installPath = computePath(prefixPath / "packages" / installSuffix, url, dependency.version);
         

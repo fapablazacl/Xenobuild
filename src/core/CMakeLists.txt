@@ -19,8 +19,8 @@ set (sources
 	"include/Xenobuild/core/string.h"
 	"include/Xenobuild/core/WildcardClassifier.h"
 	"include/Xenobuild/core/CMakeBuildSystem.h"
+	"include/Xenobuild/core/GitRepository.h"
 	
-
 	"src/string.cpp"
 	"src/WildcardClassifier.cpp"
 	"src/Command.cpp"
@@ -34,6 +34,7 @@ set (sources
 	"src/Toolchain.cpp"
 	"src/ToolchainFactory.cpp"
 	"src/CMakeBuildSystem.cpp"
+	"src/GitRepository.cpp"
 )
 
 add_library(${target} ${sources})

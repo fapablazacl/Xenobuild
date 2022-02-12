@@ -13,15 +13,6 @@ namespace Xenobuild {
     
     class CommandExecutor;
     
-    
-    struct GitRepository {
-        std::string url;
-        std::string tag;
-
-        GitRepository(const std::string& url, const std::string& tag);
-
-        CommandResult clone(CommandExecutor &execute, const boost::filesystem::path &sourcePath) const;
-    };
 
     struct Dependency {
         //! The dependency identifier

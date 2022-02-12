@@ -25,7 +25,7 @@ namespace Xenobuild {
 
     std::string evaluate(const CMakeGenerator generator);
 
-    struct CMakeConfig {
+    struct CMakeConfiguration {
         std::string sourcePath;
         std::string buildPath;
         boost::optional<CMakeGenerator> generator;
@@ -48,7 +48,7 @@ namespace Xenobuild {
 
     std::string evaluate(const CMakeDefinition& def);
     
-    CommandX generateCommand(const CMakeConfig &config);
+    CommandX generateCommand(const CMakeConfiguration &config);
     
     CommandX generateCommand(const CMakeBuild& build);
     
@@ -56,12 +56,12 @@ namespace Xenobuild {
     
     std::string evaluate(const CMakeBuildType buildType);
 
-    std::map<std::string, std::string> createConfigDefinitions(const boost::filesystem::path& installPrefix, const CMakeBuildType buildType);
+    std::map<std::string, std::string> createConfigDefinitions(
+        const boost::filesystem::path& installPrefix, 
+        const CMakeBuildType buildType);
 
-
-    // 
-    //struct CMakeProject {
-    //    std::string sourcePath;
-    //    std::vector<CMakeConfig> configurations;
-    //};
+    struct CMakeProject {
+        std::string sourcePath;
+        std::vector<CMakeConfiguration> configurations;
+    };
 }
