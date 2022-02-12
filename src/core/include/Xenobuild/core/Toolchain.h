@@ -2,6 +2,7 @@
 #pragma once 
 
 #include <iostream>
+#include <string>
 
 
 namespace Xenobuild {
@@ -37,5 +38,5 @@ namespace Xenobuild {
         }
         
         return ostream;
-    }    
+    }
 }

@@ -44,10 +44,10 @@ namespace Xenobuild {
             {"--build", build.buildPath}
         };
         
-        if (build.jobCount) {
-            // this require CMake >= 3.12.
-            command.args.push_back("--parallel " + std::to_string(*build.jobCount));
-        }
+        //if (build.jobCount) {
+        //    // this require CMake >= 3.12.
+        //    command.args.push_back("--parallel " + std::to_string(*build.jobCount));
+        //}
         
         return command;
     }

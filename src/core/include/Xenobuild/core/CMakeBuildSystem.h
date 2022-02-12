@@ -3,7 +3,6 @@
 
 #include <string>
 #include <map>
-#include <boost/optional.hpp>
 #include <boost/filesystem/path.hpp>
 
 
@@ -25,7 +24,6 @@ namespace Xenobuild {
 
     struct CMakeBuild {
         std::string buildPath;
-        boost::optional<unsigned> jobCount;
     };
 
     struct CMakeInstall {
@@ -38,7 +36,6 @@ namespace Xenobuild {
         Release
     };
 
-    
     std::string evaluate(const CMakeDefinition& def);
     
     CommandX generateCommand(const CMakeConfig &config);
