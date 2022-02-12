@@ -10,6 +10,21 @@ namespace Xenobuild {
         return "-D" + def.name + "=" + quote(def.value);
     }
     
+    std::string evaluate(const CMakeGenerator generator) {
+        switch (generator) {
+        case CMakeGenerator::MinGWMakefiles:
+            return "MinGW Makefiles";
+
+        case CMakeGenerator::NMakeMakefiles:
+            return "NMake Makefiles";
+
+        case CMakeGenerator::UnixMakefiles:
+            return "Unix Makefiles";
+        }
+
+        return "";
+    }
+
     CommandX generateCommand(const CMakeConfig &config) {
         CommandX command {
             "cmake",
@@ -19,8 +34,8 @@ namespace Xenobuild {
             }
         };
 
-        if (config.generator != "") {
-            const std::string arg = "-G " + quote(config.generator);
+        if (config.generator) {
+            const std::string arg = "-G " + quote(evaluate(config.generator.get()));
             command.args.push_back(arg);
         }
         

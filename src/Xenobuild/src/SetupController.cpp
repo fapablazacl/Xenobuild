@@ -92,7 +92,7 @@ namespace Xenobuild {
             for (const CMakeBuildType buildType : buildTypes) {
                 std::cout << "    Configuring " << evaluate(buildType) << "... ";
                 // manager.configure(dep, buildType, generator);
-                if (! manager.configure(dep, buildType, "")) {
+                if (!manager.configure(dep, buildType, {})) {
                     throw std::runtime_error("Configure command failed.");
                 }
                 

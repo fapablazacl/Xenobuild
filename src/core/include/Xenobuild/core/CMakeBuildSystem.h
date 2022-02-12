@@ -3,7 +3,9 @@
 
 #include <string>
 #include <map>
+#include <vector>
 #include <boost/filesystem/path.hpp>
+#include <boost/optional.hpp>
 
 
 namespace Xenobuild {
@@ -14,11 +16,19 @@ namespace Xenobuild {
         std::string name;
         std::string value;
     };
+    
+    enum class CMakeGenerator {
+        UnixMakefiles,
+        NMakeMakefiles,
+        MinGWMakefiles
+    };
+
+    std::string evaluate(const CMakeGenerator generator);
 
     struct CMakeConfig {
         std::string sourcePath;
         std::string buildPath;
-        std::string generator;
+        boost::optional<CMakeGenerator> generator;
         std::map<std::string, std::string> definitions;
     };
 
@@ -47,4 +57,11 @@ namespace Xenobuild {
     std::string evaluate(const CMakeBuildType buildType);
 
     std::map<std::string, std::string> createConfigDefinitions(const boost::filesystem::path& installPrefix, const CMakeBuildType buildType);
+
+
+    // 
+    //struct CMakeProject {
+    //    std::string sourcePath;
+    //    std::vector<CMakeConfig> configurations;
+    //};
 }

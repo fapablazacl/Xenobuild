@@ -37,7 +37,7 @@ namespace Xenobuild {
     }
     
 
-    bool DependencyManager::configure(const Dependency& dependency, const CMakeBuildType buildType, const std::string &generator) {
+    bool DependencyManager::configure(const Dependency& dependency, const CMakeBuildType buildType, const boost::optional<CMakeGenerator> generator) {
         const URL url = URL::parse(dependency.url);
         
         const auto sourcePath = computePath(prefixPath / "sources", url, dependency.tag);

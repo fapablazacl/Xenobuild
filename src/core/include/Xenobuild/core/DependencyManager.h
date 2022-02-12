@@ -2,6 +2,7 @@
 
 #include <string>
 #include <boost/filesystem/path.hpp>
+#include <boost/optional.hpp>
 
 
 namespace Xenobuild {
@@ -9,6 +10,7 @@ namespace Xenobuild {
     struct URL;
     
     enum class CMakeBuildType;
+    enum class CMakeGenerator;
     
     class CommandExecutor;
     
@@ -22,7 +24,7 @@ namespace Xenobuild {
 
         bool download(const Dependency& dependency) const;
 
-        bool configure(const Dependency& dependency, const CMakeBuildType buildType, const std::string &generator);
+        bool configure(const Dependency& dependency, const CMakeBuildType buildType, const boost::optional<CMakeGenerator> generator);
 
         bool build(const Dependency& dependency, const CMakeBuildType buildType);
 
