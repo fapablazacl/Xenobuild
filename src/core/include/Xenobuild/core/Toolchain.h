@@ -5,7 +5,7 @@
 
 
 namespace Xenobuild {
-    enum class Toolchain {
+    enum class ToolchainType {
         Clang,
         MicrosoftVC,
         AppleClang,
@@ -13,26 +13,26 @@ namespace Xenobuild {
     };
     
 
-    inline std::ostream& operator<< (std::ostream &ostream, const Toolchain toolchain) {
+    inline std::ostream& operator<< (std::ostream &ostream, const ToolchainType toolchain) {
         switch (toolchain) {
-        case Toolchain::Clang:
-            ostream << "Toolchain::Clang";
+        case ToolchainType::Clang:
+            ostream << "ToolchainType::Clang";
             break;
             
-        case Toolchain::MicrosoftVC:
-            ostream << "Toolchain::MicrosoftVC";
+        case ToolchainType::MicrosoftVC:
+            ostream << "ToolchainType::MicrosoftVC";
             break;
             
-        case Toolchain::AppleClang:
-            ostream << "Toolchain::AppleClang";
+        case ToolchainType::AppleClang:
+            ostream << "ToolchainType::AppleClang";
             break;
             
-        case Toolchain::GnuGCC:
-            ostream << "Toolchain::GnuGCC";
+        case ToolchainType::GnuGCC:
+            ostream << "ToolchainType::GnuGCC";
             break;
             
         default:
-            ostream << "<Toolchain: Missing case>";
+            ostream << "<ToolchainType: Missing case>";
             break;
         }
         

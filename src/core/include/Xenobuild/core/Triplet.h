@@ -75,18 +75,18 @@ namespace Xenobuild {
     struct Triplet {
         OS os;
         Arch arch;
-        Toolchain toolchain;
+        ToolchainType toolchain;
         
         static Triplet nativeHost() {
             switch (getHostOS()) {
             case OS::Windows:
-                return { OS::Windows, Arch::X64, Toolchain::MicrosoftVC };
+                return { OS::Windows, Arch::X64, ToolchainType::MicrosoftVC };
                 
             case OS::MacOS:
-                return { OS::MacOS, Arch::X64, Toolchain::AppleClang };
+                return { OS::MacOS, Arch::X64, ToolchainType::AppleClang };
                 
             case OS::Linux:
-                return { OS::Linux, Arch::X64, Toolchain::GnuGCC };
+                return { OS::Linux, Arch::X64, ToolchainType::GnuGCC };
             }
         }
     };
@@ -130,18 +130,18 @@ namespace Xenobuild {
     }
     
 
-    inline std::string computePathSuffix(const Toolchain toolchain) {
+    inline std::string computePathSuffix(const ToolchainType toolchain) {
         switch (toolchain) {
-        case Toolchain::AppleClang:
+        case ToolchainType::AppleClang:
             return "appleclang";
 
-        case Toolchain::Clang:
+        case ToolchainType::Clang:
             return "clang";
 
-        case Toolchain::MicrosoftVC:
+        case ToolchainType::MicrosoftVC:
             return "vc";
             
-        case Toolchain::GnuGCC:
+        case ToolchainType::GnuGCC:
             return "gcc";
         }
 
