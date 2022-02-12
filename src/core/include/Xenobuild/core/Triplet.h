@@ -5,6 +5,8 @@
 #include <string>
 #include <boost/filesystem/path.hpp>
 
+#include "Toolchain.h"
+
 
 namespace Xenobuild {
     enum class Arch {
@@ -69,41 +71,7 @@ namespace Xenobuild {
 #endif
     }
     
-    enum class Toolchain {
-        Clang,
-        MicrosoftVC,
-        AppleClang,
-        GnuGCC
-    };
-    
-    
-    inline std::ostream& operator<< (std::ostream &ostream, const Toolchain toolchain) {
-        switch (toolchain) {
-        case Toolchain::Clang:
-            ostream << "Toolchain::Clang";
-            break;
-            
-        case Toolchain::MicrosoftVC:
-            ostream << "Toolchain::MicrosoftVC";
-            break;
-            
-        case Toolchain::AppleClang:
-            ostream << "Toolchain::AppleClang";
-            break;
-            
-        case Toolchain::GnuGCC:
-            ostream << "Toolchain::GnuGCC";
-            break;
-            
-        default:
-            ostream << "<Toolchain: Missing case>";
-            break;
-        }
-        
-        return ostream;
-    }
-    
-    
+
     struct Triplet {
         OS os;
         Arch arch;

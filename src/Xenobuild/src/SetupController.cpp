@@ -11,6 +11,7 @@
 #include <Xenobuild/core/Dependency.h>
 #include <Xenobuild/core/DependencyManager.h>
 #include <Xenobuild/core/SourceFile.h>
+#include <Xenobuild/core/CMakeBuildSystem.h>
 
 
 namespace Xenobuild {

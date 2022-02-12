@@ -23,33 +23,6 @@ namespace Xenobuild {
         CommandResult clone(CommandExecutor &execute, const boost::filesystem::path &sourcePath) const;
     };
 
-    struct CMakeDefinition {
-        std::string name;
-        std::string value;
-    };
-
-    struct CMakeConfig {
-        std::string sourcePath;
-        std::string buildPath;
-        std::string generator;
-        std::map<std::string, std::string> definitions;
-    };
-
-    struct CMakeBuild {
-        std::string buildPath;
-        boost::optional<unsigned> jobCount;
-    };
-
-    struct CMakeInstall {
-        std::string buildPath;
-    };
-
-    enum class CMakeBuildType {
-        Default,
-        Debug,
-        Release
-    };
-
     struct Dependency {
         //! The dependency identifier
         std::string name;

@@ -8,6 +8,7 @@
 #include <Xenobuild/core/DependencyManager.h>
 #include <Xenobuild/core/Package.h>
 #include <Xenobuild/core/PackageManager.h>
+#include <Xenobuild/core/CMakeBuildSystem.h>
 
 
 namespace Xenobuild {

@@ -11,12 +11,16 @@ set (sources
 	"include/Xenobuild/core/PackageFactory.h"
 	"include/Xenobuild/core/PackageManager.h"
 	"include/Xenobuild/core/Triplet.h"
+	"include/Xenobuild/core/Toolchain.h"
+	"include/Xenobuild/core/ToolchainFactory.h"
 	"include/Xenobuild/core/URL.h"
 	"include/Xenobuild/core/Util.h"
 	"include/Xenobuild/core/FileSystemPackageFactory.h"
 	"include/Xenobuild/core/string.h"
 	"include/Xenobuild/core/WildcardClassifier.h"
+	"include/Xenobuild/core/CMakeBuildSystem.h"
 	
+
 	"src/string.cpp"
 	"src/WildcardClassifier.cpp"
 	"src/Command.cpp"
@@ -27,6 +31,9 @@ set (sources
 	"src/PackageFactory.cpp"
 	"src/PackageManager.cpp"
 	"src/Package.cpp"
+	"src/Toolchain.cpp"
+	"src/ToolchainFactory.cpp"
+	"src/CMakeBuildSystem.cpp"
 )
 
 add_library(${target} ${sources})

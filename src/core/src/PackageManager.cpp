@@ -7,6 +7,7 @@
 #include <Xenobuild/core/Dependency.h>
 #include <Xenobuild/core/DependencyManager.h>
 #include <Xenobuild/core/Triplet.h>
+#include <Xenobuild/core/CMakeBuildSystem.h>
 
 
 namespace Xenobuild {

@@ -7,6 +7,8 @@
 #include <string>
 
 namespace Xenobuild {
+    struct Package;
+
     struct SetupControllerInput {
         //! current source code folder
         std::string sourceDir;
@@ -23,7 +25,6 @@ namespace Xenobuild {
         static SetupControllerInput parse(int argc, char** argv);
     };
 
-    class Package;
     class SetupController : public Controller {
     public:
         typedef SetupControllerInput Params;

@@ -3,6 +3,7 @@
 #include <Xenobuild/core/URL.h>
 #include <Xenobuild/core/Command.h>
 #include <Xenobuild/core/Dependency.h>
+#include <Xenobuild/core/CMakeBuildSystem.h>
 #include <boost/algorithm/string.hpp>
 
 
