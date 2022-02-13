@@ -4,6 +4,7 @@
 #include <boost/algorithm/string.hpp>
 #include <Xenobuild/core/URL.h>
 #include <Xenobuild/core/Command.h>
+#include <Xenobuild/core/Toolchain.h>
 #include <Xenobuild/core/Dependency.h>
 #include <Xenobuild/core/CMakeBuildSystem.h>
 #include <Xenobuild/core/GitRepository.h>
@@ -57,7 +58,7 @@ namespace Xenobuild {
         config.definitions.insert(dependency.definitions.begin(), dependency.definitions.end());
 
         CommandX command = generateCommand(config);
-        CommandBatch batch = createCMakeBatch(command, toolchainPrefix);
+        CommandBatch batch = createToolchainCommandBatch(command, toolchainPrefix);
 
         const CommandResult result = executor(batch);
         
@@ -79,7 +80,7 @@ namespace Xenobuild {
         // FIX: Using parallel build with CMake, causes deadlock in glfw.
         CMakeBuild build { buildPath.string()/*, processorCount */};
         CommandX command = generateCommand(build);
-        CommandBatch batch = createCMakeBatch(command, toolchainPrefix);
+        CommandBatch batch = createToolchainCommandBatch(command, toolchainPrefix);
 
         const CommandResult result = executor(batch);
         
@@ -100,7 +101,7 @@ namespace Xenobuild {
         
         CMakeInstall install { buildPath.string() };
         CommandX command = generateCommand(install);
-        CommandBatch batch = createCMakeBatch(command, toolchainPrefix);
+        CommandBatch batch = createToolchainCommandBatch(command, toolchainPrefix);
 
         const CommandResult result = executor(batch);
         

@@ -6,6 +6,7 @@
 #include <map>
 #include <iosfwd>
 #include <boost/filesystem/path.hpp>
+#include <boost/optional.hpp>
 
 
 namespace Xenobuild {
@@ -23,12 +24,8 @@ namespace Xenobuild {
     std::string quote(const std::string& str);
     
     std::ostream& write(std::ostream &os, std::vector<std::string> lines);
-    
-    std::vector<std::string> enumerateVCInstallations();
-
-    CommandX createVCVars64Command(const boost::filesystem::path &prefixPath);
-
-    CommandBatch createCMakeBatch(const CommandX command, const boost::filesystem::path &toolchainPrefix);
 
     boost::filesystem::path getUserPath();
+
+    boost::optional<std::string> getenv(const std::string& var);
 }

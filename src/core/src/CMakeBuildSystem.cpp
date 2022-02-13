@@ -109,17 +109,4 @@ namespace Xenobuild {
 
         return definitions;
     }
-    
-    CommandBatch createCMakeBatch(const CommandX command, const boost::filesystem::path &toolchainPrefix) {
-        CommandBatch batch{};
-
-        if (getHostOS() == OS::Windows) {
-            const CommandX vcvars = createVCVars64Command(toolchainPrefix);
-            batch.commands.push_back(vcvars);
-        }
-
-        batch.commands.push_back(command);
-
-        return batch;
-    }
 }

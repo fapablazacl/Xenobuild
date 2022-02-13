@@ -49,7 +49,7 @@ namespace Xenobuild {
         }
         
         CommandX command = generateCommand(config);
-        CommandBatch batch = createCMakeBatch(command, toolchainPrefix);
+        CommandBatch batch = createToolchainCommandBatch(command, toolchainPrefix);
 
         const CommandResult result = executor(batch);
         

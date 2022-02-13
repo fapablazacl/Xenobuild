@@ -40,32 +40,6 @@ namespace Xenobuild {
         return  os;
     }
     
-    std::vector<std::string> enumerateVCInstallations() {
-        const std::vector<std::string> vars = {
-            "VS2019INSTALLDIR"
-        };
-
-        std::vector<std::string> installations;
-
-        for (const std::string& var : vars) {
-            const boost::optional<std::string> value = getenv(var);
-
-            if (! value.has_value()) {
-                continue;
-            }
-
-            installations.push_back(value.get());
-        }
-
-        return installations;
-    }
-
-    CommandX createVCVars64Command(const boost::filesystem::path &prefixPath) {
-        const auto vcvars = prefixPath / "VC\\Auxiliary\\Build\\vcvars64.bat";
-
-        return { "call", { quote(vcvars.string()) } };
-    }
-
     boost::filesystem::path getUserPath() {
         boost::optional<std::string> userPathStr;
 
