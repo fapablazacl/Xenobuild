@@ -32,7 +32,7 @@ namespace Xenobuild {
     CommandX createVCVarsCommand(const boost::filesystem::path &prefixPath) {
         const auto vcvars = prefixPath / "VC\\Auxiliary\\Build\\vcvarsall.bat";
         
-        return { "call", { quote(vcvars.string()) } };
+        return { "call", { quote(vcvars.string()) + " x86"}};
     }
 
 

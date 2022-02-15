@@ -14,6 +14,7 @@
 #include <Xenobuild/core/SourceFile.h>
 #include <Xenobuild/core/CMakeBuildSystem.h>
 
+#include <boost/optional/optional_io.hpp>
 
 namespace Xenobuild {
     SetupControllerInput SetupControllerInput::parse(int, char**) {
@@ -42,9 +43,9 @@ namespace Xenobuild {
         
         // show current execution environment
         if (params.showEnvironment) {
-            std::cout << "USER: \"" << std::getenv("USER") << "\"" << std::endl;
-            std::cout << "PATH: \"" << std::getenv("PATH") << "\"" << std::endl;
-            std::cout << "SHELL: \"" << std::getenv("SHELL") << "\"" << std::endl;
+            std::cout << "USER: \"" << getenv("USER") << "\"" << std::endl;
+            std::cout << "PATH: \"" << getenv("PATH") << "\"" << std::endl;
+            std::cout << "SHELL: \"" << getenv("SHELL") << "\"" << std::endl;
             std::cout << "Detected CPU Cores: \"" << processorCount << "\"" << std::endl;
         }
         
