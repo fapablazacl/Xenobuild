@@ -43,16 +43,16 @@ namespace Xenobuild {
     boost::filesystem::path getUserPath() {
         boost::optional<std::string> userPathStr;
 
-        switch (getHostOS()) {
-            case OS::Windows:
-                userPathStr = getenv("USERPROFILE");
-                break;
-                
-            case OS::MacOS:
-            case OS::Linux:
-                userPathStr = getenv("HOME");
-                break;
-        }
+        //switch (detectHostOS()) {
+        //    case OS::Windows:
+        //        userPathStr = getenv("USERPROFILE");
+        //        break;
+        //        
+        //    case OS::MacOS:
+        //    case OS::Linux:
+        //        userPathStr = getenv("HOME");
+        //        break;
+        //}
 
         if (!userPathStr) {
             return boost::filesystem::current_path();

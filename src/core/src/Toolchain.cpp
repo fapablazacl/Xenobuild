@@ -37,7 +37,19 @@ namespace Xenobuild {
     CommandBatch createToolchainCommandBatch(const CommandX command, const boost::filesystem::path &toolchainPrefix) {
         CommandBatch batch{};
 
-        if (getHostOS() == OS::Windows) {
+        const CommandX vcvars = createVCVars64Command(toolchainPrefix);
+        batch.commands.push_back(vcvars);
+
+        batch.commands.push_back(command);
+
+        return batch;
+    }
+
+
+    CommandBatch createToolchainCommandBatch(const CommandX command, const ToolchainType type, const boost::filesystem::path &toolchainPrefix) {
+        CommandBatch batch{};
+
+        if (type == ToolchainType::MicrosoftVC) {
             const CommandX vcvars = createVCVars64Command(toolchainPrefix);
             batch.commands.push_back(vcvars);
         }
@@ -55,7 +67,7 @@ namespace Xenobuild {
         if (installPath) {
             return createToolchainCommandBatch(command, installPath.get());
         }
-
+        
         return CommandBatch{command};
     }
 }

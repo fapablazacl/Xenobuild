@@ -22,7 +22,6 @@ namespace Xenobuild {
 
         result.sourceDir = currentPath.string();
         result.buildDir = (currentPath / ".Xenobuild").string();
-        result.triplet = Triplet::nativeHost();
         
         return result;
     }
@@ -52,13 +51,14 @@ namespace Xenobuild {
         // for other platforms, use the default toolchain
         std::string toolchainPrefix;
         
-        if (getHostOS() == OS::Windows) {
-            const std::vector<std::string> toolchainPrefixPaths = enumerateVCInstallations();
-
-            if (toolchainPrefixPaths.size() > 0) {
-                toolchainPrefix = toolchainPrefixPaths[0];
-            }
-        }
+        // TODO: Refactor Visual C++ installation pathdetection
+        //if (detectHostOS() == OS::Windows) {
+        //    const std::vector<std::string> toolchainPrefixPaths = enumerateVCInstallations();
+        // 
+        //    if (toolchainPrefixPaths.size() > 0) {
+        //        toolchainPrefix = toolchainPrefixPaths[0];
+        //    }
+        //}
         
         // By default, use the local user path to store package repositories
         const boost::filesystem::path userPath = getUserPath();

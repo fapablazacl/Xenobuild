@@ -13,6 +13,7 @@ namespace Xenobuild {
     struct CommandBatch;
 
     enum class ToolchainType {
+        Default,
         Clang,
         MicrosoftVC,
         AppleClang,
@@ -22,6 +23,10 @@ namespace Xenobuild {
 
     inline std::ostream& operator<< (std::ostream &ostream, const ToolchainType toolchain) {
         switch (toolchain) {
+        case ToolchainType::Default:
+            ostream << "ToolchainType::Default";
+            break;
+
         case ToolchainType::Clang:
             ostream << "ToolchainType::Clang";
             break;

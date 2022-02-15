@@ -7,15 +7,34 @@
 
 #include "Toolchain.h"
 
+#define XENO_OS_WINDOWS
+#define XENO_OS_LINUX
+#define XENO_OS_MACOS
+#define XENO_OS_HOST
+#define XENO_ARCH_NATIVE
+
+#define XENO_OS     XENO_OS_HOST
+#define XENO_ARCH   XENO_ARCH_NATIVE
+
 
 namespace Xenobuild {
     enum class Arch {
+        Unknown,
+        Native,
         X32,
         X64
     };
     
     inline std::ostream& operator<< (std::ostream &os, const Arch arch) {
         switch (arch) {
+        case Arch::Unknown:
+            os << "Arch::Unknown";
+            break;
+            
+        case Arch::Native:
+            os << "Arch::Native";
+            break;
+            
         case Arch::X32:
             os << "Arch::X32";
             break;
@@ -33,14 +52,23 @@ namespace Xenobuild {
     }
 
     enum class OS {
+        Unknown,
+        Host,
         Windows,
         Linux,
         MacOS
     };
     
-    
     inline std::ostream& operator<< (std::ostream &ostream, const OS os) {
         switch (os) {
+        case OS::Unknown:
+            ostream << "OS::Unknown";
+            break;
+
+        case OS::Host:
+            ostream << "OS::Host";
+            break;
+
         case OS::Windows:
             ostream << "OS::Windows";
             break;
@@ -61,45 +89,31 @@ namespace Xenobuild {
         return ostream;
     }
     
-    constexpr OS getHostOS() {
-#if defined(_WIN32)
-        return OS::Windows;
-#elif defined(__APPLE__)
-        return OS::MacOS;
-#else
-#error Current OS isn't supported.
-#endif
-    }
-    
-
-    struct Triplet {
-        OS os;
-        Arch arch;
-        ToolchainType toolchain;
-        
-        static Triplet nativeHost() {
-            switch (getHostOS()) {
-            case OS::Windows:
-                return { OS::Windows, Arch::X64, ToolchainType::MicrosoftVC };
-                
-            case OS::MacOS:
-                return { OS::MacOS, Arch::X64, ToolchainType::AppleClang };
-                
-            case OS::Linux:
-                return { OS::Linux, Arch::X64, ToolchainType::GnuGCC };
-            }
-        }
+    struct Platform {
+        OS os = OS::Host;
+        Arch arch = Arch::Native;
     };
-    
-    inline std::ostream& operator<< (std::ostream &os, const Triplet &triplet) {
-        os << "Triplet { ";
-        os << triplet.os << ", ";
-        os << triplet.arch << ", ";
-        os << triplet.toolchain << " }";
+
+    inline std::ostream& operator<< (std::ostream &os, const Platform &platform) {
+        os << "Platform { ";
+        os << platform.os << ", ";
+        os << platform.arch << " }";
         
         return os;
     }
 
+    struct Triplet {
+        Platform platform;
+        ToolchainType toolchain = ToolchainType::Default;
+    };
+    
+    inline std::ostream& operator<< (std::ostream &os, const Triplet &triplet) {
+        os << "Triplet { ";
+        os << triplet.platform << ", ";
+        os << triplet.toolchain << " }";
+        
+        return os;
+    }
 
     inline std::string computePathSuffix(const OS os) {
         switch (os) {
@@ -111,9 +125,12 @@ namespace Xenobuild {
 
         case OS::MacOS:
             return "macos";
+
+        case OS::Host:
+            return "host";
         }
 
-        return "host";
+        return "os_unknown";
     }
 
     
@@ -124,9 +141,12 @@ namespace Xenobuild {
 
         case Arch::X64:
             return "x64";
+
+        case Arch::Native:
+            return "native";
         }
 
-        return "native";
+        return "arch_unknown";
     }
     
 
@@ -150,8 +170,8 @@ namespace Xenobuild {
 
     inline std::string computePathSuffix(const Triplet& triplet) {
         return
-            computePathSuffix(triplet.os) + "-" +
-            computePathSuffix(triplet.arch) + "-" +
+            computePathSuffix(triplet.platform.os) + "-" +
+            computePathSuffix(triplet.platform.arch) + "-" +
             computePathSuffix(triplet.toolchain);
     }
 }
