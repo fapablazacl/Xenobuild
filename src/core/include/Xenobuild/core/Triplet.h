@@ -5,7 +5,7 @@
 #include <string>
 #include <boost/filesystem/path.hpp>
 
-#include "Toolchain.h"
+#include "ToolchainType.h"
 
 #define XENO_OS_WINDOWS
 #define XENO_OS_LINUX
@@ -104,13 +104,13 @@ namespace Xenobuild {
 
     struct Triplet {
         Platform platform;
-        ToolchainType toolchain = ToolchainType::Default;
+        ToolchainType toolchainType;
     };
     
     inline std::ostream& operator<< (std::ostream &os, const Triplet &triplet) {
         os << "Triplet { ";
         os << triplet.platform << ", ";
-        os << triplet.toolchain << " }";
+        os << triplet.toolchainType << " }";
         
         return os;
     }
@@ -172,6 +172,6 @@ namespace Xenobuild {
         return
             computePathSuffix(triplet.platform.os) + "-" +
             computePathSuffix(triplet.platform.arch) + "-" +
-            computePathSuffix(triplet.toolchain);
+            computePathSuffix(triplet.toolchainType);
     }
 }

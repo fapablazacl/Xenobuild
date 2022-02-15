@@ -12,7 +12,8 @@ namespace Xenobuild {
     struct Dependency;
     struct Package;
     struct Triplet;
-    
+    struct Toolchain;
+
     class CommandExecutor;
     class DependencyManager;
     

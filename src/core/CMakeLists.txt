@@ -2,6 +2,7 @@
 set (target "core")
 
 set (sources 
+	"include/Xenobuild/core/ToolchainType.h"
 	"include/Xenobuild/core/Command.h"
 	"include/Xenobuild/core/Dependency.h"
 	"include/Xenobuild/core/DependencyManager.h"
@@ -21,6 +22,7 @@ set (sources
 	"include/Xenobuild/core/CMakeBuildSystem.h"
 	"include/Xenobuild/core/GitRepository.h"
 	"include/Xenobuild/core/ToolchainCommandExecutor.h"
+	"include/Xenobuild/core/Context.h"
 	
 	"src/string.cpp"
 	"src/WildcardClassifier.cpp"
@@ -37,6 +39,7 @@ set (sources
 	"src/CMakeBuildSystem.cpp"
 	"src/GitRepository.cpp"
 	"src/ToolchainCommandExecutor.cpp"
+	"src/Context.cpp"
 )
 
 add_library(${target} ${sources})

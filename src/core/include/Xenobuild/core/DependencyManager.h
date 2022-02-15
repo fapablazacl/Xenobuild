@@ -6,6 +6,7 @@
 
 
 namespace Xenobuild {
+    struct Toolchain;
     struct Dependency;
     struct URL;
     

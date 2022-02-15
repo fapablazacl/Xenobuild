@@ -7,71 +7,38 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/optional.hpp>
 
+#include "ToolchainType.h"
+#include "Triplet.h"
+
 
 namespace Xenobuild {
+    struct Triplet;
     struct CommandX;
     struct CommandBatch;
 
-    enum class ToolchainType {
-        Default,
-        Clang,
-        MicrosoftVC,
-        AppleClang,
-        GnuGCC
+    class ToolchainInstallPathEnumerator {
+    public:
+        /**
+         * @brief Enumerate the installation paths for the given toolchain type, ordered from the latest version.
+         */
+        std::vector<std::string> enumerate(const ToolchainType type) const;
     };
-
-
-    inline std::ostream& operator<< (std::ostream &ostream, const ToolchainType toolchain) {
-        switch (toolchain) {
-        case ToolchainType::Default:
-            ostream << "ToolchainType::Default";
-            break;
-
-        case ToolchainType::Clang:
-            ostream << "ToolchainType::Clang";
-            break;
-            
-        case ToolchainType::MicrosoftVC:
-            ostream << "ToolchainType::MicrosoftVC";
-            break;
-            
-        case ToolchainType::AppleClang:
-            ostream << "ToolchainType::AppleClang";
-            break;
-            
-        case ToolchainType::GnuGCC:
-            ostream << "ToolchainType::GnuGCC";
-            break;
-            
-        default:
-            ostream << "<ToolchainType: Missing case>";
-            break;
-        }
-        
-        return ostream;
-    }
 
     /**
      * @brief Compiler toolchain abstraction.
      */
     class Toolchain {
     public:
-        explicit Toolchain(const ToolchainType type);
+        explicit Toolchain(const Triplet &triplet, const std::string &installPath);
 
         /**
-         * @brief Creates a new CommandBatch, that has an implicit command to setup 
-         * the toolchain environment ready for operation, if its required.
+         * @brief Creates a new Command, which setups all the required environment variables
+         * for invoking the toolchain compilers, linkers, and related tools in a later time.
          */
-        CommandBatch createCommandBatch(const CommandX command);
+        CommandX createEnvCommand() const;
 
     private:
-        ToolchainType type;
-        boost::optional<std::string> installPath;
+        Triplet triplet;
+        std::string installPath;
     };
-
-    std::vector<std::string> enumerateVCInstallations();
-
-    CommandX createVCVars64Command(const boost::filesystem::path &prefixPath);
-
-    CommandBatch createToolchainCommandBatch(const CommandX command, const boost::filesystem::path &toolchainPrefix);
 }

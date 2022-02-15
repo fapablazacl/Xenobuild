@@ -1,9 +1,11 @@
 
 #include <Xenobuild/core/Toolchain.h>
 
+#include <cassert>
 #include <Xenobuild/core/Triplet.h>
 #include <Xenobuild/core/Util.h>
 #include <Xenobuild/core/Command.h>
+
 
 namespace Xenobuild {
     std::vector<std::string> enumerateVCInstallations() {
@@ -27,47 +29,35 @@ namespace Xenobuild {
     }
 
 
-    CommandX createVCVars64Command(const boost::filesystem::path &prefixPath) {
-        const auto vcvars = prefixPath / "VC\\Auxiliary\\Build\\vcvars64.bat";
-
+    CommandX createVCVarsCommand(const boost::filesystem::path &prefixPath) {
+        const auto vcvars = prefixPath / "VC\\Auxiliary\\Build\\vcvarsall.bat";
+        
         return { "call", { quote(vcvars.string()) } };
     }
 
-    
-    CommandBatch createToolchainCommandBatch(const CommandX command, const boost::filesystem::path &toolchainPrefix) {
-        CommandBatch batch{};
 
-        const CommandX vcvars = createVCVars64Command(toolchainPrefix);
-        batch.commands.push_back(vcvars);
-
-        batch.commands.push_back(command);
-
-        return batch;
-    }
-
-
-    CommandBatch createToolchainCommandBatch(const CommandX command, const ToolchainType type, const boost::filesystem::path &toolchainPrefix) {
-        CommandBatch batch{};
-
+    std::vector<std::string> ToolchainInstallPathEnumerator::enumerate(const ToolchainType type) const {
         if (type == ToolchainType::MicrosoftVC) {
-            const CommandX vcvars = createVCVars64Command(toolchainPrefix);
-            batch.commands.push_back(vcvars);
+            return enumerateVCInstallations();
         }
 
-        batch.commands.push_back(command);
-
-        return batch;
+        return {};
     }
 
 
-    Toolchain::Toolchain(const ToolchainType type) : type(type) {}
-
+    Toolchain::Toolchain(const Triplet &triplet, const std::string &installPath) 
+        : triplet(triplet), installPath(installPath) {
     
-    CommandBatch Toolchain::createCommandBatch(const CommandX command) {
-        if (installPath) {
-            return createToolchainCommandBatch(command, installPath.get());
+        assert(triplet.platform.os == OS::Host);
+        assert(triplet.platform.arch == Arch::Native);
+    }
+
+
+    CommandX Toolchain::createEnvCommand() const {
+        if (triplet.toolchainType == ToolchainType::MicrosoftVC) {
+            return createVCVarsCommand(installPath);
         }
-        
-        return CommandBatch{command};
+
+        return {};
     }
 }
