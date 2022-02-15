@@ -4,6 +4,7 @@
 #include <Xenobuild/core/Command.h>
 #include <Xenobuild/core/Version.h>
 #include <Xenobuild/core/Package.h>
+#include <Xenobuild/core/Context.h>
 #include <Xenobuild/core/Dependency.h>
 #include <Xenobuild/core/DependencyManager.h>
 #include <Xenobuild/core/Package.h>
@@ -28,8 +29,8 @@ namespace Xenobuild {
 namespace Xenobuild {
     const char* ConfigureController::Name = "configure";
     
-    ConfigureController::ConfigureController(Package &package, const ConfigureControllerInput& params)
-        : package(package), params(params) {}
+    ConfigureController::ConfigureController(Context &context, const ConfigureControllerInput& params)
+        : context(context), params(params) {}
 
     void ConfigureController::perform() {
         // For CMake projects, generates all the build configurations required to build the main package.
@@ -46,21 +47,8 @@ namespace Xenobuild {
             std::cout << "Detected CPU Cores: \"" << processorCount << "\"" << std::endl;
         }
         
-        // Pick a Default Toolchain, for Windows
-        // for other platforms, use the default toolchain
-        std::string toolchainPrefix;
-
-        // TODO: Refactor Visual C++ installation pathdetection
-        //if (detectHostOS() == OS::Windows) {
-        //    const std::vector<std::string> toolchainPrefixPaths = enumerateVCInstallations();
-        // 
-        //    if (toolchainPrefixPaths.size() > 0) {
-        //        toolchainPrefix = toolchainPrefixPaths[0];
-        //    }
-        //}
-        
         // By default, use the local user path to store package repositories
-        const boost::filesystem::path prefix = package.path;
+        const boost::filesystem::path prefix = context.package.path;
         const boost::filesystem::path userPath = getUserPath();
         const std::string suffix = computePathSuffix(params.triplet);
 
@@ -69,7 +57,6 @@ namespace Xenobuild {
         PackageManager manager {
             executor,
             (prefix / ".Xenobuild").string(),
-            toolchainPrefix,
             suffix,
             processorCount
         };
@@ -77,7 +64,6 @@ namespace Xenobuild {
         DependencyManager dependencyManager {
             executor,
             (userPath / ".Xenobuild").string(),
-            toolchainPrefix,
             suffix,
             processorCount
         };
@@ -87,7 +73,7 @@ namespace Xenobuild {
         };
         
         for (const CMakeBuildType buildType : buildTypes) {
-            if (! manager.configure(package, params.triplet, buildType, dependencyManager)) {
+            if (! manager.configure(context.package, context.toolchain, params.triplet, buildType, dependencyManager)) {
                 throw std::runtime_error("Configure command failed.");
             }
         }

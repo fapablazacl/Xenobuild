@@ -7,7 +7,7 @@
 #include <string>
 
 namespace Xenobuild {
-    struct Package;
+    struct Context;
 
     struct SetupControllerInput {
         //! current source code folder
@@ -32,12 +32,12 @@ namespace Xenobuild {
         static const char* Name;
 
     public:
-        SetupController(Package& package, const SetupControllerInput &params);
+        SetupController(Context& context, const SetupControllerInput &params);
 
         void perform() override;
 
     private:
-        Package& package;
+        Context& context;
         SetupControllerInput params;
     };
 }

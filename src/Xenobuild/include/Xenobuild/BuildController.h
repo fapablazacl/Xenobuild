@@ -13,7 +13,8 @@ namespace Xenobuild {
         static BuildControllerInput parse(int argc, char** argv);
     };
 
-    class PackageFactory;
+    struct Context;
+
     class BuildController : public Controller {
     public:
         typedef BuildControllerInput Params;
@@ -21,12 +22,12 @@ namespace Xenobuild {
         static const char* Name;
 
     public:
-        BuildController(Package& package, const BuildControllerInput &params);
+        BuildController(Context& context, const BuildControllerInput &params);
 
         void perform() override;
 
     private:
-        Package& package;
+        Context& context;
         BuildControllerInput params;
     };
 }

@@ -53,7 +53,7 @@ namespace Xenobuild {
     }
 
 
-    CommandX Toolchain::createEnvCommand() const {
+    boost::optional<CommandX> Toolchain::createEnvCommand() const {
         if (triplet.toolchainType == ToolchainType::MicrosoftVC) {
             return createVCVarsCommand(installPath);
         }

@@ -4,6 +4,7 @@
 #include <boost/algorithm/string.hpp>
 #include <Xenobuild/core/Package.h>
 #include <Xenobuild/core/Command.h>
+#include <Xenobuild/core/Toolchain.h>
 #include <Xenobuild/core/Dependency.h>
 #include <Xenobuild/core/DependencyManager.h>
 #include <Xenobuild/core/Triplet.h>
@@ -13,15 +14,13 @@
 namespace Xenobuild {
     PackageManager::PackageManager(CommandExecutor &executor,
                                const std::string& prefixPath,
-                               const std::string &toolchainPrefix,
                                const std::string &installSuffix,
                                const unsigned processorCount) :
     executor(executor),
     prefixPath(prefixPath),
-    toolchainPrefix(toolchainPrefix),
     installSuffix(installSuffix) {}
     
-    bool PackageManager::configure(const Package &package, const Triplet &triplet, const CMakeBuildType buildType, const DependencyManager &dependencyManager) {
+    bool PackageManager::configure(const Package &package, const Toolchain &toolchain, const Triplet &triplet, const CMakeBuildType buildType, const DependencyManager &dependencyManager) {
         // NOTE: Let's assume that the build system that the current Package uses, is CMake.
         CMakeConfiguration config;
 
@@ -48,8 +47,11 @@ namespace Xenobuild {
             }
         }
         
-        CommandX command = generateCommand(config);
-        CommandBatch batch = createToolchainCommandBatch(command, toolchainPrefix);
+        CommandBatch batch{ generateCommand(config) };
+
+        if (auto toolchainCommand = toolchain.createEnvCommand(); toolchainCommand) {
+            batch.commands.push_back(toolchainCommand.get());
+        }
 
         const CommandResult result = executor(batch);
         

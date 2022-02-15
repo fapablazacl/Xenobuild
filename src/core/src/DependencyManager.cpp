@@ -13,12 +13,10 @@
 namespace Xenobuild {
     DependencyManager::DependencyManager(CommandExecutor &executor,
                                const std::string& prefixPath,
-                               const std::string &toolchainPrefix,
                                const std::string &installSuffix,
                                const unsigned processorCount) :
     executor(executor),
     prefixPath(prefixPath),
-    toolchainPrefix(toolchainPrefix),
     installSuffix(installSuffix) {}
 
     
@@ -40,7 +38,7 @@ namespace Xenobuild {
     }
     
 
-    bool DependencyManager::configure(const Dependency& dependency, const CMakeBuildType buildType, const boost::optional<CMakeGenerator> generator) {
+    bool DependencyManager::configure(const Dependency& dependency, const Toolchain &toolchain, const CMakeBuildType buildType, const boost::optional<CMakeGenerator> generator) {
         const URL url = URL::parse(dependency.url);
         
         const auto sourcePath = computePath(prefixPath / "sources", url, dependency.tag);
@@ -57,8 +55,11 @@ namespace Xenobuild {
 
         config.definitions.insert(dependency.definitions.begin(), dependency.definitions.end());
 
-        CommandX command = generateCommand(config);
-        CommandBatch batch = createToolchainCommandBatch(command, toolchainPrefix);
+        CommandBatch batch{ generateCommand(config) };
+
+        if (auto toolchainCommand = toolchain.createEnvCommand(); toolchainCommand) {
+            batch.commands.push_back(toolchainCommand.get());
+        }
 
         const CommandResult result = executor(batch);
         
@@ -73,14 +74,18 @@ namespace Xenobuild {
     }
 
     
-    bool DependencyManager::build(const Dependency& dependency, const CMakeBuildType buildType) {
+    bool DependencyManager::build(const Dependency& dependency, const Toolchain &toolchain, const CMakeBuildType buildType) {
         const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url), dependency.tag);
         const auto buildPath = computePath(sourcePath, buildType);
         
         // FIX: Using parallel build with CMake, causes deadlock in glfw.
         CMakeBuild build { buildPath.string()/*, processorCount */};
-        CommandX command = generateCommand(build);
-        CommandBatch batch = createToolchainCommandBatch(command, toolchainPrefix);
+
+        CommandBatch batch{ generateCommand(build) };
+
+        if (auto toolchainCommand = toolchain.createEnvCommand(); toolchainCommand) {
+            batch.commands.push_back(toolchainCommand.get());
+        }
 
         const CommandResult result = executor(batch);
         
@@ -95,13 +100,17 @@ namespace Xenobuild {
     }
 
     
-    bool DependencyManager::install(const Dependency& dependency, const CMakeBuildType buildType) {
+    bool DependencyManager::install(const Dependency& dependency, const Toolchain &toolchain, const CMakeBuildType buildType) {
         const auto sourcePath = computePath(prefixPath / "sources", URL::parse(dependency.url), dependency.tag);
         const auto buildPath = computePath(sourcePath, buildType);
         
         CMakeInstall install { buildPath.string() };
-        CommandX command = generateCommand(install);
-        CommandBatch batch = createToolchainCommandBatch(command, toolchainPrefix);
+
+        CommandBatch batch{ generateCommand(install) };
+
+        if (auto toolchainCommand = toolchain.createEnvCommand(); toolchainCommand) {
+            batch.commands.push_back(toolchainCommand.get());
+        }
 
         const CommandResult result = executor(batch);
         

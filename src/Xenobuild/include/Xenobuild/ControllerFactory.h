@@ -4,10 +4,11 @@
 #include <memory>
 
 #include "Controller.h"
-#include <Xenobuild/core/Package.h>
 
 
 namespace Xenobuild {
+    struct Context;
+
     class ControllerFactory {
     public:
         virtual ~ControllerFactory() {}
@@ -18,14 +19,14 @@ namespace Xenobuild {
     template<typename ConcreteController>
     class ConcreteControllerFactory : public ControllerFactory {
     public:
-        ConcreteControllerFactory(Package& package) : package(package) {}
+        ConcreteControllerFactory(Context& context) : context(context) {}
 
         std::unique_ptr<Controller> createController(int argc, char **argv) override {
             const auto params = ConcreteController::Params::parse(argc, argv);
 
-            return std::make_unique<ConcreteController>(package, params);
+            return std::make_unique<ConcreteController>(context, params);
         }
 
-        Package& package;
+        Context& context;
     };
 }

@@ -9,6 +9,9 @@
 #include <boost/filesystem.hpp>
 
 #include <Xenobuild/core/FileSystemPackageFactory.h>
+#include <Xenobuild/core/Context.h>
+#include <Xenobuild/core/Package.h>
+#include <Xenobuild/core/Toolchain.h>
 #include <Xenobuild/core/Dependency.h>
 #include <Xenobuild/ControllerFactory.h>
 #include <Xenobuild/BuildController.h>
@@ -20,9 +23,9 @@ using ControllerFactoryMap = std::map<std::string, std::unique_ptr<Xenobuild::Co
 
 
 template <typename TController>
-void appendFactoryController(ControllerFactoryMap &controllerFactoryMap, Xenobuild::Package &package) {
+void appendFactoryController(ControllerFactoryMap &controllerFactoryMap, Xenobuild::Context &context) {
     auto name = TController::Name;
-    auto factory = std::make_unique<Xenobuild::ConcreteControllerFactory<TController>>(package);
+    auto factory = std::make_unique<Xenobuild::ConcreteControllerFactory<TController>>(context);
     
     const auto it = controllerFactoryMap.find(name);
     assert(it == controllerFactoryMap.end());
@@ -31,12 +34,12 @@ void appendFactoryController(ControllerFactoryMap &controllerFactoryMap, Xenobui
 }
 
 
-static ControllerFactoryMap createControllerFactoryMap(Xenobuild::Package &package) {
+static ControllerFactoryMap createControllerFactoryMap(Xenobuild::Context &context) {
     ControllerFactoryMap result;
     
-    appendFactoryController<Xenobuild::BuildController>(result, package);
-    appendFactoryController<Xenobuild::SetupController>(result, package);
-    appendFactoryController<Xenobuild::ConfigureController>(result, package);
+    appendFactoryController<Xenobuild::BuildController>(result, context);
+    appendFactoryController<Xenobuild::SetupController>(result, context);
+    appendFactoryController<Xenobuild::ConfigureController>(result, context);
 
     return result;
 }
@@ -45,8 +48,8 @@ static ControllerFactoryMap createControllerFactoryMap(Xenobuild::Package &packa
 namespace Xenobuild {
     class ControllerManager {
     public:
-        explicit ControllerManager(Xenobuild::Package &package) {
-            factoryMap = createControllerFactoryMap(package);
+        explicit ControllerManager(Xenobuild::Context &context) {
+            factoryMap = createControllerFactoryMap(context);
         }
         
         std::unique_ptr<Controller> create(const std::string &name, std::vector<char*> &args) const {
@@ -114,7 +117,21 @@ int main(int argc, char **argv) {
     std::vector<char*> args = {argv + 1, argv + argc};
     const std::string command = args[0];
     
-    Xenobuild::ControllerManager manager{package.get()};
+    Xenobuild::ToolchainInstallPathEnumerator toolchainEnumerator;
+
+    const auto toolchainPaths = toolchainEnumerator.enumerate(Xenobuild::ToolchainType::MicrosoftVC);
+
+    Xenobuild::Toolchain toolchain {
+        Xenobuild::Triplet{{}, Xenobuild::ToolchainType::MicrosoftVC}, 
+        toolchainPaths.size() > 0 ?  toolchainPaths[0] : ""
+    };
+
+    Xenobuild::Context context {
+        package.get(),
+        toolchain
+    };
+
+    Xenobuild::ControllerManager manager{context};
     
     auto controller = manager.create(command, args);
     

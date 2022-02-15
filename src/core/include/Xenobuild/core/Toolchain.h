@@ -35,7 +35,7 @@ namespace Xenobuild {
          * @brief Creates a new Command, which setups all the required environment variables
          * for invoking the toolchain compilers, linkers, and related tools in a later time.
          */
-        CommandX createEnvCommand() const;
+        boost::optional<CommandX> createEnvCommand() const;
 
     private:
         Triplet triplet;
