@@ -9,7 +9,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Boost
 find_package(Boost
     REQUIRED
-    COMPONENTS program_options filesystem
+    COMPONENTS program_options filesystem thread
 )
 
 add_definitions(-DCMAKE_CURRENT_SOURCE_DIR="$CMAKE_CURRENT_SOURCE_DIR")
