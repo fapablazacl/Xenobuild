@@ -7,16 +7,16 @@ namespace Xenobuild {
     boost::optional<std::string> encode(const ToolchainType toolchainType) {
         switch (toolchainType) {
         case ToolchainType::Clang:
-            return "clang";
+            return std::string{ "clang" };
             
         case ToolchainType::MicrosoftVC:
-            return "vc";
+            return std::string{ "vc" };
             
         case ToolchainType::AppleClang:
-            return "appleclang";
+            return std::string{ "appleclang" };
             
         case ToolchainType::GnuGCC:
-            return "gcc";
+            return std::string{ "gcc" };
         }
 
         return {};
