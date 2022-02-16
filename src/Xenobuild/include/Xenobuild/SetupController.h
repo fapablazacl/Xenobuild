@@ -22,7 +22,7 @@ namespace Xenobuild {
         //! the requested triplet to build for.
         Triplet triplet;
 
-        static SetupControllerInput parse(int argc, char** argv);
+        static SetupControllerInput parse(const std::vector<std::string> &args);
     };
 
     class SetupController : public Controller {

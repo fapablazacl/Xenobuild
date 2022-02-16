@@ -3,6 +3,9 @@
 
 
 #include <Xenobuild/SetupController.h>
+
+#include <boost/program_options.hpp>
+#include <boost/optional/optional_io.hpp>
 #include <Xenobuild/core/Command.h>
 #include <Xenobuild/core/Version.h>
 #include <Xenobuild/core/Context.h>
@@ -11,17 +14,35 @@
 #include <Xenobuild/core/Module.h>
 #include <Xenobuild/core/Dependency.h>
 #include <Xenobuild/core/DependencyManager.h>
-#include <Xenobuild/core/SourceFile.h>
+#include <Xenobuild/core/Toolchain.h>
 #include <Xenobuild/core/CMakeBuildSystem.h>
 
-#include <boost/optional/optional_io.hpp>
+
 
 namespace Xenobuild {
-    SetupControllerInput SetupControllerInput::parse(int, char**) {
+    SetupControllerInput SetupControllerInput::parse(const std::vector<std::string> &args) {
+        boost::program_options::options_description desc("setup options");
+        desc.add_options()
+            // ("hidden", "Show hidden files")
+            ("toolchain", boost::program_options::value<std::string>(), "The toolchain identifier to use while building dependencies");
+
+        boost::program_options::variables_map vm;
+        boost::program_options::store(boost::program_options::command_line_parser(args).options(desc).run(), vm);
+
+        if (vm["toolchain"].empty()) {
+            throw std::runtime_error("--toolchain option is mandatory.");
+        }
+
+        auto toolchainTypeOpt = decode(vm["toolchain"].as<std::string>());
+
+        if (!toolchainTypeOpt) {
+            throw std::runtime_error("Unknown toolchain.");
+        }
+
         const auto currentPath = boost::filesystem::current_path();
 
         SetupControllerInput result;
-
+        result.triplet.toolchainType = toolchainTypeOpt.get();
         result.sourceDir = currentPath.string();
         result.buildDir = (currentPath / ".Xenobuild").string();
         
@@ -48,19 +69,6 @@ namespace Xenobuild {
             std::cout << "SHELL: \"" << getenv("SHELL") << "\"" << std::endl;
             std::cout << "Detected CPU Cores: \"" << processorCount << "\"" << std::endl;
         }
-        
-        // Pick a Default Toolchain, for Windows
-        // for other platforms, use the default toolchain
-        std::string toolchainPrefix;
-        
-        // TODO: Refactor Visual C++ installation pathdetection
-        //if (detectHostOS() == OS::Windows) {
-        //    const std::vector<std::string> toolchainPrefixPaths = enumerateVCInstallations();
-        // 
-        //    if (toolchainPrefixPaths.size() > 0) {
-        //        toolchainPrefix = toolchainPrefixPaths[0];
-        //    }
-        //}
         
         // By default, use the local user path to store package repositories
         const boost::filesystem::path userPath = getUserPath();

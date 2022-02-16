@@ -5,8 +5,10 @@
 #include <vector>
 #include <cassert>
 #include <memory>
+#include <sstream>
 #include <boost/optional.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/program_options.hpp>
 
 #include <Xenobuild/core/FileSystemPackageFactory.h>
 #include <Xenobuild/core/Context.h>
@@ -52,7 +54,7 @@ namespace Xenobuild {
             factoryMap = createControllerFactoryMap(context);
         }
         
-        std::unique_ptr<Controller> create(const std::string &name, std::vector<char*> &args) const {
+        std::unique_ptr<Controller> create(const std::string &name, std::vector<std::string> &args) const {
             const auto factoryIt = factoryMap.find(name);
             
             if (factoryIt == factoryMap.end()) {
@@ -61,7 +63,7 @@ namespace Xenobuild {
             
             assert(factoryIt->second);
             
-            return factoryIt->second->createController(args.size(), args.data());
+            return factoryIt->second->createController(args);
         }
         
         std::vector<std::string> enumerate() const {
@@ -100,53 +102,91 @@ namespace Xenobuild {
 }
 
 
+std::tuple<
+    boost::program_options::parsed_options, 
+    boost::program_options::variables_map> parseGlobalOptions(int argc, char** argv) {
+
+    boost::program_options::options_description global("Global options");
+    global.add_options()
+        ("debug", "Turn on debug output")
+        ("command", boost::program_options::value<std::string>(), "command to execute")
+        ("subargs", boost::program_options::value<std::vector<std::string> >(), "Arguments for command");
+
+    boost::program_options::positional_options_description pos;
+    pos.add("command", 1).add("subargs", -1);
+
+    boost::program_options::variables_map vm;
+
+    boost::program_options::parsed_options parsed = boost::program_options::command_line_parser(argc, argv).
+        options(global).
+        positional(pos).
+        allow_unregistered().
+        run();
+
+    boost::program_options::store(parsed, vm);
+
+    return {parsed, vm};
+}
+
+
 int main(int argc, char **argv) {
-    Xenobuild::FileSystemPackageFactory packageFactory;
-    boost::optional<Xenobuild::Package> package = Xenobuild::createPackage(packageFactory, "Xenobuild.yaml");
+    try {
+        Xenobuild::FileSystemPackageFactory packageFactory;
+        boost::optional<Xenobuild::Package> package = Xenobuild::createPackage(packageFactory, "Xenobuild.yaml");
     
-    if (!package) {
-        std::cerr << "There is no accesible Xenobuild.yaml file in the current folder" << std::endl;
-        return EXIT_FAILURE;
-    }
-    
-    if (argc < 2) {
-        std::cerr << "No subcommand supplied." << std::endl;
-        return EXIT_FAILURE;
-    }
-
-    std::vector<char*> args = {argv + 1, argv + argc};
-    const std::string command = args[0];
-    
-    Xenobuild::ToolchainInstallPathEnumerator toolchainEnumerator;
-
-    const auto toolchainPaths = toolchainEnumerator.enumerate(Xenobuild::ToolchainType::MicrosoftVC);
-
-    Xenobuild::Toolchain toolchain {
-        Xenobuild::Triplet{{}, Xenobuild::ToolchainType::MicrosoftVC}, 
-        toolchainPaths.size() > 0 ?  toolchainPaths[0] : ""
-    };
-
-    Xenobuild::Context context {
-        package.get(),
-        toolchain
-    };
-
-    Xenobuild::ControllerManager manager{context};
-    
-    auto controller = manager.create(command, args);
-    
-    if (!controller) {
-        std::cerr << "Unknown command " << command << "." << std::endl;
-        std::cerr << "Available commands: " << std::endl;
-        
-        for (const std::string &cmd : manager.enumerate()) {
-            std::cerr << "    " << cmd << std::endl;
+        if (!package) {
+            throw std::runtime_error("There is no accesible Xenobuild.yaml file in the current folder");
         }
+    
+        const auto [parsed, vm] = parseGlobalOptions(argc, argv);
+
+        if (vm["command"].empty()) {
+            throw std::runtime_error("No subcommand supplied");
+        }
+
+        const std::string command = vm["command"].as<std::string>();
+
+        Xenobuild::ToolchainInstallPathEnumerator toolchainEnumerator;
+
+        const auto toolchainPaths = toolchainEnumerator.enumerate(Xenobuild::ToolchainType::MicrosoftVC);
+
+        Xenobuild::Toolchain toolchain {
+            Xenobuild::Triplet{{}, Xenobuild::ToolchainType::MicrosoftVC}, 
+            toolchainPaths.size() > 0 ?  toolchainPaths[0] : ""
+        };
+
+        Xenobuild::Context context {
+            package.get(),
+            toolchain
+        };
+
+        Xenobuild::ControllerManager manager{context};
+    
+        std::vector<std::string> args = boost::program_options::collect_unrecognized(parsed.options,  boost::program_options::include_positional);
+        args.erase(args.begin());
+
+        auto controller = manager.create(command, args);
+    
+        if (!controller) {
+            std::stringstream ss;
+
+            ss << "Unknown command " << command << "." << std::endl;
+            ss << "Available commands: " << std::endl;
         
+            for (const std::string &cmd : manager.enumerate()) {
+                ss << "    " << cmd << std::endl;
+            }
+
+            throw std::runtime_error(ss.str());
+        }
+    
+        controller->perform();
+    
+        return EXIT_SUCCESS;
+    }
+    catch (const std::exception& exp) {
+        std::cerr << exp.what() << std::endl;
+
         return EXIT_FAILURE;
     }
-    
-    controller->perform();
-    
-    return EXIT_SUCCESS;
 }

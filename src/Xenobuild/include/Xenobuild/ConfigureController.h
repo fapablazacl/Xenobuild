@@ -16,7 +16,7 @@ namespace Xenobuild {
         Triplet triplet;
         bool showEnvironment = true;
 
-        static ConfigureControllerInput parse(int argc, char** argv);
+        static ConfigureControllerInput parse(const std::vector<std::string> &args);
     };
     
     inline std::ostream& operator<< (std::ostream &os, const ConfigureControllerInput &input) {

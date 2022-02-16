@@ -10,7 +10,7 @@ namespace Xenobuild {
         std::string sourceDir;
         std::string buildDir;
 
-        static BuildControllerInput parse(int argc, char** argv);
+        static BuildControllerInput parse(const std::vector<std::string> &args);
     };
 
     struct Context;

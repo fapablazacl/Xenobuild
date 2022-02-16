@@ -1,5 +1,7 @@
 
 #include <Xenobuild/ConfigureController.h>
+
+#include <boost/optional/optional_io.hpp>
 #include <Xenobuild/Common.h>
 #include <Xenobuild/core/Command.h>
 #include <Xenobuild/core/Version.h>
@@ -15,7 +17,7 @@
 namespace Xenobuild {
     const boost::filesystem::path currentPath = CMAKE_CURRENT_SOURCE_DIR;
     
-    ConfigureControllerInput ConfigureControllerInput::parse(int, char**) {
+    ConfigureControllerInput ConfigureControllerInput::parse(const std::vector<std::string> &args) {
         ConfigureControllerInput result;
         
         result.sourceDir = currentPath.string();
@@ -41,9 +43,9 @@ namespace Xenobuild {
         
         // show current execution environment
         if (params.showEnvironment) {
-            std::cout << "USER: \"" << std::getenv("USER") << "\"" << std::endl;
-            std::cout << "PATH: \"" << std::getenv("PATH") << "\"" << std::endl;
-            std::cout << "SHELL: \"" << std::getenv("SHELL") << "\"" << std::endl;
+            std::cout << "USER: \"" << getenv("USER") << "\"" << std::endl;
+            std::cout << "PATH: \"" << getenv("PATH") << "\"" << std::endl;
+            std::cout << "SHELL: \"" << getenv("SHELL") << "\"" << std::endl;
             std::cout << "Detected CPU Cores: \"" << processorCount << "\"" << std::endl;
         }
         

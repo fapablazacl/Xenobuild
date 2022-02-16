@@ -40,6 +40,7 @@ set (sources
 	"src/GitRepository.cpp"
 	"src/ToolchainCommandExecutor.cpp"
 	"src/Context.cpp"
+	"src/ToolchainType.cpp"
 )
 
 add_library(${target} ${sources})

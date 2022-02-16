@@ -2,6 +2,9 @@
 #pragma once 
 
 #include <iostream>
+#include <string>
+#include <boost/optional.hpp>
+
 
 namespace Xenobuild {
     enum class ToolchainType {
@@ -11,6 +14,9 @@ namespace Xenobuild {
         GnuGCC
     };
 
+    boost::optional<std::string> encode(const ToolchainType toolchainType);
+
+    boost::optional<ToolchainType> decode(const std::string& value);
 
     inline std::ostream& operator<< (std::ostream &ostream, const ToolchainType toolchain) {
         switch (toolchain) {

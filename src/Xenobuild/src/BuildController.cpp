@@ -39,7 +39,7 @@
 
 
 namespace Xenobuild {
-    BuildControllerInput BuildControllerInput::parse(int, char**) {
+    BuildControllerInput BuildControllerInput::parse(const std::vector<std::string> &args) {
         const auto currentPath = boost::filesystem::current_path();
 
         BuildControllerInput result;
