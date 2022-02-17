@@ -1,0 +1,31 @@
+name: ci-macos
+on: 
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+    
+jobs:
+  build-universal-appleclang:
+    runs-on: macos-11
+    steps:
+      - name: Checkout Source Code and Submodules
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Install Dependencies
+        run: brew install boost
+
+      - name: Configure [Debug]
+        run: cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Debug -B build/debug
+
+      - name: Build [Debug]
+        run: cmake --build build/debug
+
+      - name: Configure [Release]
+        run: cmake -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=Release -B build/release
+
+      - name: Build [Release]
+        run: cmake --build build/release
