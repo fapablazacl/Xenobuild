@@ -1,6 +1,8 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.8)
 
 project (Xenobuild)
+
+option(XENOBUILD_ENABLE_LINTER "Enable the use of Linter Tool. clang-tidy must be installed." OFF)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -12,14 +14,11 @@ find_package(Boost
     COMPONENTS program_options filesystem thread
 )
 
-add_definitions(-DCMAKE_CURRENT_SOURCE_DIR="$CMAKE_CURRENT_SOURCE_DIR")
-
-include_directories(
-    "./src"
-    ${Boost_INCLUDE_DIRS}
-)
-
+include_directories("./src" ${Boost_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
+
+# some definitions
+add_definitions(-DCMAKE_CURRENT_SOURCE_DIR="$CMAKE_CURRENT_SOURCE_DIR")
 
 # yaml-cpp
 set(YAML_CPP_BUILD_TESTS "OFF" CACHE STRING "" FORCE)
@@ -27,6 +26,19 @@ set(YAML_CPP_BUILD_CONTRIB "OFF" CACHE STRING "" FORCE)
 set(YAML_CPP_BUILD_TOOLS "OFF" CACHE STRING "" FORCE)
 set(YAML_CPP_INSTALL "OFF" CACHE STRING "" FORCE)
 add_subdirectory("dependencies/yaml-cpp")
+
+if (XENOBUILD_ENABLE_LINTER)
+    set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=*")
+else ()
+    set(CMAKE_CXX_CLANG_TIDY "")
+endif()
+
+# Enable Full Warning for all build configuration and compilers
+if(MSVC)
+    add_compile_options(/W4 /WX)
+else()
+    add_compile_options(-Wall -Wextra -Wpedantic)
+endif()
 
 add_subdirectory("src/Xenobuild")
 add_subdirectory("src/core")

@@ -103,3 +103,20 @@ jobs:
 
       - name: Build [Release]
         run: cmake --build build/release
+
+  tidy-x86_64-clang:
+    runs-on: ubuntu-latest
+    needs: build-x86_64-clang
+    steps:
+      - name: Checkout Source Code and Submodules
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Setup
+        run: |
+          sudo apt-get install libboost-all-dev
+          CC=clang CXX=clang++ cmake -G "Unix Makefiles" -DXENOBUILD_ENABLE_LINTER=ON -DCMAKE_BUILD_TYPE=Debug -B build/debug
+
+      - name: Lint (clang-tidy)
+        run: cmake --build build/debug
