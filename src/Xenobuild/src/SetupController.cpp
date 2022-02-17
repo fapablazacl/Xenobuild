@@ -5,9 +5,9 @@
 #include <Xenobuild/SetupController.h>
 
 #include <boost/program_options.hpp>
+#include <boost/filesystem.hpp>
 #include <boost/optional/optional_io.hpp>
 #include <Xenobuild/core/Command.h>
-#include <Xenobuild/core/Version.h>
 #include <Xenobuild/core/Context.h>
 #include <Xenobuild/core/Package.h>
 #include <Xenobuild/core/PackageFactory.h>
@@ -79,8 +79,7 @@ namespace Xenobuild {
         DependencyManager manager {
             executor,
             (userPath / ".Xenobuild").string(),
-            suffix,
-            processorCount
+            suffix
         };
 
         std::for_each(dependencies.begin(), dependencies.end(), [&manager, this](const Dependency& dep) {

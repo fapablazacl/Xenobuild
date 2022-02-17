@@ -13,8 +13,7 @@
 namespace Xenobuild {
     DependencyManager::DependencyManager(CommandExecutor &executor,
                                const std::string& prefixPath,
-                               const std::string &installSuffix,
-                               const unsigned processorCount) :
+                               const std::string &installSuffix) :
     executor(executor),
     prefixPath(prefixPath),
     installSuffix(installSuffix) {}
@@ -125,7 +124,7 @@ namespace Xenobuild {
     }
 
     
-    boost::filesystem::path DependencyManager::computeInstallPath(const Dependency &dependency, const CMakeBuildType buildType) const {
+    boost::filesystem::path DependencyManager::computeInstallPath(const Dependency &dependency) const {
         const URL url = URL::parse(dependency.url);
         const boost::filesystem::path installPath = computePath(prefixPath / "packages" / installSuffix, url, dependency.version);
         

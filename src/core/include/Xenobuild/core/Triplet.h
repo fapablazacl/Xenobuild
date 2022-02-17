@@ -19,7 +19,6 @@
 
 namespace Xenobuild {
     enum class Arch {
-        Unknown,
         Native,
         X32,
         X64
@@ -27,10 +26,6 @@ namespace Xenobuild {
     
     inline std::ostream& operator<< (std::ostream &os, const Arch arch) {
         switch (arch) {
-        case Arch::Unknown:
-            os << "Arch::Unknown";
-            break;
-            
         case Arch::Native:
             os << "Arch::Native";
             break;
@@ -52,7 +47,6 @@ namespace Xenobuild {
     }
 
     enum class OS {
-        Unknown,
         Host,
         Windows,
         Linux,
@@ -61,10 +55,6 @@ namespace Xenobuild {
     
     inline std::ostream& operator<< (std::ostream &ostream, const OS os) {
         switch (os) {
-        case OS::Unknown:
-            ostream << "OS::Unknown";
-            break;
-
         case OS::Host:
             ostream << "OS::Host";
             break;
@@ -165,7 +155,7 @@ namespace Xenobuild {
             return "gcc";
         }
 
-        return "cc";
+        return "toolchain_unknown";
     }
 
     inline std::string computePathSuffix(const Triplet& triplet) {

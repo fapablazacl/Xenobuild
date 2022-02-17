@@ -21,8 +21,7 @@ namespace Xenobuild {
     public:
         explicit PackageManager(CommandExecutor &executor,
                                 const std::string& prefixPath,
-                                const std::string &installSuffix,
-                                const unsigned processorCount);
+                                const std::string &installSuffix);
         
         bool configure(const Package &package, const Toolchain &toolchain, const Triplet &triplet, const CMakeBuildType buildType, const DependencyManager &dependencyManager);
             
@@ -34,9 +33,5 @@ namespace Xenobuild {
         //! the install Suffix used during the dependencies installation.
         //! It's used to locate them during the configuration time.
         std::string installSuffix;
-        
-        //! currently detected processor count.
-        //! used for paralelizing tasks
-        unsigned processorCount = 1;
     };
 }

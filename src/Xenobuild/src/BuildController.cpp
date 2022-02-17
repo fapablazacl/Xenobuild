@@ -24,7 +24,6 @@
 
 #include <Xenobuild/BuildController.h>
 #include <Xenobuild/core/Command.h>
-#include <Xenobuild/core/Version.h>
 #include <Xenobuild/core/Package.h>
 #include <Xenobuild/core/PackageFactory.h>
 #include <Xenobuild/core/Module.h>
@@ -39,7 +38,7 @@
 
 
 namespace Xenobuild {
-    BuildControllerInput BuildControllerInput::parse(const std::vector<std::string> &args) {
+    BuildControllerInput BuildControllerInput::parse(const std::vector<std::string> &) {
         const auto currentPath = boost::filesystem::current_path();
 
         BuildControllerInput result;
@@ -91,7 +90,7 @@ namespace Xenobuild {
          * @param module The module to create the TaskGraph for.
          * @return ModuleTaskGraph , ready to be further proccessed 
          */
-        static ModuleTaskGraph create(const Module &module) {
+        static ModuleTaskGraph create(const Module &) {
             ModuleTaskGraph graph;
 
             return graph;

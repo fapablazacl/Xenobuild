@@ -18,6 +18,6 @@ set (sources
 add_executable(${target} ${sources})
 
 target_include_directories(${target} PUBLIC "./include/")
-target_link_libraries(${target} core build-core)
+target_link_libraries(${target} core)
 
 install(TARGETS ${target} DESTINATION bin)

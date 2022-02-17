@@ -19,8 +19,7 @@ namespace Xenobuild {
     public:
         explicit DependencyManager(CommandExecutor &executor,
                                    const std::string& prefixPath,
-                                   const std::string &installSuffix,
-                                   const unsigned processorCount);
+                                   const std::string &installSuffix);
 
         bool download(const Dependency& dependency) const;
 
@@ -30,7 +29,7 @@ namespace Xenobuild {
 
         bool install(const Dependency& dependency, const Toolchain &toolchain, const CMakeBuildType buildType);
         
-        boost::filesystem::path computeInstallPath(const Dependency &dependency, const CMakeBuildType buildType) const;
+        boost::filesystem::path computeInstallPath(const Dependency &dependency) const;
 
     private:
         boost::filesystem::path computePath(const boost::filesystem::path& prefix, const CMakeBuildType type) const;
@@ -41,6 +40,5 @@ namespace Xenobuild {
         CommandExecutor &executor;
         boost::filesystem::path prefixPath;
         std::string installSuffix;
-        unsigned processorCount = 1;
     };    
 }

@@ -37,7 +37,7 @@ namespace Xenobuild {
         std::transform(
             batch.commands.begin(),
             batch.commands.end(),
-            std::back_inserter(cmdlines), [this](const auto command) {
+            std::back_inserter(cmdlines), [](const auto command) {
             return createCmdLine(command);
         });
 

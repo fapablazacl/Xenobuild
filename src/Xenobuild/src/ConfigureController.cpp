@@ -4,7 +4,6 @@
 #include <boost/optional/optional_io.hpp>
 #include <Xenobuild/Common.h>
 #include <Xenobuild/core/Command.h>
-#include <Xenobuild/core/Version.h>
 #include <Xenobuild/core/Package.h>
 #include <Xenobuild/core/Context.h>
 #include <Xenobuild/core/Dependency.h>
@@ -17,7 +16,7 @@
 namespace Xenobuild {
     const boost::filesystem::path currentPath = CMAKE_CURRENT_SOURCE_DIR;
     
-    ConfigureControllerInput ConfigureControllerInput::parse(const std::vector<std::string> &args) {
+    ConfigureControllerInput ConfigureControllerInput::parse(const std::vector<std::string> &) {
         ConfigureControllerInput result;
         
         result.sourceDir = currentPath.string();
@@ -59,15 +58,13 @@ namespace Xenobuild {
         PackageManager manager {
             executor,
             (prefix / ".Xenobuild").string(),
-            suffix,
-            processorCount
+            suffix
         };
         
         DependencyManager dependencyManager {
             executor,
             (userPath / ".Xenobuild").string(),
-            suffix,
-            processorCount
+            suffix
         };
         
         const CMakeBuildType buildTypes[] = {

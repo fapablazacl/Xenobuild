@@ -28,7 +28,7 @@ set(YAML_CPP_INSTALL "OFF" CACHE STRING "" FORCE)
 add_subdirectory("dependencies/yaml-cpp")
 
 if (XENOBUILD_ENABLE_LINTER)
-    set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=*")
+    set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
 else ()
     set(CMAKE_CXX_CLANG_TIDY "")
 endif()
@@ -42,8 +42,7 @@ endif()
 
 add_subdirectory("src/Xenobuild")
 add_subdirectory("src/core")
-add_subdirectory("src/build-core")
-
+# add_subdirectory("src/build-core")
 # add_subdirectory("src/build-core-io")
 # add_subdirectory("src/build-core-pipeline")
 # add_subdirectory("src/build-core-package")

@@ -14,8 +14,7 @@
 namespace Xenobuild {
     PackageManager::PackageManager(CommandExecutor &executor,
                                const std::string& prefixPath,
-                               const std::string &installSuffix,
-                               const unsigned processorCount) :
+                               const std::string &installSuffix) :
     executor(executor),
     prefixPath(prefixPath),
     installSuffix(installSuffix) {}
@@ -31,14 +30,14 @@ namespace Xenobuild {
         // manage dependency install locations
         for (const Dependency &dependency : package.dependencies) {
             const std::map<std::string, std::string> variableMap {
-                {"${installPrefix}", dependencyManager.computeInstallPath(dependency, buildType).string()}
+                {"${installPrefix}", dependencyManager.computeInstallPath(dependency).string()}
             };
             
             for (const auto &definitionValuePair : dependency.publicdefs) {
                 std::string const &definition = definitionValuePair.first;
                 std::string value = definitionValuePair.second;
                 
-                for (const auto variableValuePair : variableMap) {
+                for (const auto &variableValuePair : variableMap) {
                     boost::replace_all(value, variableValuePair.first, variableValuePair.first);
                 }
                 

@@ -4,6 +4,7 @@
 #include "Controller.h"
 
 #include <string>
+#include <vector>
 
 namespace Xenobuild {
     struct BuildControllerInput {

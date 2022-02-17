@@ -17,6 +17,7 @@ namespace Xenobuild {
     }
 
 
+    /*
     static void checkIntegrity(const Package &package) {
         std::cout << "Package " << package.name << std::endl;
 
@@ -36,9 +37,13 @@ namespace Xenobuild {
             }
         }
     }
+    */
 
 
     Package FileSystemPackageFactory::createMockPackage() {
+        return {};
+
+        /*
         Package package {
             "Test01",
             boost::filesystem::path{"borc-old/data/samples/MyApp"},
@@ -52,6 +57,7 @@ namespace Xenobuild {
         checkIntegrity(package);
 
         return package;
+        */
     }
 
     Package FileSystemPackageFactory::createPackage(const std::string& sourceDir) {
