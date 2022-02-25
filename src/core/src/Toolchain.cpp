@@ -46,11 +46,7 @@ namespace Xenobuild {
 
 
     Toolchain::Toolchain(const Triplet &triplet, const std::string &installPath) 
-        : triplet(triplet), installPath(installPath) {
-    
-        assert(triplet.platform.os == OS::Host);
-        assert(triplet.platform.arch == Arch::Native);
-    }
+        : triplet(triplet), installPath(installPath) {}
 
 
     boost::optional<CommandX> Toolchain::createEnvCommand() const {

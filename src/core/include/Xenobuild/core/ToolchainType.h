@@ -14,6 +14,22 @@ namespace Xenobuild {
         GnuGCC
     };
 
+    constexpr ToolchainType getCurrentToolchainType() {
+#if defined(_MSC_VER)
+        return ToolchainType::AppleClang;
+#else
+#if defined(__clang__)
+#if defined(__apple_build_version__)
+        return ToolchainType::AppleClang;
+#else
+        return ToolchainType::Clang;
+#endif
+#elif defined(__GNUC__)
+        return ToolchainType::GnuGCC;
+#endif
+#endif
+    }
+    
     boost::optional<std::string> encode(const ToolchainType toolchainType);
 
     boost::optional<ToolchainType> decode(const std::string& value);

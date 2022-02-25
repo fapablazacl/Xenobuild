@@ -133,7 +133,7 @@ int main(int argc, char **argv) {
     try {
         Xenobuild::FileSystemPackageFactory packageFactory;
         boost::optional<Xenobuild::Package> package = Xenobuild::createPackage(packageFactory, "Xenobuild.yaml");
-    
+        
         if (!package) {
             throw std::runtime_error("There is no accesible Xenobuild.yaml file in the current folder");
         }
@@ -145,13 +145,11 @@ int main(int argc, char **argv) {
         }
 
         const std::string command = vm["command"].as<std::string>();
-
-        Xenobuild::ToolchainInstallPathEnumerator toolchainEnumerator;
-
-        const auto toolchainPaths = toolchainEnumerator.enumerate(Xenobuild::ToolchainType::MicrosoftVC);
-
-        Xenobuild::Toolchain toolchain {
-            Xenobuild::Triplet{{}, Xenobuild::ToolchainType::MicrosoftVC}, 
+        const Xenobuild::Triplet triplet = Xenobuild::Triplet::createDefaultTriplet();
+        const Xenobuild::ToolchainInstallPathEnumerator toolchainEnumerator;
+        const std::vector<std::string> toolchainPaths = toolchainEnumerator.enumerate(triplet.toolchainType);
+        
+        Xenobuild::Toolchain toolchain {triplet,
             toolchainPaths.size() > 0 ?  toolchainPaths[0] : ""
         };
 
