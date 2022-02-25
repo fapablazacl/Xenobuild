@@ -35,7 +35,7 @@ endif()
 
 # Enable Full Warning for all build configuration and compilers
 if(MSVC)
-    add_compile_options(/W4 /WX)
+    add_compile_options(/W3)
 else()
     add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
