@@ -45,5 +45,15 @@ set (sources
 
 add_library(${target} ${sources})
 
-target_include_directories(${target} PUBLIC "include/")
-target_link_libraries(${target} yaml-cpp Boost::thread Boost::filesystem Boost::program_options)
+target_include_directories(${target} 
+	PUBLIC "include/"
+	PRIVATE ${YAML_CPP_INCLUDE_DIRS}
+)
+
+target_link_libraries(${target} 
+	${YAML_CPP_LIBRARIES}
+	yaml-cpp
+	Boost::thread 
+	Boost::filesystem 
+	Boost::program_options
+)

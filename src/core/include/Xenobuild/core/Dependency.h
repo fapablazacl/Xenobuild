@@ -14,6 +14,10 @@ namespace Xenobuild {
     class CommandExecutor;
     
 
+    /**
+     * @brief Represents a package dependency
+     * 
+     */
     struct Dependency {
         //! The dependency identifier
         std::string name;

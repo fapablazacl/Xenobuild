@@ -48,6 +48,11 @@ static ControllerFactoryMap createControllerFactoryMap(Xenobuild::Context &conte
 
 
 namespace Xenobuild {
+    struct CliSubcommandDesc {
+        std::string name;
+        std::string description;
+    };
+
     class ControllerManager {
     public:
         explicit ControllerManager(Xenobuild::Context &context) {
@@ -66,14 +71,14 @@ namespace Xenobuild {
             return factoryIt->second->createController(args);
         }
         
-        std::vector<std::string> enumerate() const {
-            std::vector<std::string> names;
+        std::vector<CliSubcommandDesc> enumerate() const {
+            std::vector<CliSubcommandDesc> subcommands;
             
-            names.push_back(Xenobuild::BuildController::Name);
-            names.push_back(Xenobuild::SetupController::Name);
-            names.push_back(Xenobuild::ConfigureController::Name);
+            subcommands.push_back(CliSubcommandDesc{Xenobuild::BuildController::Name, "This subcommand performs something"});
+            subcommands.push_back(CliSubcommandDesc{Xenobuild::SetupController::Name, "This subcommand performs something"});
+            subcommands.push_back(CliSubcommandDesc{Xenobuild::ConfigureController::Name, "This subcommand performs something"});
             
-            return names;
+            return subcommands;
         }
         
     private:
@@ -129,6 +134,19 @@ std::tuple<
 }
 
 
+std::string generateHelpString(const std::vector<Xenobuild::CliSubcommandDesc> &subcommands) {
+    std::stringstream ss;
+
+    ss << "Available subcommands: " << std::endl;
+
+    for (const Xenobuild::CliSubcommandDesc &subcommand : subcommands) {
+        ss << "    " << subcommand.name << " -- " << subcommand.description << std::endl;
+    }
+
+    return ss.str();
+}
+
+
 int main(int argc, char **argv) {
     try {
         Xenobuild::FileSystemPackageFactory packageFactory;
@@ -138,13 +156,6 @@ int main(int argc, char **argv) {
             throw std::runtime_error("There is no accesible Xenobuild.yaml file in the current folder");
         }
     
-        const auto [parsed, vm] = parseGlobalOptions(argc, argv);
-
-        if (vm["command"].empty()) {
-            throw std::runtime_error("No subcommand supplied");
-        }
-
-        const std::string command = vm["command"].as<std::string>();
         const Xenobuild::Triplet triplet = Xenobuild::Triplet::createDefaultTriplet();
         const Xenobuild::ToolchainInstallPathEnumerator toolchainEnumerator;
         const std::vector<std::string> toolchainPaths = toolchainEnumerator.enumerate(triplet.toolchainType);
@@ -160,6 +171,14 @@ int main(int argc, char **argv) {
 
         Xenobuild::ControllerManager manager{context};
     
+        const auto [parsed, vm] = parseGlobalOptions(argc, argv);
+
+        if (vm["command"].empty()) {
+            throw std::runtime_error("No subcommand supplied\n" + generateHelpString(manager.enumerate()));
+        }
+
+        const std::string command = vm["command"].as<std::string>();
+        
         std::vector<std::string> args = boost::program_options::collect_unrecognized(parsed.options,  boost::program_options::include_positional);
         args.erase(args.begin());
 
@@ -167,15 +186,9 @@ int main(int argc, char **argv) {
     
         if (!controller) {
             std::stringstream ss;
-
             ss << "Unknown command " << command << "." << std::endl;
-            ss << "Available commands: " << std::endl;
-        
-            for (const std::string &cmd : manager.enumerate()) {
-                ss << "    " << cmd << std::endl;
-            }
-
-            throw std::runtime_error(ss.str());
+            
+            throw std::runtime_error(ss.str() + generateHelpString(manager.enumerate()));
         }
     
         controller->perform();
