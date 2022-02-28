@@ -16,7 +16,7 @@ namespace Xenobuild {
 
     constexpr ToolchainType getCurrentToolchainType() {
 #if defined(_MSC_VER)
-        return ToolchainType::AppleClang;
+        return ToolchainType::MicrosoftVC;
 #else
 #if defined(__clang__)
 #if defined(__apple_build_version__)

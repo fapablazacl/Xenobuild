@@ -14,9 +14,6 @@ find_package(Boost
     COMPONENTS program_options filesystem thread
 )
 
-include_directories("./src" ${Boost_INCLUDE_DIRS})
-link_directories(${Boost_LIBRARY_DIRS})
-
 # some definitions
 add_definitions(-DCMAKE_CURRENT_SOURCE_DIR="$CMAKE_CURRENT_SOURCE_DIR")
 
