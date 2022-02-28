@@ -1,5 +1,5 @@
 
-set (target "Xenobuild")
+set (target "libxenocli")
 
 set (sources 
     "include/Xenobuild/Common.h"
@@ -9,15 +9,16 @@ set (sources
     "include/Xenobuild/ConfigureController.h"
     "include/Xenobuild/SetupController.h"
     
-    "src/main.cpp"
     "src/BuildController.cpp"
     "src/ConfigureController.cpp"
     "src/SetupController.cpp"
 )
 
-add_executable(${target} ${sources})
+add_library(${target} ${sources})
 
 target_include_directories(${target} PUBLIC "./include/")
 target_link_libraries(${target} core)
 
-install(TARGETS ${target} DESTINATION bin)
+if (XENOBUILD_ENABLE_TESTS)
+    add_subdirectory("test")
+endif()

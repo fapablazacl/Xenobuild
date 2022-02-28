@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.8)
 project (Xenobuild)
 
 option(XENOBUILD_ENABLE_LINTER "Enable the use of Linter Tool. clang-tidy must be installed." OFF)
+option(XENOBUILD_ENABLE_TESTS "Enable the automated self-tests for all libraries." OFF)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -24,6 +25,16 @@ set(YAML_CPP_BUILD_TOOLS "OFF" CACHE STRING "" FORCE)
 set(YAML_CPP_INSTALL "OFF" CACHE STRING "" FORCE)
 add_subdirectory("dependencies/yaml-cpp")
 
+# add Catch2 
+if (XENOBUILD_ENABLE_TESTS)
+    set(CATCH_BUILD_TESTING     "OFF" CACHE STRING "" FORCE)
+    set(CATCH_INSTALL_DOCS      "OFF" CACHE STRING "" FORCE)
+    set(CATCH_ENABLE_COVERAGE   "OFF" CACHE STRING "" FORCE)
+    set(CATCH_ENABLE_WERROR     "OFF" CACHE STRING "" FORCE)
+    set(CATCH_INSTALL_HELPERS   "OFF" CACHE STRING "" FORCE)
+    add_subdirectory("dependencies/Catch2")
+endif()
+
 if (XENOBUILD_ENABLE_LINTER)
     set(CMAKE_CXX_CLANG_TIDY "clang-tidy")
 else ()
@@ -37,8 +48,10 @@ else()
     add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-add_subdirectory("src/Xenobuild")
+
 add_subdirectory("src/core")
+add_subdirectory("src/libxenocli")
+add_subdirectory("src/xenocli")
 # add_subdirectory("src/build-core")
 # add_subdirectory("src/build-core-io")
 # add_subdirectory("src/build-core-pipeline")
