@@ -1,22 +1,16 @@
 
 # Introduction
 
-The build systems found for the C++ language are too cumbersome to use, and aren't as developer-friendly like NPM or Gradle.
+Xenobuild is a Build System, designed to let developers focus program their application software, and not an build system, by following these design criteria:
 
-## Main Pain-Points
-Los principales problemas (or pain-points) que surgen a partir de los build system 
-
-- Bajo nivel de abstracción: Proveen una poca capacidad de abstracción sobre el proceso de compilación. Esto provoca que el desarrollador tenga que invertir grandes cantidades de tiempo para corregir los archivos de definición, resultando muchas veces que tengan que aprender practicamente un nuevo lenguaje de programacion.
-
-- Dependency Management: The developer must configure the dependencies manually.
-
-- Poco soporte para múltiples compiladores y targets: En CMake, el desarrollador debe configurar (llámese, ubicar dependencias externas, establecer opciones de compilación, etc) varias veces la compilación de un mismo paquete cada vez que quiere y/o debe usar un compilador distinto, o el mismo compilador con diferentes configuraciones.
-
-- Poor support for multiple, simultaneous, toolchain, from a code base. For example, in CMake, the developer muse configure many times the build from 
-
-- Some of the mainstream build systems are too complex, meaning that the user must, practically, learn a new programming language, to use it beyond simple use-cases.
-
-Es por esto que nace “borc”, una alternativa que toma inspiración de las mejores características de los gestores de compilación de otras plataformas para remediar la situación antes descrita.
+1. Specification files must follow a declarative approach, with partial customization.
+2. Allow the integration with, and whithin, current and future applications, toolchains, build systems, and frameworks.
+3. Automate the use of useful programming practices, like unit testing, linting, and dynamic analysis, among others.
+4. Automate common infraestructure tasks, like configuring dependencies, targeting additional platforms, generating documentation, etc.
+5. Smartly, should prefer build correctness over performance, and viceversa:
+   1. In order to assure build successfulness, should validate and sanitize all of its inputs.
+   2. In order to enable superior build performance, should skip costly validations.
+6. In case of any error, should give the developer the exact source of the problem. Otherwise, should give enough context to the developer.
 
 ## Problems found in other Build Tools
 1. Los DSL’s para definir los modulos a compilar, son por definición turing-complete: Esto, si bien permite una gran flexibilidad, en la práctica conduce a complejos archivos para definir proyectos no-triviales.
@@ -52,6 +46,3 @@ Estas son algunas directrices a seguir a rajatabla en el proceso de diseño y de
 - Auto-hostearse!
 - Compilar paquetes que contengan aplicaciones de consola y librerías, usando gcc y Visual C++, sobre Windows y Linux
 - Descargar dependencias via HTTP y desde Git.
-- Partir Monolítico, refactorizar gradualmente
-
-La idea acá es cumplir con los focos en cada iteración de desarrollo. El board inicial contemplará las HdU que permitirán acercarnos a la versión 1.0. Al llegar a la versión 1.0 deberíamos tener varios módulos (a lo menos dos), los cuales se compongan por librerías y un ejecutable.
