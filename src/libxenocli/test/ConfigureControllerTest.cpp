@@ -1,11 +1,8 @@
 
-#define CATCH_CONFIG_MAIN
+#include <Xenobuild/ConfigureController.h>
 #include <catch2/catch_all.hpp>
 
-// run with:
-// --reporter compact --success
-// example borrowed from Catch2's documentation.
-SCENARIO( "vectors can be sized and resized", "[vector]" ) {
+SCENARIO( "vectors can be sized and resized", "[ConfigureController]" ) {
     GIVEN( "A vector with some items" ) {
         std::vector<int> v( 5 );
 
