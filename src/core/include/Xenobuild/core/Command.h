@@ -24,8 +24,32 @@ namespace Xenobuild {
         std::vector<std::string> args;
     };
     
+
+    inline std::ostream& operator<< (std::ostream &os, const CommandX &cmd) {
+        os << "CommandX {" << cmd.name;
+        
+        if (cmd.args.size() > 0) {
+            os << ", {";
+
+            for (size_t i = 0; i < cmd.args.size(); i++) {
+                os << cmd.args[i];
+
+                if (i < cmd.args.size() - 1) {
+                    os << ",";
+                }
+            }
+
+            os << "}";
+        }
+
+        os << "}";
+
+        return os;
+    }
+
+
     struct CommandResult {
-        int exitCode;
+        int exitCode = 0;
         std::vector<std::string> out;
         std::vector<std::string> err;
         
@@ -49,6 +73,20 @@ namespace Xenobuild {
 
         std::vector<CommandX> commands;
     };
+
+
+    inline std::ostream& operator<< (std::ostream &os, const CommandBatch &batch) {
+        os << "CommandBatch {" << std::endl;
+
+        for (const CommandX &cmd : batch.commands) {
+            os << "  " << cmd << std::endl;
+        }
+
+        os << "}" << std::endl;
+
+        return os;
+    }
+
 
     class CommandExecutor {
     public:

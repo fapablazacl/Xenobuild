@@ -6,6 +6,8 @@
 
 #include <string>
 #include <ostream>
+#include <memory>
+
 
 namespace Xenobuild {
     struct Context;
@@ -29,6 +31,7 @@ namespace Xenobuild {
         return os;
     }
     
+    class CommandExecutor;
     class PackageFactory;
     class ConfigureController : public Controller {
     public:
@@ -39,10 +42,15 @@ namespace Xenobuild {
     public:
         ConfigureController(Context &context, const ConfigureControllerInput &params);
 
+        ConfigureController(Context &context, const ConfigureControllerInput &params, std::unique_ptr<CommandExecutor> executor);
+
+        virtual ~ConfigureController();
+
         void perform() override;
 
     private:
         Context &context;
         ConfigureControllerInput params;
+        std::unique_ptr<CommandExecutor> executor;
     };
 }

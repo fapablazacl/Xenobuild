@@ -30,8 +30,19 @@ namespace Xenobuild {
 namespace Xenobuild {
     const char* ConfigureController::Name = "configure";
     
-    ConfigureController::ConfigureController(Context &context, const ConfigureControllerInput& params)
-        : context(context), params(params) {}
+    ConfigureController::ConfigureController(
+        Context &context, 
+        const ConfigureControllerInput& params) : context(context), params(params) {}
+
+
+    ConfigureController::ConfigureController(
+        Context &context, 
+        const ConfigureControllerInput &params, 
+        std::unique_ptr<CommandExecutor> executor) : context(context), params(params), executor(std::move(executor)) {}
+
+
+    ConfigureController::~ConfigureController() {}
+
 
     void ConfigureController::perform() {
         // For CMake projects, generates all the build configurations required to build the main package.
@@ -53,16 +64,14 @@ namespace Xenobuild {
         const boost::filesystem::path userPath = getUserPath();
         const std::string suffix = computePathSuffix(params.triplet);
 
-        // BoostProcessCommandExecutor executor;
-        SystemCommandExecutor executor;
         PackageManager manager {
-            executor,
+            *executor.get(),
             (prefix / ".Xenobuild").string(),
             suffix
         };
         
         DependencyManager dependencyManager {
-            executor,
+            *executor.get(),
             (userPath / ".Xenobuild").string(),
             suffix
         };

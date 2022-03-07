@@ -1,44 +1,49 @@
 
 #include <Xenobuild/ConfigureController.h>
+
+#include <Xenobuild/core/Command.h>
+#include <Xenobuild/core/Package.h>
+#include <Xenobuild/core/Context.h>
+#include <Xenobuild/core/Toolchain.h>
+#include <Xenobuild/core/Triplet.h>
 #include <catch2/catch_all.hpp>
 
-SCENARIO( "vectors can be sized and resized", "[ConfigureController]" ) {
-    GIVEN( "A vector with some items" ) {
-        std::vector<int> v( 5 );
+using namespace Xenobuild;
 
-        REQUIRE( v.size() == 5 );
-        REQUIRE( v.capacity() >= 5 );
 
-        WHEN( "the size is increased" ) {
-            v.resize( 10 );
+class MockCommandExecutor : public CommandExecutor {
+public:
+    CommandResult execute(const CommandX& command) override {
+        return {0, "", ""};
+    }
 
-            THEN( "the size and capacity change" ) {
-                REQUIRE( v.size() == 10 );
-                REQUIRE( v.capacity() >= 10 );
-            }
-        }
-        WHEN( "the size is reduced" ) {
-            v.resize( 0 );
+    CommandResult execute(const CommandBatch& batch) override {
+        return {0, "", ""};
+    }
+};
 
-            THEN( "the size changes but not capacity" ) {
-                REQUIRE( v.size() == 0 );
-                REQUIRE( v.capacity() >= 5 );
-            }
-        }
-        WHEN( "more capacity is reserved" ) {
-            v.reserve( 10 );
 
-            THEN( "the capacity changes but not the size" ) {
-                REQUIRE( v.size() == 5 );
-                REQUIRE( v.capacity() >= 10 );
-            }
-        }
-        WHEN( "less capacity is reserved" ) {
-            v.reserve( 0 );
+SCENARIO("ConfigureController must perform all actions required to build correctly an package", "[ConfigureController]") {
+    GIVEN("Its name must be 'configure'") {
+        REQUIRE(std::strcmp(ConfigureController::Name, "configure") == 0);
+    }
 
-            THEN( "neither size nor capacity are changed" ) {
-                REQUIRE( v.size() == 5 );
-                REQUIRE( v.capacity() >= 5 );
+    GIVEN("a simple package with no dependencies") {
+        Package package;
+        package.name = "Test01";
+
+        Toolchain toolchain{ {}, "" };
+        Context context { package, toolchain };
+
+
+        WHEN("the configure command is issued") {
+            ConfigureControllerInput input;
+
+            ConfigureController controller{context, input};
+            controller.perform();
+
+            THEN("generates the Debug and Release build configurations") {
+                REQUIRE(true);
             }
         }
     }
