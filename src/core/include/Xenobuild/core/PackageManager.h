@@ -23,8 +23,10 @@ namespace Xenobuild {
                                 const std::string& prefixPath,
                                 const std::string &installSuffix);
         
-        bool configure(const Package &package, const Toolchain &toolchain, const Triplet &triplet, const CMakeBuildType buildType, const DependencyManager &dependencyManager);
-            
+        virtual bool configure(const Package &package, const Toolchain &toolchain, const Triplet &triplet, const CMakeBuildType buildType, const DependencyManager &dependencyManager);
+
+        virtual ~PackageManager() {}
+
     private:
         CommandExecutor &executor;
         

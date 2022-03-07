@@ -33,6 +33,8 @@ namespace Xenobuild {
     
     class CommandExecutor;
     class PackageFactory;
+    class PackageManager;
+    class DependencyManager;
     class ConfigureController : public Controller {
     public:
         typedef ConfigureControllerInput Params;
@@ -47,6 +49,8 @@ namespace Xenobuild {
         virtual ~ConfigureController();
 
         void perform() override;
+
+        void performImpl(PackageManager &packageManager, DependencyManager &dependencyManager);
 
     private:
         Context &context;

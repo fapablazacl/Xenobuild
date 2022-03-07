@@ -46,7 +46,6 @@ namespace Xenobuild {
 
     void ConfigureController::perform() {
         // For CMake projects, generates all the build configurations required to build the main package.
-        
         std::cout << "ConfigureController::perform" << std::endl;
 
         const unsigned processorCount = 1;
@@ -75,13 +74,18 @@ namespace Xenobuild {
             (userPath / ".Xenobuild").string(),
             suffix
         };
-        
+
+        performImpl(manager, dependencyManager);
+    }
+
+
+    void ConfigureController::performImpl(PackageManager &packageManager, DependencyManager &dependencyManager) {
         const CMakeBuildType buildTypes[] = {
             CMakeBuildType::Release, CMakeBuildType::Debug
         };
         
         for (const CMakeBuildType buildType : buildTypes) {
-            if (! manager.configure(context.package, context.toolchain, params.triplet, buildType, dependencyManager)) {
+            if (! packageManager.configure(context.package, context.toolchain, params.triplet, buildType, dependencyManager)) {
                 throw std::runtime_error("Configure command failed.");
             }
         }
