@@ -23,6 +23,25 @@ namespace Xenobuild {
         MinGWMakefiles
     };
 
+    inline std::ostream& operator<< (std::ostream &os, const Xenobuild::CMakeGenerator generator) {
+        switch (generator) {
+        case Xenobuild::CMakeGenerator::UnixMakefiles:
+            os << "CMakeGenerator::UnixMakefiles";
+            break;
+
+        case Xenobuild::CMakeGenerator::NMakeMakefiles:
+            os << "CMakeGenerator::NMakeMakefiles";
+
+        case Xenobuild::CMakeGenerator::MinGWMakefiles:
+            os << "CMakeGenerator::MinGWMakefiles";
+
+        default:
+            os << "CMakeGenerator::<InvalidEnum>";
+        }
+
+        return os;
+    }
+
     std::string evaluate(const CMakeGenerator generator);
 
     struct CMakeConfiguration {

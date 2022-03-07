@@ -14,7 +14,7 @@ namespace Xenobuild {
     
     class Toolchain;
     class CommandExecutor;
-    
+
     class DependencyManager {
     public:
         explicit DependencyManager(CommandExecutor &executor,

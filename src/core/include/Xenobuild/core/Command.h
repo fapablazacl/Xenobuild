@@ -22,6 +22,16 @@ namespace Xenobuild {
     struct CommandX {
         std::string name;
         std::vector<std::string> args;
+
+        bool operator== (const CommandX &rhs) const {
+            return 
+                std::tuple(name, args) == 
+                std::tuple(rhs.name, args);
+        }
+
+        bool operator!= (const CommandX &rhs) const {
+            return !(*this == rhs);
+        }
     };
     
 
@@ -56,6 +66,16 @@ namespace Xenobuild {
         operator bool() const {
             return exitCode == 0;
         }
+
+        bool operator== (const CommandResult &rhs) const {
+            return 
+                std::tuple(exitCode, out, err) == 
+                std::tuple(rhs.exitCode, rhs.out, rhs.err);
+        }
+
+        bool operator!= (const CommandResult &rhs) const {
+            return !(*this == rhs);
+        }
     };
     
     struct CommandBatch {
@@ -72,6 +92,14 @@ namespace Xenobuild {
         }
 
         std::vector<CommandX> commands;
+
+        bool operator== (const CommandBatch &rhs) const {
+            return commands == rhs.commands;
+        }
+
+        bool operator!= (const CommandBatch &rhs) const {
+            return !(*this == rhs);
+        }
     };
 
 
