@@ -8,3 +8,5 @@ set (sources
 
 add_executable(${target} ${sources})
 target_link_libraries(${target} libxenocli gtest gmock)
+
+add_test(NAME ${target} COMMAND ${target})

@@ -33,8 +33,8 @@ if (XENOBUILD_ENABLE_TESTS)
     # set(CATCH_ENABLE_WERROR     "OFF" CACHE STRING "" FORCE)
     # set(CATCH_INSTALL_HELPERS   "OFF" CACHE STRING "" FORCE)
     # add_subdirectory("dependencies/Catch2")
-
     add_subdirectory("dependencies/googletest")
+    include(CTest)
 endif()
 
 if (XENOBUILD_ENABLE_LINTER)
