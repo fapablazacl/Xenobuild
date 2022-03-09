@@ -25,14 +25,14 @@ set(YAML_CPP_BUILD_TOOLS "OFF" CACHE STRING "" FORCE)
 set(YAML_CPP_INSTALL "OFF" CACHE STRING "" FORCE)
 add_subdirectory("dependencies/yaml-cpp")
 
-# add Catch2 
+# add unit test support libraries
 if (XENOBUILD_ENABLE_TESTS)
-    set(CATCH_BUILD_TESTING     "OFF" CACHE STRING "" FORCE)
-    set(CATCH_INSTALL_DOCS      "OFF" CACHE STRING "" FORCE)
-    set(CATCH_ENABLE_COVERAGE   "OFF" CACHE STRING "" FORCE)
-    set(CATCH_ENABLE_WERROR     "OFF" CACHE STRING "" FORCE)
-    set(CATCH_INSTALL_HELPERS   "OFF" CACHE STRING "" FORCE)
-    add_subdirectory("dependencies/Catch2")
+    # set(CATCH_BUILD_TESTING     "OFF" CACHE STRING "" FORCE)
+    # set(CATCH_INSTALL_DOCS      "OFF" CACHE STRING "" FORCE)
+    # set(CATCH_ENABLE_COVERAGE   "OFF" CACHE STRING "" FORCE)
+    # set(CATCH_ENABLE_WERROR     "OFF" CACHE STRING "" FORCE)
+    # set(CATCH_INSTALL_HELPERS   "OFF" CACHE STRING "" FORCE)
+    # add_subdirectory("dependencies/Catch2")
 
     add_subdirectory("dependencies/googletest")
 endif()
