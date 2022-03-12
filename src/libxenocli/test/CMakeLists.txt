@@ -1,9 +1,9 @@
 
 set (target "libxenocli-test")
 set (sources 
-    #"libxenocli-test.cpp"
-    #"ConfigureControllerTest.cpp"
-    "libxenocli-test-gtest.cpp"
+    "ConfigureControllerTest.cpp"
+    "ConfigureServiceTest.cpp"
+    "libxenocli-test.cpp"
 )
 
 add_executable(${target} ${sources})
