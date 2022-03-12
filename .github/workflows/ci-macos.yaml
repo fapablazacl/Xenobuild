@@ -8,7 +8,7 @@ on:
     
 jobs:
   build-universal-appleclang:
-    runs-on: macos-11
+    runs-on: macos-latest
     steps:
       - name: Checkout Source Code and Submodules
         uses: actions/checkout@v2
@@ -29,3 +29,39 @@ jobs:
 
       - name: Build [Release]
         run: cmake --build build/release
+
+  tidy-universal-appleclang:
+    runs-on: macos-latest
+    needs: build-universal-appleclang
+    steps:
+      - name: Checkout Source Code and Submodules
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Setup
+        run: |
+          brew install boost
+          cmake -G "Unix Makefiles" -DXENOBUILD_ENABLE_LINTER=ON -DCMAKE_BUILD_TYPE=Debug -B build/debug
+
+      - name: Lint (clang-tidy)
+        run: cmake --build build/debug
+
+  test-universal-appleclang:
+    runs-on: macos-latest
+    needs: build-universal-appleclang
+    steps:
+      - name: Checkout Source Code and Submodules
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Setup
+        run: |
+          brew install boost
+          cmake -G "Unix Makefiles" -DXENOBUILD_ENABLE_TESTS=ON -DCMAKE_BUILD_TYPE=Debug -B build/debug
+
+      - name: Test (gtest)
+        run: |
+          cmake --build build/debug
+          cmake --build build/debug --target test
