@@ -30,6 +30,35 @@ jobs:
       - name: Build [Release]
         run: cmake --build build/release
 
+  test-x86_64-gcc:
+    runs-on: ubuntu-latest
+    needs: build-x86_64-gcc
+    steps:
+      - name: Checkout Source Code and Submodules
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Setup [Debug]
+        run: |
+          sudo apt-get install libboost-all-dev
+          cmake -G "Unix Makefiles" -DXENOBUILD_ENABLE_TESTS=ON -DCMAKE_BUILD_TYPE=Debug -B build/debug
+
+      - name: Test [Debug]
+        run: |
+          cmake --build build/debug
+          cmake --build build/debug --target test
+
+      - name: Setup [Release]
+        run: |
+          sudo apt-get install libboost-all-dev
+          cmake -G "Unix Makefiles" -DXENOBUILD_ENABLE_TESTS=ON -DCMAKE_BUILD_TYPE=Release -B build/release
+
+      - name: Test [Release]
+        run: |
+          cmake --build build/release
+          cmake --build build/release --target test
+
   sonar-x86_64-gcc:
     needs: build-x86_64-gcc
     runs-on: ubuntu-latest
