@@ -1,27 +1,20 @@
 
 #pragma once
 
-#include <Xenobuild/core/Triplet.h>
-
-#include <string>
-#include <ostream>
-#include <memory>
-
-
 namespace Xenobuild {
-    struct Context;
-    
-    class CommandExecutor;
-    class PackageFactory;
+    struct Package;
+    struct Triplet;
+
+    class Toolchain;
     class PackageManager;
     class DependencyManager;
     class ConfigureService {
     public:
-        ConfigureController(PackageManager &packageManager, DependencyManager &dependencyManager);
+        ConfigureService(PackageManager &packageManager, DependencyManager &dependencyManager);
 
-        virtual ~ConfigureController();
+        virtual ~ConfigureService();
 
-        void configure(const Package &package, const Toolchain &toolchain);
+        void configure(const Package &package, const Toolchain &toolchain, const Triplet &triplet);
 
     private:
         PackageManager &packageManager;

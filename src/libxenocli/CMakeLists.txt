@@ -7,10 +7,12 @@ set (sources
     "include/Xenobuild/ControllerFactory.h"
     "include/Xenobuild/BuildController.h"
     "include/Xenobuild/ConfigureController.h"
+    "include/Xenobuild/ConfigureService.h"
     "include/Xenobuild/SetupController.h"
     
     "src/BuildController.cpp"
     "src/ConfigureController.cpp"
+    "src/ConfigureService.cpp"
     "src/SetupController.cpp"
 )
 

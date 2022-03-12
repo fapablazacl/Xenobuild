@@ -85,20 +85,20 @@ namespace Xenobuild {
         
         // 
         for (const Dependency dep : dependencies) {
-            if (! manager.download(dep)) {
+            if (! dependencyManager.download(dep)) {
                 throw std::runtime_error("Download command failed.");
             }
 
             for (const CMakeBuildType buildType : buildTypes) {
-                if (! manager.configure(dep, context.toolchain, buildType, {})) {
+                if (! dependencyManager.configure(dep, context.toolchain, buildType, {})) {
                     throw std::runtime_error("Configure command failed.");
                 }
 
-                if (! manager.build(dep, context.toolchain, buildType)) {
+                if (! dependencyManager.build(dep, context.toolchain, buildType)) {
                     throw std::runtime_error("Build command failed.");
                 }
                 
-                if (! manager.install(dep, context.toolchain, buildType)) {
+                if (! dependencyManager.install(dep, context.toolchain, buildType)) {
                     throw std::runtime_error("Install command failed.");
                 }
             }
