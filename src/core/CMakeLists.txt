@@ -53,7 +53,4 @@ target_include_directories(${target}
 target_link_libraries(${target} 
 	${YAML_CPP_LIBRARIES}
 	yaml-cpp
-	Boost::thread 
-	Boost::filesystem 
-	Boost::program_options
 )
